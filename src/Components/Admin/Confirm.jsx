@@ -33,9 +33,7 @@ function Confirm() {
         useEffect(() => {
             const fetchData = async () => {
               const data = await fetchRole();
-            };
-            console.log(data);
-            
+            };            
             fetchData();
           });
 
