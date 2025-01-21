@@ -134,7 +134,6 @@ function ScheduleRate() {
         ))}
       </div>
       <div className="ratedcount">{thisScheduleHistory.rated || (selectedStars*10)}</div>
-      {console.log(thisScheduleHistory)}
       <button onClick={handleSubmit} className="submit-btn">
         Yuborish
       </button>

@@ -15,15 +15,11 @@ const Signup = () => {
               authorization: window.localStorage.getItem("token"),
             },
           });
-          console.log(16);
           
           const status = res.data.data.status;
-          console.log("Foydalanuvchi statusi:", status);
       
           if (!status || status === "" || status === "none") {
-            console.log("Status '1' ga o'rnatildi");
           } else if (status === "user") {
-            console.log("Foydalanuvchi oddiy user ekan.");
           }
         } catch (error) {
           console.error("Statusni tekshirishda xatolik:", error);

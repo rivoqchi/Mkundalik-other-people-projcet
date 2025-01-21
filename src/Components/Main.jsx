@@ -11,7 +11,6 @@ function Main() {
     const getMyData = async () => {
       try {
         const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-        console.log(data);
         if(data.user.role === "admin"){
           navigate("/admin")
         }else if(data.user.role === "employee"){

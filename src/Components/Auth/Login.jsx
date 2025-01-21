@@ -40,7 +40,6 @@ const Login = () => {
                     navigate('/fill')
                 }
         }else{
-            console.log(data.employee);
                 navigate('/iamnew')
             };
         }).catch(() => {

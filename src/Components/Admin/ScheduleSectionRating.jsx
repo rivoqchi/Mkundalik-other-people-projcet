@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 function ScheduleSectionRating() {
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
-  console.log(mySectionSchedules);
 
   const getMySectionSchedules = async () => {
     try {

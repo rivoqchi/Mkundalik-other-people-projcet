@@ -8,7 +8,6 @@ const ProtectedRoute = ({ allowedRoles }) => {
     const fetchUserRole = async () => {
       const userRole = await fetchRole();
       setRole(userRole);
-      console.log(userRole, 345);
       
     };
     fetchUserRole();

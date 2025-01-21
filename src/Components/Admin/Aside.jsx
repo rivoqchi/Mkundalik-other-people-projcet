@@ -16,7 +16,6 @@ function Aside() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
       window.localStorage.clear();
       navigate('/');
     } catch (error) {

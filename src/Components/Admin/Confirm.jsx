@@ -17,7 +17,6 @@ function Confirm() {
     const [section, setSection] = useState("");
     const [degree, setDegree] = useState("");
     const [phone, setPhone] = useState("");
-    console.log(section, 999999999999);
     
     const getAllSections = async () => {
       try {
@@ -34,7 +33,6 @@ function Confirm() {
         useEffect(() => {
             const fetchData = async () => {
               const data = await fetchRole();
-              console.log(data, 333);
             };
         
             fetchData();

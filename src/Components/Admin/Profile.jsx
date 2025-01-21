@@ -5,7 +5,6 @@ import logo from '../Images/logo2.png'
 function Profile() {
       const [myData, setMyData] = useState([]);
     const id = window.localStorage.getItem("user_id")
-    console.log(myData);
     const getMyData = async () =>{
         const {data} = await axios.get(`${API}/auth/mydata/${id}`)
         setMyData(data.user)

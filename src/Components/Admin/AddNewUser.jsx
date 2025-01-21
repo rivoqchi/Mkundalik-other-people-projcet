@@ -35,7 +35,6 @@ const AddNewUser = () => {
 
     const navigate = useNavigate();
     const { name, phone, password, section, degree, status, error, success } = values;
-    console.log(values);
 
     const acceptedBy = window.localStorage.getItem("fullName");
     const handleSwitchChange = () => {
@@ -58,7 +57,6 @@ const AddNewUser = () => {
         try {
             const employee = { name, phone, password, section, degree, status, acceptedBy };
             const data = await createEmployee(employee);
-            console.log(employee);
             
 
             if (data.error) {

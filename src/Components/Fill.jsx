@@ -23,7 +23,6 @@ function Fill() {
   const getMyData = async () => {
     try {
       const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-      console.log(data);
       if(data.user.employee){
           if(data.user.role === "admin"){
             navigate("/admin")

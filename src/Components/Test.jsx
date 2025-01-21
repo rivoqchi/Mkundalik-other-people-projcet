@@ -33,7 +33,6 @@ const Test = () => {
         auth().then((data) => {
             if (data.error) {
                 setAlert({ show: true, type: "error", message: data.error });
-                console.log(data);
             } else {
                 setAlert({ show: true, type: "success", message: data.token });
                 console.log('Foydalanuvchi ma’lumotlari:', data);

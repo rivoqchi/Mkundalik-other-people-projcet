@@ -179,7 +179,6 @@ function Sections() {
           <Modal.Body>
             {selectedSection.admins.map((admin) => (
               <Link className="text-decoration-none" to={`/admin/base/user/${admin.ObjectID}`}>
-                {console.log(admin)}
               <div key={admin._id} className="mb-3 modalichidauser">
                   <i className="fa-regular fa-user"></i>
                 <span>{admin.name}</span>

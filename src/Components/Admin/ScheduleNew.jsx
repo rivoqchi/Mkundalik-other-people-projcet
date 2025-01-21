@@ -14,9 +14,7 @@ function ScheduleNew() {
 
     const getMyData = async () => {
       try {
-        const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-        console.log(data);
-        
+        const { data } = await axios.get(`${API}/auth/mydata/${myId}`);        
         setMyName(data.user.name);
         setMyRole(data.user.role);
         setMySection(data.user.section);

@@ -9,7 +9,6 @@ import Alert from "../Additional/Alert";
 
 function FilterNewUsers() {
   const [allData, setAllData] = useState([]);
-  console.log(allData);
   
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [show, setShow] = useState(false);
@@ -61,8 +60,6 @@ function FilterNewUsers() {
         {allData.map((i) => (
           <Card key={i._id} className={`m-3 filtercard ${i.employee === true ? "filtergreen" : "filterred"}`}>
             <Card.Body>
-              {console.log(i, 1)
-              }
               <Card.Title>{i.name}</Card.Title>
               <Card.Text>{i.phone}</Card.Text>
               <div className="d-flex justify-content-between">

@@ -5,12 +5,10 @@ import { Link } from "react-router-dom";
 function SchduleHistory() {
   const myId = window.localStorage.getItem("user_id");
   const [myScheduleHistory, setMyScheduleHistory] = useState([]);
-  console.log(myScheduleHistory);
     const [myRole, setMyRole] = useState([])
     const getMyData = async () => {
       try {
         const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-        console.log(data);
         setMyRole(data.user.role);
       } catch (error) {
         console.error("Error fetching data:", error);

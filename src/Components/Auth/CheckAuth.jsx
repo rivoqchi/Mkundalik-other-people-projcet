@@ -70,7 +70,6 @@ export const isAuthenticated = () => {
         },
       });
       const data = await response.json();
-      console.log(data);
       return data.message;
     } catch (err) {
       console.error(err);
