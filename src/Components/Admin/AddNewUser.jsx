@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createEmployee } from "../Auth/CheckAuth";
 import Alert from "../Additional/Alert";
 import axios from "axios";
@@ -33,7 +33,6 @@ const AddNewUser = () => {
         getAllSections();
       }, []);
 
-    const navigate = useNavigate();
     const { name, phone, password, section, degree, status, error, success } = values;
 
     const acceptedBy = window.localStorage.getItem("fullName");

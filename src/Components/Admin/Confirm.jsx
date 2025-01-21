@@ -34,7 +34,8 @@ function Confirm() {
             const fetchData = async () => {
               const data = await fetchRole();
             };
-        
+            console.log(data);
+            
             fetchData();
           });
 

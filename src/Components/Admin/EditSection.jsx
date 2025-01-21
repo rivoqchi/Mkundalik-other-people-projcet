@@ -11,7 +11,7 @@ import axios from "axios";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-function NewSection() {
+function EditSection() {
   const {id} = useParams()
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [allUsers, setAllUsers] = useState([]);
@@ -162,4 +162,4 @@ function NewSection() {
   );
 }
 
-export default NewSection;
+export default EditSection;
