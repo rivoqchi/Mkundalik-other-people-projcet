@@ -86,7 +86,7 @@ const AddNewUser = () => {
     };
 
     const saveToFile = () => {
-        const data = `Ism: ${name} \nTelefon: ${phone} \nParol: ${password} \nBo'lim: ${section} \nLavozim: ${degree}\nStatus: ${status} \nTasdiqlagan shaxs: ${acceptedBy}`;
+        const data = `mkundalik.uz uchun avtorizatsiya ma'lumotlari: \nIsm: ${name} \nTelefon: ${phone} \nParol: ${password} \nBo'lim: ${section} \nLavozim: ${degree}\nStatus: ${status} \nTasdiqlagan shaxs: ${acceptedBy}`;
         const blob = new Blob([data], { type: 'text/plain' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);

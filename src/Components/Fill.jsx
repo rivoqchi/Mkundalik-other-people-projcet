@@ -58,8 +58,8 @@ function Fill() {
     }
 
     try {
-      const formattedDateOfBirth = dateOfBirth.toLocaleDateString("uz-UZ").replace(/\//g, ":");
-      const formattedFirstAct = values.firstAct.toLocaleDateString("uz-UZ").replace(/\//g, ":");
+      const formattedDateOfBirth = dateOfBirth.toLocaleDateString("uz-UZ").replace(/\//g, ".");
+      const formattedFirstAct = values.firstAct.toLocaleDateString("uz-UZ").replace(/\//g, ".");
 
       const data = {
         dateOfBirth: formattedDateOfBirth,
@@ -94,7 +94,7 @@ function Fill() {
           <DatePicker
             selected={values.dateOfBirth}
             onChange={(date) => setValues({ ...values, dateOfBirth: date })}
-            dateFormat="dd:MM:yyyy"
+            dateFormat="dd.MM.yyyy"
             placeholderText="Sanani tanlang"
           />
         </div>
