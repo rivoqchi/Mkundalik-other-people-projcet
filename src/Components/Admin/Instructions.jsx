@@ -4,6 +4,8 @@ function Instructions() {
         <>
         <h1 className="text-center">
             Bu funksiya ustida ishlayapmiz...
+
+            Normativ hujjatlarni yuklash va tahrirlash funksiyalari paydo bo`ladi.
         </h1>
         </>
      );

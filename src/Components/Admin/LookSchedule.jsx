@@ -52,11 +52,12 @@ function LookSchedule() {
     <>
       <div ref={componentRef} className="p-3 hisobot">
         <div className="scheduletepa">
-          <div className="align-items-center pt-3 justify-content-between d-flex">
+          <div className="align-items-center pt-3 d-flex">
             <img className="schedulelogo" src={logo} alt="logo" />
-            <h3 className="px-2">"TOSHKENT METROPOLITENI" DUK</h3>
+            <h5 className="px-2 bluecolor">"TOSHKENT <br/>METROPOLITENI" DUK</h5>
           </div>
         </div>
+        <h4 className="text-center m-3">Xodimning kundalik ishlarni qayd etganligi haqida hisobot</h4>
         <div className="scheduleshistory">
           <div className="schedulebajaruvchilar">
             <i className="fa-regular fa-user"></i> Hisobotni bajargan xodim:{" "}

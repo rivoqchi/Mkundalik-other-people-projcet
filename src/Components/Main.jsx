@@ -1,42 +1,62 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import axios from "axios";
-import Carusel from './Carousel';
-import {API} from '../config';
-import logo from './Images/logo2.png'
+import { API } from "../config";
+import logo from "./Images/logo2.png";
 import { useNavigate } from "react-router-dom";
+
 function Main() {
-    const navigate = useNavigate();
-    const myId = window.localStorage.getItem("user_id") 
-    const getMyData = async () => {
-      try {
-        const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-        if(data.user.role === "admin"){
-          navigate("/admin")
-        }else if(data.user.role === "employee"){
-          navigate("/employee")
-        }else if(data.user.role === "superadmin"){
-          navigate("/superadmin")
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+  const navigate = useNavigate();
+  const myId = window.localStorage.getItem("user_id");
+
+  const getMyData = async () => {
+    try {
+      const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
+      if (data.user.role === "admin") {
+        navigate("/admin");
+      } else if (data.user.role === "employee") {
+        navigate("/employee");
+      } else if (data.user.role === "superadmin") {
+        navigate("/superadmin");
       }
-    };  
-    useEffect(() => {
-      getMyData();
-    }, []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getMyData();
+  }, []);
 
   return (
-    <>
-      <Carusel />
-      <img className="mainlogo" src={logo} alt="" />
-      <div className="logss">
-        <h4 className="text-light m-3">Kundalik vazifalarni qayd etish virtual platformasi</h4>
+    <div className="main-container">
+      {/* Header bilan Logo */}
+      <header className="main-header">
+        <img src={logo} alt="Platform Logo" className="main-logo" />
+        <h1 className="main-title">Kundalik Vazifalar Platformasi</h1>
+      </header>
+
+      {/* Markaziy Animatsiya */}
+      <div className="animated-banner">
+        <h2 className="banner-text">Hisobotlarni raqamlashtiring!</h2>
+        <p className="banner-subtext">Har kuni hisobotlarni oson topshirish uchun platformaga qo‘shiling.</p>
+      </div>
+
+      {/* Harakat Tugmalari */}
+      <div className="action-buttons">
         <Link to="/login">
-          <button className="mainlogin">Kirish</button>
+          <button className="btn primary-btn">Kirish</button>
+        </Link>
+        <Link to="/register">
+          <button className="btn secondary-btn">Ro‘yxatdan O‘tish</button>
         </Link>
       </div>
-    </>
+
+      <footer className="main-footer">
+        <p>© 2025 mkundalik.uz | Barcha huquqlar himoyalangan.</p>
+        <p>Bizga ulaning: <a href="https://t.me/Toshkent_metropoliteni_rasmiy">@Toshkent_metropoliteni_rasmiy</a></p>
+      </footer>
+    </div>
   );
 }
 

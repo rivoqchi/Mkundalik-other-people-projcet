@@ -28,7 +28,7 @@ function Aside() {
   return (
     <div className="aside">
       <div className="aside-logo">
-        <img src={logo2} alt="Admin Panel" />
+      <i class="fa-solid fa-book"></i>
         <h4>Admin Panel</h4>
       </div>
       <nav className="aside-menu">
@@ -42,13 +42,13 @@ function Aside() {
           <li className={location.pathname === '/admin/schedule/history' ? 'active' : ''}>
             <Link to="/admin/schedule/history">
               <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>Kundalik ish faoliyatlarim</span>
+              <span>Kundalik ish faoliyatim</span>
             </Link>
           </li>
           <li className={location.pathname === '/admin/rating/ours' ? 'active' : ''}>
             <Link to="/admin/rating/ours">
               <i className="fa-solid fa-medal"></i>
-              <span>Mening bo`limim ko`rsatgichlari</span>
+              <span>Mening bo`limim ko`rsatkichlari</span>
             </Link>
           </li>
           <li className={location.pathname === '/admin/sections' ? 'active' : ''}>

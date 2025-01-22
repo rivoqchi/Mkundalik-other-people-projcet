@@ -28,7 +28,7 @@ function Aside() {
   return (
     <div className="aside">
       <div className="aside-logo">
-        <img src={logo2} alt="Admin Panel" />
+      <i class="fa-solid fa-book"></i>
         <h4>User Panel</h4>
       </div>
       <nav className="aside-menu">
@@ -42,7 +42,7 @@ function Aside() {
           <li className={location.pathname === '/user/schedule/history' ? 'active' : ''}>
             <Link to="/user/schedule/history">
               <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>Kundalik ish faoliyatlarim</span>
+              <span>Kundalik ish faoliyatim</span>
             </Link>
           </li>
           <li className={location.pathname === '/user/profile' ? 'active' : ''}>
