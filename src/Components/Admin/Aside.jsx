@@ -51,18 +51,18 @@ function Aside() {
               <span>Mening bo`limim ko`rsatkichlari</span>
             </Link>
           </li>
-          <li className={location.pathname === '/admin/sections' ? 'active' : ''}>
+          {/* <li className={location.pathname === '/admin/sections' ? 'active' : ''}>
             <Link to="/admin/sections">
               <i className="fa-regular fa-pen-to-square"></i>
               <span>Bo‘limlarni tahrirlash</span>
             </Link>
-          </li>
-          <li className={location.pathname === '/admin/info/employee' ? 'active' : ''}>
+          </li> */}
+          {/* <li className={location.pathname === '/admin/info/employee' ? 'active' : ''}>
             <Link to="/admin/employees">
               <i className="fa-solid fa-sitemap"></i>
               <span>Xodimlar</span>
             </Link>
-          </li>
+          </li> */}
           <li className={location.pathname === '/admin/instructions' ? 'active' : ''}>
             <Link to="/admin/instructions">
               <i className="fa-solid fa-book"></i>
