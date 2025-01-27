@@ -4,6 +4,8 @@ import React from 'react';
 
 const ProtectedRoute = ({ allowedRoles }) => {
   const [role, setRole] = React.useState(null);
+  console.log(role);
+  
   React.useEffect(() => {
     const fetchUserRole = async () => {
       const userRole = await fetchRole();

@@ -10,6 +10,8 @@ function ScheduleNew() {
     const myId = window.localStorage.getItem("user_id")
     const [myName, setMyName] = useState([])
     const [mySection, setMySection] = useState([])
+    const [myDepartment, setMyDepartment] = useState([])
+    const [myComplex, setMyComplex] = useState([])
     const [myRole, setMyRole] = useState([])
 
     const getMyData = async () => {
@@ -18,6 +20,8 @@ function ScheduleNew() {
         setMyName(data.user.name);
         setMyRole(data.user.role);
         setMySection(data.user.section);
+        setMyDepartment(data.user.department);
+        setMyComplex(data.user.complex);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -183,6 +187,12 @@ function ScheduleNew() {
       navigate("/hr/schedule/history");
     }else if(myRole === "superadmin"){
       navigate("/superadmin/schedule/history");
+    }else if(myRole === "complex"){
+      navigate("/complex/schedule/history");
+    }else if(myRole === "department"){
+      navigate("/department/schedule/history");
+    }else if(myRole === "hr"){
+      navigate("/hr/schedule/history");
     }
   };
 
@@ -194,6 +204,8 @@ function ScheduleNew() {
       beginnerName: myName,
       beginnerId: window.localStorage.getItem("user_id"),
       section: mySection,
+      department: myDepartment,
+      complex: myComplex
     };
 
     axios.post(`${API}/schedules/create`, payload).then((res) => {
@@ -290,6 +302,7 @@ function ScheduleNew() {
             />
             <div className="uploadif">
             <h5>Xujjatni yuklang (agar bo`lsa)</h5>
+            (hozir ishlamayapti)
               <i className="fa-solid fa-paperclip"></i>
             </div>
           </Modal.Body>

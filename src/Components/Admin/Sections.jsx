@@ -89,7 +89,7 @@ function Sections() {
       <div className="justify-content-between d-flex m-5">
         <h1>Barcha bo‘limlar</h1>
         <h3>Jami: {allSections.length} ta bo‘lim mavjud</h3>
-        <Link to="/admin/sections/add">
+        <Link to="/superadmin/sections/add">
           <button className="defaultbtn">+ Yangi bo`lim</button>
         </Link>
       </div>
@@ -101,7 +101,6 @@ function Sections() {
                 <i className="fa-regular flagg fa-font-awesome"></i>
                 <h5 className="mb-0 mx-5">{section.name}</h5>
               </div>
-              <span>{section.acceptedBy}</span>
             </Card.Body>
             <div className="operations justify-content-between d-flex text-end m-3">
               <div className="infosssss">

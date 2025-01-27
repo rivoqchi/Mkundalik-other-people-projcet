@@ -31,21 +31,45 @@ function LookSchedule() {
   // PDF yaratish funksiyasi
   const generatePDF = async () => {
     const input = componentRef.current;
-    const canvas = await html2canvas(input, { scale: 2 }); // Kattaroq ko‘rinish uchun ko‘lam
-    const imgData = canvas.toDataURL("image/jpeg", 1); // Buni 0.8 qilsa ham bo`ladi
 
+    // 1. `html2canvas` yordamida tasvir olish
+    const canvas = await html2canvas(input, {
+        scale: 3, // Yuqori sifat uchun ko‘lamni oshiramiz
+        useCORS: true, // CORS muammosini oldini olish
+    });
+
+    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
+
+    // 2. Tasvir o‘lchamlarini hisoblash
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = canvas.width / 2; // Tasvirni siqish
-    const imgHeight = canvas.height / 2;
+
+    const imgWidth = canvas.width / 3; // `scale` bo‘yicha qisqaradi
+    const imgHeight = canvas.height / 3;
+
     const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
 
-    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth * ratio, imgHeight * ratio);
-    pdf.save("hisobot.pdf");
-  };
+    // 3. PDFga tasvirni joylashtirish
+    let yOffset = 0;
+    while (yOffset < imgHeight * ratio) {
+        pdf.addImage(
+            imgData,
+            "PNG",
+            0,
+            0 - yOffset, // Har bir yangi sahifa uchun offsetni sozlaymiz
+            imgWidth * ratio,
+            imgHeight * ratio
+        );
+        yOffset += pdfHeight; // Sahifa uzunligi bo‘ylab offset
+        if (yOffset < imgHeight * ratio) pdf.addPage();
+    }
 
-  const currentUrl = `https://mkundalik.uz/admin/archive/schedule/${thisScheduleHistory._id}`;
+    // 4. PDFni yuklab olish
+    pdf.save("schedule.pdf");
+};
+
+  const currentUrl = `https://mkundalik.uz/documents/archive/schedule/${thisScheduleHistory._id}`;
   const currentDateTime = format(new Date(), "dd.MM.yyyy HH:mm");
 
   return (

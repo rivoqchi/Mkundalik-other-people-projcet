@@ -1,13 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo2 from '../Images/logo2.png';
 import axios from 'axios';
 import { API } from '../../config';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 function Aside() {
   const navigate = useNavigate();
   const location = useLocation(); // Hozirgi yo'lni olish
   let token = window.localStorage.getItem("token");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const logout = async () => {
     try {
@@ -26,9 +32,10 @@ function Aside() {
   };
 
   return (
+    <>
     <div className="aside">
       <div className="aside-logo">
-      <i class="fa-solid fa-book"></i>
+      <i className="fa-solid fa-book"></i>
         <h4>User Panel</h4>
       </div>
       <nav className="aside-menu">
@@ -52,7 +59,7 @@ function Aside() {
             </Link>
           </li>
           <li>
-            <Link onClick={logout}>
+            <Link onClick={handleShow}>
               <i className="fa-solid fa-arrow-right-from-bracket"></i>
               <span>Chiqish</span>
             </Link>
@@ -60,6 +67,21 @@ function Aside() {
         </ul>
       </nav>
     </div>
+        <Modal centered show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Chiqish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Profildan chiqmoqchimisiz?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Bekor qilish
+          </Button>
+          <Button variant="danger" onClick={logout}>
+            Chiqish
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 

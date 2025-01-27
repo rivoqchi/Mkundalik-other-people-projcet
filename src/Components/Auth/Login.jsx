@@ -7,7 +7,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 const Login = () => {
     const [alert, setAlert] = useState({ show: false, type: "", message: "" });
-    const [values, setValues] = useState({ phone: '', password: '' });
+    const [values, setValues] = useState({ phone: '+998', password: '' });
     const navigate = useNavigate();
     const { phone, password } = values;
 
@@ -15,6 +15,11 @@ const Login = () => {
         setValues({ ...values, [name]: event.target.value });
     };
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            clickSubmit(event);
+        }
+    };
     const clickSubmit = (event) => {
         event.preventDefault();
         setAlert({ show: false, type: "", message: "" });
@@ -28,13 +33,21 @@ const Login = () => {
                 window.localStorage.setItem("phone", data.employee.phone);
                 window.localStorage.setItem("user_id", data.employee._id);
                 setValues({ phone: '', password: '' });
-                if(data.employee.employee){
+                if(data.employee.employee){        
+                    console.log(data.employee);
+                                
                     if(data.employee.role === "employee"){
                         navigate('/user')
                     }else if(data.employee.role === "admin"){
                         navigate('/admin')
                     }else if(data.employee.role === "superadmin"){
                         navigate('/superadmin')
+                    }else if(data.employee.role === "complex"){
+                        navigate('/complex')
+                    }else if(data.employee.role === "department"){
+                        navigate('/department')
+                    }else if(data.employee.role === "hr"){
+                        navigate('/hr')
                     }
                 }else{
                     navigate('/fill')
@@ -60,18 +73,20 @@ const Login = () => {
                         onChange={handleChange('phone')}
                         placeholder="Phone"
                         value={phone}
+                        onKeyDown={handleKeyDown}
                     />
                     <input
                         type="password"
                         onChange={handleChange('password')}
                         placeholder="Password"
                         value={password}
+                        onKeyDown={handleKeyDown}
                     />
                     <button className='signuplogin' onClick={clickSubmit}>Login</button>
                     <p className="dontacc mt-3">
                         Akkauntingiz yo`qmi? <Link to='/signup'>Ro`yxatdan o`tish</Link>
                     </p><br /><br />
-                    <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2>
+                    {/* <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2> */}
                 </div>
             </div>
         </div>

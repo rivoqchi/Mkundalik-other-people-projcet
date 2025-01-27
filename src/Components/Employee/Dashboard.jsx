@@ -1,10 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../Images/logo2.png';
 function Dashboard() {
     return ( 
         <>
         <h1 className="text-center">
-            Welcome, User
-        </h1>        </>
+            <img className='logoondashboard' src={logo} alt="" /><br />
+            Dashboard <br /><br />
+            <Link to="/user/schedule/new"><button className='defaultbtn'><h5>Yangi hisobotga o`tish</h5></button></Link>
+        </h1>
+        </>
      );
 }
 

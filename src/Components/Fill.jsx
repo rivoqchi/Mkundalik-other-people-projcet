@@ -19,6 +19,7 @@ function Fill() {
   });
 
   const navigate = useNavigate();
+const [myRole, setMyRole] = useState([]);
   const myId = window.localStorage.getItem("user_id");
   const getMyData = async () => {
     try {
@@ -27,10 +28,29 @@ function Fill() {
           if(data.user.role === "admin"){
             navigate("/admin")
           }else if(data.user.role === "employee"){
-            navigate("/employee")
+            navigate("/user")
           }else if(data.user.role === "superadmin"){
             navigate("/superadmin")
+          }else if(data.user.role === "complex"){
+            navigate("/complex")
+          }else if(data.user.role === "department"){
+            navigate("/department")
+          }else if(data.user.role === "hr"){
+            navigate("/hr")
           }
+      }
+      if(data.user.role === 'admin'){
+        setMyRole("admin")
+      }else if(data.user.role === 'employee'){
+        setMyRole("user")
+      }else if(data.user.role === 'superadmin'){
+        setMyRole("superadmin")
+      }else if(data.user.role === 'complex'){
+        setMyRole("complex")
+      }else if(data.user.role === 'department'){
+        setMyRole("department")
+      }else if(data.user.role === 'hr'){
+        setMyRole("hr")
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -73,7 +93,7 @@ function Fill() {
       
       await axios.put(`${API}/auth/fill/${myId}`, data);
       setAlert({ show: true, type: "success", message: "Xodim muvaffaqiyatli qo'shildi!" });
-      navigate("/admin");
+      navigate(`/${myRole}`);
     } catch (error) {
       setAlert({ show: true, type: "error", message: error.response?.data?.message || "Xatolik yuz berdi!" });
     }

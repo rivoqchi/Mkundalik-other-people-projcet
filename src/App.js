@@ -9,6 +9,10 @@ import ProtectedRoute from "./Components/Security/ProtectedRoute";
 import EmployeeRoute from "./Components/Employee/EmployeeRoute";
 import AdminRoute from "./Components/Admin/AdminRoute";
 import SuperAdminRoute from "./Components/SuperAdmin/SuperAdminRoute";
+import ComplexRoute from "./Components/Complex/ComplexRoute";
+import DepartmentRoute from "./Components/Department/DepartmentRoute";
+import HrRoute from "./Components/Hr/HrRoute";
+import LookSchedule from "./Components/Admin/LookSchedule";
 
 import IamNew from "./Components/Additional/IamNew";
 import NotAllowed from "./Components/Additional/NotAllowed";
@@ -30,8 +34,20 @@ function App() {
               <Route path="/user/*" element={<EmployeeRoute />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["admin", "superadmin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["admin", "superadmin", "department"]} />}>
               <Route path="/admin/*" element={<AdminRoute />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["superadmin", "complex", "department", "superadmin"]} />}>
+              <Route path="/department/*" element={<DepartmentRoute />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["complex", "hr", "superadmin"]} />}>
+              <Route path="/complex/*" element={<ComplexRoute />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["hr", "superadmin"]} />}>
+              <Route path="/hr/*" element={<HrRoute />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={["superadmin"]} />}>
@@ -41,6 +57,8 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={["new"]} />}>
               <Route path="/iamnew/*" element={<IamNew />} />
             </Route>
+
+            <Route path="documents/archive/schedule/:id" exact element={<LookSchedule />} />
 
             <Route path="/test" exact element={<Test />} />
             <Route path="/not-allowed" exact element={<NotAllowed />} />

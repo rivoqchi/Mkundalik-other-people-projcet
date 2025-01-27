@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo2 from '../Images/logo2.png';
 import axios from 'axios';
 import { API } from '../../config';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 function Aside() {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const navigate = useNavigate();
   const location = useLocation(); // Hozirgi yo'lni olish
   let token = window.localStorage.getItem("token");
@@ -26,9 +32,10 @@ function Aside() {
   };
 
   return (
+    <>
     <div className="aside">
       <div className="aside-logo">
-      <i class="fa-solid fa-book"></i>
+      <i className="fa-solid fa-book"></i>
         <h4>Admin Panel</h4>
       </div>
       <nav className="aside-menu">
@@ -57,18 +64,18 @@ function Aside() {
               <span>Bo‘limlarni tahrirlash</span>
             </Link>
           </li> */}
-          {/* <li className={location.pathname === '/admin/info/employee' ? 'active' : ''}>
+          <li className={location.pathname === '/admin/info/employee' ? 'active' : ''}>
             <Link to="/admin/employees">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Xodimlar</span>
+              <span>Xodimlar / Yo`riqnomalar</span>
             </Link>
-          </li> */}
-          <li className={location.pathname === '/admin/instructions' ? 'active' : ''}>
+          </li>
+          {/* <li className={location.pathname === '/admin/instructions' ? 'active' : ''}>
             <Link to="/admin/instructions">
               <i className="fa-solid fa-book"></i>
               <span>Yo‘riqnomalar nazorati</span>
             </Link>
-          </li>
+          </li> */}
           <li className={location.pathname === '/admin/profile' ? 'active' : ''}>
             <Link to="/admin/profile">
               <i className="fa-regular fa-user"></i>
@@ -76,7 +83,7 @@ function Aside() {
             </Link>
           </li>
           <li>
-            <Link onClick={logout}>
+            <Link onClick={handleShow}>
               <i className="fa-solid fa-arrow-right-from-bracket"></i>
               <span>Chiqish</span>
             </Link>
@@ -84,6 +91,21 @@ function Aside() {
         </ul>
       </nav>
     </div>
+    <Modal centered show={show} onHide={handleClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>Chiqish</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>Profildan chiqmoqchimisiz?</Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={handleClose}>
+        Bekor qilish
+      </Button>
+      <Button variant="danger" onClick={logout}>
+        Chiqish
+      </Button>
+    </Modal.Footer>
+  </Modal>
+    </>
   );
 }
 

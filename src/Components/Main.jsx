@@ -12,12 +12,19 @@ function Main() {
   const getMyData = async () => {
     try {
       const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
+      
       if (data.user.role === "admin") {
         navigate("/admin");
       } else if (data.user.role === "employee") {
-        navigate("/employee");
+        navigate("/user");
       } else if (data.user.role === "superadmin") {
         navigate("/superadmin");
+      } else if (data.user.role === "complex") {
+        navigate("/complex");
+      } else if (data.user.role === "department") {
+        navigate("/department");
+      } else if (data.user.role === "hr") {
+        navigate("/hr");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -47,9 +54,9 @@ function Main() {
         <Link to="/login">
           <button className="btn primary-btn">Kirish</button>
         </Link>
-        <Link to="/register">
+        {/* <Link to="/register">
           <button className="btn secondary-btn">Ro‘yxatdan O‘tish</button>
-        </Link>
+        </Link> */}
       </div>
 
       <footer className="main-footer">

@@ -54,7 +54,7 @@ function FilterNewUsers() {
       {alert.show && <Alert type={alert.type} message={alert.message} />}
       <div className="tepa d-flex mt-3 mx-5 justify-content-between">
       <h3 className="m-3">Jami: {allData.length}</h3>
-      <Link to="/admin/employees/adduser"><button className="defaultbutton">+ Yangi xodim</button></Link>
+      <Link to="/superadmin/employees/adduser"><button className="defaultbutton">+ Yangi xodim</button></Link>
       </div>
       <div className="container-sm m-5">
         {allData.map((i) => (

@@ -106,7 +106,7 @@ const Signup = () => {
                 <p className="mt-3 dontacc">
                 Hisob bormi? <Link to='/login'>Kirish</Link>
                 </p>
-                <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2>
+                {/* <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2> */}
             </div>
         </>
     );

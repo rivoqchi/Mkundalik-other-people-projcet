@@ -38,10 +38,21 @@ function SchduleHistory() {
     address = "hr"
   }else if(myRole === "superadmin"){
     address = "superadmin"
+  }else if(myRole === "complex"){
+    address = "complex"
+  }else if(myRole === "department"){
+    address = "department"
+  }else if(myRole === "hr"){
+    address = "hr"
   }
+  
   return (
     <>
       <h1 className="text-center">Kundalik ish faoliyatlarim tarixi</h1>
+      <div className="ratedschedulescount d-flex mx-3 justify-content-between">
+        <p>Jami: {myScheduleHistory.length}</p>
+        <span>Baholangan: {myScheduleHistory.filter((item) => item.rated).length}</span>
+      </div>
       <div className="scheduleshistory">
         {myScheduleHistory.map((i) => (
           <>
@@ -63,7 +74,7 @@ function SchduleHistory() {
                 }`}
               >
                 {i.startedAt.slice(0, 10)} da bajarilgan ishlar hisoboti
-                {i.rated && <span className="yulduzcha"><i class="fa-regular fa-star"></i> {i.rated}</span>}
+                {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}
               </button>
             </Link>
           </>

@@ -9,7 +9,34 @@ import logo from "../Images/logo2.png";
 import { format } from "date-fns";
 
 function ScheduleRate() {
+
+  const myId = window.localStorage.getItem("user_id")
+  const [myData, setMyData] = useState([]);
+  const [myRole, setMyRole] = useState([]);
+const getMyData = async () =>{
+    const {data} = await axios.get(`${API}/auth/mydata/${myId}`)
+    setMyData(data.user)
+    if (data.user.role === 'employee') {
+    setMyRole("user")
+    }else if (data.user.role === 'admin') {
+        setMyRole("admin")
+    }else if (data.user.role === 'superadmin') {
+        setMyRole("superadmin")
+      }else if (data.user.role === 'complex') {
+        setMyRole("complex")
+      }else if (data.user.role === 'department') {
+        setMyRole("department")
+      }else if (data.user.role === 'hr') {
+        setMyRole("hr")
+  }
+  }
+  useEffect(() =>{
+    getMyData()
+  }, [])
+
   const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
+  const [checking, setChecking] = useState([]);
+  
   const { id } = useParams();
   const componentRef = useRef();
   const navigate = useNavigate();
@@ -19,6 +46,7 @@ function ScheduleRate() {
         `${API}/schedules/getschedulebyid/${id}`
       );
       setThisScheduleHistory(data.thehistory);
+      setChecking(data.thehistory.beginnerId);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -27,6 +55,15 @@ function ScheduleRate() {
   useEffect(() => {
     getThisScheduleHistory();
   }, []);
+
+  useEffect(() => {
+    const check = async () => {
+      if (checking === myId) {
+        navigate("/");
+      }
+    };
+    check(); // Asinxron funksiyani shu yerda chaqiramiz.
+  }, [checking, myId, navigate]);
 
   // PDF yaratish funksiyasi
   const generatePDF = async () => {
@@ -45,7 +82,7 @@ function ScheduleRate() {
     pdf.save("hisobot.pdf");
   };
 
-  const currentUrl = `https://mkundalik.uz/admin/archive/schedule/${thisScheduleHistory._id}`;
+  const currentUrl = `https://mkundalik.uz/documents/archive/schedule/${thisScheduleHistory._id}`;
   const currentDateTime = format(new Date(), "dd.MM.yyyy HH:mm");
 
   const [selectedStars, setSelectedStars] = useState(0); // Tanlangan yulduzlar
@@ -56,11 +93,12 @@ function ScheduleRate() {
     setIsFinalized(true); // Hoverni bloklash
   };
 
+
   const handleSubmit = async () => {
     const rated = selectedStars * 10; // Bahoni hisoblash
     try {
       await axios.put(`${API}/schedules/ratebyid/${id}`, { rated });
-      navigate('/admin/rating/ours')
+      navigate(`/${myRole}/rating/ours`)
     } catch (error) {
       console.error("Error submitting rating:", error);
     }

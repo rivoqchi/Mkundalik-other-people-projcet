@@ -7,7 +7,7 @@ function Dashboard() {
         <h1 className="text-center">
             <img className='logoondashboard' src={logo} alt="" /><br />
             Dashboard <br /><br />
-            <Link to="/admin/employees/registered-users"><button className='defaultbtn'><h5>Yangi ro`yxatdan o`tganlarni saralash</h5></button></Link>
+            <Link to="/admin/schedule/new"><button className='defaultbtn'><h5>Yangi hisobotga o`tish</h5></button></Link>
         </h1>
         </>
      );

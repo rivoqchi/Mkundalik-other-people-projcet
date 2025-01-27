@@ -1225,7 +1225,7 @@ button:focus {
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
-  background: linear-gradient(to bottom right, #4e54c8, #8f94fb);
+  background: linear-gradient(to bottom right, #01043f, #8f94fb);
   color: white;
   font-family: "Arial", sans-serif;
   padding: 20px;
@@ -1258,6 +1258,7 @@ button:focus {
   font-size: 2.5rem;
   font-weight: bold;
   animation: fadeIn 2s ease-in-out;
+  
 }
 
 .banner-subtext {
@@ -1283,18 +1284,25 @@ button:focus {
 }
 
 .primary-btn {
-  background-color: #ff6b6b;
-  color: white;
+  background-color: #fff;
+  color: blue;
+  &:hover{
+    background-color: blue;
+    color: #fff;
+  }
 }
 
 .secondary-btn {
-  background-color: #1dd1a1;
+  background-color: #14ad84;
   color: white;
+  &:hover{
+    background-color: #fff;
+    color: #14ad84;
+  }
 }
 
 .btn:hover {
   transform: scale(1.05);
-  opacity: 0.9;
 }
 
 /* Oyoq Qismi */
@@ -1306,7 +1314,7 @@ button:focus {
 }
 
 .main-footer a {
-  color: #ff6b6b;
+  color: rgb(176, 173, 255);
   text-decoration: none;
 }
 
@@ -1331,4 +1339,114 @@ button:focus {
   to {
     opacity: 1;
   }
+}
+.changepass{
+  text-align: center;
+}
+.changepass input{
+  padding: 10px;
+  display: block;
+  border: 1px solid green;
+  margin-bottom: 5px;
+  background-color: lemonchiffon;
+  border-radius: 10px;
+}
+.changepass button{
+  background-color: rgba(0, 128, 0, 0.876);
+  border-radius: 10px;
+  color: #fff;
+  border: none;
+  box-shadow: 0px 0px 10px 3px rgb(180, 180, 180);
+  transition: .2s;
+  &:hover{
+    background-color: blue;
+    box-shadow: none;
+    transform: scale(0.99);
+  }
+}
+.hisobot {
+  width: 210mm; /* A4 kengligi */
+  min-height: 297mm; /* A4 balandligi */
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  font-size: 12px; /* Kichikroq shrift mobilga mos */
+  box-sizing: border-box;
+}
+
+@media print {
+  .hisobot {
+      page-break-inside: avoid;
+      width: 210mm;
+      height: 297mm;
+  }
+}
+.table-responsive {
+  overflow-x: auto; /* Yon tomonga scroll bo'lishi */
+  -webkit-overflow-scrolling: touch; /* Mobil versiyalar uchun silliq scroll */
+}
+
+.table {
+  white-space: nowrap; /* Har bir qatorni bir qatorga sig'dirish */
+}
+
+.table th, .table td {
+  text-align: center; /* Jadval hujayralarini o'rtalash */
+  vertical-align: middle; /* Vertikal markazlash */
+}
+
+a[target="_top"] {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+a[target="_top"] img {
+  display: block;
+  margin: auto;
+}
+.dis {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.disabled-link {
+  pointer-events: none;
+}
+.loadingg{
+  z-index: 9999 !important;
+  position: fixed !important;
+  color: green !important;
+  background-color: #14ad8457;
+  width: 100%;
+  height: 100%;
+}
+.instt{
+  background-color: rgba(0, 128, 0, 0.234);
+  border-radius: 5px;
+  margin: 10px;
+  padding: 5px;
+}
+.instt button{
+  padding: 5px;
+  margin-left: 10px;
+  color: #fff;
+}
+.instt button i{
+  width: 20px;
+}
+.viewins{
+  border: none;
+  padding: 10px;
+  margin-left: 10px;
+  color: #fff;
+  background-color: rgba(0, 128, 0, 0.69);
+}
+.deleteins{
+  background-color: rgba(255, 0, 0, 0.737);
+}
+.lavozim-yoriqnomasi{
+  padding: 10px;
+  background-color: rgba(64, 0, 255, 0.205);
 }
