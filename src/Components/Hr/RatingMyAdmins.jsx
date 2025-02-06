@@ -8,7 +8,6 @@ function RatingMyAdmins() {
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const id = window.localStorage.getItem("user_id")
-  console.log(myRole, 999999999999);
   
   const getMySectionSchedules = async () => {
     try {
@@ -23,7 +22,6 @@ function RatingMyAdmins() {
   }, []);
   const getMyData = async () =>{
     const {data} = await axios.get(`${API}/auth/mydata/${id}`)
-    console.log(data);
     
     setMyData(data.user)
     if (data.user.role === 'employee') {

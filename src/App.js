@@ -4,7 +4,6 @@ import Main from "./Components/Main";
 import Login from "./Components/Auth/Login";
 import SignUp from "./Components/Auth/SignUp";
 import Test from "./Components/Test";
-
 import ProtectedRoute from "./Components/Security/ProtectedRoute";
 import EmployeeRoute from "./Components/Employee/EmployeeRoute";
 import AdminRoute from "./Components/Admin/AdminRoute";
@@ -14,15 +13,22 @@ import DepartmentRoute from "./Components/Department/DepartmentRoute";
 import HrRoute from "./Components/Hr/HrRoute";
 import LookSchedule from "./Components/Admin/LookSchedule";
 
+import XatolikXabar from "./Components/XatolikXabar";
 import IamNew from "./Components/Additional/IamNew";
 import NotAllowed from "./Components/Additional/NotAllowed";
 import NotFound404 from "./Components/Additional/NotFound404";
 import Fill from "./Components/Fill";
+import LinkTelegram from "./Components/Auth/LinkTelegram";
+import LoginWithTelegram from "./Components/Auth/LoginWithTelegram";
+import AllUsers from './Components/SuperAdmin/AllUsers';
+import PleaseInstruction from "./Components/Asking/PleaseInstruction";
 function App() {
   return (
     <>
       <div>
         <Router>
+          <XatolikXabar/>
+          <PleaseInstruction/>
           <Routes>
             <Route path="/" exact element={<Main />} />
             <Route path="/fill" exact element={<Fill />} />
@@ -59,7 +65,10 @@ function App() {
             </Route>
 
             <Route path="documents/archive/schedule/:id" exact element={<LookSchedule />} />
+            <Route path="/statistics/nfjkengkfjrnejknbfjkbeskhjfb" exact element={<AllUsers />} />
 
+            <Route path="/tg" exact element={<LoginWithTelegram />} />
+            <Route path="/tglink" exact element={<LinkTelegram />} />
             <Route path="/test" exact element={<Test />} />
             <Route path="/not-allowed" exact element={<NotAllowed />} />
             <Route path="/*" exact element={<NotFound404 />} />

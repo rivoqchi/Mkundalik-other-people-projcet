@@ -36,7 +36,6 @@ function EditStructure() {
 
   const getData = async () =>{
     const {data} = await axios.get(`${API}/sectors/getsectorbyid/${id}`)
-    console.log(data);
     setSectionName(data.section.name)
     
     setSelectedSections(data.section.sections)
@@ -75,7 +74,6 @@ function EditStructure() {
     };
 
     try {
-      console.log(payload);
       
       await axios.put(`${API}/sectors/update/${id}`, payload);
       setAlert({

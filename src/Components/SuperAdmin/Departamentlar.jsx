@@ -54,7 +54,6 @@ function Departamentlar() {
     try {
       const { data } = await axios.get(`${API}/sectors/getall`);
       setAllSections(data.sections);     
-      console.log(data);
        
     } catch (error) {
       console.error("Error fetching sections:", error);

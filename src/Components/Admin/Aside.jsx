@@ -22,7 +22,6 @@ function Aside() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       
       window.localStorage.clear();
       navigate('/');
@@ -37,6 +36,7 @@ function Aside() {
       <div className="aside-logo">
       <i className="fa-solid fa-book"></i>
         <h4>Admin Panel</h4>
+        <h5>(Bo`lim boshlig`i paneli)</h5>
       </div>
       <nav className="aside-menu">
         <ul>

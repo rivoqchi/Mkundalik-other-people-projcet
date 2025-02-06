@@ -5,6 +5,7 @@ import { API } from '../../config';
 import Alert from '../Additional/Alert';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
+import LoginWithTelegram from './LoginWithTelegram';
 const Login = () => {
     const [alert, setAlert] = useState({ show: false, type: "", message: "" });
     const [values, setValues] = useState({ phone: '+998', password: '' });
@@ -34,7 +35,6 @@ const Login = () => {
                 window.localStorage.setItem("user_id", data.employee._id);
                 setValues({ phone: '', password: '' });
                 if(data.employee.employee){        
-                    console.log(data.employee);
                                 
                     if(data.employee.role === "employee"){
                         navigate('/user')
@@ -83,10 +83,10 @@ const Login = () => {
                         onKeyDown={handleKeyDown}
                     />
                     <button className='signuplogin' onClick={clickSubmit}>Login</button>
+                    {/* <LoginWithTelegram/> */}
                     <p className="dontacc mt-3">
                         Akkauntingiz yo`qmi? <Link to='/signup'>Ro`yxatdan o`tish</Link>
                     </p><br /><br />
-                    {/* <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2> */}
                 </div>
             </div>
         </div>

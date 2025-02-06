@@ -12,7 +12,9 @@ function RatingMyAdmins() {
   const getMySectionSchedules = async () => {
     try {
       const { data } = await axios.get(`${API}/schedules/getmysection/admin/${myId}`);
+      
       setMySectionSchedules(data.schedules);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -22,7 +24,6 @@ function RatingMyAdmins() {
   }, []);
   const getMyData = async () =>{
     const {data} = await axios.get(`${API}/auth/mydata/${id}`)
-    console.log(data);
     
     setMyData(data.user)
     if (data.user.role === 'employee') {
@@ -42,7 +43,6 @@ function RatingMyAdmins() {
   useEffect(() =>{
     getMyData()
   }, [])
-  console.log(mySectionSchedules);
   
   return (
     <>

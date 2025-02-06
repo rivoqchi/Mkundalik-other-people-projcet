@@ -1,18 +1,44 @@
 import React, { useState, useEffect, useRef } from "react";
 import { API } from "../../config";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
 import { format } from "date-fns";
 
-function LookSchedule() {
+function ScheduleRate() {
+  const myId = window.localStorage.getItem("user_id");
+  const [myData, setMyData] = useState([]);
+  const [myRole, setMyRole] = useState([]);
+  const getMyData = async () => {
+    const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
+    setMyData(data.user);
+    if (data.user.role === "employee") {
+      setMyRole("user");
+    } else if (data.user.role === "admin") {
+      setMyRole("admin");
+    } else if (data.user.role === "superadmin") {
+      setMyRole("superadmin");
+    } else if (data.user.role === "complex") {
+      setMyRole("complex");
+    } else if (data.user.role === "department") {
+      setMyRole("department");
+    } else if (data.user.role === "hr") {
+      setMyRole("hr");
+    }
+  };
+  useEffect(() => {
+    getMyData();
+  }, []);
+
   const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
+  const [checking, setChecking] = useState([]);
+
   const { id } = useParams();
   const componentRef = useRef();
-
+  const navigate = useNavigate();
   const getThisScheduleHistory = async () => {
     try {
       const { data } = await axios.get(
@@ -31,61 +57,62 @@ function LookSchedule() {
   // PDF yaratish funksiyasi
   const generatePDF = async () => {
     const input = componentRef.current;
+    const canvas = await html2canvas(input, { scale: 2 }); // Kattaroq ko‘rinish uchun ko‘lam
+    const imgData = canvas.toDataURL("image/jpeg", 1); // Buni 0.8 qilsa ham bo`ladi
 
-    // 1. `html2canvas` yordamida tasvir olish
-    const canvas = await html2canvas(input, {
-        scale: 3, // Yuqori sifat uchun ko‘lamni oshiramiz
-        useCORS: true, // CORS muammosini oldini olish
-    });
-
-    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
-
-    // 2. Tasvir o‘lchamlarini hisoblash
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-
-    const imgWidth = canvas.width / 3; // `scale` bo‘yicha qisqaradi
-    const imgHeight = canvas.height / 3;
-
+    const imgWidth = canvas.width / 2; // Tasvirni siqish
+    const imgHeight = canvas.height / 2;
     const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
 
-    // 3. PDFga tasvirni joylashtirish
-    let yOffset = 0;
-    while (yOffset < imgHeight * ratio) {
-        pdf.addImage(
-            imgData,
-            "PNG",
-            0,
-            0 - yOffset, // Har bir yangi sahifa uchun offsetni sozlaymiz
-            imgWidth * ratio,
-            imgHeight * ratio
-        );
-        yOffset += pdfHeight; // Sahifa uzunligi bo‘ylab offset
-        if (yOffset < imgHeight * ratio) pdf.addPage();
-    }
-
-    // 4. PDFni yuklab olish
-    pdf.save("schedule.pdf");
-};
+    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth * ratio, imgHeight * ratio);
+    pdf.save("hisobot.pdf");
+  };
 
   const currentUrl = `https://mkundalik.uz/documents/archive/schedule/${thisScheduleHistory._id}`;
   const currentDateTime = format(new Date(), "dd.MM.yyyy HH:mm");
+
+  const [selectedStars, setSelectedStars] = useState(0); // Tanlangan yulduzlar
+  const [isFinalized, setIsFinalized] = useState(false); // Hover ni bloklash uchun
+
+  const handleStarClick = (index) => {
+    setSelectedStars(index + 1);
+    setIsFinalized(true); // Hoverni bloklash
+  };
+
+  const handleSubmit = async () => {
+    const rated = selectedStars * 10; // Bahoni hisoblash
+    try {
+      await axios.put(`${API}/schedules/ratebyid/${id}`, { rated });
+      navigate(`/${myRole}/rating/ours`);
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+    }
+  };
 
   return (
     <>
       <div ref={componentRef} className="p-3 hisobot">
         <div className="scheduletepa">
-          <div className="align-items-center pt-3 d-flex">
+          <div className="align-items-center pt-3 justify-content-between d-flex">
             <img className="schedulelogo" src={logo} alt="logo" />
-            <h5 className="px-2 bluecolor">"TOSHKENT <br/>METROPOLITENI" DUK</h5>
+            <h3 className="px-2">"TOSHKENT METROPOLITENI" DUK</h3>
           </div>
         </div>
-        <h4 className="text-center m-3">Xodimning kundalik ishlarni qayd etganligi haqida hisobot</h4>
         <div className="scheduleshistory">
           <div className="schedulebajaruvchilar">
             <i className="fa-regular fa-user"></i> Hisobotni bajargan xodim:{" "}
             <span>{thisScheduleHistory.beginnerName}</span>
+          </div>
+          <div className="schedulebajaruvchilar">
+            <i className="fa-solid fa-users"></i> Kompleks:{" "}
+            <span>{thisScheduleHistory.complex}</span>
+          </div>
+          <div className="schedulebajaruvchilar">
+            <i className="fa-solid fa-users"></i> Departament:{" "}
+            <span>{thisScheduleHistory.department}</span>
           </div>
           <div className="schedulebajaruvchilar">
             <i className="fa-solid fa-users"></i> Bo`lim:{" "}
@@ -120,11 +147,12 @@ function LookSchedule() {
           </div>
           <br />
           <div>
-          <div className="scheduleconfirms text-end m-3">
-            Tasdiqlaydi: <span>{thisScheduleHistory.beginnerName}</span>
-          </div>
+            <div className="scheduleconfirms text-end m-3">
+              Ma'lumotlar to`g`riligini tasdiqlaydi: <span>{thisScheduleHistory.beginnerName}</span>
+            </div>
+
             <div className="schedulerated d-flex justify-content-between">
-              <h5>Baholangan: </h5>
+            <h5>Baholangan: </h5>
               <span>
                 {thisScheduleHistory.rated ? (
                   <div className="align-items-center justify-content-center">
@@ -175,4 +203,4 @@ function LookSchedule() {
   );
 }
 
-export default LookSchedule;
+export default ScheduleRate;

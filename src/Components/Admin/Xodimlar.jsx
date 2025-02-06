@@ -5,9 +5,11 @@ import { API } from "../../config";
 
 function Xodimlar() {
   const [employees, setEmployees] = useState([]); // Xodimlar ro‘yxati
-  const [myData, setMyData] = useState(null); // Foydalanuvchi ma'lumoti
-  const [mySection, setMySection] = useState(null); // Foydalanuvchi ma'lumoti
-  const [myRole, setMyRole] = useState(null); // Foydalanuvchi ma'lumoti
+  const [myData, setMyData] = useState(null);
+  const [mySection, setMySection] = useState(null);
+  const [myDepartment, setMyDepartment] = useState(null);
+  const [myComplex, setMyComplex] = useState(null);
+  const [myRole, setMyRole] = useState(null);
   const myId = window.localStorage.getItem("user_id");
 
   // Foydalanuvchi ma'lumotlarini olish
@@ -16,6 +18,8 @@ function Xodimlar() {
       const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
       setMyData(data.user);
       setMySection(data.user.section);
+      setMyDepartment(data.user.department);
+      setMyComplex(data.user.complex);
       if(data.user.role === 'employee'){
         setMyRole("user")
       } else if(data.user.role === 'admin'){
@@ -36,7 +40,7 @@ function Xodimlar() {
   const getMyEmployees = async (role) => {
     try {
       const { data } = await axios.get(`${API}/auth/getmyemployees`, {
-        params: { role, section: mySection }, // Role query orqali yuboriladi
+        params: { role, section: mySection, department: myDepartment, complex: myComplex }, // Role query orqali yuboriladi
       });
       setEmployees(data.employees); // Xodimlar ro‘yxatini saqlash
     } catch (error) {
@@ -55,11 +59,19 @@ function Xodimlar() {
     }
   }, [myData]);
 
+  let dataa = null;
+  if (myRole === "admin") {
+    dataa = mySection
+  } else if (myRole === "department") {
+    dataa = myDepartment
+  } else if (myRole === "complex") {
+    dataa = myComplex
+  }
   return (
     <div>
         <div className="d-flex justify-content-between">
-        <h3>{mySection}</h3>
-        <Link to={`/${myRole}/instructions`}><button className="defaultbtn"><i class="fa-solid fa-book-journal-whills"></i> Lavozim yo`riqnomasi</button></Link>
+        <h3>{dataa} a'zolari</h3>
+        {/* <Link to={`/${myRole}/instructions`}><button className="defaultbtn"><i class="fa-solid fa-book-journal-whills"></i> Lavozim yo`riqnomasi</button></Link> */}
         </div>
       <table className="table overflow-x-auto table-striped mt-3">
         <thead>

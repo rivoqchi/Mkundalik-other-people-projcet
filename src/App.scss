@@ -9,15 +9,15 @@
 }
 
 .alert {
-  z-index: 999;
+  z-index: 999 !important;
   position: fixed !important;
-  top: 20px;
-  right: 20px;
-  padding: 1.8rem;
-  color: #fff;
-  font-size: 1rem;
-  border-radius: 5px;
-  animation: alert 5s;
+  top: 20px !important;
+  right: 20px !important;
+  padding: 1.8rem !important;
+  color: #fff !important;
+  font-size: 1rem !important;
+  border-radius: 5px !important;
+  animation: alert 5s !important;
 }
 @keyframes alert {
   0%{
@@ -47,11 +47,11 @@
 
 }
 .alert-success {
-  background-color: rgba(0, 128, 0, 0.836);
+  background-color: rgba(0, 128, 0, 0.836) !important;
 }
 
 .alert-error {
-  background-color: rgba(255, 92, 92, 0.934);
+  background-color: rgba(255, 92, 92, 0.934) !important;
 }
 .profilgakirish{
   background-color: gray;
@@ -725,10 +725,10 @@
 }
 
 .start-button {
-  background: rgba(35, 88, 247, 0.805);
+  background: green;
   align-items: center;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 40px;
   font-size: 18px;
   border: none;
   border-radius: 5px;
@@ -738,7 +738,7 @@
 }
 
 .start-button:hover {
-  background: green;
+  background: blue;
   box-shadow: none;
   transform: scale(1.05);
 }
@@ -1218,6 +1218,7 @@ button:focus {
 .profiledagilogo{
   width: 4rem;
 }
+
 /* Asosiy Konteyner */
 .main-container {
   display: flex;
@@ -1449,4 +1450,52 @@ a[target="_top"] img {
 .lavozim-yoriqnomasi{
   padding: 10px;
   background-color: rgba(64, 0, 255, 0.205);
+}
+marquee{
+  z-index: 9999;
+  position: fixed;
+  bottom: 0;
+}
+.telegram-fixed {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 10px;
+  border-radius: 8px;
+}
+.redword{
+  color: red;
+}
+.tgprofile{
+  width: 4rem;
+  border-radius: 50%;
+}
+.xatolikicon{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  font-size: 1.2rem;
+  background-color: rgba(128, 128, 128, 0.286);
+  padding: 10px;
+  border-radius: 10px;
+}
+.kirishbtn{
+  background-color: #fff !important;
+  color: blue !important;
+  padding: 10px 20px !important;
+  font-size: 1.2rem !important;
+  transition: all .2s !important;
+  &:hover{
+    background-color: rgba(0, 0, 255, 0.729) !important;
+    color: #fff !important;
+  }
+}
+
+.lavozimyoriqnomasiimg{
+  box-shadow: 0px 0px 30px 7px rgba(128, 128, 128, 0.702);
+  border-radius: 20px;
+  margin: 20px;
+  width: 80%;
 }

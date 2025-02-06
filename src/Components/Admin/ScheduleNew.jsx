@@ -205,7 +205,8 @@ function ScheduleNew() {
       beginnerId: window.localStorage.getItem("user_id"),
       section: mySection,
       department: myDepartment,
-      complex: myComplex
+      complex: myComplex,
+      role: myRole
     };
 
     axios.post(`${API}/schedules/create`, payload).then((res) => {
@@ -226,7 +227,7 @@ function ScheduleNew() {
 
         {!onWork && (
           <button className="start-button" onClick={handleShowStart}>
-            Ishni boshlash
+            <i class="fa-solid fa-play"></i> Ishni boshlash
           </button>
         )}
 

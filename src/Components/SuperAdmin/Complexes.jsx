@@ -54,7 +54,6 @@ function Departamentlar() {
     try {
       const { data } = await axios.get(`${API}/complexes/getall`);
       setAllSections(data.complexes);
-      console.log(data);
        
     } catch (error) {
       console.error("Error fetching sections:", error);
@@ -109,7 +108,6 @@ function Departamentlar() {
               <div className="infosssss">
                 <span className="tabolimboshligi" onClick={() => handleShowAdmins(section)}>
                   {section.departments.length} ta departament mavjud
-                  {console.log(section)}
                 </span>
               </div>
               <div>

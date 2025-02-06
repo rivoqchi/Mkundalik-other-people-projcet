@@ -4,6 +4,7 @@ import axios from "axios";
 import { API } from "../config";
 import logo from "./Images/logo2.png";
 import { useNavigate } from "react-router-dom";
+import LoginWithTelegram from "./Auth/LoginWithTelegram";
 
 function Main() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ function Main() {
       {/* Harakat Tugmalari */}
       <div className="action-buttons">
         <Link to="/login">
-          <button className="btn primary-btn">Kirish</button>
+          <button className="btn kirishbtn primary-btn">Kirish</button>
         </Link>
         {/* <Link to="/register">
           <button className="btn secondary-btn">Ro‘yxatdan O‘tish</button>
@@ -63,6 +64,8 @@ function Main() {
         <p>© 2025 mkundalik.uz | Barcha huquqlar himoyalangan.</p>
         <p>Bizga ulaning: <a href="https://t.me/Toshkent_metropoliteni_rasmiy">@Toshkent_metropoliteni_rasmiy</a></p>
       </footer>
+      {/* <LoginWithTelegram/> */}
+
     </div>
   );
 }

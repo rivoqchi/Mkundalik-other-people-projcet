@@ -40,23 +40,47 @@ function Instructions() {
 
     const handleViewFile = (fileId) => {
         setViewingFileId(fileId);
+        
     };
 
     useEffect(() => {
-        if (myRole && mySection) {
+        if (myRole) { // Faqat `myRole` mavjud bo'lsa ishga tushadi
             const fetchFiles = async () => {
-                console.log(myRole, mySection);
                 try {
-                    const { data } = await axios.get(`${API}/cloud/getdocsforsection/${myRole}/${mySection}`);
+                    let endpoint = "";
+    
+                    // Role ga qarab endpointni tanlaymiz
+                    if (myRole === "admin") {
+                        endpoint = `${API}/cloud/getdocsforuser/${myRole}/${mySection}`;
+                    } else if (myRole === "department") {
+                        endpoint = `${API}/cloud/getdocsforadmin/${myRole}/${myDepartment}`;
+                    } else if (myRole === "complex") {
+                        endpoint = `${API}/cloud/getdocsfordepartment/${myRole}/${myComplex}`;
+                    } else {
+                        setAlert({
+                            show: true,
+                            type: "danger",
+                            message: "Role not recognized!"
+                        });
+                        return;
+                    }
+    
+                    // Endpointga so'rov yuboramiz
+                    const { data } = await axios.get(endpoint);
                     setUploadedFiles(data);
                 } catch (error) {
                     console.error("Error fetching files:", error);
-                    setAlert({ show: true, type: "error", message: "Error fetching files!" });
+                    setAlert({
+                        show: true,
+                        type: "danger",
+                        message: "Error fetching files!"
+                    });
                 }
             };
+    
             fetchFiles();
         }
-    }, [myRole, mySection]);
+    }, [myRole, mySection, myDepartment, myComplex]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -85,10 +109,12 @@ function Instructions() {
             });
             setUploadedFiles([...uploadedFiles, { fileUrl: data.fileUrl }]);
             setShowModal(false);
-            setAlert({ show: true, type: "success", message: "File uploaded successfully!" });
+            setAlert({ show: true, type: "success", message: "Fayl muvaffaqiyatli yuklandi!" });
+            setLoading(false); // Stop loading spinner
+
         } catch (error) {
             console.error("Error uploading file:", error);
-            setAlert({ show: true, type: "danger", message: "File upload failed, please try again!" });
+            setAlert({ show: true, type: "error", message: "Yuklashda xatolik yuz berdi. Qayta urinib ko`ring." });
         } finally {
             setLoading(false); // Stop loading spinner
         }
@@ -104,10 +130,10 @@ function Instructions() {
         try {
             await axios.delete(`${API}/cloud/delete/${fileToDelete}`);
             setUploadedFiles(uploadedFiles.filter((file) => file._id !== fileToDelete));
-            setAlert({ show: true, type: "success", message: "File deleted successfully!" });
+            setAlert({ show: true, type: "success", message: "Fayl muvaffaqiyatli o`chirildi!" });
         } catch (error) {
             console.error("Error deleting file:", error);
-            setAlert({ show: true, type: "danger", message: "Error deleting file, please try again!" });
+            setAlert({ show: true, type: "danger", message: "Faylni o`chirishda xatolik, qaytadan urinib ko`ring." });
         } finally {
             setLoading(false);
             setShowDeleteModal(false);

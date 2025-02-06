@@ -27,7 +27,6 @@ function NewStructure() {
   const getAllData = async () => {
     try {
       const { data } = await axios.get(`${API}/sectors/getall`);
-      console.log(data);
       
       setAllUsers(data.sections);
     } catch (error) {
@@ -127,7 +126,7 @@ function NewStructure() {
             disabled={user.law}
             style={user.law ? { pointerEvents: "none" } : null}
           >
-            {user.name}{console.log(user, 99999)}
+            {user.name}
           </Button>
         </span>
       </OverlayTrigger>

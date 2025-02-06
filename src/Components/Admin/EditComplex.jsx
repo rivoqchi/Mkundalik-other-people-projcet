@@ -24,7 +24,6 @@ function EditStructure() {
     try {
       const { data } = await axios.get(`${API}/sectors/getall`);
       setAllUsers(data.sections);
-      console.log(data, 8787);
       
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -38,7 +37,6 @@ function EditStructure() {
 
   const getData = async () =>{
     const {data} = await axios.get(`${API}/complexes/getcomplexbyid/${id}`)
-    console.log(data, 9988);
     setSectionName(data.section.name)
     setSelectedSections(data.section.departments)
   }
@@ -76,7 +74,6 @@ function EditStructure() {
     };
 
     try {
-      console.log(payload);
       
       await axios.put(`${API}/complexes/update/${id}`, payload);
       setAlert({

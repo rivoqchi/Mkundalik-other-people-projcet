@@ -26,7 +26,6 @@ const AddNewUser = () => {
     error: "",
     success: false,
   });
-  console.log(values);
   
   let myId = window.localStorage.getItem("user_id");
   const getMyData = async () => {
@@ -168,7 +167,7 @@ const AddNewUser = () => {
   };
 
   const saveToFile = () => {
-    const data = `mkundalik.uz uchun avtorizatsiya ma'lumotlari: \n\nIsm: ${name} \nTelefon: ${phone} \nParol: ${password} \nKompleks: ${complex}  \nDepartament: ${department}  \nBo'lim: ${section} \nLavozim: ${degree}\nStatus: ${status} \nTasdiqlagan shaxs: ${acceptedBy} \n\nFaqatgina Kirish qismidan foydalaning.`;
+    const data = `Avtorizatsiya mkundalik.uz: \n\nTelefon: ${phone} \nParol: ${password} \n\nIsm: ${name} \nKompleks: ${complex}  \nDepartament: ${department}  \nBo'lim: ${section} \nLavozim: ${degree}\nStatus: ${status} \nTasdiqlagan shaxs: Tizim administratori \n\nmkundalik.uz -> Kirish`;
     const blob = new Blob([data], { type: "text/plain" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
