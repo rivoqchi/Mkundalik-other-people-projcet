@@ -17,12 +17,15 @@ import Xodimlar from './Xodimlar';
 import Instructions from './Instructions';
 import LookSchedule from './LookSchedule';
 import ScheduleRate from './ScheduleRate';
+import PleaseInstruction from '../Asking/PleaseInstruction'
+import SeeSelectedSchedules from './SeeSelectedSchedules';
 function AdminRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-3 p-0">
           <Aside />
+          {/* <PleaseInstruction/> */}
         </div>
         <div className=" col-12 col-md-9">
           <div className="p-3">
@@ -31,6 +34,7 @@ function AdminRoute() {
               <Route path="/dashboard" exact element={<Dashboard />} />
               <Route path="/schedule/new" exact element={<ScheduleNew />} />
               <Route path="/schedule/history" exact element={<ScheduleHistory />} />
+              <Route path="/schedule/history/:id" exact element={<SeeSelectedSchedules />} />
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
               <Route path="/rate/schedule/:id" exact element={<ScheduleRate />} />
               <Route path="/rating/ours" exact element={<ScheduleSectionRating />} />

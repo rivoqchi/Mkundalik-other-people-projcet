@@ -26,6 +26,8 @@ function Main() {
         navigate("/department");
       } else if (data.user.role === "hr") {
         navigate("/hr");
+      } else if (data.user.role === "boss") {
+        navigate("/boss");
       }
     } catch (error) {
       console.error("Error fetching data:", error);

@@ -34,38 +34,25 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      <i class="fa-solid fa-users"></i>
-        <h5>{window.localStorage.getItem("fullName")}</h5>
-        <p>{window.localStorage.getItem("degree")}</p>
-      </div>
+      <i className="fa-solid fa-book"></i>
+      <h5>{window.localStorage.getItem("fullName")}</h5>
+        <p>{window.localStorage.getItem("degree")}</p>      </div>
       <nav className="aside-menu">
         <ul>
-          <li className={location.pathname === '/complex/schedule/new' ? 'active' : ''}>
-            <Link to="/complex/schedule/new">
-              <i className="fa-solid fa-list-check"></i>
-              <span>Kundalik ishlarni qayd etish</span>
+        <li className={location.pathname === '/boss/monitoring' ? 'active' : ''}>
+            <Link disabled to="/boss/rating/complexes">
+            <i class="fa-solid fa-chart-pie"></i>
+              <span>Monitoring</span>
             </Link>
           </li>
-          <li className={location.pathname === '/complex/schedule/history' ? 'active' : ''}>
-            <Link to="/complex/schedule/history">
-              <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>Kundalik ish faoliyatim</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/complex/rating/ours' ? 'active' : ''}>
-            <Link to="/complex/rating/ours">
-              <i className="fa-solid fa-medal"></i>
-              <span>Mening bo`limlarim ko`rsatkichlari</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/complex/employees' ? 'active' : ''}>
-            <Link to="/complex/employees">
+          <li className={location.pathname === '/boss/structure' ? 'active' : ''}>
+            <Link to="/boss/structure">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Xodimlar</span><span className='newtop'>NEW</span>
+              <span>Tashkiliy tuzilma</span>
             </Link>
           </li>
-          <li className={location.pathname === '/complex/profile' ? 'active' : ''}>
-            <Link to="/complex/profile">
+          <li className={location.pathname === '/boss/profile' ? 'active' : ''}>
+            <Link to="/boss/profile">
               <i className="fa-regular fa-user"></i>
               <span>Mening ma'lumotlarim</span>
             </Link>

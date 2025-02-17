@@ -34,9 +34,9 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      <i className="fa-solid fa-book"></i>
-        <h4>Department Panel</h4>
-        <h5>(Xizmat boshlig`i paneli)</h5>
+      <i class="fa-solid fa-user-shield"></i>
+        <h5>{window.localStorage.getItem("fullName")}</h5>
+        <p>{window.localStorage.getItem("degree")}</p>
       </div>
       <nav className="aside-menu">
         <ul>
@@ -61,7 +61,7 @@ function Aside() {
           <li className={location.pathname === '/department/info/employee' ? 'active' : ''}>
             <Link to="/department/employees">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Xodimlar / Yo`riqnoma</span>
+              <span>Xodimlar</span><span className='newtop'>NEW</span>
             </Link>
           </li>
           <li className={location.pathname === '/department/profile' ? 'active' : ''}>

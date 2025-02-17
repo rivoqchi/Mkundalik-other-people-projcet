@@ -2,34 +2,38 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Spinner from "react-bootstrap/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../config";
 import Alert from "../Additional/Alert";
+import LoadingScreen from "../Additional/LoadingScreen";
 
 function ScheduleNew() {
-    const myId = window.localStorage.getItem("user_id")
-    const [myName, setMyName] = useState([])
-    const [mySection, setMySection] = useState([])
-    const [myDepartment, setMyDepartment] = useState([])
-    const [myComplex, setMyComplex] = useState([])
-    const [myRole, setMyRole] = useState([])
+  const myId = window.localStorage.getItem("user_id");
+  const [myName, setMyName] = useState([]);
+  const [mySection, setMySection] = useState([]);
+  const [myDepartment, setMyDepartment] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [myComplex, setMyComplex] = useState([]);
+  const [myRole, setMyRole] = useState([]);
 
-    const getMyData = async () => {
-      try {
-        const { data } = await axios.get(`${API}/auth/mydata/${myId}`);        
-        setMyName(data.user.name);
-        setMyRole(data.user.role);
-        setMySection(data.user.section);
-        setMyDepartment(data.user.department);
-        setMyComplex(data.user.complex);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };  
-    useEffect(() => {
-      getMyData();
-    }, []);
+  const getMyData = async () => {
+    setLoading(true);
 
+    try {
+      const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
+      setMyName(data.user.name);
+      setMyRole(data.user.role);
+      setMySection(data.user.section);
+      setMyDepartment(data.user.department);
+      setMyComplex(data.user.complex);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    getMyData();
+  }, []);
 
   const navigate = useNavigate();
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
@@ -41,12 +45,16 @@ function ScheduleNew() {
   const [tasks, setTasks] = useState([]);
   const [startedAt, setStartedAt] = useState("");
 
+  const [countdown, setCountdown] = useState(20);
+
+
   // Modal holatlari
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
   const [showStart, setShowStart] = useState(false);
+  const [terminate, setTerminate] = useState("");
 
   const [currentTaskIndex, setCurrentTaskIndex] = useState(null); // Edit va Delete uchun
   const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun  const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun
@@ -80,8 +88,7 @@ function ScheduleNew() {
   const handleShowEnd = () => {
     setShowEnd(true);
   };
-
-
+console.log(terminate);
 
   // Sana va ish holatini olish
   useEffect(() => {
@@ -89,17 +96,50 @@ function ScheduleNew() {
       .toLocaleDateString("en-GB")
       .replace(/[/]/g, ".");
     setDate(currentDate);
-
+    console.log(currentDate);
+  
     axios
       .get(`${API}/schedules/checktoday/${myId}`)
       .then((res) => {
         if (res.data.message === "notOnWork") {
           setOnWork(false);
+          setLoading(false);
         } else {
-          setOnWork(true);
           const fetchedWorkingOn = res.data.workingOn || {};
-          setWorkingOn(fetchedWorkingOn); // workingOnni o'rnatish
+          const today = new Date().toLocaleDateString("en-GB");
+          const startedDate = fetchedWorkingOn.startedAt?.split(" ")[0];
+          setOnWork(true);
+          setLoading(false);
+  
+          if (startedDate !== today) {
+            if (fetchedWorkingOn.tasks && fetchedWorkingOn.tasks.length > 0) {
+              console.log(`Avto yakunlash, ${myId}, ${fetchedWorkingOn._id}`);
+              axios
+                .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {myId})
+                .then((response) => 
+                  console.log("Avto yakunlandi:", response.data),
+                  setTerminate("Auto terminated"),
+                  setOnWork(false),
+                  setTasks([])
+              )
+                .catch((error) => console.error("Avto yakunlashda xatolik:", error));
+            } else {
+              axios
+                .delete(`${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`)
+                .then((response) => console.log("O'chirildi:", response.data),
+                setTerminate("Auto deleted"),
+                setOnWork(false),
+                setTasks([])
+              )
+                .catch((error) => console.error("O‘chirishda xatolik:", error));
+            }
+          } else {
+            console.log("Davom eting...");
+          }
+  
+          setWorkingOn(fetchedWorkingOn);
           setTasks(fetchedWorkingOn.tasks || []);
+          
           // Sekundomer boshlanish vaqtini sozlash
           if (fetchedWorkingOn.startedAt) {
             const start = new Date(
@@ -179,26 +219,41 @@ function ScheduleNew() {
     await axios.put(`${API}/schedules/end/${workingOn._id}`, {
       myId,
     });
-    if(myRole === "admin"){
+    if (myRole === "admin") {
       navigate("/admin/schedule/history");
-    }else if(myRole === "employee"){
+    } else if (myRole === "employee") {
       navigate("/user/schedule/history");
-    }else if(myRole === "hr"){
+    } else if (myRole === "hr") {
       navigate("/hr/schedule/history");
-    }else if(myRole === "superadmin"){
+    } else if (myRole === "superadmin") {
       navigate("/superadmin/schedule/history");
-    }else if(myRole === "complex"){
+    } else if (myRole === "complex") {
       navigate("/complex/schedule/history");
-    }else if(myRole === "department"){
+    } else if (myRole === "department") {
       navigate("/department/schedule/history");
-    }else if(myRole === "hr"){
+    } else if (myRole === "hr") {
       navigate("/hr/schedule/history");
     }
   };
 
+
+  useEffect(() => {
+    if (terminate) {
+      const timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev === 1) {
+            window.location.reload(); // Sahifani yangilash
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer); // Cleanup
+    }
+  }, [terminate]);
   const handleStartWork = () => {
-    if(handleShowStart){
-        handleCloseStart()
+    if (handleShowStart) {
+      handleCloseStart();
     }
     const payload = {
       beginnerName: myName,
@@ -206,7 +261,7 @@ function ScheduleNew() {
       section: mySection,
       department: myDepartment,
       complex: myComplex,
-      role: myRole
+      role: myRole,
     };
 
     axios.post(`${API}/schedules/create`, payload).then((res) => {
@@ -218,6 +273,8 @@ function ScheduleNew() {
 
   return (
     <>
+      {loading && <LoadingScreen loading={true} />}
+
       {alert.show && <Alert type={alert.type} message={alert.message} />}
       <div className="schedule-container">
         {/* Sana */}
@@ -230,6 +287,26 @@ function ScheduleNew() {
             <i class="fa-solid fa-play"></i> Ishni boshlash
           </button>
         )}
+
+{terminate && (
+      <div className="terminate-container">
+        <p className="terminate-message">
+          {terminate === "Auto terminated" ? (
+            "Yangi kuningiz bilan! Sizning yakunlanmagan hisobotingiz muvaffaqiyatli saqlandi."
+          ) : terminate === "Auto deleted" ? (
+            "Oldingi kunlarda boshlagan ammo hech qanday vazifa kiritilmagan hisobotingiz avtomatik o`chirib yuborildi. Eslatib o`tamiz, har kuni soat 23:59 dan so`ng barcha ochiq hisobotlar yopiladi va yangi kun uchun alohida hisobot yaratishingiz kerak"
+          ) : (
+            <>
+              <i className="fa-solid fa-play"></i> Your session was terminated
+            </>
+          )}
+        </p>
+        <div className="countdown">
+          <span className="countdown-number">{countdown}</span>
+          <p className="countdown-text">sekunddan so‘ng sahifa yangilanadi</p>
+        </div>
+      </div>
+    )}
 
         {/* Tasks */}
         <div>
@@ -273,39 +350,37 @@ function ScheduleNew() {
           ))}
           {onWork && (
             <>
-              <button
-                onClick={handleShowCreate}
-                className="taskin align-items-center"
-              >
-                <i className="fa-solid fa-plus"></i> Yangi vazifa kiritish
-              </button>
-              <button
-                onClick={handleShowEnd}
-                className="taskin2 align-items-center"
-              >
-                <i className="fa-regular fa-circle-stop"></i> Yakunlash
-              </button>
+              <div className="button-container mt-5">
+                <button onClick={handleShowCreate} className="taskin">
+                  <i className="fa-solid fa-plus"></i> Yangi vazifa kiritish
+                </button>
+                <button onClick={handleShowEnd} className="taskin2">
+                  <i className="fa-regular fa-circle-stop"></i> Yakunlash
+                </button>
+              </div>
             </>
           )}
         </div>
 
         {/* Modal oynalar */}
-        <Modal centered show={showCreate} onHide={handleCloseCreate}>
+        <Modal size="lg" centered show={showCreate} onHide={handleCloseCreate}>
           <Modal.Header closeButton>
-            <Modal.Title><i className="fa-solid fa-plus"></i> Yangi vazifa kiritish</Modal.Title>
+            <Modal.Title>
+              <i className="fa-solid fa-plus"></i> Yangi vazifa kiritish
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <textarea
-            className="kghgv"
-            value={taskData}
-            onChange={(e) => setTaskData(e.target.value)}
-            rows="6"
+              className="kghgv"
+              value={taskData}
+              onChange={(e) => setTaskData(e.target.value)}
+              rows="10"
             />
-            <div className="uploadif">
+            {/* <div className="uploadif">
             <h5>Xujjatni yuklang (agar bo`lsa)</h5>
             (hozir ishlamayapti)
               <i className="fa-solid fa-paperclip"></i>
-            </div>
+            </div> */}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleCreateTask}>
@@ -316,11 +391,13 @@ function ScheduleNew() {
 
         <Modal centered show={showEdit} onHide={handleCloseEdit}>
           <Modal.Header closeButton>
-            <Modal.Title><i className="fa-solid fa-pen"></i> Vazifani o'zgartirish</Modal.Title>
+            <Modal.Title>
+              <i className="fa-solid fa-pen"></i> Vazifani o'zgartirish
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <textarea
-            className="kghgv"
+              className="kghgv"
               value={taskData}
               onChange={(e) => setTaskData(e.target.value)}
               rows="6"
@@ -335,7 +412,9 @@ function ScheduleNew() {
 
         <Modal centered show={showDelete} onHide={handleCloseDelete}>
           <Modal.Header closeButton>
-            <Modal.Title><i className="fa-solid fa-trash"></i> O'chirish</Modal.Title>
+            <Modal.Title>
+              <i className="fa-solid fa-trash"></i> O'chirish
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             Ushbu vazifani o'chirishga ishonchingiz komilmi?
@@ -349,7 +428,9 @@ function ScheduleNew() {
 
         <Modal centered show={showEnd} onHide={handleCloseEnd}>
           <Modal.Header closeButton>
-            <Modal.Title><i className="fa-regular fa-circle-stop"></i> Yakunlash</Modal.Title>
+            <Modal.Title>
+              <i className="fa-regular fa-circle-stop"></i> Yakunlash
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>Ishni tugatishga aminmisiz?</Modal.Body>
           <Modal.Footer>

@@ -24,21 +24,36 @@ import Instructions from './Instructions';
 import LookSchedule from '../Admin/LookSchedule';
 import ScheduleRate from '../Admin/ScheduleRate';
 import AllUsers from './AllUsers';
-
+import PleaseInstruction from '../Asking/PleaseInstruction'
+import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
+import Info from '../Infos/Info';
+import News from '../Infos/News';
+import UmumiyStat from '../Infos/UmumiyStat';
+import About from '../Infos/About';
+import Application from '../Infos/Application';
+import FAQPage from '../Infos/FAQPage';
 function SuperAdminRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-3 p-0">
           <Aside />
+          {/* <PleaseInstruction/> */}
         </div>
         <div className=" col-12 col-md-9">
           <div className="p-3">
             <Routes>
               <Route path="/" exact element={<SuperAdmin />} />
               <Route path="/dashboard" exact element={<Dashboard />} />
+              <Route path="/about" exact element={<Info />} />
+              <Route path="/about/news" exact element={<News />} />
+              <Route path="/about/statistics" exact element={<UmumiyStat />} />
+              <Route path="/about/programmers" exact element={<About />} />
+              <Route path="/about/application" exact element={<Application />} />
+              <Route path="/about/faq" exact element={<FAQPage />} />
               <Route path="/schedule/new" exact element={<ScheduleNew />} />
               <Route path="/schedule/history" exact element={<ScheduleHistory />} />
+              <Route path="/schedule/history/:id" exact element={<SeeSelectedSchedules />} />
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
               <Route path="/rate/schedule/:id" exact element={<ScheduleRate />} />
               <Route path="/rating/ours" exact element={<ScheduleSectionRating />} />

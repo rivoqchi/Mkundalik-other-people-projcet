@@ -2,11 +2,18 @@ import React, { useState, useEffect } from "react";
 import { API } from "../../config";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import LoadingScreen from "../Additional/LoadingScreen";
+
+
 function SchduleHistory() {
   const myId = window.localStorage.getItem("user_id");
   const [myScheduleHistory, setMyScheduleHistory] = useState([]);
     const [myRole, setMyRole] = useState([])
+      const [loading, setLoading] = useState(false);
+  
     const getMyData = async () => {
+      setLoading(true);
+
       try {
         const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
         setMyRole(data.user.role);
@@ -22,6 +29,7 @@ function SchduleHistory() {
     try {
       const { data } = await axios.get(`${API}/schedules/getmyhistory/${myId}`);
       setMyScheduleHistory(data.history);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -42,12 +50,14 @@ function SchduleHistory() {
     address = "complex"
   }else if(myRole === "department"){
     address = "department"
-  }else if(myRole === "hr"){
-    address = "hr"
+  }else if(myRole === "boss"){
+    address = "boss"
   }
   
   return (
     <>
+      {loading && <LoadingScreen loading={true} />}
+
       <h1 className="text-center">Kundalik ish faoliyatlarim tarixi</h1>
       <div className="ratedschedulescount d-flex mx-3 justify-content-between">
         <p>Jami: {myScheduleHistory.length}</p>

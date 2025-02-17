@@ -31,10 +31,12 @@ const Login = () => {
             } else if(data.employee.role != "new"){
                 window.localStorage.setItem("token", data.token);
                 window.localStorage.setItem("fullName", data.employee.name);
+                window.localStorage.setItem("degree", data.employee.degree);
                 window.localStorage.setItem("phone", data.employee.phone);
                 window.localStorage.setItem("user_id", data.employee._id);
                 setValues({ phone: '', password: '' });
                 if(data.employee.employee){        
+                             console.log(data);
                                 
                     if(data.employee.role === "employee"){
                         navigate('/user')
@@ -48,6 +50,8 @@ const Login = () => {
                         navigate('/department')
                     }else if(data.employee.role === "hr"){
                         navigate('/hr')
+                    }else if(data.employee.role === "boss"){
+                        navigate('/boss')
                     }
                 }else{
                     navigate('/fill')
@@ -84,9 +88,9 @@ const Login = () => {
                     />
                     <button className='signuplogin' onClick={clickSubmit}>Login</button>
                     {/* <LoginWithTelegram/> */}
-                    <p className="dontacc mt-3">
-                        Akkauntingiz yo`qmi? <Link to='/signup'>Ro`yxatdan o`tish</Link>
-                    </p><br /><br />
+
+                    <p className="dontacc mt-3">Akkauntingiz yo`qmi? <Link to='/signup'>Ro`yxatdan o`tish</Link></p>
+                    <br /><br />
                 </div>
             </div>
         </div>

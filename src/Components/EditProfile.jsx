@@ -5,11 +5,14 @@ import { API } from "../config";
 import Alert from "./Additional/Alert";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import logo from './Images/logo2.png';
-function Fill() {
+import logo from "./Images/logo2.png";
+
+function EditProfile() {
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [values, setValues] = useState({
     dateOfBirth: null,
+    name: "",
+    degree: "",
     placeOfBirth: "",
     firstAct: new Date(),
     nationality: "",
@@ -19,60 +22,66 @@ function Fill() {
   });
 
   const navigate = useNavigate();
-const [myRole, setMyRole] = useState([]);
+  const [myRole, setMyRole] = useState("");
+  const [myData, setMyData] = useState(null);
+
   const myId = window.localStorage.getItem("user_id");
-  const getMyData = async () => {
-    try {
-      const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-      if(data.user.employee){
-          if(data.user.role === "admin"){
-            navigate("/admin")
-          }else if(data.user.role === "employee"){
-            navigate("/user")
-          }else if(data.user.role === "superadmin"){
-            navigate("/superadmin")
-          }else if(data.user.role === "complex"){
-            navigate("/complex")
-          }else if(data.user.role === "department"){
-            navigate("/department")
-          }else if(data.user.role === "hr"){
-            navigate("/hr")
-          }else if(data.user.role === "boss"){
-            navigate("/boss")
-          }
-      }
-      if(data.user.role === 'admin'){
-        setMyRole("admin")
-      }else if(data.user.role === 'employee'){
-        setMyRole("user")
-      }else if(data.user.role === 'superadmin'){
-        setMyRole("superadmin")
-      }else if(data.user.role === 'complex'){
-        setMyRole("complex")
-      }else if(data.user.role === 'department'){
-        setMyRole("department")
-      }else if(data.user.role === 'hr'){
-        setMyRole("hr")
-      }else if(data.user.role === 'boss'){
-        setMyRole("boss")
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };  
+
   useEffect(() => {
+    const getMyData = async () => {
+      try {
+        const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
+        setMyData(data.user);
+        setMyRole(data.user.role);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
     getMyData();
-  }, []);
-  
+  }, [myId]);
+
+  useEffect(() => {
+    if (myData) {
+      setValues({
+        dateOfBirth: myData.dateOfBirth ? new Date(myData.dateOfBirth) : null,
+        placeOfBirth: myData.placeOfBirth || "",
+        name: myData.name || "",
+        degree: myData.degree || "",
+        firstAct: myData.firstAct ? new Date(myData.firstAct) : new Date(),
+        nationality: myData.nationality || "",
+        education: myData.education || "",
+        speciality: myData.speciality || "",
+        address: myData.address || "",
+      });
+    }
+  }, [myData]);
+
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { dateOfBirth, placeOfBirth, nationality, education, speciality, address } = values;
-
-    if (!dateOfBirth || !placeOfBirth || !nationality || !education || !speciality || !address) {
+    const {
+      dateOfBirth,
+      name,
+      degree,
+      placeOfBirth,
+      nationality,
+      education,
+      speciality,
+      address,
+    } = values;
+    if (
+      !dateOfBirth ||
+      !name ||
+      !placeOfBirth ||
+      !nationality ||
+      !degree ||
+      !education ||
+      !speciality ||
+      !address
+    ) {
       setAlert({
         show: true,
         type: "error",
@@ -80,39 +89,69 @@ const [myRole, setMyRole] = useState([]);
       });
       return;
     }
-
     try {
-      const formattedDateOfBirth = dateOfBirth.toLocaleDateString("uz-UZ").replace(/\//g, ".");
-      const formattedFirstAct = values.firstAct.toLocaleDateString("uz-UZ").replace(/\//g, ".");
+      const formattedDateOfBirth = dateOfBirth
+        .toLocaleDateString("uz-UZ")
+        .replace(/\//g, ".");
+      const formattedFirstAct = values.firstAct
+        .toLocaleDateString("uz-UZ")
+        .replace(/\//g, ".");
 
       const data = {
         dateOfBirth: formattedDateOfBirth,
         placeOfBirth,
         firstAct: formattedFirstAct,
         nationality,
+        name,
+        degree,
         education,
         speciality,
         address,
       };
-      
-      await axios.put(`${API}/auth/fill/${myId}`, data);
-      setAlert({ show: true, type: "success", message: "Xodim muvaffaqiyatli qo'shildi!" });
-      navigate(`/${myRole}`);
+      await axios.put(`${API}/auth/editprofile/${myId}`, data);
+      setAlert({
+        show: true,
+        type: "success",
+        message: "Xodim muvaffaqiyatli yangilandi!",
+      });
+      window.location.reload();
     } catch (error) {
-      setAlert({ show: true, type: "error", message: error.response?.data?.message || "Xatolik yuz berdi!" });
+      setAlert({
+        show: true,
+        type: "error",
+        message: error.response?.data?.message || "Xatolik yuz berdi!",
+      });
     }
   };
 
   return (
     <div className="fill-container">
-        <div className="text-center">
-        <img className="logoonform" src={logo} alt="" />
-        </div>
-        <h3 className="text-center">
-            Qatorlarni to`ldiring:
-        </h3>
+      <div className="text-center">
+        <img className="logoonform" src={logo} alt="Logo" />
+      </div>
+      <h3 className="text-center">Ma'lumotlarni o`zgartirish:</h3>
       {alert.show && <Alert type={alert.type} message={alert.message} />}
       <form className="fill-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">F.I.Sh</label>
+          <input
+            type="text"
+            id="name"
+            value={values.name} // defaultValue o‘rniga value ishlatilmoqda
+            onChange={handleChange("name")}
+            placeholder="Ismingizni kiriting"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="degree">Lavozim</label>
+          <input
+            type="text"
+            id="degree"
+            value={values.degree} // defaultValue o‘rniga value ishlatilmoqda
+            onChange={handleChange("degree")}
+            placeholder="Lavozimingizni kiriting"
+          />
+        </div>
         <div className="form-group">
           <label htmlFor="dateOfBirth">Tug‘ilgan sana</label>
           <DatePicker
@@ -127,7 +166,7 @@ const [myRole, setMyRole] = useState([]);
           <input
             type="text"
             id="placeOfBirth"
-            value={values.placeOfBirth}
+            defaultValue={values.placeOfBirth}
             onChange={handleChange("placeOfBirth")}
             placeholder="Tug‘ilgan joyingizni kiriting"
           />
@@ -137,13 +176,20 @@ const [myRole, setMyRole] = useState([]);
           <input
             type="text"
             id="firstAct"
-            value={values.firstAct.toLocaleDateString("uz-UZ").replace(/\//g, ":")}
-            readOnly disabled
+            defaultValue={values.firstAct
+              .toLocaleDateString("uz-UZ")
+              .replace(/\//g, ":")}
+            readOnly
+            disabled
           />
         </div>
         <div className="form-group">
           <label htmlFor="nationality">Millati</label>
-          <select id="nationality" value={values.nationality} onChange={handleChange("nationality")}>
+          <select
+            id="nationality"
+            defaultValue={values.nationality}
+            onChange={handleChange("nationality")}
+          >
             <option value="">Tanlang</option>
             <option value="O‘zbek">O‘zbek</option>
             <option value="Rus">Rus</option>
@@ -152,7 +198,11 @@ const [myRole, setMyRole] = useState([]);
         </div>
         <div className="form-group">
           <label htmlFor="education">Ta'lim</label>
-          <select id="education" value={values.education} onChange={handleChange("education")}>
+          <select
+            id="education"
+            defaultValue={values.education}
+            onChange={handleChange("education")}
+          >
             <option value="">Tanlang</option>
             <option value="O‘rta-maxsus">O‘rta-maxsus</option>
             <option value="Tugallanmagan Oliy">Tugallanmagan Oliy</option>
@@ -166,7 +216,7 @@ const [myRole, setMyRole] = useState([]);
           <input
             type="text"
             id="speciality"
-            value={values.speciality}
+            defaultValue={values.speciality}
             onChange={handleChange("speciality")}
             placeholder="Mutaxassislikni kiriting"
           />
@@ -176,7 +226,7 @@ const [myRole, setMyRole] = useState([]);
           <input
             type="text"
             id="address"
-            value={values.address}
+            defaultValue={values.address}
             onChange={handleChange("address")}
             placeholder="Manzilingizni kiriting"
           />
@@ -189,4 +239,4 @@ const [myRole, setMyRole] = useState([]);
   );
 }
 
-export default Fill;
+export default EditProfile;

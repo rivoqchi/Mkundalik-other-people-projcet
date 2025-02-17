@@ -804,46 +804,47 @@
   padding: 10px;
   border-radius: 5px;
 }
-.taskin{
-  width: 100%;
-  border: none;
-  text-align: center;
-  background-color: green;
-  padding: 15px 10px;
-  color: #fff;
-  font-size: 1.2rem;
-  border-radius: 10px;
-  margin-top: 10px;
-  box-shadow: 0px 10px 10px 3px rgb(188, 188, 188);
-  cursor: pointer;
-  transition: .2s;
-  &:hover{
-    box-shadow: none;
-    transform: scale(0.98);
-    background-color: rgb(0, 68, 255);
-  }&:active{
-    background-color: rgb(30, 0, 255);
-  }
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px; /* Tugmalar orasidagi masofa */
 }
-.taskin2{
-  width: 100%;
+
+.taskin, .taskin2 {
+  flex: 1;
   border: none;
   text-align: center;
-  background-color: rgb(255, 72, 72);
-  padding: 15px 10px;
-  color: #fff;
-  font-size: 1.2rem;
-  border-radius: 10px;
-  margin-top: 10px;
-  box-shadow: 0px 10px 10px 3px rgb(188, 188, 188);
+  padding: 12px 15px;
+  font-size: 1.1rem;
+  border-radius: 3px;
   cursor: pointer;
-  transition: .2s;
-  &:hover{
-    box-shadow: none;
-    transform: scale(0.98);
-    background-color: rgb(0, 68, 255);
-  }&:active{
-    background-color: rgb(30, 0, 255);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.taskin {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.taskin2 {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.taskin:hover, .taskin2:hover {
+  transform: scale(1.01);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.taskin:active, .taskin2:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
   }
 }
 .task-actions button{
@@ -865,7 +866,8 @@
 }
 .kghgv{
   width: 100%;
-  border-radius: 10px;
+  font-size: 1.5rem;
+  padding: 10px;
   background-color: rgb(240, 240, 240);
 }
 .uploadif{
@@ -1079,7 +1081,20 @@ button:focus {
   cursor: pointer;
   transition: color 0.2s;
 }
+.fastar2 {
+  font-size: 30px;
+  color: lightgray;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  background-color: red;
+  border-radius: 5px;
+}
 
+.fastar2.selected-zero {
+  background-color: blueviolet !important;
+  color: white;
+}
 .fastar.selected {
   color: gold;
 }
@@ -1498,4 +1513,205 @@ marquee{
   border-radius: 20px;
   margin: 20px;
   width: 80%;
+}
+.newtop {
+  margin-left: 5px;
+  background-color: red; /* Orqa fon qizil */
+  color: white; /* Matn rangi oq */
+  font-weight: bold; /* Matnni qalin qilish */
+  padding: 2px 6px; /* Ichki bo‘shliq */
+  border-radius: 4px; /* Burchaklarni yumshatish */
+  font-size: 12px; /* Matn o‘lchami */
+  text-transform: uppercase; /* Harflarni katta qilish */
+}
+.azolari{
+  position: fixed;
+  overflow-x: auto;
+  background-color: #fff;
+  top: 0px;
+  padding-top: 10px;
+}
+.xodimlartable{
+  margin-top: 100px !important;
+}
+.newcitata {
+  animation: newcitata 1s;
+  margin: 20px;
+  background: linear-gradient(45deg, rgb(245, 31, 156), rgb(157, 0, 255)); /* Qizil gradient fon */
+  color: white; /* Matn rangi oq */
+  padding: 12px 20px; /* Ichki bo‘shliq */
+  border-radius: 6px; /* Burchaklarni yumshatish */
+  font-weight: bold; /* Matnni qalin qilish */
+  font-size: 16px; /* Matn o‘lchami */
+  text-align: center; /* Matnni markazga olish */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Soyali effekt */
+  display: inline-block; /* Blok element sifatida chiqish */
+  text-transform: uppercase; /* Katta harflar */
+  position: relative; /* Before va after uchun */
+  z-index: -1 !important;
+}
+@keyframes newcitata {
+  from{
+    transform: translate(-150px);
+  }
+  to{
+
+  }
+}
+.newcitata::before {
+  content: "“"; /* Boshlang‘ich qo‘shtirnoq */
+  font-size: 20px;
+  color: green;
+  position: absolute;
+  left: -12px;
+  top: 5px;
+}
+
+.newcitata::after {
+  content: "”"; /* Yopuvchi qo‘shtirnoq */
+  font-size: 20px;
+  color: green;
+  position: absolute;
+  right: -12px;
+  top: 5px;
+}
+.aboutp{
+  animation: lefttoright 2s;
+  margin-top: 10px;
+}
+.abouth1{
+  background-color: pink;
+  padding: 20px;
+  border-left: 4px solid;
+  animation: righttoleft 2s;
+  z-index: -1;
+}
+@keyframes lefttoright {
+  from{
+    transform: translateX(-100px);
+  }
+}
+@keyframes righttoleft {
+  from{
+    transform: translateX(100px);
+  }
+}
+.aboutmenu{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  animation: opacity0to1 2s;
+}
+@keyframes opacity0to1 {
+  from{
+    opacity: 0;
+  }
+}
+.version{
+  background-color: rgba(255, 120, 30, 0.356);
+  color: rgb(0, 17, 255);
+  padding: 10px;
+  animation: opacity0to1 2s;
+  margin: 10px !important;
+
+}
+.abouttap{
+  background-color: lemonchiffon;
+  padding: 20px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: .2s;
+  &:hover{
+    background-color: blue;
+    color: lemonchiffon;
+  }
+}
+.terminate-container {
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.terminate-message {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.countdown {
+  margin-top: 20px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.countdown-number {
+  font-size: 5rem; /* Katta raqam */
+  font-weight: bold;
+  color: #ff4757; /* Qizil rang */
+  animation: scaleUp 1s ease-in-out infinite alternate;
+}
+
+.countdown-text {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* Animatsiyalar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+.spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Rasm va spinner orasidagi masofa */
+}
+
+.logo {
+  width: 150px; /* Logotip o‘lchami */
+  height: auto;
+  animation: loading 1s alternate-reverse infinite;
+}
+@keyframes loading {
+  from{
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+.spinner {
+  width: 4rem;
+  height: 4rem;
 }

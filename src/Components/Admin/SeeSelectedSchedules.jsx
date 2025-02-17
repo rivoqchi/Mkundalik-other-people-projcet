@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { API } from "../../config";
 import axios from "axios";
-import { Link } from "react-router-dom";
-function RatingMyAdmins() {
+import { Link, useParams } from "react-router-dom";
+function SeeSelectedSchedules() {
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const id = window.localStorage.getItem("user_id")
-  
+  let thescheduleid = useParams();
+    
   const getMySectionSchedules = async () => {
     try {
-      const { data } = await axios.get(`${API}/schedules/getmysection/admin/${myId}`);
-      setMySectionSchedules(data.schedules);
+      const { data } = await axios.get(`${API}/schedules/getallbyuserid/${thescheduleid.id}`);
+      setMySectionSchedules(data.history);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -21,7 +23,7 @@ function RatingMyAdmins() {
     getMySectionSchedules();
   }, []);
   const getMyData = async () =>{
-    const {data} = await axios.get(`${API}/auth/mydata/${id}`)
+    const {data} = await axios.get(`${API}/auth/mydata/${myId}`)
     
     setMyData(data.user)
     if (data.user.role === 'employee') {
@@ -31,11 +33,11 @@ function RatingMyAdmins() {
     }else if (data.user.role === 'superadmin') {
       setMyRole("superadmin")
     }else if (data.user.role === 'complex') {
-      setMyRole("complex")
-    }else if (data.user.role === 'hr') {
-      setMyRole("hr")
+    setMyRole("complex")
     }else if (data.user.role === 'department') {
       setMyRole("department")
+    }else if (data.user.role === 'hr') {
+      setMyRole("hr")
     }else if (data.user.role === 'boss') {
       setMyRole("boss")
     }
@@ -45,17 +47,18 @@ function RatingMyAdmins() {
   }, [])
   return (
     <>
-      <h1 className="text-center">Mening bo`limlarim ko`rsatkichlari</h1>
+      <h1 className="text-center">{mySectionSchedules.length === 0 ? "Ma'lumot topilmadi" : mySectionSchedules[0].beginnerName}</h1>
       <div className="ratedschedulescount d-flex mx-3 justify-content-between">
         <p>Jami: {mySectionSchedules.length}</p>
-        <span>Baholadingiz: {mySectionSchedules.filter((item) => item.rated).length}</span>
+        <span>Baholangan: {mySectionSchedules.filter((item) => item.rated).length}</span>
       </div>
+
       <div className="scheduleshistory">
         {mySectionSchedules.map((i) => (
           <>
             <Link
               className="text-decoration-none"
-              to={`/${myRole}/rate/schedule/${i._id}`}
+              to={`/${myRole}/archive/schedule/${i._id}`}
               key={i._id}
             >
               <button
@@ -63,7 +66,7 @@ function RatingMyAdmins() {
                   !i.rated ? "unrated" : "rated"
                 }`}
               >
-                <span className="bold">{i.beginnerName}</span>ning {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
+                {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
                 {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}
               </button>
             </Link>
@@ -74,4 +77,4 @@ function RatingMyAdmins() {
   );
 }
 
-export default RatingMyAdmins;
+export default SeeSelectedSchedules;

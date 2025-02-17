@@ -83,7 +83,13 @@ const Signup = () => {
 
     const signUpForm = () => (
         <>
-            {alert.show && <Alert type={alert.type} message={alert.message} />}
+        <h1>403</h1>
+        <div className="text-center">
+            Faqatgina tizim administratori tizimga qo`shishi mumkin. <br />
+            Mas'ul xodimlarga murojaat qiling.
+            </div>
+        <Link to="/login"><button className="defaultbtn">Kirish</button></Link>
+            {/* {alert.show && <Alert type={alert.type} message={alert.message} />}
             <div className='text-center Auth__body-form'>
                 <h2 className='text-center'><i className="fa-solid fa-link"></i> Ro'yxatdan o'tish</h2>
                 <div className="login-inputs">
@@ -106,8 +112,8 @@ const Signup = () => {
                 <p className="mt-3 dontacc">
                 Hisob bormi? <Link to='/login'>Kirish</Link>
                 </p>
-                {/* <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2> */}
-            </div>
+                <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2>
+            </div> */}
         </>
     );
 

@@ -34,7 +34,7 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      <i className="fa-solid fa-book"></i>
+      <i class="fa-solid fa-users-between-lines"></i>
         <h4>HR Panel</h4>
       </div>
       <nav className="aside-menu">

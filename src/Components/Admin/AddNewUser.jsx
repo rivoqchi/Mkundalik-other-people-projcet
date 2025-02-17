@@ -11,6 +11,7 @@ const AddNewUser = () => {
   const [allComplexes, setAllComplexes] = useState([]);
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
+  const [myName, setMyName] = useState([]);
 
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [autoDownload, setAutoDownload] = useState(false); // Switch holati
@@ -32,6 +33,7 @@ const AddNewUser = () => {
     try {
       const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
       setMyData(data.user);
+      setMyName(data.user.name);
       if (data.user.role === "admin") {
         setMyRole("admin");
       } else if (data.user.role === "employee") {
@@ -44,6 +46,8 @@ const AddNewUser = () => {
         setMyRole("department");
       } else if (data.user.role === "hr") {
         setMyRole("hr");
+      } else if (data.user.role === "boss") {
+        setMyRole("boss");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -88,7 +92,7 @@ const AddNewUser = () => {
   const { name, phone, password, complex, department, section, degree, status, error, success } =
     values;
 
-  const acceptedBy = window.localStorage.getItem("fullName");
+  const acceptedBy = myName;
   const handleSwitchChange = () => {
     setAutoDownload(!autoDownload); // Switchni qayta almashtirish
   };
@@ -224,6 +228,58 @@ const AddNewUser = () => {
               />
             </div>
 
+            <div className="form-group">
+              <label className="lab" htmlFor="password">
+                Parol
+              </label>
+              <input
+                id="password"
+                type="text"
+                onChange={handleChange("password")}
+                placeholder="Parol yarating"
+                value={password}
+              />
+            </div>
+            <div className="form-group">
+              <label className="lab" htmlFor="degree">
+                Lavozimi
+              </label>
+              <input
+                id="degree"
+                type="text"
+                onChange={handleChange("degree")}
+                placeholder="Lavozimi"
+                value={degree}
+              />
+            </div>
+            
+
+          </div>
+
+          <div className="col-12 col-md-6">
+            <div className="form-group selectstatus">
+              <label className="lab" htmlFor="status">
+                Status
+              </label>
+              <select
+                value={myData.role === "admin" ? "employee" : status} // Admin bo'lsa doim employee bo'ladi
+                name="status"
+                id="status"
+                onChange={handleChange("status")}
+                disabled={myData.role === "admin"} // Admin bo'lsa disable qilish
+              >
+                <option selected disabled value="">
+                  Tanlang:
+                </option>
+                <option value="employee">Xodim (Employee)</option>
+                <option value="admin">Bo`lim boshlig`i (Admin)</option>
+                <option value="department">Xizmat boshlig`i (Department)</option>
+                <option value="complex">Metropoliten boshlig`i o`rinbosari (Complex)</option>
+                <option value="superadmin">Super Admin (Barcha imkoniyatlar)</option>
+                <option value="boss">Boshliq / Bosh muhandis (Boss)</option>
+                <option value="hr">Kadrlar bo`limi (HR)</option>
+              </select>
+            </div>
             <div className="form-group selectstatus">
               <label className="lab" htmlFor="section">
                 Kompleks
@@ -318,56 +374,7 @@ const AddNewUser = () => {
                 </select>
               </div>
             </div>
-
-          </div>
-
-          <div className="col-12 col-md-6">
-            <div className="form-group">
-              <label className="lab" htmlFor="degree">
-                Lavozimi
-              </label>
-              <input
-                id="degree"
-                type="text"
-                onChange={handleChange("degree")}
-                placeholder="Lavozimi"
-                value={degree}
-              />
-            </div>
-            <div className="form-group">
-              <label className="lab" htmlFor="password">
-                Parol
-              </label>
-              <input
-                id="password"
-                type="text"
-                onChange={handleChange("password")}
-                placeholder="Parol yarating"
-                value={password}
-              />
-            </div>
-            <div className="form-group selectstatus">
-              <label className="lab" htmlFor="status">
-                Status
-              </label>
-              <select
-                value={myData.role === "admin" ? "employee" : status} // Admin bo'lsa doim employee bo'ladi
-                name="status"
-                id="status"
-                onChange={handleChange("status")}
-                disabled={myData.role === "admin"} // Admin bo'lsa disable qilish
-              >
-                <option selected disabled value="">
-                  Tanlang:
-                </option>
-                <option value="employee">Xodim</option>
-                <option value="admin">Admin</option>
-                <option value="superadmin">Super admin</option>
-                <option value="complex">Kompleks admin</option>
-                <option value="department">Departament</option>
-                <option value="hr">Human resources (HR)</option>
-              </select>
-            </div>
+            
           </div>
           <div className="form-group">
             <label className="lab" htmlFor="acceptedBy">

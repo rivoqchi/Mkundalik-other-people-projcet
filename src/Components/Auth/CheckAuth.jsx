@@ -68,7 +68,8 @@ export const isAuthenticated = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-      });
+        
+    });
       const data = await response.json();
       return data.message;
     } catch (err) {

@@ -39,9 +39,12 @@ const goTo = async () => {
     } else if (data.user.role === "complex") {
         setShow(false)
         navigate(`/complex/profile`)
-    } else if (data.user.role === "department") {
+      } else if (data.user.role === "department") {
         setShow(false)
         navigate(`/department/profile`)
+      } else if (data.user.role === "boss") {
+        setShow(false)
+        navigate(`/boss/profile`)
     } else if (data.user.role === "hr") {
         setShow(false)
         navigate(`/hr/profile`)

@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import { API } from "../../config";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import LoadingScreen from "../Additional/LoadingScreen";
+
 function ScheduleSectionRating() {
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const id = window.localStorage.getItem("user_id");
+  const [loading, setLoading] = useState(false);
 
   const getMySectionSchedules = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(`${API}/schedules/getmysection/${myId}`);
       setMySectionSchedules(data.schedules);
@@ -35,7 +39,11 @@ function ScheduleSectionRating() {
       setMyRole("department");
     } else if (data.user.role === "hr") {
       setMyRole("hr");
+    } else if (data.user.role === "boss") {
+      setMyRole("boss");
     }
+    setLoading(false);
+
   };
   useEffect(() => {
     getMyData();
@@ -43,6 +51,8 @@ function ScheduleSectionRating() {
   
   return (
     <>
+      {loading && <LoadingScreen loading={true} />}
+
       <h1 className="text-center">Mening bo`limim ko`rsatkichlari</h1>
       <div className="ratedschedulescount d-flex mx-3 justify-content-between">
         <p>Jami: {mySectionSchedules.length}</p>

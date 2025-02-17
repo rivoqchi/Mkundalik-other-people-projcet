@@ -43,7 +43,8 @@ function LoginWithTelegram() {
           admin: '/admin',
           department: '/department',
           complex: '/complex',
-          superadmin: '/superadmin'
+          superadmin: '/superadmin',
+          boss: '/boss'
         };
 
         window.location.replace(roleRedirects[response.data.employee.role] || '/');

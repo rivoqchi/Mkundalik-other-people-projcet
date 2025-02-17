@@ -29,6 +29,8 @@ function Navbarr() {
       return '/superadmin';
     } else if (role === 'complex'){
       return '/complex';
+    } else if (role === 'boss'){
+      return '/boss';
     } else if (role === 'department'){
       return '/department';
     } else if (role === 'hr'){

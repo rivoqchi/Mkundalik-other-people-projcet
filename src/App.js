@@ -9,6 +9,7 @@ import EmployeeRoute from "./Components/Employee/EmployeeRoute";
 import AdminRoute from "./Components/Admin/AdminRoute";
 import SuperAdminRoute from "./Components/SuperAdmin/SuperAdminRoute";
 import ComplexRoute from "./Components/Complex/ComplexRoute";
+import BossRoute from "./Components/Boss/BossRoute";
 import DepartmentRoute from "./Components/Department/DepartmentRoute";
 import HrRoute from "./Components/Hr/HrRoute";
 import LookSchedule from "./Components/Admin/LookSchedule";
@@ -21,14 +22,12 @@ import Fill from "./Components/Fill";
 import LinkTelegram from "./Components/Auth/LinkTelegram";
 import LoginWithTelegram from "./Components/Auth/LoginWithTelegram";
 import AllUsers from './Components/SuperAdmin/AllUsers';
-import PleaseInstruction from "./Components/Asking/PleaseInstruction";
 function App() {
   return (
     <>
       <div>
         <Router>
           <XatolikXabar/>
-          <PleaseInstruction/>
           <Routes>
             <Route path="/" exact element={<Main />} />
             <Route path="/fill" exact element={<Fill />} />
@@ -50,6 +49,10 @@ function App() {
 
             <Route element={<ProtectedRoute allowedRoles={["complex", "hr", "superadmin"]} />}>
               <Route path="/complex/*" element={<ComplexRoute />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["boss", "superadmin"]} />}>
+              <Route path="/boss/*" element={<BossRoute />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={["hr", "superadmin"]} />}>

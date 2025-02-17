@@ -34,8 +34,9 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      <i className="fa-solid fa-book"></i>
-        <h4>Superadmin Panel</h4>
+      <i class="fa-solid fa-users-gear"></i>
+        <h5>{window.localStorage.getItem("fullName")}</h5>
+        <p>{window.localStorage.getItem("degree")}</p>
       </div>
       <nav className="aside-menu">
         <ul>
@@ -97,6 +98,15 @@ function Aside() {
             <Link onClick={handleShow}>
               <i className="fa-solid fa-arrow-right-from-bracket"></i>
               <span>Chiqish</span>
+            </Link>
+          </li>
+
+
+
+          <li className={location.pathname === '/superadmin/profile' ? 'active' : ''}>
+            <Link to="/superadmin/about">
+              <i class="fa-solid fa-info"></i>
+              <span>Dastur haqida</span>
             </Link>
           </li>
         </ul>

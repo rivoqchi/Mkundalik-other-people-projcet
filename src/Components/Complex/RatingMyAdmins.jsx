@@ -30,8 +30,12 @@ function RatingMyAdmins() {
     }else if (data.user.role === 'superadmin') {
       setMyRole("superadmin")
     }else if (data.user.role === 'complex') {
-    setMyRole("complex")
-}
+      setMyRole("complex")
+    }else if (data.user.role === 'hr') {
+      setMyRole("hr")
+    }else if (data.user.role === 'boss') {
+      setMyRole("boss")
+    }
   }
   useEffect(() =>{
     getMyData()

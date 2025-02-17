@@ -8,10 +8,10 @@ function RatingMyAdmins() {
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const id = window.localStorage.getItem("user_id")
-  
+
   const getMySectionSchedules = async () => {
     try {
-      const { data } = await axios.get(`${API}/schedules/getmysection/admin/${myId}`);
+      const { data } = await axios.get(`${API}/schedules/getmysection/department/${myId}`);
       setMySectionSchedules(data.schedules);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -22,7 +22,6 @@ function RatingMyAdmins() {
   }, []);
   const getMyData = async () =>{
     const {data} = await axios.get(`${API}/auth/mydata/${id}`)
-    
     setMyData(data.user)
     if (data.user.role === 'employee') {
     setMyRole("user")
@@ -31,14 +30,10 @@ function RatingMyAdmins() {
     }else if (data.user.role === 'superadmin') {
       setMyRole("superadmin")
     }else if (data.user.role === 'complex') {
-      setMyRole("complex")
-    }else if (data.user.role === 'hr') {
-      setMyRole("hr")
-    }else if (data.user.role === 'department') {
-      setMyRole("department")
+    setMyRole("complex")
     }else if (data.user.role === 'boss') {
-      setMyRole("boss")
-    }
+    setMyRole("boss")
+}
   }
   useEffect(() =>{
     getMyData()
@@ -50,6 +45,7 @@ function RatingMyAdmins() {
         <p>Jami: {mySectionSchedules.length}</p>
         <span>Baholadingiz: {mySectionSchedules.filter((item) => item.rated).length}</span>
       </div>
+
       <div className="scheduleshistory">
         {mySectionSchedules.map((i) => (
           <>

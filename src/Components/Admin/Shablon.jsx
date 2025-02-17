@@ -16,6 +16,8 @@ const getMyData = async () =>{
       setMyRole("department")
     }else if (data.user.role === 'hr') {
       setMyRole("hr")
+    }else if (data.user.role === 'boss') {
+      setMyRole("boss")
 }
   }
   useEffect(() =>{

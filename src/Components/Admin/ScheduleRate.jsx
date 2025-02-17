@@ -26,6 +26,8 @@ const getMyData = async () =>{
         setMyRole("complex")
       }else if (data.user.role === 'department') {
         setMyRole("department")
+      }else if (data.user.role === 'boss') {
+        setMyRole("boss")
       }else if (data.user.role === 'hr') {
         setMyRole("hr")
   }
@@ -89,16 +91,16 @@ const getMyData = async () =>{
   const [isFinalized, setIsFinalized] = useState(false); // Hover ni bloklash uchun
   
   const handleStarClick = (index) => {
-    setSelectedStars(index + 1);
+    setSelectedStars(index === -1 ? 0 : index + 1); // 0 tugmasi bosilsa, 0 qo'yiladi
     setIsFinalized(true); // Hoverni bloklash
   };
 
 
   const handleSubmit = async () => {
-    const rated = selectedStars * 10; // Bahoni hisoblash
+    const rated = selectedStars === 0 ? 1 : selectedStars * 10; // 0 tanlansa, 1 yuborish
     try {
       await axios.put(`${API}/schedules/ratebyid/${id}`, { rated });
-      navigate(`/${myRole}/rating/ours`)
+      navigate(`/${myRole}/rating/ours`);
     } catch (error) {
       console.error("Error submitting rating:", error);
     }
@@ -166,7 +168,16 @@ const getMyData = async () =>{
             <div className="schedulerated">
               <h5>Baholang: </h5>
               <div className="rating-container">
-      <div className="stars">
+      <div className="stars align-items-center">
+      <i
+            className={`fastar2`}
+            onClick={() => handleStarClick(-1)}
+            onMouseEnter={() => !isFinalized && setSelectedStars(-1)}
+            onMouseLeave={() => !isFinalized && setSelectedStars(-1)}
+
+          >
+            0
+          </i>
         {[...Array(10)].map((_, index) => (
           <i
             key={index}

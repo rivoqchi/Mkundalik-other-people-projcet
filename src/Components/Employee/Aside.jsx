@@ -34,8 +34,9 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      <i className="fa-solid fa-book"></i>
-        <h4>User Panel</h4>
+      <i class="fa-solid fa-user"></i>
+        <h5>{window.localStorage.getItem("fullName")}</h5>
+        <p>{window.localStorage.getItem("degree")}</p>
       </div>
       <nav className="aside-menu">
         <ul>
