@@ -139,13 +139,13 @@ const AddNewUser = () => {
           name: "",
           phone: "+998",
           password: "",
-          complex: "",
-          department: "",
-          section: "",
-          degree: "",
-          status: "",
-          success: true,
-          error: "",
+          // complex: "",
+          // department: "",
+          // section: "",
+          // degree: "",
+          // status: "",
+          // success: true,
+          // error: "",
         });
         if (autoDownload) {
           saveToFile();

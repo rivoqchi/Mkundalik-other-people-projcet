@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../config";
 import Alert from "../Additional/Alert";
 import LoadingScreen from "../Additional/LoadingScreen";
+import { m } from "framer-motion";
 
 function ScheduleNew() {
   const myId = window.localStorage.getItem("user_id");
@@ -15,6 +16,7 @@ function ScheduleNew() {
   const [myDepartment, setMyDepartment] = useState([]);
   const [loading, setLoading] = useState(false);
   const [myComplex, setMyComplex] = useState([]);
+  const [myDegree, setMyDegree] = useState([]);
   const [myRole, setMyRole] = useState([]);
 
   const getMyData = async () => {
@@ -27,6 +29,7 @@ function ScheduleNew() {
       setMySection(data.user.section);
       setMyDepartment(data.user.department);
       setMyComplex(data.user.complex);
+      setMyDegree(data.user.degree);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -45,7 +48,7 @@ function ScheduleNew() {
   const [tasks, setTasks] = useState([]);
   const [startedAt, setStartedAt] = useState("");
 
-  const [countdown, setCountdown] = useState(20);
+  const [countdown, setCountdown] = useState(5);
 
 
   // Modal holatlari
@@ -58,6 +61,7 @@ function ScheduleNew() {
 
   const [currentTaskIndex, setCurrentTaskIndex] = useState(null); // Edit va Delete uchun
   const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun  const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun
+console.log(taskData, 6);
 
   // Modalni yopish funksiyalari
   const handleCloseEdit = () => setShowEdit(false);
@@ -88,7 +92,6 @@ function ScheduleNew() {
   const handleShowEnd = () => {
     setShowEnd(true);
   };
-console.log(terminate);
 
   // Sana va ish holatini olish
   useEffect(() => {
@@ -262,6 +265,7 @@ console.log(terminate);
       department: myDepartment,
       complex: myComplex,
       role: myRole,
+      degree: myDegree
     };
 
     axios.post(`${API}/schedules/create`, payload).then((res) => {
@@ -350,13 +354,15 @@ console.log(terminate);
           ))}
           {onWork && (
             <>
+              <div className="mb-5">
               <div className="button-container mt-5">
                 <button onClick={handleShowCreate} className="taskin">
-                  <i className="fa-solid fa-plus"></i> Yangi vazifa kiritish
+                  <i className="fa-solid fa-plus"></i> Qo`shish
                 </button>
                 <button onClick={handleShowEnd} className="taskin2">
                   <i className="fa-regular fa-circle-stop"></i> Yakunlash
                 </button>
+              </div>
               </div>
             </>
           )}
@@ -366,7 +372,7 @@ console.log(terminate);
         <Modal size="lg" centered show={showCreate} onHide={handleCloseCreate}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-solid fa-plus"></i> Yangi vazifa kiritish
+              <i className="fa-solid fa-plus"></i> Yangi vazifa qo`shish
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>

@@ -67,7 +67,7 @@ function Aside() {
           <li className={location.pathname === '/admin/employees' ? 'active' : ''}>
             <Link to="/admin/employees">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Xodimlar</span><span className='newtop'>NEW</span>
+              <span>Xodimlar</span>
             </Link>
           </li>
           {/* <li className={location.pathname === '/admin/instructions' ? 'active' : ''}>

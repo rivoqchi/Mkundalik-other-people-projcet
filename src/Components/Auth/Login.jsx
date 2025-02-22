@@ -6,9 +6,11 @@ import Alert from '../Additional/Alert';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import LoginWithTelegram from './LoginWithTelegram';
+
 const Login = () => {
     const [alert, setAlert] = useState({ show: false, type: "", message: "" });
     const [values, setValues] = useState({ phone: '+998', password: '' });
+    const [showPassword, setShowPassword] = useState(false); // Parolni ko'rsatish yoki yashirish uchun
     const navigate = useNavigate();
     const { phone, password } = values;
 
@@ -21,6 +23,11 @@ const Login = () => {
             clickSubmit(event);
         }
     };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     const clickSubmit = (event) => {
         event.preventDefault();
         setAlert({ show: false, type: "", message: "" });
@@ -28,37 +35,31 @@ const Login = () => {
         signIn({ phone, password }).then((data) => {
             if (data.error) {
                 setAlert({ show: true, type: "error", message: data.error });
-            } else if(data.employee.role != "new"){
+            } else if(data.employee.role !== "new"){
                 window.localStorage.setItem("token", data.token);
                 window.localStorage.setItem("fullName", data.employee.name);
                 window.localStorage.setItem("degree", data.employee.degree);
                 window.localStorage.setItem("phone", data.employee.phone);
                 window.localStorage.setItem("user_id", data.employee._id);
                 setValues({ phone: '', password: '' });
-                if(data.employee.employee){        
-                             console.log(data);
-                                
-                    if(data.employee.role === "employee"){
-                        navigate('/user')
-                    }else if(data.employee.role === "admin"){
-                        navigate('/admin')
-                    }else if(data.employee.role === "superadmin"){
-                        navigate('/superadmin')
-                    }else if(data.employee.role === "complex"){
-                        navigate('/complex')
-                    }else if(data.employee.role === "department"){
-                        navigate('/department')
-                    }else if(data.employee.role === "hr"){
-                        navigate('/hr')
-                    }else if(data.employee.role === "boss"){
-                        navigate('/boss')
-                    }
-                }else{
-                    navigate('/fill')
+                
+                if (data.employee.role) {
+                    const routes = {
+                        employee: "/user",
+                        admin: "/admin",
+                        superadmin: "/superadmin",
+                        complex: "/complex",
+                        department: "/department",
+                        hr: "/hr",
+                        boss: "/boss"
+                    };
+                    navigate(routes[data.employee.role] || "/fill");
+                } else {
+                    navigate('/fill');
                 }
-        }else{
-                navigate('/iamnew')
-            };
+            } else {
+                navigate('/iamnew');
+            }
         }).catch(() => {
             setAlert({ show: true, type: "error", message: "Serverda xatolik yuz berdi!" });
         });
@@ -75,19 +76,33 @@ const Login = () => {
                     <input
                         type="text"
                         onChange={handleChange('phone')}
-                        placeholder="Phone"
+                        placeholder="Telefon raqamingiz:"
                         value={phone}
                         onKeyDown={handleKeyDown}
                     />
-                    <input
-                        type="password"
-                        onChange={handleChange('password')}
-                        placeholder="Password"
-                        value={password}
-                        onKeyDown={handleKeyDown}
-                    />
+                    <div style={{ position: "relative" }}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            onChange={handleChange('password')}
+                            placeholder="Parol:"
+                            value={password}
+                            onKeyDown={handleKeyDown}
+                            style={{ width: "100%", paddingRight: "40px" }} // O‘ng tomonda ikonka uchun joy qoldirish
+                        />
+                        <i
+                            className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                            onClick={togglePasswordVisibility}
+                            style={{
+                                position: "absolute",
+                                right: "10px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                cursor: "pointer",
+                                color: "#777"
+                            }}
+                        ></i>
+                    </div>
                     <button className='signuplogin' onClick={clickSubmit}>Login</button>
-                    {/* <LoginWithTelegram/> */}
 
                     <p className="dontacc mt-3">Akkauntingiz yo`qmi? <Link to='/signup'>Ro`yxatdan o`tish</Link></p>
                     <br /><br />

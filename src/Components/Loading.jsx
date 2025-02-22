@@ -3,7 +3,7 @@ function Loading() {
     return ( 
         <>
         <div className="loadingg">
-        Loading...
+        Loading................
         </div>
         </>
      );

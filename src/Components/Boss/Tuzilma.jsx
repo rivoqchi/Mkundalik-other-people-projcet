@@ -175,7 +175,7 @@ function Tuzilma() {
                                     <td>{employee.complex}</td>
                                     <td>{employee.department}</td>
                                     <td>{employee.section}</td>
-                                    <td>{employee.role}</td>
+                                    <td>{employee.degree}</td>
                                     <td>{employee.nationality}</td>
                                     <td>{employee.dateOfBirth}</td>
                                     <td>{employee.placeOfBirth}</td>

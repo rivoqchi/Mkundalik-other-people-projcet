@@ -7,11 +7,32 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
 import { format } from "date-fns";
-
+import LoadingScreen from "../Additional/LoadingScreen";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Alert from "../Additional/Alert";
 function ScheduleRate() {
   const myId = window.localStorage.getItem("user_id");
+  const myFullName = window.localStorage.getItem("fullName");
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+  const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
+  const [checking, setChecking] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [degree, setMyDegree] = useState([]);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    if (thisScheduleHistory.reported) {
+        setAlert({ show: true, type: "error", message: "Siz e'tiroz bildirib bo`lgansiz!", });
+    } else {
+        setShow(true);
+    }
+};
+  const [reportData, setReportData] = useState("");
+
   const getMyData = async () => {
     const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
     setMyData(data.user);
@@ -31,12 +52,10 @@ function ScheduleRate() {
       setMyRole("boss");
     }
   };
+
   useEffect(() => {
     getMyData();
   }, []);
-
-  const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
-  const [checking, setChecking] = useState([]);
 
   const { id } = useParams();
   const componentRef = useRef();
@@ -59,17 +78,34 @@ function ScheduleRate() {
   // PDF yaratish funksiyasi
   const generatePDF = async () => {
     const input = componentRef.current;
-    const canvas = await html2canvas(input, { scale: 2 }); // Kattaroq ko‘rinish uchun ko‘lam
-    const imgData = canvas.toDataURL("image/jpeg", 1); // Buni 0.8 qilsa ham bo`ladi
+    input.style.padding = "20px"; // Padding qo'shish
+
+    const canvas = await html2canvas(input, {
+      scale: 10,
+      useCORS: true,
+      backgroundColor: null,
+    });
+
+    const imgData = canvas.toDataURL("image/jpeg", 0.8); // 0.8 = sifatni pasaytirib hajmni kamaytirish
 
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = canvas.width / 2; // Tasvirni siqish
-    const imgHeight = canvas.height / 2;
-    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
 
-    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth * ratio, imgHeight * ratio);
+    let imgHeight = (canvas.height * pdfWidth) / canvas.width; // Rasm o'lchovini muvofiqlashtirish
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, imgHeight);
+    heightLeft -= pdfHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, imgHeight);
+      heightLeft -= pdfHeight;
+    }
+
     pdf.save("hisobot.pdf");
   };
 
@@ -94,45 +130,95 @@ function ScheduleRate() {
     }
   };
 
+  const handleReport = async (e) => {
+    e.preventDefault();
+    if (reportData.length === 0) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Iltimos, murojaat matnini kiriting!",
+      });
+    } else {
+      try {
+        await axios.post(`${API}/reports/new`, {
+          message: reportData,
+          reporterName: myFullName,
+          reporterId: myId,
+          schedule: thisScheduleHistory,
+        });
+        setAlert({
+          show: true,
+          type: "success",
+          message: "Muvaffaqiyatli yuborildi!",
+        });
+        thisScheduleHistory.reported = true;
+        handleClose()
+      } catch (error) {
+        setAlert({ show: true, type: "error", message: "Xatolik yuz berdi!" });
+      }
+    }
+    setTimeout(() => setAlert({ show: false, type: "", message: "" }), 5000);
+  };
+
+  let lavozimegasi = thisScheduleHistory.beginnerId;
+  useEffect(() => {
+    if (thisScheduleHistory?.beginnerId) {
+      getMyDegree(thisScheduleHistory.beginnerId);
+    }
+  }, [thisScheduleHistory]);
+
+  const getMyDegree = async (beginnerId) => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(`${API}/auth/getlavozim/${beginnerId}`);
+      setMyDegree(data.degree);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching degree:", error);
+    }
+  };
+
   return (
     <>
-      <div ref={componentRef} className="p-3 hisobot">
-        <div className="scheduletepa">
-          <div className="align-items-center pt-3 justify-content-between d-flex">
-            <img className="schedulelogo" src={logo} alt="logo" />
-            <h3 className="px-2">"TOSHKENT METROPOLITENI" DUK</h3>
-          </div>
-        </div>
-        <div className="scheduleshistory">
-          <div className="schedulebajaruvchilar">
-            <i className="fa-regular fa-user"></i> Hisobotni bajargan xodim:{" "}
-            <span>{thisScheduleHistory.beginnerName}</span>
-          </div>
-          <div className="schedulebajaruvchilar">
-            <i className="fa-solid fa-users"></i> Kompleks:{" "}
-            <span>{thisScheduleHistory.complex}</span>
-          </div>
-          <div className="schedulebajaruvchilar">
-            <i className="fa-solid fa-users"></i> Departament:{" "}
-            <span>{thisScheduleHistory.department}</span>
-          </div>
-          <div className="schedulebajaruvchilar">
-            <i className="fa-solid fa-users"></i> Bo`lim:{" "}
-            <span>{thisScheduleHistory.section}</span>
-          </div>
-          <div className="schedulebajaruvchilar">
-            <i className="fa-solid fa-circle-play"></i> Ishni boshladi:{" "}
-            <span>{thisScheduleHistory.startedAt}</span>
-          </div>
-          <div className="schedulebajaruvchilar">
-            <i className="fa-regular fa-circle-stop"></i> Ishni yakunladi:{" "}
-            <span>{thisScheduleHistory.closed}</span>
-          </div>
-          <br />
-          <br />
+      {alert.show && <Alert type={alert.type} message={alert.message} />}
+      {loading && <LoadingScreen loading={true} />}
 
+      <div ref={componentRef} className="hisobot">
+        <div className="scheduleshistory">
+          <div className="scheduletepa">
+            <div className="align-items-center justify-content-between d-flex">
+              <img className="schedulelogo" src={logo} alt="logo" />
+              <h3 className="px-2">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК</h3>
+            </div>
+          </div>
+          <div className="scheduleinfo">
+            <div className="schedulebajaruvchilar">
+              <i className="fa-regular fa-user"></i> Ҳисоботни бажарган ходим:{" "}
+              <span>{thisScheduleHistory.beginnerName}</span>
+            </div>
+            <div className="schedulebajaruvchilar">
+              <i class="fa-solid fa-building-ngo"></i> Комплекс:{" "}
+              <span>{thisScheduleHistory.complex}</span>
+            </div>
+            <div className="schedulebajaruvchilar">
+              <i class="fa-solid fa-users-viewfinder"></i> Ташкилий тузилма:{" "}
+              <span>{thisScheduleHistory.department}</span>
+            </div>
+            <div className="schedulebajaruvchilar">
+              <i className="fa-solid fa-users"></i> Бўлим:{" "}
+              <span>{thisScheduleHistory.section}</span>
+            </div>
+            <div className="schedulebajaruvchilar">
+              <i class="fa-solid fa-file-contract"></i> Лавозими:{" "}
+              <span>{degree || "Ma'lumot topilmadi"}</span>
+            </div>
+          </div>
+          <br />
+          <p className="ochilgan text-center">
+            <b>{thisScheduleHistory?.startedAt?.slice(0, 10) || "N/A"}</b>
+          </p>
+          <h5 className="text-center">Кундалик бажарилган ишлар ҲИСОБОТИ:</h5>
           <div className="scheduletasks">
-            <h5>Bajargan vazifalar:</h5>
             {thisScheduleHistory.tasks?.map((task, index) => (
               <div key={index} className="task-item">
                 <div className="">
@@ -144,52 +230,92 @@ function ScheduleRate() {
                   </Link>
                 </div>
                 <hr />
+                {/* checkpoint (bunda misol uchun 3-hisobot chegarada turgan bo`lsa dastlabki sahifada 2-hisobot oxirgisi bo`ladi, 3 va undan keyingilari next page ga o`tishi kerak) */}
               </div>
             ))}
           </div>
           <br />
           <div>
-            <div className="scheduleconfirms text-end m-3">
-              Ma'lumotlar to`g`riligini tasdiqlaydi: <span>{thisScheduleHistory.beginnerName}</span>
+            <div className="scheduleconfirms text-end mb-1">
+              Маълумотлар тўғрилигини тасдиқлайди:{" "}
+              <span>{thisScheduleHistory.beginnerName}</span>
             </div>
 
-            <div className="schedulerated d-flex justify-content-between">
-            <h5>Baholangan: </h5>
-              <span>
-                {thisScheduleHistory.rated ? (
-                  <div className="align-items-center justify-content-center">
-                    <i className="fa-regular fa-star"></i>
-                    {thisScheduleHistory.rated}
-                    {"/100"}
-                  </div>
-                ) : (
-                  "Yo'q"
-                )}
-              </span>
+            {/* checkpoint */}
+            <div className="schedulerated">
+              <div className="justify-content-between d-flex">
+                <h5>
+                  {thisScheduleHistory?.rated ? (
+                    thisScheduleHistory.ratedName ? (
+                      <>
+                        <b>{thisScheduleHistory.ratedName}</b> томонидан
+                        баҳоланди:
+                      </>
+                    ) : (
+                      "Баҳоланган"
+                    )
+                  ) : (
+                    "Баҳоланмаган"
+                  )}
+                </h5>
+                <span className="rateschhh">
+                  {thisScheduleHistory.rated ? (
+                    <div className="align-items-center justify-content-center">
+                      <i className="fa-regular fa-star"></i>
+                      {thisScheduleHistory.rated}
+                      {"/100"}
+                    </div>
+                  ) : (
+                    "Ma'lumot topilmadi"
+                  )}
+                </span>
+              </div>
             </div>
+
+            {/* checkpoint */}
+            {thisScheduleHistory.comment && (
+              <div className="commentsch align-items-center justify-content-between d-flex">
+                <div className="">
+                  <b>Baholovchi fikri:</b> {thisScheduleHistory.comment}
+                </div>
+                <i
+                  disabled={thisScheduleHistory.reported}
+                  onClick={handleShow}
+                  class="fa-solid excla fa-triangle-exclamation"
+                ></i>
+              </div>
+            )}
           </div>
-          <div className="pdfqr">
-            <div className="exclamationqr">
-              Hujjatning haqiqiyligi admin statusiga ega bo`lgan xodimlar ushbu
-              QR kod yordamida tekshirishlari mumkin. <br />
-              Hujjat faqatgina{" "}
-              <a
-                href="http://mkundalik.uz"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                mkundalik.uz
-              </a>{" "}
-              saytida taqdim etiladi.
-              <div className="current-datetime text-end mt-2">
-                {currentDateTime}
+
+          {/* checkpoint */}
+          <hr />
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="pdfqr">
+              <div className="exclamationqr">
+                Ҳужжатнининг ҳақиқийлигини текшириш учун ушбу QR кодни
+                сканерланг. <br />
+                Ҳужжат фақатгина{" "}
+                <a
+                  href="http://mkundalik.uz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  mkundalik.uz
+                </a>{" "}
+                сайтида тақдим этилади.
+                <br />
+                Ушбу ҳисоботда келтирилган барча ишлар мазмунига ҳисоботни
+                шакллантирган ходим масъул ҳисобланади.
+                <div className="current-datetime text-end mx-5">
+                  {currentDateTime}
+                </div>
               </div>
             </div>
             <div
-              className="qr-container"
-              style={{ textAlign: "center", marginTop: "20px" }}
+              className="qr-container text-center"
+              style={{ marginLeft: "20px" }}
             >
-              <QRCodeSVG value={currentUrl} size={128} />
+              <QRCodeSVG value={currentUrl} size={80} />
             </div>
           </div>
         </div>
@@ -199,8 +325,35 @@ function ScheduleRate() {
         className="pdf-download-btn"
         style={{ margin: "20px 0" }}
       >
-        <i className="fa-solid fa-download"></i> PDF yuklab olish
+        <i className="fa-solid fa-download"></i> PDF юклаб олиш
       </button>
+
+      <Modal size="lg" centered show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Baholash natijalariga e'tiroz bildirish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <b>{thisScheduleHistory.ratedName}</b> tomonidan qo`yilgan bahoga
+          e'tiroz bildiryapsiz. Ushbu masala tegishli komissiya a'zolariga
+          yetkazilishi uchun holatni batafsil bayon qiling:
+        </Modal.Body>
+        <div className="text-center">
+          <textarea
+            className="kghgva"
+            value={reportData}
+            onChange={(e) => setReportData(e.target.value)}
+            rows="5"
+          />
+        </div>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Yopish
+          </Button>
+          <Button variant="danger" onClick={(e) => handleReport(e)}>
+            E’tiroz Bildirish
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

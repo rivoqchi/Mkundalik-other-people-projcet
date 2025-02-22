@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { fetchRole } from '../Auth/CheckAuth';
 import React from 'react';
-
+import Loading from '../Additional/LoadingScreen'
+import LoadingScreen from '../Additional/LoadingScreen';
 const ProtectedRoute = ({ allowedRoles }) => {
   const [role, setRole] = React.useState(null);
   
@@ -16,7 +17,9 @@ const ProtectedRoute = ({ allowedRoles }) => {
   }, []);
 
   if (role === null) {
-    return <div>Loading...</div>;
+    return <>
+    <LoadingScreen/>
+    </>;
   }
 
   if (!allowedRoles.includes(role)) {

@@ -870,6 +870,13 @@
   padding: 10px;
   background-color: rgb(240, 240, 240);
 }
+.kghgva{
+  width: 90%;
+  font-size: 1.2rem;
+  padding: 10px;
+  border: 1px solid #007bff;
+  background-color: rgba(255, 250, 205, 0.664);
+}
 .uploadif{
   background-color: rgb(225, 225, 225);
   text-align: center;
@@ -928,8 +935,29 @@ button {
   padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  transition: .2s !important;
 }
-
+.commentquacke{
+  border: 2px solid rgb(255, 48, 48);
+  animation: shake 0.3s;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(10px);
+  }
+  50% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
 input:focus,
 select:focus,
 button:focus {
@@ -956,16 +984,16 @@ button:focus {
   width: 10rem;
 }
 .scheduleshistory{
-  background-color: rgba(44, 140, 157, 0.353);
-  border-radius: 5px;
-  box-shadow: 3px 3px 10px 3px rgb(231, 231, 231);
+  background-color: rgba(0, 132, 255, 0.102);
+  // border-radius: 5px;
+  box-shadow: 3px 3px 10px 3px rgb(214, 214, 214);
   margin: 10px;
   padding: 10px;
 }
 .schedulerated{
-  border-left: 3px solid blue;
+  border-left: 3px solid green;
   padding: 10px;
-  background-color: rgba(0, 128, 0, 0.767);
+  background-color: rgba(0, 128, 0, 0.582);
   border-radius: 10px;
   color: #fff;
 }
@@ -974,27 +1002,44 @@ button:focus {
   margin-bottom: 10px;
   width: 100%;
   border: none;
-  border-radius: 10px;
+  border-radius: 3px;
   box-shadow: 3px 3px 10px 3px rgb(184, 184, 184);
   background-color: rgba(0, 128, 0, 0.848);
   color: #fff;
-  transition: .2s;
+  transition: .5 ease-out;
   &:hover{
     box-shadow: none;
-    transform: scale(0.99);
-    background-color: green;
+    transform: scale(1.03);
+    background-color: rgb(0, 179, 0)
   }
+}
+.excla{
+  color: gold;
+  background-color: red;
+  cursor: pointer;
+  padding: 7px;
+  font-size: 1.5rem;
+  border-radius: 3px;
 }
 .uncompletedschedule{
   background-color: orange !important;
   color: #111;
 }
-.schedulebajaruvchilar{
-  background-color: #fff;
-  padding: 10px;
-  box-shadow: 3px 3px 10px 3px rgb(187, 187, 187);
+.scheduleinfo{
+  border-left: 3px solid rgb(0, 166, 255);
+  background-color: #fff !important;
   border-radius: 5px;
-  margin-bottom: 10px;
+}
+.hrr{
+  margin: 0 !important;
+  color: gray;
+}
+.schedulebajaruvchilar{
+  background-color: #ffffff;
+  font-size: 0.8rem !important;
+  padding: 5px;
+  border-bottom: 1px solid rgb(219, 219, 219);
+  // margin-bottom: 5px;
 }
 .schedulebajaruvchilar i{
   width: 20px;
@@ -1003,12 +1048,18 @@ button:focus {
   color: rgb(0, 0, 123);
   font-weight: bold;
 }
-
+.ochilgan{
+  font-size: 1.1rem;
+  margin: 0 !important;
+  padding: 0 !important;
+}
 .scheduletasks{
-  border-left: 3px solid blue;
+  font-size: 0.9rem;
+  // font-size: 1.1rem;
+  border-left: 3px solid rgb(0, 166, 255);
   padding: 10px;
-  background-color: rgba(0, 195, 255, 0.34);
-  border-radius: 10px;
+  background-color: lemonchiffon;
+  border-radius: 5px;
 }
 .schedulelogo{
   width: 5rem;
@@ -1021,17 +1072,52 @@ button:focus {
 .scheduleconfirms span{
   font-weight: bold;
 }
-.hisobot{
+.bahoinput input{
+  margin: 10px;
+  font-size: 1.2rem;
+  background-color: antiquewhite;
+}
+.rateschhh{
+  font-size: 1.4rem;
+}
+.commentsch{
   background-color: lemonchiffon;
-  padding-top: 20px !important;
+  padding: 10px;
+  border-radius: 3px;
+  border-left: 3px solid rgb(0, 166, 255);
+  color: #111;
+  font-size: 1rem;
+  margin: 10px;
+}
+.baholashbbb{
+  box-shadow: 0px 0px 10px 1px rgb(221, 221, 221);
+  margin-bottom: 10px;
+  transition: .2s !important;
+  &:hover{
+    box-shadow: none;
+    transform: scale(1.05) !important;
+  }
+}
+.hisobot{
+  page-break-inside: avoid; /* Butun div birga harakat qiladi */
+  background-color: lemonchiffon;
 }
 .qr-container {
-  margin: 20px 0;
-  padding: 15px;
+  page-break-inside: avoid;
+  text-align: center;
+  margin-top: 20px;
   border-top: 1px solid #eee;
 }
+.task-item,
+.schedulerated,
+.commentsch,
+.scheduleconfirms,
+.pdfqr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
 .scheduletepa{
-  margin: 20px;
+  margin: 10px;
 }
 .pdf-download-btn {
   background-color: #4CAF50;
@@ -1058,10 +1144,11 @@ button:focus {
   margin-left: 10px;
 }
 .unrated{
-  background-color: rgba(255, 166, 0, 0.627);
+  background-color: rgb(255, 166, 0);
   color: #111;
   &:hover{
-    background-color: rgba(255, 166, 0, 0.876);
+    background-color: rgb(0, 72, 179);
+    color: #fff;
   }
 }
 .rating-container {
@@ -1296,7 +1383,7 @@ button:focus {
   border-radius: 5px;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.3s;
+  // transition: transform 0.2s, background-color 0.3s;
 }
 
 .primary-btn {
@@ -1380,18 +1467,27 @@ button:focus {
     transform: scale(0.99);
   }
 }
+.disabled-icon {
+  pointer-events: none; /* Click qilishni bloklaydi */
+  opacity: 0.5; /* Tugmani xiralashtiradi */
+  cursor: not-allowed;
+}
 .hisobot {
   width: 210mm; /* A4 kengligi */
   min-height: 297mm; /* A4 balandligi */
   margin: 0 auto;
-  padding: 20px;
   background: white;
   font-size: 12px; /* Kichikroq shrift mobilga mos */
   box-sizing: border-box;
 }
 
 @media print {
-  .hisobot {
+  .hisobot,
+  .task-item,
+.schedulerated,
+.commentsch,
+.scheduleconfirms,
+.pdfqr {
       page-break-inside: avoid;
       width: 210mm;
       height: 297mm;
@@ -1714,4 +1810,11 @@ marquee{
 .spinner {
   width: 4rem;
   height: 4rem;
+}
+.statcard{
+  background-color: #111;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 3px rgb(180, 180, 180);
+  margin: 10px;
 }

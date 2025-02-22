@@ -193,10 +193,10 @@ function Profile() {
             <p className="theirs">{myData.address}</p>
           </div>
 
-          <div className="datum align-items-center">
+          {/* <div className="datum align-items-center">
             <p className="ours align-items-center">Lavozim yo`riqnomasi:</p>
             <LavozimYoriqnomasi />
-          </div>
+          </div> */}
         </div>
 
         <h5>Parolni yangilash</h5>
