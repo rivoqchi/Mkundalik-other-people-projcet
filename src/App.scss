@@ -1812,9 +1812,33 @@ marquee{
   height: 4rem;
 }
 .statcard{
-  background-color: #111;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 3px rgb(180, 180, 180);
-  margin: 10px;
+  box-shadow: 0px 0px 20px 2px rgb(180, 180, 180);
+  animation: opacity0to1 1s;
+}
+.iconimiz {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: gray;
+  width: 2.5rem;  /* Biroz kattaroq qildim, ko‘rinishi yaxshiroq bo‘ladi */
+  height: 2.5rem;
+  border-radius: 50%; /* Doira shaklida bo‘lishi uchun */
+}
+
+.iconimiz i {
+  color: white; /* Ikonkani oq rangda qilish */
+  font-size: 1.2rem; /* Ikonkani biroz kattalashtirish */
+}
+.iconblue{
+  background-color: blue;
+}
+.icongreen{
+  background-color: green;
+}
+
+.iconorange{
+  background-color: orange;
 }

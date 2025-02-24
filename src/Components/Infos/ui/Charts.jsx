@@ -1,31 +1,37 @@
-import React from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import React, { PureComponent } from 'react';
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 
-const data = [
-  { name: "Jan", value: 400 },
-  { name: "Feb", value: 300 },
-  { name: "Mar", value: 500 },
-  { name: "Apr", value: 700 },
-  { name: "May", value: 200 },
+const data01 = [
+  { name: 'Group A', value: 400 },
+  { name: 'Group B', value: 300 },
+  { name: 'Group C', value: 300 },
+  { name: 'Group D', value: 200 },
+];
+const data02 = [
+  { name: 'A1', value: 100 },
+  { name: 'A2', value: 300 },
+  { name: 'B1', value: 100 },
+  { name: 'B2', value: 80 },
+  { name: 'B3', value: 40 },
+  { name: 'B4', value: 30 },
+  { name: 'B5', value: 50 },
+  { name: 'C1', value: 100 },
+  { name: 'C2', value: 200 },
+  { name: 'D1', value: 150 },
+  { name: 'D2', value: 50 },
 ];
 
-const Charts = () => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold mb-2">Line Chart</h3>
-        <ResponsiveContainer width="100%" height={250}>
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
-};
+export default class Example extends PureComponent {
+  static demoUrl = 'https://codesandbox.io/s/pie-chart-of-two-levels-gor24';
 
-export default Charts;
+  render() {
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart width={400} height={400}>1
+          <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" />
+          <Pie data={data02} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
+        </PieChart>
+      </ResponsiveContainer>
+    );
+  }
+}

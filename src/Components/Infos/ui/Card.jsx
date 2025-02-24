@@ -1,32 +1,96 @@
-import React from "react";
-import Card from "./Card";
+import React, { useEffect, useState } from "react";
+import { API } from "../../../config";
+import axios from "axios";
+import LoadingScreen from "../../Additional/LoadingScreen";
 
-const stats = [
-  { title: "Xodim tizimda", value: "12,345", icon: <i className="fa-solid fa-users"></i> },
-  { title: "Bugun yozilgan hisobotlar", value: "34,567", icon: <i className="fa-solid fa-chart-pie"></i> },
-  { title: "Umumiy hisobotlar", value: "$56,789", icon: <i className="fa-solid fa-chart-simple"></i> },
-  { title: "Xodim hisobot yozyapti", value: "45%", icon: <i className="fa-solid fa-user-group"></i> },
-];
+const AnimatedNumber = ({ value, duration = 1000 }) => {
+  const [count, setCount] = useState(0);
 
-const StatsGrid = () => {
+  useEffect(() => {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = (timestamp - startTimestamp) / duration;
+      if (progress < 1) {
+        setCount(Math.floor(value * Math.pow(progress, 0.8))); // `ease-out` effekti
+        requestAnimationFrame(step);
+      } else {
+        setCount(value);
+      }
+    };
+    requestAnimationFrame(step);
+  }, [value, duration]);
+
+  return <span>{count}</span>;
+};
+
+const Card = () => {
+  const [loading, setLoading] = useState(false);
+  const [todaySchedulesCount, setTodaySchedulesCount] = useState(0);
+  const [schedulesCount, setSchedulesCount] = useState(0);
+  const [employeesCount, setEmployeesCount] = useState(0);
+
+  const getAllStatistics = async () => {
+    setLoading(true);
+    const { data } = await axios.get(`${API}/statistics/getall`);
+    setEmployeesCount(data.employeesCount);
+    setSchedulesCount(data.schedulesCount);
+    setTodaySchedulesCount(data.todaySchedulesCount);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getAllStatistics();
+  }, []);
+
   return (
-    <div className="container mt-4">
+    <>
+      {loading && <LoadingScreen loading={true} />}
       <div className="row">
-        {stats.map((stat, index) => (
-          <Card key={index} title={stat.title} value={stat.value} icon={stat.icon} />
-        ))}
+        <div className="card statcard p-2 col-12 col-md-3 m-2">
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="iconimiz iconblue">
+              <i className="fa-solid fa-users"></i>
+            </div>
+            <div className="card-boddy">
+              <h3 className="card-title">
+                <AnimatedNumber value={employeesCount} />
+              </h3>
+              <p className="card-text">Xodim tizimda</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="card statcard p-2 col-12 col-md-3 m-2">
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="iconimiz iconorange">
+              <i className="fa-solid fa-chart-pie"></i>
+            </div>
+            <div className="card-boddy">
+              <h3 className="card-title">
+                <AnimatedNumber value={todaySchedulesCount} />
+              </h3>
+              <p className="card-text">Bugun yozilgan kundalik hisobotlar</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="card statcard p-2 col-12 col-md-3 m-2">
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="iconimiz icongreen">
+              <i className="fa-solid fa-chart-simple"></i>
+            </div>
+            <div className="card-boddy">
+              <h3 className="card-title">
+                <AnimatedNumber value={schedulesCount} />
+              </h3>
+              <p className="card-text">Umumiy kundalik hisobotlar</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default StatsGrid;
-
-    //    ______
-    //  _|      |___________________
-    // | | icon |                  |
-    // | |______|                  |
-    // |               value       |
-    // |   title                   |
-    // |                           |
-    // |___________________________|
+export default Card;
