@@ -44,6 +44,7 @@ function LoginWithTelegram() {
           department: '/department',
           complex: '/complex',
           superadmin: '/superadmin',
+          commission: '/commission',
           boss: '/boss'
         };
 

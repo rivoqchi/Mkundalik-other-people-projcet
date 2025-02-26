@@ -725,16 +725,18 @@
 }
 
 .start-button {
-  background: green;
+  background: rgb(0, 32, 128);
   align-items: center;
+  height: 10vh;
   color: white;
   padding: 10px 40px;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 15px;
   cursor: pointer;
   box-shadow: 0px 0px 10px 10px rgb(220, 220, 220);
-  transition: .2s;
+  transition: 2s;
 }
 
 .start-button:hover {
@@ -893,14 +895,16 @@
   font-size: 1.5rem;
   color: #fff;
   border: none;
-  transition: .2s;
+  height: 20vh;
+  // width: 30%;
+  transition: 1s ease-out;
   box-shadow: 3px 3px 10px 3px rgb(193, 193, 193);
-  background-color: rgba(0, 128, 0, 0.785);
-  border-radius: 10px;
+  background-color: rgb(68, 68, 255);
+  border-radius: 20px;
   &:hover{
     background-color: rgba(0, 0, 255, 0.876);
     box-shadow: none;
-    transform: scale(0.99);
+    transform: scale(0.95);
   }
 }
 // 
@@ -1585,7 +1589,7 @@ marquee{
 }
 .xatolikicon{
   position: fixed;
-  bottom: 10px;
+  bottom: 40px !important;
   right: 10px;
   font-size: 1.2rem;
   background-color: rgba(128, 128, 128, 0.286);
@@ -1676,9 +1680,12 @@ marquee{
   margin-top: 10px;
 }
 .abouth1{
-  background-color: pink;
+  border-radius: 15px;
+  background: #8fbaff;
+  box-shadow: inset 6px 6px 12px #6d8dc2,
+            inset -6px -6px 12px #b1e7ff;
   padding: 20px;
-  border-left: 4px solid;
+  border-left: 4px solid gold;
   animation: righttoleft 2s;
   z-index: -1;
 }
@@ -1813,19 +1820,30 @@ marquee{
 }
 .statcard{
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 20px 2px rgb(180, 180, 180);
-  animation: opacity0to1 1s;
+  border-radius: 20px !important;
+  box-shadow: 0px 0px 20px 5px rgb(180, 180, 180);
+  animation: opacity0to1 2s;
+  border: none !important;
+  color: #fff !important;
+  justify-content: center !important;
+  cursor: pointer;
+  transition: .2s ease-out;
+  min-height: 20vh !important;
+  opacity: 0.9;
+  &:hover{
+    opacity: 1;
+    box-shadow: none;
+    transform: scale(0.95);
+  }
 }
-.iconimiz {
+.iconimiz i{
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: gray;
-  width: 2.5rem;  /* Biroz kattaroq qildim, ko‘rinishi yaxshiroq bo‘ladi */
-  height: 2.5rem;
-  border-radius: 50%; /* Doira shaklida bo‘lishi uchun */
+  font-size: 2rem !important;
+  min-width: 2.5rem;  /* Biroz kattaroq qildim, ko‘rinishi yaxshiroq bo‘ladi */
+  min-height: 2.5rem;
 }
 
 .iconimiz i {
@@ -1833,12 +1851,12 @@ marquee{
   font-size: 1.2rem; /* Ikonkani biroz kattalashtirish */
 }
 .iconblue{
-  background-color: blue;
+  background-color: blue !important;
 }
 .icongreen{
-  background-color: green;
+  background-color: green !important;
 }
 
 .iconorange{
-  background-color: orange;
+  background-color: orange !important;
 }

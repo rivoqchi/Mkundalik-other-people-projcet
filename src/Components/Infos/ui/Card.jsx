@@ -47,9 +47,9 @@ const Card = () => {
     <>
       {loading && <LoadingScreen loading={true} />}
       <div className="row">
-        <div className="card statcard p-2 col-12 col-md-3 m-2">
+        <div className="card iconblue statcard p-2 col-12 col-md-3 m-2">
           <div className="d-flex align-items-center justify-content-between">
-            <div className="iconimiz iconblue">
+            <div className="iconimiz">
               <i className="fa-solid fa-users"></i>
             </div>
             <div className="card-boddy">
@@ -61,30 +61,30 @@ const Card = () => {
           </div>
         </div>
 
-        <div className="card statcard p-2 col-12 col-md-3 m-2">
+        <div className="card iconorange statcard p-2 col-12 col-md-3 m-2">
           <div className="d-flex align-items-center justify-content-between">
-            <div className="iconimiz iconorange">
+            <div className="iconimiz">
               <i className="fa-solid fa-chart-pie"></i>
             </div>
             <div className="card-boddy">
               <h3 className="card-title">
                 <AnimatedNumber value={todaySchedulesCount} />
               </h3>
-              <p className="card-text">Bugun yozilgan kundalik hisobotlar</p>
+              <p className="card-text">Bugun yozilgan hisobotlar</p>
             </div>
           </div>
         </div>
 
-        <div className="card statcard p-2 col-12 col-md-3 m-2">
+        <div className="card icongreen statcard p-2 col-12 col-md-3 m-2">
           <div className="d-flex align-items-center justify-content-between">
-            <div className="iconimiz icongreen">
+            <div className="iconimiz">
               <i className="fa-solid fa-chart-simple"></i>
             </div>
             <div className="card-boddy">
               <h3 className="card-title">
                 <AnimatedNumber value={schedulesCount} />
               </h3>
-              <p className="card-text">Umumiy kundalik hisobotlar</p>
+              <p className="card-text">Umumiy hisobotlar</p>
             </div>
           </div>
         </div>

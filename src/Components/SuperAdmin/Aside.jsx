@@ -82,12 +82,6 @@ function Aside() {
               <span>Xodimlar</span>
             </Link>
           </li>
-          <li className={location.pathname === '/superadmin/instructions' ? 'active' : ''}>
-            <Link to="/superadmin/instructions">
-              <i className="fa-solid fa-book"></i>
-              <span>Yo‘riqnomalar nazorati</span>
-            </Link>
-          </li>
           <li className={location.pathname === '/superadmin/profile' ? 'active' : ''}>
             <Link to="/superadmin/profile">
               <i className="fa-regular fa-user"></i>

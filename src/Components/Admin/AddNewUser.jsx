@@ -48,6 +48,8 @@ const AddNewUser = () => {
         setMyRole("hr");
       } else if (data.user.role === "boss") {
         setMyRole("boss");
+      } else if (data.user.role === "commission") {
+        setMyRole("commission");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -277,6 +279,7 @@ const AddNewUser = () => {
                 <option value="complex">Metropoliten boshlig`i o`rinbosari (Complex)</option>
                 <option value="superadmin">Super Admin (Barcha imkoniyatlar)</option>
                 <option value="boss">Boshliq / Bosh muhandis (Boss)</option>
+                <option value="commission">Tizimni nazorat qilish komissiyasi (Commission)</option>
                 <option value="hr">Kadrlar bo`limi (HR)</option>
               </select>
             </div>

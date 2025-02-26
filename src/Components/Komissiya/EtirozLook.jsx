@@ -17,7 +17,8 @@ function ScheduleRate() {
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
-  const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
+  const [thisScheduleHistory, setReportSchedule] = useState([]);
+  const [report, setReport] = useState([]);
   const [checking, setChecking] = useState([]);
   const [loading, setLoading] = useState(false);
   const [degree, setMyDegree] = useState([]);
@@ -65,9 +66,11 @@ function ScheduleRate() {
   const getThisScheduleHistory = async () => {
     try {
       const { data } = await axios.get(
-        `${API}/schedules/getschedulebyid/${id}`
+        `${API}/commission/getbyid/${id}`
       );
-      setThisScheduleHistory(data.thehistory);
+      setReport(data.report);
+      setReportSchedule(data.report.schedule);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -188,15 +191,16 @@ function ScheduleRate() {
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">
           <div className="scheduletepa">
-            <div className="align-items-center justify-content-between d-flex">
-              <img className="schedulelogo" src={logo} alt="logo" />
-              <h3 className="px-2">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК</h3>
-            </div>
+              <h3 className="text-center redword px-2">E'tiroz tafsilotlari</h3>
           </div>
           <div className="scheduleinfo">
             <div className="schedulebajaruvchilar">
               <i className="fa-regular fa-user"></i> Ҳисоботни бажарган ходим:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
+            </div>
+            <div className="schedulebajaruvchilar">
+              <i className="fa-regular fa-user"></i> Ҳисоботни текширган ходим:{" "}
+              <span>{thisScheduleHistory.ratedName}</span>
             </div>
             <div className="schedulebajaruvchilar">
               <i class="fa-solid fa-building-ngo"></i> Комплекс:{" "}
@@ -232,7 +236,6 @@ function ScheduleRate() {
                   </Link>
                 </div>
                 <hr />
-                {/* checkpoint (bunda misol uchun 3-hisobot chegarada turgan bo`lsa dastlabki sahifada 2-hisobot oxirgisi bo`ladi, 3 va undan keyingilari next page ga o`tishi kerak) */}
               </div>
             ))}
           </div>
@@ -262,7 +265,7 @@ function ScheduleRate() {
                 </h5>
                 <span className="rateschhh">
                   {thisScheduleHistory.rated ? (
-                    <div className="align-items-center justify-content-center">
+                    <div className="align-items-center redback justify-content-center">
                       <i className="fa-regular fa-star"></i>
                       {thisScheduleHistory.rated}
                       {"/100"}
@@ -280,45 +283,15 @@ function ScheduleRate() {
                 <div className="">
                   <b>Baholovchi fikri:</b> {thisScheduleHistory.comment}
                 </div>
-                <i
-                  disabled={thisScheduleHistory.reported}
-                  onClick={handleShow}
-                  class="fa-solid excla fa-triangle-exclamation"
-                ></i>
               </div>
             )}
-          </div>
-
-          {/* checkpoint */}
-          <hr />
-          <div className="d-flex align-items-center justify-content-between">
-            <div className="pdfqr">
-              <div className="exclamationqr">
-                Ҳужжатнининг ҳақиқийлигини текшириш учун ушбу QR кодни
-                сканерланг. <br />
-                Ҳужжат фақатгина{" "}
-                <a
-                  href="http://mkundalik.uz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  mkundalik.uz
-                </a>{" "}
-                сайтида тақдим этилади.
-                <br />
-                Ушбу ҳисоботда келтирилган барча ишлар мазмунига ҳисоботни
-                шакллантирган ходим масъул ҳисобланади.
-                <div className="current-datetime text-end mx-5">
-                  {currentDateTime}
+            {report.message && (
+              <div className="commentsch redback align-items-center justify-content-between d-flex">
+                <div className="redback p-3 text-light">
+                  <b>E'tiroz matni:</b> {report.message}
                 </div>
               </div>
-            </div>
-            <div
-              className="qr-container text-center"
-              style={{ marginLeft: "20px" }}
-            >
-              <QRCodeSVG value={currentUrl} size={80} />
-            </div>
+            )}
           </div>
         </div>
       </div>

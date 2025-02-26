@@ -38,6 +38,8 @@ function Xodimlar() {
         setMyRole("hr");
       } else if (data.user.role === "boss") {
         setMyRole("boss");
+      } else if (data.user.role === "commission") {
+        setMyRole("commission");
       }
     setLoading(false);
 
@@ -82,6 +84,8 @@ function Xodimlar() {
   } else if (myRole === "complex") {
     dataa = myComplex;
   } else if (myRole === "boss") {
+    dataa = myComplex;
+  } else if (myRole === "commission") {
     dataa = myComplex;
   }
   return (

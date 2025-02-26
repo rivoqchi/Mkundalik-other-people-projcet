@@ -46,8 +46,11 @@ const goTo = async () => {
         setShow(false)
         navigate(`/boss/profile`)
     } else if (data.user.role === "hr") {
-        setShow(false)
-        navigate(`/hr/profile`)
+      setShow(false)
+      navigate(`/hr/profile`)
+    } else if (data.user.role === "commission") {
+      setShow(false)
+      navigate(`/commission/profile`)
     }
   };
 

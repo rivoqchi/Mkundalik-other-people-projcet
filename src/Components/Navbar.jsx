@@ -31,6 +31,8 @@ function Navbarr() {
       return '/complex';
     } else if (role === 'boss'){
       return '/boss';
+    } else if (role === 'commission'){
+      return '/commission';
     } else if (role === 'department'){
       return '/department';
     } else if (role === 'hr'){

@@ -31,6 +31,8 @@ function ScheduleRate() {
       setMyRole("boss");
     } else if (data.user.role === "hr") {
       setMyRole("hr");
+    } else if (data.user.role === "commission") {
+      setMyRole("commission");
     }
   };
   useEffect(() => {

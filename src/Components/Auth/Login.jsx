@@ -51,6 +51,7 @@ const Login = () => {
                         complex: "/complex",
                         department: "/department",
                         hr: "/hr",
+                        commission: "/commission",
                         boss: "/boss"
                     };
                     navigate(routes[data.employee.role] || "/fill");

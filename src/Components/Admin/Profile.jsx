@@ -50,6 +50,8 @@ function Profile() {
       setMyRole("hr");
     } else if (data.user.role === "boss") {
       setMyRole("boss");
+    } else if (data.user.role === "commission") {
+      setMyRole("commission");
     }
     setMySection(data.user.section);
     setMyDepartment(data.user.department);

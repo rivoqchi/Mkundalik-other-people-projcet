@@ -20,11 +20,10 @@ import ScheduleNew from '../Admin/ScheduleNew';
 import ScheduleHistory from '../Admin/ScheduleHistory';
 import ScheduleSectionRating from '../Admin/ScheduleSectionRating';
 import Xodimlar from './Xodimlar';
-import Instructions from './Instructions';
 import LookSchedule from '../Admin/LookSchedule';
 import ScheduleRate from '../Admin/ScheduleRate';
 import AllUsers from './AllUsers';
-import PleaseInstruction from '../Asking/PleaseInstruction'
+import PleaseInstruction from '../Asking/PleaseInstruction';
 import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
 import Info from '../Infos/Info';
 import News from '../Infos/News';
@@ -69,7 +68,6 @@ function SuperAdminRoute() {
               <Route path="/profile" exact element={<Profile />} />
               <Route path="/employees" exact element={<Xodimlar />} />
               <Route path="/employees/allusers" exact element={<AllUsers />} />
-              <Route path="/instructions" exact element={<Instructions />} />
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />

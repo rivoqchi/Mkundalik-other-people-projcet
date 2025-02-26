@@ -32,8 +32,8 @@ function XatolikXabar() {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <a className='pointer' href="mailto:tashmetroweb@mail.ru">
-              <Form.Label>tashmetroweb@mail.ru</Form.Label>
+              <a className='pointer' href="mailto:mkundalik@tashmetro.uz">
+              <Form.Label>mkundalik@tashmetro.uz</Form.Label>
               </a>
             </Form.Group>
           </Form>
@@ -54,7 +54,7 @@ function XatolikXabar() {
           transition: background 0.3s;
         }
         .xatolikicon:hover {
-          background-color: rgba(255, 0, 0, 0.7);
+          background-color: red;
         }
       `}</style>
     </>

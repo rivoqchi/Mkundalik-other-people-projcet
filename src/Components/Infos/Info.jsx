@@ -22,7 +22,7 @@ const Info = () => {
     return (
         <div className="tap-page">
             <h3 className='abouth1'>Dastur haqida</h3>
-            <div className="version">Dastur versiyasi: <b>1.0.0</b></div>
+            <div className="version">Versiya: <b>0.7.8</b></div>
             <p className='aboutp'>
             <a href="http://mkundalik.uz" target="_blank" rel="noopener noreferrer">mkundalik.uz</a> - bu <b>“TOSHKENT METROPOLITENI” DUK</b> tarkibiy tuzilmasida faoliyat yurituvchi xodimlarning ish jarayonlarini yanada samarali boshqarish, ularning kundalik faoliyati bo`yicha hisobotlarni elektron shaklda shakllantirish, ularni tizimli ravishda baholash hamda monitoring qilish imkonini beruvchi zamonaviy axborot tizimidir. <br/><br/>Mazkur dastur xodimlar tomonidan kiritiladigan ma'lumotlarni avtomatlashtirilgan holda qayta ishlash, ularning natijalarini tahlil qilish va rahbariyatga operativ tarzda yetkazish uchun mo`ljallangan bo`lib, ish samaradorligini oshirish va jarayonlarni shaffoflashtirishga xizmat qiladi.
             </p>

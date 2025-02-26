@@ -38,6 +38,8 @@ function RatingMyAdmins() {
       setMyRole("department")
     }else if (data.user.role === 'boss') {
       setMyRole("boss")
+    }else if (data.user.role === 'commission') {
+      setMyRole("commission")
     }
   }
   useEffect(() =>{

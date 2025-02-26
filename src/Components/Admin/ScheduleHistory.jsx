@@ -52,6 +52,8 @@ function SchduleHistory() {
     address = "department"
   }else if(myRole === "boss"){
     address = "boss"
+  }else if(myRole === "commission"){
+    address = "commission"
   }
   
   return (
