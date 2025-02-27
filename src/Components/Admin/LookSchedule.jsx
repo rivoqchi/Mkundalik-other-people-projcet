@@ -11,6 +11,7 @@ import LoadingScreen from "../Additional/LoadingScreen";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Alert from "../Additional/Alert";
+import DownloadDocx from "./DownloadDocx";
 function ScheduleRate() {
   const myId = window.localStorage.getItem("user_id");
   const myFullName = window.localStorage.getItem("fullName");
@@ -329,6 +330,9 @@ function ScheduleRate() {
       >
         <i className="fa-solid fa-download"></i> PDF юклаб олиш
       </button>
+      <DownloadDocx thisScheduleHistory={thisScheduleHistory} degree={degree} />
+
+
 
       <Modal size="lg" centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
