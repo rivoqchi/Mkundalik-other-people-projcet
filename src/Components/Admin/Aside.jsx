@@ -35,6 +35,7 @@ function Aside() {
     <div className="aside">
       <div className="aside-logo">
       <i class="fa-solid fa-user-tie"></i>
+      
         <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>
       </div>
