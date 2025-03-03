@@ -36,6 +36,7 @@ function Aside() {
     <div className="aside">
       <div className="aside-logo">
       {/* <i class="fa-solid fa-user-tie"></i> */}
+      {/* asd */}
       <Link to='/department/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
         <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>
