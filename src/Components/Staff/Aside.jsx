@@ -6,7 +6,6 @@ import { API } from '../../config';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-import logo from '../Images/logo-png.png';
 function Aside() {
   const navigate = useNavigate();
   const location = useLocation(); // Hozirgi yo'lni olish
@@ -35,8 +34,7 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      {/* <i class="fa-solid fa-user"></i> */}
-      <Link to='/user/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+      <i class="fa-solid fa-user"></i>
         <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>
       </div>

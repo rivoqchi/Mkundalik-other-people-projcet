@@ -12,6 +12,7 @@ import SuperAdminRoute from "./Components/SuperAdmin/SuperAdminRoute";
 import ComplexRoute from "./Components/Complex/ComplexRoute";
 import BossRoute from "./Components/Boss/BossRoute";
 import DepartmentRoute from "./Components/Department/DepartmentRoute";
+import StaffRoute from "./Components/Staff/StaffRoute";
 import HrRoute from "./Components/Hr/HrRoute";
 import LookSchedule from "./Components/Admin/LookSchedule";
 
@@ -38,6 +39,10 @@ function App() {
 
             <Route element={<ProtectedRoute allowedRoles={["employee"]} />}>
               <Route path="/user/*" element={<EmployeeRoute />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["staff"]} />}>
+              <Route path="/staff/*" element={<StaffRoute />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={["admin", "superadmin", "department"]} />}>

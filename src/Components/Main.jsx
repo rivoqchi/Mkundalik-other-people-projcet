@@ -30,6 +30,8 @@ function Main() {
         navigate("/boss");
       } else if (data?.user?.role === "commission") {
         navigate("/commission");
+      } else if (data?.user?.role === "staff") {
+        navigate("/staff");
       } else {
         console.warn("No valid role found");
       }

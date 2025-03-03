@@ -35,6 +35,8 @@ function Navbarr() {
       return '/commission';
     } else if (role === 'department'){
       return '/department';
+    } else if (role === 'staff'){
+      return '/staff';
     } else if (role === 'hr'){
       return '/hr';
     } else if (role === 'new'){
