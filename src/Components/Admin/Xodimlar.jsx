@@ -104,10 +104,10 @@ function Xodimlar() {
     </div>
   </div>
   <div className="xodimlartable">
-    <div className="newcitata">
+    {/* <div className="newcitata">
       Endilikda xodimlarning barcha kundaliklarini ko`rish uchun xodimning
       ismi ustiga bosing.
-    </div>
+    </div> */}
     <table className="table xodimlartable overflow-x-auto table-striped mt-3">
       <thead>
         <tr>

@@ -6,6 +6,7 @@ import { API } from '../../config';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
+import logo from '../Images/logo-png.png';
 function Aside() {  
     const [show, setShow] = useState(false);
   
@@ -34,7 +35,8 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      <i class="fa-solid fa-users-between-lines"></i>
+      {/* <i class="fa-solid fa-users-between-lines"></i> */}
+      <Link to='/hr/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
         <h4>HR Panel</h4>
       </div>
       <nav className="aside-menu">

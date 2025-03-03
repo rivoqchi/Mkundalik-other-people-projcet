@@ -31,6 +31,8 @@
 
 /*! decimal.js-light v2.5.1 https://github.com/MikeMcl/decimal.js-light/LICENCE */
 
+/*! pako 2.1.0 https://github.com/nodeca/pako @license (MIT AND Zlib) */
+
 /*! sheetjs (C) 2013-present SheetJS -- http://sheetjs.com */
 
 /*! xlsx.js (C) 2013-present SheetJS -- http://sheetjs.com */

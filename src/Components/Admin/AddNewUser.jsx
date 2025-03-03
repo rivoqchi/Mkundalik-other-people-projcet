@@ -27,7 +27,7 @@ const AddNewUser = () => {
     error: "",
     success: false,
   });
-  
+
   let myId = window.localStorage.getItem("user_id");
   const getMyData = async () => {
     try {
@@ -50,6 +50,8 @@ const AddNewUser = () => {
         setMyRole("boss");
       } else if (data.user.role === "commission") {
         setMyRole("commission");
+      } else if (data.user.role === "staff") {
+        setMyRole("staff");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -91,8 +93,19 @@ const AddNewUser = () => {
     getAllComplexes();
   }, []);
 
-  const { name, phone, password, complex, department, section, degree, status, error, success } =
-    values;
+  const {
+    name,
+    phone,
+    password,
+    complex,
+    department,
+    section,
+    degree,
+    status,
+    error,
+    success,
+    key,
+  } = values;
 
   const acceptedBy = myName;
   const handleSwitchChange = () => {
@@ -126,6 +139,7 @@ const AddNewUser = () => {
         section,
         department,
         complex,
+        key,
         degree,
         status,
         acceptedBy,
@@ -254,8 +268,12 @@ const AddNewUser = () => {
                 value={degree}
               />
             </div>
-            
-
+            <div className="form-group">
+            <label className="lab" htmlFor="acceptedBy">
+              Tasdiqlaydi
+            </label>
+            <input id="acceptedBy" type="text" disabled value={acceptedBy} />
+          </div>
           </div>
 
           <div className="col-12 col-md-6">
@@ -275,11 +293,19 @@ const AddNewUser = () => {
                 </option>
                 <option value="employee">Xodim (Employee)</option>
                 <option value="admin">Bo`lim boshlig`i (Admin)</option>
-                <option value="department">Xizmat boshlig`i (Department)</option>
-                <option value="complex">Metropoliten boshlig`i o`rinbosari (Complex)</option>
-                <option value="superadmin">Super Admin (Barcha imkoniyatlar)</option>
+                <option value="department">
+                  Xizmat boshlig`i (Department)
+                </option>
+                <option value="complex">
+                  Metropoliten boshlig`i o`rinbosari (Complex)
+                </option>
+                <option value="superadmin">
+                  Super Admin (Barcha imkoniyatlar)
+                </option>
                 <option value="boss">Boshliq / Bosh muhandis (Boss)</option>
-                <option value="commission">Tizimni nazorat qilish komissiyasi (Commission)</option>
+                <option value="commission">
+                  Tizimni nazorat qilish komissiyasi (Commission)
+                </option>
                 <option value="hr">Kadrlar bo`limi (HR)</option>
               </select>
             </div>
@@ -378,12 +404,18 @@ const AddNewUser = () => {
               </div>
             </div>
             
-          </div>
-          <div className="form-group">
-            <label className="lab" htmlFor="acceptedBy">
-              Tasdiqlaydi
-            </label>
-            <input id="acceptedBy" type="text" disabled value={acceptedBy} />
+            <div className="form-group">
+              <label className="lab d-flex" htmlFor="key">
+                Kalit so`z <p className="redword"> (agar bo`lsa)</p>
+              </label>
+              <input
+                id="key"
+                type="text"
+                onChange={handleChange("key")}
+                placeholder="Kalit so`z"
+                value={key}
+              />
+            </div>
           </div>
         </div>
         <div className="form-group">

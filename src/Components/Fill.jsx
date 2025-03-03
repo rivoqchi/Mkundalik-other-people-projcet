@@ -41,6 +41,8 @@ const [myRole, setMyRole] = useState([]);
             navigate("/boss")
           }else if(data.user.role === "commission"){
             navigate("/commission")
+          }else if(data.user.role === "staff"){
+            navigate("/staff")
           }
       }
       if(data.user.role === 'admin'){
@@ -59,6 +61,8 @@ const [myRole, setMyRole] = useState([]);
         setMyRole("boss")
       }else if(data.user.role === 'commission'){
         setMyRole("commission")
+      }else if(data.user.role === 'staff'){
+        setMyRole("staff")
       }
     } catch (error) {
       console.error("Error fetching data:", error);
