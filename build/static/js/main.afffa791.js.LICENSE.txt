@@ -29,8 +29,6 @@
   PERFORMANCE OF THIS SOFTWARE.
   ***************************************************************************** */
 
-/*! decimal.js-light v2.5.1 https://github.com/MikeMcl/decimal.js-light/LICENCE */
-
 /*! pako 2.1.0 https://github.com/nodeca/pako @license (MIT AND Zlib) */
 
 /*! sheetjs (C) 2013-present SheetJS -- http://sheetjs.com */
@@ -255,9 +253,9 @@
 
 /**
  * @license React
- * react-is.production.min.js
+ * react-is.production.js
  *
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -297,6 +295,14 @@
  * @license qrcode.react
  * Copyright (c) Paul O'Shannessy
  * SPDX-License-Identifier: ISC
+ */
+
+/**
+ * @mui/styled-engine v6.4.6
+ *
+ * @license MIT
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 /**
