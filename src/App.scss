@@ -1867,3 +1867,25 @@ marquee{
 .newsimg{
   width: 10rem;
 }
+.stath1{
+  background-color: rgba(0, 128, 0, 0.678);
+  padding: 10px;
+  border-radius: 10px;
+  color: #fff;
+}
+.statdiv{
+  background-color: #ffeacf;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 30px 3px rgb(180, 180, 180);
+  color: #fff;
+  transition: .2s ease-out;
+  cursor: pointer;
+  &:hover{
+    box-shadow: none;
+    transform: scale(0.99);
+  }
+}
+.statdiv2{
+  background-color: #d2dde8;
+}

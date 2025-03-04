@@ -7,10 +7,10 @@ import { API } from "../../../config";
 const chartSetting = {
   yAxis: [
     {
-      label: "Jami hisobotlar soni:",
+      label: "O`rtacha ball:",
     },
   ],
-  series: [{ dataKey: "miqdor", label: "Jami hisobotlar soni:", valueFormatter: (value) => `${value} ta` }],
+  series: [{ dataKey: "miqdor", label: "O`rtacha ball:", valueFormatter: (value) => `${value} ball` }],
   height: 300,
   sx: {
     [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
@@ -25,11 +25,11 @@ export default function TickPlacementBars() {
   useEffect(() => {
     const getLengthData = async () => {
       try {
-        const { data } = await axios.get(`${API}/statistics/getbylength/`);        
+        const { data } = await axios.get(`${API}/statistics/getbyrated/`);
         // Backenddan kelgan ma'lumotni to'g'ri formatga o'tkazamiz
         const formattedData = data.data.map((item) => ({
           name: item.department || "Noma'lum", // Agar department bo‘sh bo‘lsa, "Noma'lum" deb yozamiz
-          miqdor: item.amount || 0, // Agar amount bo‘sh bo‘lsa, 0 qo‘yiladi
+          miqdor: item.averageRated || 0, // Agar amount bo‘sh bo‘lsa, 0 qo‘yiladi
         }));
 
         setDataset(formattedData); // Ma'lumotni state ga saqlaymiz
@@ -42,8 +42,8 @@ export default function TickPlacementBars() {
   }, []);
 
   return (
-    <div className="p-3 statdiv">
-      <h5 className="stath1 text-center">Top 10 eng ko`p kundalik hisobotlarni qayd etgan tarkibiy tuzilmalar</h5>
+    <div className="p-3 statdiv statdiv2">
+      <h5 className="stath1 text-center">Kundalik hisobotlarning o`rtacha bahosi bo`yicha top 10 tarkibiy tuzilmalar</h5>
         <div style={{ width: "100%" }}>
       <BarChart
         dataset={dataset} // API dan kelgan ma'lumotlar
