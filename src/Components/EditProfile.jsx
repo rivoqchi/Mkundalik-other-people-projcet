@@ -42,12 +42,22 @@ function EditProfile() {
 
   useEffect(() => {
     if (myData) {
+      const parseDate = (dateStr) => {
+        if (!dateStr) return null; // Agar sana bo'sh bo'lsa, null qaytar
+        const parts = dateStr.split(".");
+        if (parts.length === 3) {
+          const [day, month, year] = parts.map(Number);
+          return new Date(year, month - 1, day); // Yil, oy (0-based), kun
+        }
+        return new Date(dateStr); // Agar format noto‘g‘ri bo‘lsa, to‘g‘ridan-to‘g‘ri `Date` obyektiga o'tkazishga urinish
+      };
+  
       setValues({
-        dateOfBirth: myData.dateOfBirth ? new Date(myData.dateOfBirth) : null,
+        dateOfBirth: parseDate(myData.dateOfBirth),
+        firstAct: parseDate(myData.firstAct) || new Date(),
         placeOfBirth: myData.placeOfBirth || "",
         name: myData.name || "",
         degree: myData.degree || "",
-        firstAct: myData.firstAct ? new Date(myData.firstAct) : new Date(),
         nationality: myData.nationality || "",
         education: myData.education || "",
         speciality: myData.speciality || "",

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API } from '../../config';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
 function Aside() {  
     const [show, setShow] = useState(false);
@@ -35,8 +35,10 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      {/* <i className="fa-solid fa-book"></i> */}
-      <Link to='/commission/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        <div className="d-flex align-items-center justify-content-center">
+        <img className='noteimg' src={note} alt="" />
+        <Link to='/commission/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        </div>
       <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>      </div>
       <nav className="aside-menu">

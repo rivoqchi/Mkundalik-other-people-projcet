@@ -1889,3 +1889,69 @@ marquee{
 .statdiv2{
   background-color: #d2dde8;
 }
+.newspage {
+  background-color: #cae5ff;
+  padding: 20px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.news-container {
+  width: 100%;
+  max-width: 800px;
+}
+
+.news-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.newsprofileimg {
+  width: 4rem;
+  height: 4rem;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.newsprofileimg img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.news-card {
+  background-color: #fff;
+  padding: 15px;
+  border-left: 4px solid blue;
+  border-radius: 15px;
+  flex: 1;
+}
+
+.newsimg {
+  width: 15rem;
+  max-height: 100%;
+  // object-fit: cover;
+  border-radius: 10px;
+}
+
+.news-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.news-description {
+  font-size: 1rem;
+  margin-top: 5px;
+  color: #333;
+}
+.noteimg{
+  width: 3rem;
+}

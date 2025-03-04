@@ -1,0 +1,20 @@
+[
+    {
+      "id": 1,
+      "title": "Sun'iy intellekt",
+      "description": "Tez orada tizimga sun'iy intellekt qo`shilishini ma'lum qilamiz...",
+      "image": "https://static.vecteezy.com/system/resources/thumbnails/046/861/646/small_2x/gemini-icon-on-a-transparent-background-free-png.png",
+      "liked": [],
+      "disliked": [],
+      "comments": []
+    },
+    {
+      "id": 2,
+      "title": "Bildirishnoma",
+      "description": "Bildirishnomalarni rasmiy telegram bot orqali olish imkoniyati...",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1200px-Telegram_logo.svg.png",
+      "liked": [],
+      "disliked": [],
+      "comments": []
+    }
+  ]
