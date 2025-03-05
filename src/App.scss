@@ -1895,6 +1895,8 @@ marquee{
   border-radius: 40px;
   display: flex;
   justify-content: center;
+  height: 95vh;
+  overflow-y: auto;
 }
 
 .news-container {
@@ -1906,7 +1908,7 @@ marquee{
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 
 .newsprofileimg {
@@ -1954,4 +1956,11 @@ marquee{
 }
 .noteimg{
   width: 3rem;
+}
+.faqbody{
+  background-color: #ebebeb;
+  font-weight: bold;
+}
+.accordion-button{
+  box-shadow: none !important;
 }

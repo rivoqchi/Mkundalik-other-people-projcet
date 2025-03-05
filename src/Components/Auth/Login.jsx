@@ -57,10 +57,23 @@ const Login = () => {
                             commission: "/commission",
                             boss: "/boss"
                         };
-                        navigate(routes[data.employee.role] || "/fill");
+                        navigate(routes[data.employee.role]);
+                        // navigate(routes[data.employee.role] || "/fill");
                     }
-                } else {
-                    navigate('/fill');
+                } 
+                else {
+                    const routes = {
+                        employee: "/user",
+                        admin: "/admin",
+                        superadmin: "/superadmin",
+                        complex: "/complex",
+                        department: "/department",
+                        hr: "/hr",
+                        commission: "/commission",
+                        boss: "/boss"
+                    };
+                    navigate(routes[data.employee.role]);
+                    // navigate('/fill');
                 }
             } else {
                 navigate('/iamnew');

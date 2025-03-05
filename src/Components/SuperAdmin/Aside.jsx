@@ -104,7 +104,7 @@ function Aside() {
           <li className={location.pathname === '/superadmin/profile' ? 'active' : ''}>
             <Link to="/superadmin/about">
               <i class="fa-solid fa-info"></i>
-              <span>Dastur haqida</span>
+              <span>Dastur haqida</span><span className="newtop">NEW</span>
             </Link>
           </li>
         </ul>
