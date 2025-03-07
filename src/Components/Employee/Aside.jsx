@@ -68,6 +68,15 @@ function Aside() {
               <span>Chiqish</span>
             </Link>
           </li>
+
+                    {/* <li className={location.pathname === '/commission/about' ? 'active' : ''}>
+                      <Link to="/user/about">
+                        <i class="fa-solid fa-info"></i>
+                        <span>Dastur haqida</span><span className="newtop">NEW</span>
+                      </Link>
+                    </li> */}
+
+
         </ul>
       </nav>
     </div>

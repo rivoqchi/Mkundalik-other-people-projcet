@@ -59,7 +59,7 @@ function Aside() {
           <li className={location.pathname === '/admin/rating/ours' ? 'active' : ''}>
             <Link to="/admin/rating/ours">
               <i className="fa-solid fa-medal"></i>
-              <span>Mening bo`limim ko`rsatkichlari</span>
+              <span>Xodimlarim ko`rsatkichlari</span>
             </Link>
           </li>
           {/* <li className={location.pathname === '/admin/sections' ? 'active' : ''}>
@@ -92,6 +92,13 @@ function Aside() {
               <span>Chiqish</span>
             </Link>
           </li>
+
+          {/* <li className={location.pathname === '/admin/profile' ? 'active' : ''}>
+            <Link to="/admin/about">
+              <i class="fa-solid fa-info"></i>
+              <span>Dastur haqida</span><span className="newtop">NEW</span>
+            </Link>
+          </li> */}
         </ul>
       </nav>
     </div>

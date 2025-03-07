@@ -46,13 +46,19 @@ function Aside() {
         <li className={location.pathname === '/boss/monitoring' ? 'active' : ''}>
             <Link disabled to="/boss/rating/complexes">
             <i class="fa-solid fa-chart-pie"></i>
-              <span>Monitoring</span>
+            <span>Raxbar nazoratidagilar</span>
             </Link>
           </li>
           <li className={location.pathname === '/boss/structure' ? 'active' : ''}>
             <Link to="/boss/structure">
               <i className="fa-solid fa-sitemap"></i>
               <span>Tashkiliy tuzilma</span>
+            </Link>
+          </li>
+          <li className={location.pathname === '/boss/statistics' ? 'active' : ''}>
+            <Link to="/boss/statistics">
+              <i className="fa-solid fa-sitemap"></i>
+              <span>Statistika</span>
             </Link>
           </li>
           <li className={location.pathname === '/boss/profile' ? 'active' : ''}>
@@ -67,6 +73,13 @@ function Aside() {
               <span>Chiqish</span>
             </Link>
           </li>
+
+          {/* <li className={location.pathname === '/boss/profile' ? 'active' : ''}>
+            <Link to="/boss/about">
+              <i class="fa-solid fa-info"></i>
+              <span>Dastur haqida</span><span className="newtop">NEW</span>
+            </Link>
+          </li> */}
         </ul>
       </nav>
     </div>

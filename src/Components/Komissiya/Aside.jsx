@@ -45,16 +45,22 @@ function Aside() {
         <ul>
         <li className={location.pathname === '/commission/objections' ? 'active' : ''}>
             <Link disabled to="/commission/objections">
-            <i class="fa-solid fa-chart-pie"></i>
+            <i class="fa-solid fa-code-branch"></i>
               <span>Kelib tushgan e'tirozlar</span>
             </Link>
           </li>
           <li className={location.pathname === '/commission/objections/closed' ? 'active' : ''}>
             <Link to="/commission/objections/closed">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Hal qilingan</span>
+              <span>Hal qilingan e'tirozlar</span>
             </Link>
           </li>
+          <li className={location.pathname === '/commission/profile' ? 'active' : ''}>
+            <Link to="/commission/profile">
+            <i class="fa-solid fa-chart-pie"></i>
+              <span>Monitoring</span>
+            </Link>
+          </li>         
           <li className={location.pathname === '/commission/profile' ? 'active' : ''}>
             <Link to="/commission/profile">
               <i className="fa-regular fa-user"></i>
@@ -67,6 +73,14 @@ function Aside() {
               <span>Chiqish</span>
             </Link>
           </li>
+{/* 
+          <li className={location.pathname === '/commission/about' ? 'active' : ''}>
+            <Link to="/commission/about">
+              <i class="fa-solid fa-info"></i>
+              <span>Dastur haqida</span><span className="newtop">NEW</span>
+            </Link>
+          </li> */}
+
         </ul>
       </nav>
     </div>

@@ -24,12 +24,14 @@ import Fill from "./Components/Fill";
 import LinkTelegram from "./Components/Auth/LinkTelegram";
 import LoginWithTelegram from "./Components/Auth/LoginWithTelegram";
 import AllUsers from './Components/SuperAdmin/AllUsers';
+import Sorry from "./Components/Additional/Sorry";
 function App() {
   return (
     <>
       <div>
         <Router>
           <XatolikXabar/>
+          {/* <Sorry/> */}
           {/* <AllowNotification/> */}
           <Routes>
             <Route path="/" exact element={<Main />} />

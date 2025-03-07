@@ -12,7 +12,25 @@ const Info = () => {
           try {
             const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
             setMyData(data.user);
-            setMyRole(data.user.role);
+            if(data.user.role === 'admin'){
+              setMyRole("admin")
+            }else if(data.user.role === 'employee'){
+              setMyRole("user")
+            }else if(data.user.role === 'superadmin'){
+              setMyRole("superadmin")
+            }else if(data.user.role === 'complex'){
+              setMyRole("complex")
+            }else if(data.user.role === 'department'){
+              setMyRole("department")
+            }else if(data.user.role === 'hr'){
+              setMyRole("hr")
+            }else if(data.user.role === 'boss'){
+              setMyRole("boss")
+            }else if(data.user.role === 'commission'){
+              setMyRole("commission")
+            }else if(data.user.role === 'staff'){
+              setMyRole("staff")
+            }
           } catch (error) {
             console.error("Error fetching data:", error);
           }
@@ -31,7 +49,6 @@ const Info = () => {
                 <Link to={`/${myRole}/about/statistics`} className='abouttap'><div>Umumiy statistika</div></Link>
                 <Link to={`/${myRole}/about/news`} className='abouttap'><div>Yangiliklar</div></Link>
                 <Link to={`/${myRole}/about/faq`} className='abouttap'><div>FAQ</div></Link>
-                <Link to={`/${myRole}/about/programmers`} className='abouttap'><div>Dastur yaratuvchilari</div></Link>
                 <Link to={`/${myRole}/about/application`} className='abouttap'><div>Taklif va shikoyatlar</div></Link>
             </div>
         </div>

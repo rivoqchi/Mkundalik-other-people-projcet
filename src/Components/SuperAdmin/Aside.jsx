@@ -44,28 +44,10 @@ function Aside() {
       </div>
       <nav className="aside-menu">
         <ul>
-          <li className={location.pathname === '/superadmin/schedule/new' ? 'active' : ''}>
-            <Link to="/superadmin/schedule/new">
-              <i className="fa-solid fa-list-check"></i>
-              <span>Kundalik ishlarni qayd etish</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/schedule/history' ? 'active' : ''}>
-            <Link to="/superadmin/schedule/history">
-              <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>Kundalik ish faoliyatim</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/rating/ours' ? 'active' : ''}>
-            <Link to="/superadmin/rating/ours">
-              <i className="fa-solid fa-medal"></i>
-              <span>Mening bo`limim ko`rsatkichlari</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/sections' ? 'active' : ''}>
-            <Link to="/superadmin/sections">
-            <i class="fa-solid fa-puzzle-piece"></i>
-              <span>Bo`limlar</span>
+          <li className={location.pathname === '/superadmin/complex' ? 'active' : ''}>
+            <Link to="/superadmin/complex">
+            <i class="fa-solid fa-code-fork"></i>
+              <span>Komplekslar</span>
             </Link>
           </li>
           <li className={location.pathname === '/superadmin/departments' ? 'active' : ''}>
@@ -74,10 +56,10 @@ function Aside() {
               <span>Departamentlar</span>
             </Link>
           </li>
-          <li className={location.pathname === '/superadmin/complex' ? 'active' : ''}>
-            <Link to="/superadmin/complex">
-            <i class="fa-solid fa-code-fork"></i>
-              <span>Komplekslar</span>
+          <li className={location.pathname === '/superadmin/sections' ? 'active' : ''}>
+            <Link to="/superadmin/sections">
+            <i class="fa-solid fa-puzzle-piece"></i>
+              <span>Bo`limlar</span>
             </Link>
           </li>
           <li className={location.pathname === '/superadmin/info/employee' ? 'active' : ''}>

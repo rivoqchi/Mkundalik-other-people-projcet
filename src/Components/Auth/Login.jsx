@@ -7,6 +7,8 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import LoginWithTelegram from './LoginWithTelegram';
 import LoadingScreen from '../Additional/LoadingScreen';
+import logomk from '../Images/logo-png.png';
+import logomet from '../Images/logo2.png';
 const Login = () => {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ show: false, type: "", message: "" });
@@ -63,14 +65,14 @@ const Login = () => {
                 } 
                 else {
                     const routes = {
-                        employee: "/user",
-                        admin: "/admin",
-                        superadmin: "/superadmin",
-                        complex: "/complex",
-                        department: "/department",
-                        hr: "/hr",
-                        commission: "/commission",
-                        boss: "/boss"
+                        employee: "/user/dashboard",
+                        admin: "/admin/dashboard",
+                        superadmin: "/superadmin/dashboard",
+                        complex: "/complex/dashboard",
+                        department: "/department/dashboard",
+                        hr: "/hr/dashboard",
+                        commission: "/commission/dashboard",
+                        boss: "/boss/dashboard"
                     };
                     navigate(routes[data.employee.role]);
                     // navigate('/fill');
@@ -92,6 +94,7 @@ const Login = () => {
             {alert.show && <Alert type={alert.type} message={alert.message} />}
             <div className="Auth__body">
                 <div className="Auth__body-form">
+                    <img className='loginlogo' src={logomk} alt="" />
                     <h2 className='text-center'><i className="fa-solid fa-right-to-bracket"></i> Tizimga kirish</h2>
                     <input
                         type="text"

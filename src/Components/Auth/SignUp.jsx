@@ -86,8 +86,9 @@ const Signup = () => {
         <h1>403</h1>
         <div className="text-center">
             Faqatgina tizim administratori tizimga qo`shishi mumkin. <br />
-            Mas'ul xodimlarga murojaat qiling.
-            </div>
+            tizim administratoriga murojaat qiling.
+            </div><br />
+            <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a><br /><br /><br />
         <Link to="/login"><button className="defaultbtn">Kirish</button></Link>
             {/* {alert.show && <Alert type={alert.type} message={alert.message} />}
             <div className='text-center Auth__body-form'>
@@ -118,7 +119,7 @@ const Signup = () => {
     );
 
     return (
-        <div className='Auth'>
+        <div className='signuup'>
             {signUpForm()}
         </div>
     );
