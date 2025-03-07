@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API } from '../../config';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
 function Aside() {
   const [show, setShow] = useState(false);
@@ -35,9 +35,10 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      {/* <i class="fa-solid fa-user-tie"></i> */}
-      {/* asd */}
-      <Link to='/department/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        <div className="d-flex align-items-center justify-content-center">
+        <img className='noteimg' src={note} alt="" />
+        <Link to='/admin/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        </div>
         <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>
       </div>
@@ -58,7 +59,7 @@ function Aside() {
           <li className={location.pathname === '/admin/rating/ours' ? 'active' : ''}>
             <Link to="/admin/rating/ours">
               <i className="fa-solid fa-medal"></i>
-              <span>Mening bo`limim ko`rsatkichlari</span>
+              <span>Xodimlarim ko`rsatkichlari</span>
             </Link>
           </li>
           {/* <li className={location.pathname === '/admin/sections' ? 'active' : ''}>
@@ -91,6 +92,13 @@ function Aside() {
               <span>Chiqish</span>
             </Link>
           </li>
+
+          {/* <li className={location.pathname === '/admin/profile' ? 'active' : ''}>
+            <Link to="/admin/about">
+              <i class="fa-solid fa-info"></i>
+              <span>Dastur haqida</span><span className="newtop">NEW</span>
+            </Link>
+          </li> */}
         </ul>
       </nav>
     </div>

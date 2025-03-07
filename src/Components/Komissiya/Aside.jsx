@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API } from '../../config';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
 function Aside() {  
     const [show, setShow] = useState(false);
@@ -35,24 +35,32 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      {/* <i className="fa-solid fa-book"></i> */}
-      <Link to='/commission/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        <div className="d-flex align-items-center justify-content-center">
+        <img className='noteimg' src={note} alt="" />
+        <Link to='/commission/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        </div>
       <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>      </div>
       <nav className="aside-menu">
         <ul>
         <li className={location.pathname === '/commission/objections' ? 'active' : ''}>
             <Link disabled to="/commission/objections">
-            <i class="fa-solid fa-chart-pie"></i>
+            <i class="fa-solid fa-code-branch"></i>
               <span>Kelib tushgan e'tirozlar</span>
             </Link>
           </li>
           <li className={location.pathname === '/commission/objections/closed' ? 'active' : ''}>
             <Link to="/commission/objections/closed">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Hal qilingan</span>
+              <span>Hal qilingan e'tirozlar</span>
             </Link>
           </li>
+          <li className={location.pathname === '/commission/profile' ? 'active' : ''}>
+            <Link to="/commission/profile">
+            <i class="fa-solid fa-chart-pie"></i>
+              <span>Monitoring</span>
+            </Link>
+          </li>         
           <li className={location.pathname === '/commission/profile' ? 'active' : ''}>
             <Link to="/commission/profile">
               <i className="fa-regular fa-user"></i>
@@ -65,6 +73,14 @@ function Aside() {
               <span>Chiqish</span>
             </Link>
           </li>
+{/* 
+          <li className={location.pathname === '/commission/about' ? 'active' : ''}>
+            <Link to="/commission/about">
+              <i class="fa-solid fa-info"></i>
+              <span>Dastur haqida</span><span className="newtop">NEW</span>
+            </Link>
+          </li> */}
+
         </ul>
       </nav>
     </div>

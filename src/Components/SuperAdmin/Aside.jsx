@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API } from '../../config';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
 function Aside() {  
     const [show, setShow] = useState(false);
@@ -35,35 +35,19 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      {/* <i class="fa-solid fa-users-gear"></i> */}
-      <Link to='/superadmin/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        <div className="d-flex align-items-center justify-content-center">
+        <img className='noteimg' src={note} alt="" />
+        <Link to='/superadmin/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        </div>
         <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>
       </div>
       <nav className="aside-menu">
         <ul>
-          <li className={location.pathname === '/superadmin/schedule/new' ? 'active' : ''}>
-            <Link to="/superadmin/schedule/new">
-              <i className="fa-solid fa-list-check"></i>
-              <span>Kundalik ishlarni qayd etish</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/schedule/history' ? 'active' : ''}>
-            <Link to="/superadmin/schedule/history">
-              <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>Kundalik ish faoliyatim</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/rating/ours' ? 'active' : ''}>
-            <Link to="/superadmin/rating/ours">
-              <i className="fa-solid fa-medal"></i>
-              <span>Mening bo`limim ko`rsatkichlari</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/sections' ? 'active' : ''}>
-            <Link to="/superadmin/sections">
-            <i class="fa-solid fa-puzzle-piece"></i>
-              <span>Bo`limlar</span>
+          <li className={location.pathname === '/superadmin/complex' ? 'active' : ''}>
+            <Link to="/superadmin/complex">
+            <i class="fa-solid fa-code-fork"></i>
+              <span>Komplekslar</span>
             </Link>
           </li>
           <li className={location.pathname === '/superadmin/departments' ? 'active' : ''}>
@@ -72,10 +56,10 @@ function Aside() {
               <span>Departamentlar</span>
             </Link>
           </li>
-          <li className={location.pathname === '/superadmin/complex' ? 'active' : ''}>
-            <Link to="/superadmin/complex">
-            <i class="fa-solid fa-code-fork"></i>
-              <span>Komplekslar</span>
+          <li className={location.pathname === '/superadmin/sections' ? 'active' : ''}>
+            <Link to="/superadmin/sections">
+            <i class="fa-solid fa-puzzle-piece"></i>
+              <span>Bo`limlar</span>
             </Link>
           </li>
           <li className={location.pathname === '/superadmin/info/employee' ? 'active' : ''}>
@@ -102,7 +86,7 @@ function Aside() {
           <li className={location.pathname === '/superadmin/profile' ? 'active' : ''}>
             <Link to="/superadmin/about">
               <i class="fa-solid fa-info"></i>
-              <span>Dastur haqida</span>
+              <span>Dastur haqida</span><span className="newtop">NEW</span>
             </Link>
           </li>
         </ul>

@@ -47,7 +47,6 @@ function SuperAdminRoute() {
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
               <Route path="/about/statistics" exact element={<UmumiyStat />} />
-              <Route path="/about/programmers" exact element={<About />} />
               <Route path="/about/application" exact element={<Application />} />
               <Route path="/about/faq" exact element={<FAQPage />} />
               <Route path="/schedule/new" exact element={<ScheduleNew />} />

@@ -6,8 +6,11 @@ import Alert from '../Additional/Alert';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import LoginWithTelegram from './LoginWithTelegram';
-
+import LoadingScreen from '../Additional/LoadingScreen';
+import logomk from '../Images/logo-png.png';
+import logomet from '../Images/logo2.png';
 const Login = () => {
+    const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ show: false, type: "", message: "" });
     const [values, setValues] = useState({ phone: '+998', password: '' });
     const [showPassword, setShowPassword] = useState(false); // Parolni ko'rsatish yoki yashirish uchun
@@ -29,11 +32,13 @@ const Login = () => {
     };
 
     const clickSubmit = (event) => {
+        setLoading(true);
         event.preventDefault();
         setAlert({ show: false, type: "", message: "" });
 
         signIn({ phone, password }).then((data) => {
             if (data.error) {
+                setLoading(false);
                 setAlert({ show: true, type: "error", message: data.error });
             } else if(data.employee.role !== "new"){
                 window.localStorage.setItem("token", data.token);
@@ -42,21 +47,35 @@ const Login = () => {
                 window.localStorage.setItem("phone", data.employee.phone);
                 window.localStorage.setItem("user_id", data.employee._id);
                 setValues({ phone: '', password: '' });
-                
-                if (data.employee.role) {
+                if(data.employee.employee){
+                    if (data.employee.role) {
+                        const routes = {
+                            employee: "/user",
+                            admin: "/admin",
+                            superadmin: "/superadmin",
+                            complex: "/complex",
+                            department: "/department",
+                            hr: "/hr",
+                            commission: "/commission",
+                            boss: "/boss"
+                        };
+                        navigate(routes[data.employee.role]);
+                        // navigate(routes[data.employee.role] || "/fill");
+                    }
+                } 
+                else {
                     const routes = {
-                        employee: "/user",
-                        admin: "/admin",
-                        superadmin: "/superadmin",
-                        complex: "/complex",
-                        department: "/department",
-                        hr: "/hr",
-                        commission: "/commission",
-                        boss: "/boss"
+                        employee: "/user/dashboard",
+                        admin: "/admin/dashboard",
+                        superadmin: "/superadmin/dashboard",
+                        complex: "/complex/dashboard",
+                        department: "/department/dashboard",
+                        hr: "/hr/dashboard",
+                        commission: "/commission/dashboard",
+                        boss: "/boss/dashboard"
                     };
-                    navigate(routes[data.employee.role] || "/fill");
-                } else {
-                    navigate('/fill');
+                    navigate(routes[data.employee.role]);
+                    // navigate('/fill');
                 }
             } else {
                 navigate('/iamnew');
@@ -68,11 +87,14 @@ const Login = () => {
 
     return (
         <>
+      {loading && <LoadingScreen loading={true} />}
+
         <Navbar/>
         <div className="Auth">
             {alert.show && <Alert type={alert.type} message={alert.message} />}
             <div className="Auth__body">
                 <div className="Auth__body-form">
+                    <img className='loginlogo' src={logomk} alt="" />
                     <h2 className='text-center'><i className="fa-solid fa-right-to-bracket"></i> Tizimga kirish</h2>
                     <input
                         type="text"

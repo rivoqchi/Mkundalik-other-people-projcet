@@ -46,9 +46,9 @@ const Card = () => {
   return (
     <>
       {loading && <LoadingScreen loading={true} />}
-      <div className="row">
-        <div className="card iconblue statcard p-2 col-12 col-md-3 m-2">
-          <div className="d-flex align-items-center justify-content-between">
+      <div className="row mb-3">
+        <div className="col-12 col-md-4">
+          <div className="d-flex iconblue statcard align-items-center justify-content-evenly">
             <div className="iconimiz">
               <i className="fa-solid fa-users"></i>
             </div>
@@ -61,8 +61,8 @@ const Card = () => {
           </div>
         </div>
 
-        <div className="card iconorange statcard p-2 col-12 col-md-3 m-2">
-          <div className="d-flex align-items-center justify-content-between">
+        <div className="col-12 col-md-4">
+          <div className="d-flex iconorange statcard align-items-center justify-content-evenly">
             <div className="iconimiz">
               <i className="fa-solid fa-chart-pie"></i>
             </div>
@@ -75,8 +75,8 @@ const Card = () => {
           </div>
         </div>
 
-        <div className="card icongreen statcard p-2 col-12 col-md-3 m-2">
-          <div className="d-flex align-items-center justify-content-between">
+        <div className="col-12 col-md-4">
+          <div className="icongreen statcard d-flex align-items-center justify-content-evenly">
             <div className="iconimiz">
               <i className="fa-solid fa-chart-simple"></i>
             </div>

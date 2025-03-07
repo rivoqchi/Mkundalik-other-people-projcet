@@ -191,7 +191,6 @@ function ScheduleRate() {
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">
           <div className="scheduletepa">
-              <h3 className="text-center redword px-2">E'tiroz tafsilotlari</h3>
           </div>
           <div className="scheduleinfo">
             <div className="schedulebajaruvchilar">
@@ -245,6 +244,7 @@ function ScheduleRate() {
               Маълумотлар тўғрилигини тасдиқлайди:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
+            <h3 className="text-center redword px-2">E'tiroz tafsilotlari</h3>
 
             {/* checkpoint */}
             <div className="schedulerated">

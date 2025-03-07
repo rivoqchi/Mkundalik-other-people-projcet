@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Modal, Button, Spinner, Alert } from 'react-bootstrap';
+import { Modal, Button, Spinner, Alert, Form } from 'react-bootstrap';
 import { API } from '../../config';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 function Xodimlar() {
+    const [searchTerm, setSearchTerm] = useState("");
     const [allEmployees, setAllEmployees] = useState([]);
     const [allComplexes, setAllComplexes] = useState([]);
     const [filteredEmployees, setFilteredEmployees] = useState([]);
@@ -41,6 +42,19 @@ function Xodimlar() {
         }
     };
 
+    useEffect(() => {
+        if (!searchTerm) {
+            setFilteredEmployees(allEmployees);
+        } else {
+            const filtered = allEmployees.filter((emp) =>
+                Object.values(emp).some((value) =>
+                    value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+                )
+            );
+            setFilteredEmployees(filtered);
+        }
+    }, [searchTerm, allEmployees]);
+    
     // Komplekslarni olish
     const getAllComplexes = async () => {
         try {
@@ -74,7 +88,13 @@ function Xodimlar() {
             <Button variant="success" className="mt-3" onClick={exportToExcel}>
                 Excel formatida yuklab olish
             </Button>
-
+            <Form.Control
+                    type="text" className="mt-3"
+                    placeholder="Qidirish"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Button variant="secondary" className="mt-3" onClick={() => setSearchTerm("")}>Reset</Button>
                 <Button variant="primary" className="mt-3" onClick={() => setShowModal(true)}>
                     Filter
                 </Button>
@@ -111,10 +131,11 @@ function Xodimlar() {
                 </Modal.Body>
             </Modal>
 
-            <div className="table-responsive">
+            <div className="table-responsive alluserss">
                 {loading && <Spinner animation="border" className="d-block mx-auto mt-3" />}
                 {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-                
+                <div className="allusers">
+
                 {!loading && !error && (
                     <table className="table table-striped mt-3">
                         <thead>
@@ -159,6 +180,7 @@ function Xodimlar() {
                         </tbody>
                     </table>
                 )}
+                </div>
             </div>
         </div>
     );

@@ -18,6 +18,12 @@ import LookSchedule from '../Admin/LookSchedule';
 import ScheduleRate from '../Admin/ScheduleRate';
 import PleaseInstruction from '../Asking/PleaseInstruction'
 import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
+import Info from '../Infos/Info';
+import News from '../Infos/News';
+import UmumiyStat from '../Infos/UmumiyStat';
+import About from '../Infos/About';
+import Application from '../Infos/Application';
+import FAQPage from '../Infos/FAQPage';
 function ComplexRoute() {
   return (
     <div className="container-fluid">
@@ -29,6 +35,12 @@ function ComplexRoute() {
         <div className=" col-12 col-md-9">
           <div className="p-3">
             <Routes>
+              <Route path="/about" exact element={<Info />} />
+              <Route path="/about/news" exact element={<News />} />
+              <Route path="/about/statistics" exact element={<UmumiyStat />} />
+              <Route path="/about/application" exact element={<Application />} />
+              <Route path="/about/faq" exact element={<FAQPage />} />
+              
               <Route path="/" exact element={<Complex />} />
               <Route path="/dashboard" exact element={<Dashboard />} />
               <Route path="/schedule/new" exact element={<ScheduleNew />} />

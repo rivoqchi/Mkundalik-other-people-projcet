@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API } from '../../config';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
 function Aside() {  
     const [show, setShow] = useState(false);
@@ -35,8 +35,10 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      {/* <i className="fa-solid fa-book"></i> */}
-      <Link to='/boss/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        <div className="d-flex align-items-center justify-content-center">
+        <img className='noteimg' src={note} alt="" />
+        <Link to='/boss/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        </div>
       <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>      </div>
       <nav className="aside-menu">
@@ -44,13 +46,19 @@ function Aside() {
         <li className={location.pathname === '/boss/monitoring' ? 'active' : ''}>
             <Link disabled to="/boss/rating/complexes">
             <i class="fa-solid fa-chart-pie"></i>
-              <span>Monitoring</span>
+            <span>Raxbar nazoratidagilar</span>
             </Link>
           </li>
           <li className={location.pathname === '/boss/structure' ? 'active' : ''}>
             <Link to="/boss/structure">
               <i className="fa-solid fa-sitemap"></i>
               <span>Tashkiliy tuzilma</span>
+            </Link>
+          </li>
+          <li className={location.pathname === '/boss/statistics' ? 'active' : ''}>
+            <Link to="/boss/statistics">
+              <i className="fa-solid fa-sitemap"></i>
+              <span>Statistika</span>
             </Link>
           </li>
           <li className={location.pathname === '/boss/profile' ? 'active' : ''}>
@@ -65,6 +73,13 @@ function Aside() {
               <span>Chiqish</span>
             </Link>
           </li>
+
+          {/* <li className={location.pathname === '/boss/profile' ? 'active' : ''}>
+            <Link to="/boss/about">
+              <i class="fa-solid fa-info"></i>
+              <span>Dastur haqida</span><span className="newtop">NEW</span>
+            </Link>
+          </li> */}
         </ul>
       </nav>
     </div>

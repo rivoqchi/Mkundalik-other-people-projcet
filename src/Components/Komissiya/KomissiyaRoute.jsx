@@ -8,6 +8,12 @@ import Etirozlar from './Etirozlar';
 import EtirozLook from './EtirozLook';
 import PleaseInstruction from '../Asking/PleaseInstruction';
 import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
+import Info from '../Infos/Info';
+import News from '../Infos/News';
+import UmumiyStat from '../Infos/UmumiyStat';
+import About from '../Infos/About';
+import Application from '../Infos/Application';
+import FAQPage from '../Infos/FAQPage';
 function KomissiyaRoute() {
   return (
     <div className="container-fluid">
@@ -19,6 +25,12 @@ function KomissiyaRoute() {
         <div className=" col-12 col-md-9">
           <div className="p-3">
             <Routes>
+              <Route path="/about" exact element={<Info />} />
+              <Route path="/about/news" exact element={<News />} />
+              <Route path="/about/statistics" exact element={<UmumiyStat />} />
+              <Route path="/about/application" exact element={<Application />} />
+              <Route path="/about/faq" exact element={<FAQPage />} />
+              
               <Route path="/" exact element={<Komissiya />} />
               <Route path="/dashboard" exact element={<Dashboard />} />
               <Route path="/profile" exact element={<Profile />} />

@@ -125,29 +125,45 @@
 }
 .Auth {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f7f9fc;
-  font-family: Arial, sans-serif;
+  justify-content: center;
+  height: 88vh;
+  background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+  animation: fadeIn 1s ease-in-out;
 }
 
-
-.Auth__body-form, .Auth .text-center {
-  background-color: #3b6fb0;
-  color: #fff !important;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
-  width: 100%;
-  max-width: 400px; /* Form kengligi */
+.signuup{
+  text-align: center !important;
+}
+.Auth__body {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  width: 100%;
+  max-width: 400px;
+  animation: scaleUp 0.5s ease-in-out;
 }
+.Auth__body h2 {
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
 .login-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  &:focus{
+    border-color: #007bff;
+    box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
+    outline: none;
+  }
 }
 
 .login-inputs input {
@@ -204,28 +220,49 @@
 
 .signuplogin {
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
+  background: #007bff;
+  color: white;
+  padding: 12px;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: 0.3s;
-  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .signuplogin:hover {
-  background-color: #0056b3;
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+.signuplogin:active {
+  transform: translateY(1px);
 }
 
 .dontacc {
-  margin-top: 20px;
-  font-size: 14px;
+  color: #555;
+  font-size: 1rem;
 }
-.dontacc a{
-  color: #e0e0e0 !important;
+
+.dontacc a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s;
 }
+
+.dontacc a:hover {
+  color: #0056b3;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.9); }
+  to { transform: scale(1); }
+}
+
 .Auth__body-form a {
   color: #007bff;
   text-decoration: none;
@@ -299,6 +336,10 @@
     box-shadow: none;
     transform: scale(0.99);
   }
+}
+.loginlogo{
+  width: 15rem;
+  margin-bottom: 3rem;
 }
 .filterred{
   background-color: rgb(255, 182, 182);
@@ -1325,61 +1366,8 @@ button:focus {
   width: 4rem;
 }
 
-/* Asosiy Konteyner */
-.main-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 100vh;
-  background: linear-gradient(to bottom right, #01043f, #8f94fb);
-  color: white;
-  font-family: "Arial", sans-serif;
-  padding: 20px;
-}
+// ////////
 
-/* Header va Logo */
-.main-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.main-logo {
-  width: 120px;
-  animation: bounce 2s infinite;
-}
-
-.main-title {
-  font-size: 2rem;
-  margin-top: 10px;
-  color: #fff;
-}
-
-/* Animatsiyali Banner */
-.animated-banner {
-  text-align: center;
-  margin: 30px 0;
-}
-
-.banner-text {
-  font-size: 2.5rem;
-  font-weight: bold;
-  animation: fadeIn 2s ease-in-out;
-  
-}
-
-.banner-subtext {
-  font-size: 1.2rem;
-  margin-top: 10px;
-  color: #ddd;
-}
-
-/* Harakat Tugmalari */
-.action-buttons {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
 
 .btn {
   padding: 10px 20px;
@@ -1824,7 +1812,6 @@ marquee{
   box-shadow: 0px 0px 20px 5px rgb(180, 180, 180);
   animation: opacity0to1 2s;
   border: none !important;
-  color: #fff !important;
   justify-content: center !important;
   cursor: pointer;
   transition: .2s ease-out;
@@ -1832,7 +1819,7 @@ marquee{
   opacity: 0.9;
   &:hover{
     opacity: 1;
-    box-shadow: none;
+    box-shadow: 0px 0px 50px 2px rgb(180, 180, 180);
     transform: scale(0.95);
   }
 }
@@ -1841,24 +1828,30 @@ marquee{
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 2rem !important;
+  font-size: 4rem !important;
   min-width: 2.5rem;  /* Biroz kattaroq qildim, ko‘rinishi yaxshiroq bo‘ladi */
   min-height: 2.5rem;
+  transition: .2s ease-out;
+  &:hover{
+    transform: scale(1.05);
+  }
 }
-
+.card-title span{
+  font-size: 2rem;
+}
 .iconimiz i {
-  color: white; /* Ikonkani oq rangda qilish */
+  color: #111; /* Ikonkani oq rangda qilish */
   font-size: 1.2rem; /* Ikonkani biroz kattalashtirish */
 }
-.iconblue{
-  background-color: blue !important;
+.iconblue .iconimiz i{
+  color: blue !important;
 }
-.icongreen{
-  background-color: green !important;
+.icongreen .iconimiz i{
+  color: green !important;
 }
 
-.iconorange{
-  background-color: orange !important;
+.iconorange .iconimiz i{
+  color: orange !important;
 }
 .asidelogo{
   width: 10rem;
@@ -1866,4 +1859,106 @@ marquee{
 }
 .newsimg{
   width: 10rem;
+}
+.stath1{
+  background-color: rgba(0, 128, 0, 0.678);
+  padding: 10px;
+  border-radius: 10px;
+  color: #fff;
+}
+.statdiv{
+  background-color: #ffeacf;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 30px 3px rgb(180, 180, 180);
+  color: #fff;
+  transition: .2s ease-out;
+  cursor: pointer;
+  &:hover{
+    box-shadow: none;
+    transform: scale(0.99);
+  }
+}
+.statdiv2{
+  background-color: #d2dde8;
+}
+.newspage {
+  background-color: #cae5ff;
+  padding: 20px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  height: 95vh;
+  overflow-y: auto;
+}
+
+.news-container {
+  width: 100%;
+  max-width: 800px;
+}
+
+.news-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px !important;
+}
+
+.newsprofileimg {
+  width: 4rem;
+  height: 4rem;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.newsprofileimg img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.news-card {
+  background-color: #fff;
+  padding: 15px;
+  border-left: 4px solid blue;
+  border-radius: 15px;
+  flex: 1;
+}
+
+.newsimg {
+  width: 15rem;
+  max-height: 100%;
+  // object-fit: cover;
+  border-radius: 10px;
+}
+
+.news-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.news-description {
+  font-size: 1rem;
+  margin-top: 5px;
+  color: #333;
+}
+.noteimg{
+  width: 3rem;
+}
+.faqbody{
+  background-color: #ebebeb;
+  font-weight: bold;
+}
+.accordion-button{
+  box-shadow: none !important;
+}
+.alluserss{
+  height: 85vh !important;
+  width: 100%;
+  overflow: scroll !important;
 }
