@@ -122,6 +122,7 @@ function Xodimlar() {
                                 <th>N</th>
                                 <th>F.I.Sh</th>
                                 <th>Telefon</th>
+                                <th>Rol</th>
                                 <th>Kompleks</th>
                                 <th>Department</th>
                                 <th>Bo'lim</th>
@@ -141,10 +142,11 @@ function Xodimlar() {
                                     <td>{index + 1}</td>
                                     <td>{employee.name}</td>
                                     <td>{employee.phone}</td>
+                                    <td>{employee.role}</td>
                                     <td>{employee.complex}</td>
                                     <td>{employee.department}</td>
                                     <td>{employee.section}</td>
-                                    <td>{employee.role}</td>
+                                    <td>{employee.degree}</td>
                                     <td>{employee.nationality}</td>
                                     <td>{employee.dateOfBirth}</td>
                                     <td>{employee.placeOfBirth}</td>
