@@ -6,6 +6,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
+import logomk from "../Images/logo-png.png";
 import { format } from "date-fns";
 import LoadingScreen from "../Additional/LoadingScreen";
 import Button from "react-bootstrap/Button";
@@ -189,9 +190,15 @@ function ScheduleRate() {
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">
           <div className="scheduletepa">
-            <div className="align-items-center justify-content-between d-flex">
-              <img className="schedulelogo" src={logo} alt="logo" />
-              <h3 className="px-2">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК</h3>
+            <div className="row">
+              <div className="col-4 fw-bold text-center">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК
+              Кундалик ҳисоботларни шакллантириш электрон платформаси</div>
+              <div className="col-4 text-center">
+                <img className="schedulelogo" src={logo} alt="logo" /><br />
+                <img className="schedulelogo2 p-3" src={logomk} alt="logo" />
+              </div>
+              <div className="col-4 fw-bold text-center">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК
+              Создание ежедневных отчетов электронная платформа</div>
             </div>
           </div>
           <div className="scheduleinfo">
@@ -225,7 +232,7 @@ function ScheduleRate() {
             {thisScheduleHistory.tasks?.map((task, index) => (
               <div key={index} className="task-item">
                 <div className="">
-                  {index + 1}. <span>{task.title}</span>
+                  <b>{index + 1}.</b> <span>{task.title}</span>
                 </div>
                 <div className="">
                   <Link>
@@ -308,7 +315,7 @@ function ScheduleRate() {
                 сайтида тақдим этилади.
                 <br />
                 Ушбу ҳисоботда келтирилган барча ишлар мазмунига ҳисоботни
-                шакллантирган ходим масъул ҳисобланади.
+                шакллантирган ходим масъул ҳисобланади. PDF ва DOCX форматдаги хужжатларнинг иккиси ҳам бир хил кучга эга.
                 <div className="current-datetime text-end mx-5">
                   {currentDateTime}
                 </div>
@@ -330,7 +337,7 @@ function ScheduleRate() {
       >
         <i className="fa-solid fa-download"></i> PDF юклаб олиш
       </button>
-      <DownloadDocx thisScheduleHistory={thisScheduleHistory} degree={degree} />
+      <DownloadDocx thisScheduleHistory={thisScheduleHistory} currentDateTime={currentDateTime} degree={degree} />
 
 
 

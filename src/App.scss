@@ -1037,7 +1037,7 @@ button:focus {
 }
 .schedulerated{
   border-left: 3px solid green;
-  padding: 10px;
+  padding: 3px;
   background-color: rgba(0, 128, 0, 0.582);
   border-radius: 10px;
   color: #fff;
@@ -1102,12 +1102,15 @@ button:focus {
   font-size: 0.9rem;
   // font-size: 1.1rem;
   border-left: 3px solid rgb(0, 166, 255);
-  padding: 10px;
+  padding: 5px;
   background-color: lemonchiffon;
   border-radius: 5px;
 }
 .schedulelogo{
   width: 5rem;
+}
+.schedulelogo2{
+  width: 10rem;
 }
 .pdfqr{
   justify-content: space-evenly;

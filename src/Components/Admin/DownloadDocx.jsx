@@ -4,8 +4,9 @@ import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import QRCode from "qrcode";
 import ImageModule from "docxtemplater-image-module-free";
+import jsPDF from "jspdf";
 
-const DownloadDocx = ({ thisScheduleHistory, degree }) => {
+const DownloadDocx = ({ thisScheduleHistory, degree, currentDateTime }) => {
   const [qrBase64, setQrBase64] = useState("");
 
   // QR kod yaratish va uni Base64 formatga o‘tkazish
@@ -57,6 +58,7 @@ const DownloadDocx = ({ thisScheduleHistory, degree }) => {
         comment: thisScheduleHistory?.comment ? `${thisScheduleHistory.comment}` : "--",
         tasks: formattedTasks.length ? formattedTasks : [],
         qrCode: qrCodeBase64, // QR kodning Base64 shakli
+        currentDateTime
       });
 
       doc.render();
@@ -67,12 +69,17 @@ const DownloadDocx = ({ thisScheduleHistory, degree }) => {
       console.error("Hujjatni yaratishda xatolik yuz berdi:", error);
     }
   };
-
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.text("Bu hisobotning PDF versiyasidir", 10, 10);
+    doc.save("Hisobot.pdf");
+  };
   return (
     <div>
       <button onClick={generateDocx} className="btn btn-primary">
         .docx юклаб олиш
       </button>
+      <button onClick={generatePDF}>.pdf юклаб олиш</button>
     </div>
   );
 };
