@@ -1574,6 +1574,12 @@ marquee{
 .redword{
   color: red;
 }
+.successword, .greenword{
+  color: green;
+}
+.blueword{
+  color: rgb(0, 119, 255);
+}
 .tgprofile{
   width: 4rem;
   border-radius: 50%;
@@ -1964,4 +1970,13 @@ marquee{
   height: 85vh !important;
   width: 100%;
   overflow: scroll !important;
+}
+.lengthchi {
+  animation: lengthchi 2s forwards; /* 'forwards' animatsiyadan keyin oxirgi holatda qolish uchun */
+}
+
+@keyframes lengthchi {
+  from {
+    transform: translate(20px);
+  }
 }

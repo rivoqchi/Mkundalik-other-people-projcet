@@ -3,88 +3,116 @@ import { API } from "../../config";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import LoadingScreen from "../Additional/LoadingScreen";
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
-function ScheduleSectionRating() {
+function RatingMyAdmins() {
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
-  const id = window.localStorage.getItem("user_id");
+  const id = window.localStorage.getItem("user_id")
   const [loading, setLoading] = useState(false);
-
+  
   const getMySectionSchedules = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`${API}/schedules/getmysection/${myId}`);
+      let url = ``;
+      if (myRole === "department") {
+        url = `${API}/schedules/getmysection/admin/${myId}`;
+      } else if (myRole === "admin") {
+        url = `${API}/schedules/getmysection/${myId}`;
+      } else if (myRole === "complex") {
+        url = `${API}/schedules/getmysection/department/${myId}`;
+      }
+      const { data } = await axios.get(url);
       setMySectionSchedules(data.schedules);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setLoading(false);
     }
   };
+  
   useEffect(() => {
-    getMySectionSchedules();
-  }, []);
-  const getMyData = async () => {
-    const { data } = await axios.get(`${API}/auth/mydata/${id}`);
-    setMyData(data.user);
-    if (data.user.role === "employee") {
-      setMyRole("user");
-    } else if (data.user.role === "admin") {
-      setMyRole("admin");
-    } else if (data.user.role === "superadmin") {
-      setMyRole("superadmin");
-    } else if (data.user.role === "complex") {
-      setMyRole("complex");
-    } else if (data.user.role === "department") {
-      setMyRole("department");
-    } else if (data.user.role === "hr") {
-      setMyRole("hr");
-    } else if (data.user.role === "boss") {
-      setMyRole("boss");
-    } else if (data.user.role === "commission") {
-      setMyRole("commission");
+    if (myRole && myId) {
+      getMySectionSchedules();
     }
-    setLoading(false);
+  }, [myRole, myId]);  // Faqat myRole va myId mavjud bo‘lganda ishlaydi
+  
+  const getMyData = async () =>{
+    const {data} = await axios.get(`${API}/auth/mydata/${id}`)
+    
+    setMyData(data.user)
+    if (data.user.role === 'employee') {
+    setMyRole("user")
+    }else if (data.user.role === 'admin') {
+      setMyRole("admin")
+    }else if (data.user.role === 'superadmin') {
+      setMyRole("superadmin")
+    }else if (data.user.role === 'complex') {
+      setMyRole("complex")
+    }else if (data.user.role === 'hr') {
+      setMyRole("hr")
+    }else if (data.user.role === 'department') {
+      setMyRole("department")
+    }else if (data.user.role === 'boss') {
+      setMyRole("boss")
+    }else if (data.user.role === 'commission') {
+      setMyRole("commission")
+    }
+  }
+  useEffect(() =>{
+    getMyData()
+  }, [])
+  const [greenPercentage, setGreenPercentage] = useState(0);
+  const [redPercentage, setRedPercentage] = useState(0);
 
-  };
   useEffect(() => {
-    getMyData();
-  }, []);
+    let green = mySectionSchedules.filter((item) => item.rated).length;
+    let red = mySectionSchedules.filter((item) => !item.rated).length;
+    let total = green + red;
+
+    if (total > 0) {
+      let greenPercent = Math.round((green / total) * 100);
+      let redPercent = 100 - greenPercent; // Har doim 100% bo‘lishi uchun
+      setGreenPercentage(greenPercent);
+      setRedPercentage(redPercent);
+    } else {
+      setGreenPercentage(0);
+      setRedPercentage(0);
+    }
+  }, [mySectionSchedules]);
   
   return (
     <>
       {loading && <LoadingScreen loading={true} />}
-
-      <h1 className="text-center">Mening bo`limim ko`rsatkichlari</h1>
-      <div className="ratedschedulescount d-flex mx-3 justify-content-between">
-        <p>Jami: {mySectionSchedules.length}</p>
-        <span>Baholadingiz: {mySectionSchedules.filter((item) => item.rated).length}</span>
+      <h1 className="text-center">Xodimlarim ko`rsatkichlari</h1>
+      <div className="stataboutrating">
+        <h3 className="text-center blueword">Barchasi: <b>{mySectionSchedules.length}</b> ta</h3>
+        <div className="d-flex justify-content-between">
+          <h5 className="successword">Baholangan: {mySectionSchedules.filter((item) => item.rated).length}</h5>
+          <h5 className="redword">Baholash kerak: {mySectionSchedules.filter((item) => !item.rated).length}</h5>
+        </div>
+        <ProgressBar style={{ height: "30px" }}>
+  <ProgressBar label={`${greenPercentage}%`} animated striped variant="success" now={greenPercentage} key={1} />
+  <ProgressBar label={`${redPercentage}%`} animated variant="danger" now={redPercentage} key={2} />
+</ProgressBar>
       </div>
       <div className="scheduleshistory">
         {mySectionSchedules.map((i) => (
           <>
             <Link
-              className={`text-decoration-none ${
-                i.beginnerId === id ? "disabled-link" : ""
-              }`}
-              to={
-                i.beginnerId === id ? "#" : `/${myRole}/rate/schedule/${i._id}`
-              }
+              className="text-decoration-none"
+              to={`/${myRole}/rate/schedule/${i._id}`}
               key={i._id}
             >
               <button
                 className={`schedulehistorybtn ${
                   !i.rated ? "unrated" : "rated"
-                } ${i.beginnerId === id ? "dis" : ""}`}
-                disabled={i.beginnerId === id}
+                }`}
               >
-                <span className="bold">{i.beginnerName}</span>ning{" "}
-                {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
-                {i.rated && (
-                  <span className="yulduzcha">
-                    <i className="fa-regular fa-star"></i> {i.rated}
-                  </span>
-                )}
+                <span className="bold">{i.beginnerName}</span>ning {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
+                {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}
               </button>
             </Link>
           </>
@@ -94,4 +122,4 @@ function ScheduleSectionRating() {
   );
 }
 
-export default ScheduleSectionRating;
+export default RatingMyAdmins;

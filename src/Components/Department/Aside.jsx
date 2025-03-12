@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo2 from '../Images/logo2.png';
 import axios from 'axios';
@@ -7,14 +7,15 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
+import Badge from 'react-bootstrap/Badge';
+import Stack from 'react-bootstrap/Stack';
 function Aside() {  
     const [show, setShow] = useState(false);
-  
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-  const navigate = useNavigate();
-  const location = useLocation(); // Hozirgi yo'lni olish
-  let token = window.localStorage.getItem("token");
+    const navigate = useNavigate();
+    const location = useLocation(); // Hozirgi yo'lni olish
+    let token = window.localStorage.getItem("token");
 
   const logout = async () => {
     try {
@@ -30,6 +31,21 @@ function Aside() {
       console.error('Chiqishda xatolik yuz berdi:', error);
     }
   };
+
+  const myId = window.localStorage.getItem("user_id");
+  const [notificationLength, setNotificationLength] = useState([]);
+  const getMySectionSchedules = async () => {
+    try {
+      const { data } = await axios.get(`${API}/schedules/notification/length/${myId}`);
+      setNotificationLength(data.length);
+      
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    getMySectionSchedules();
+  }, []);
 
   return (
     <>
@@ -60,6 +76,15 @@ function Aside() {
             <Link to="/department/rating/ours">
               <i className="fa-solid fa-medal"></i>
               <span>Xodimlarim ko`rsatkichlari</span>
+              {notificationLength > 0 && ( // Agar `notificationLength` bo‘lsa, chiqadi
+                  <Stack
+                    className="mx-1 lengthchi"
+                    direction="horizontal"
+                    gap={2}
+                  >
+                    <Badge bg="danger">{notificationLength}</Badge>
+                  </Stack>
+                )}
             </Link>
           </li>
           <li className={location.pathname === '/department/info/employee' ? 'active' : ''}>

@@ -78,6 +78,12 @@ function Xodimlar() {
         } else if (filterType === "complex") {
             const filtered = allEmployees.filter(emp => emp.complex === value);
             setFilteredEmployees(filtered);
+        } else if (filterType === "status") {
+            if (value === "active") {
+                setFilteredEmployees(allEmployees.filter(emp => emp.employee === true));
+            } else if (value === "inactive") {
+                setFilteredEmployees(allEmployees.filter(emp => !emp.employee));
+            }
         }
         setShowModal(false);
     };
@@ -86,7 +92,7 @@ function Xodimlar() {
         <div>
             <div className="text-center d-flex justify-content-between xodimlarbuttons">
             <Button variant="success" className="mt-3" onClick={exportToExcel}>
-                Excel formatida yuklab olish
+                Excel formatida yuklab olish <i class="fa-solid fa-table"></i>
             </Button>
             <Form.Control
                     type="text" className="mt-3"
@@ -94,9 +100,9 @@ function Xodimlar() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="secondary" className="mt-3" onClick={() => setSearchTerm("")}>Reset</Button>
+                <Button variant="secondary" className="mt-3" onClick={() => setSearchTerm("")}>Reset <i class="fa-solid fa-rotate-right"></i></Button>
                 <Button variant="primary" className="mt-3" onClick={() => setShowModal(true)}>
-                    Filter
+                    Filter <i class="fa-solid fa-filter"></i>
                 </Button>
             </div>
 
@@ -116,6 +122,16 @@ function Xodimlar() {
                         Hammasi
                     </Button>
                 </Modal.Body>
+
+                <Modal.Body>
+    <h5>Tizimda</h5>
+    <Button variant='success' onClick={() => handleFilter("status", "active")}>
+        Aktiv xodimlar
+    </Button>
+    <Button onClick={() => handleFilter("status", "inactive")} variant='danger' className="mx-2">
+        Faollashtirilmagan xodimlar
+    </Button>
+</Modal.Body>
 
                 <Modal.Body>
                     <h5>Kompleks bo‘yicha filtr</h5>

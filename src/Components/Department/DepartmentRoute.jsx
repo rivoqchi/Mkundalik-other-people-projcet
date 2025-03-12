@@ -12,7 +12,7 @@ import EditSection from '../Admin/EditSection';
 import Aside from './Aside';
 import ScheduleNew from '../Admin/ScheduleNew';
 import ScheduleHistory from '../Admin/ScheduleHistory';
-import RatingMyAdmins from './RatingMyAdmins';
+import ScheduleSectionRating from '../Admin/ScheduleSectionRating';
 import Xodimlar from '../Admin/Xodimlar';
 import LookSchedule from '../Admin/LookSchedule';
 import ScheduleRate from '../Admin/ScheduleRate';
@@ -49,7 +49,7 @@ function DepartmentRoute() {
               <Route path="/schedule/history/:id" exact element={<SeeSelectedSchedules />} />
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
               <Route path="/rate/schedule/:id" exact element={<ScheduleRate />} />
-              <Route path="/rating/ours" exact element={<RatingMyAdmins />} />
+              <Route path="/rating/ours" exact element={<ScheduleSectionRating />} />
               <Route path="/sections" exact element={<Sections />} />
               <Route path="/instructions" exact element={<Instructions />} />
               <Route path="/sections/edit/:id" exact element={<EditSection />} />

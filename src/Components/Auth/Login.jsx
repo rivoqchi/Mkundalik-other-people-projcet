@@ -60,7 +60,7 @@ const Login = () => {
                             boss: "/boss"
                         };
                         navigate(routes[data.employee.role]);
-                        // navigate(routes[data.employee.role] || "/fill");
+                        navigate(routes[data.employee.role] || "/fill");
                     }
                 } 
                 else {
@@ -75,7 +75,7 @@ const Login = () => {
                         boss: "/boss/dashboard"
                     };
                     navigate(routes[data.employee.role]);
-                    // navigate('/fill');
+                    navigate('/fill');
                 }
             } else {
                 navigate('/iamnew');
@@ -125,7 +125,7 @@ const Login = () => {
                             }}
                         ></i>
                     </div>
-                    <button className='signuplogin' onClick={clickSubmit}>Login</button>
+                    <button className='signuplogin' onClick={clickSubmit}>Kirish</button>
 
                     <p className="dontacc mt-3">Akkauntingiz yo`qmi? <Link to='/signup'>Ro`yxatdan o`tish</Link></p>
                     <br /><br />
