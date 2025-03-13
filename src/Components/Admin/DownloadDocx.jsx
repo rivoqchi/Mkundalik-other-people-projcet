@@ -76,10 +76,10 @@ const DownloadDocx = ({ thisScheduleHistory, degree, currentDateTime }) => {
   };
   return (
     <div>
-      <button onClick={generateDocx} className="btn btn-primary">
-        .docx юклаб олиш
+      <button onClick={generateDocx} className="pdf-download-btn">
+        .DOCX юклаб олиш
       </button>
-      <button onClick={generatePDF}>.pdf юклаб олиш</button>
+      {/* <button onClick={generatePDF}>.pdf юклаб олиш</button> */}
     </div>
   );
 };

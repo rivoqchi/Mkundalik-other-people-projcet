@@ -74,7 +74,7 @@ function RatingMyAdmins() {
 
     if (total > 0) {
       let greenPercent = Math.round((green / total) * 100);
-      let redPercent = 100 - greenPercent; // Har doim 100% bo‘lishi uchun
+      let redPercent = 100 - greenPercent;
       setGreenPercentage(greenPercent);
       setRedPercentage(redPercent);
     } else {

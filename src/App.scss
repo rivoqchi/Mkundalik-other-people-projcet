@@ -329,12 +329,12 @@
   padding: 15px;
   background-color: green;
   color: #fff;
-  box-shadow: 3px 3px 10px 3px rgb(181, 181, 181);
-  border-radius: 10px;
+  box-shadow: 0px 0px 20px 6px rgb(181, 181, 181);
+  border-radius: 20px;
   transition: .2s;
   &:hover{
     box-shadow: none;
-    transform: scale(0.99);
+    transform: scale(0.95);
   }
 }
 .loginlogo{
@@ -1697,8 +1697,6 @@ marquee{
   }
 }
 .aboutmenu{
-  display: flex;
-  justify-content: space-between;
   margin-top: 20px;
   animation: opacity0to1 2s;
 }
@@ -1716,8 +1714,11 @@ marquee{
 
 }
 .abouttap{
-  background-color: lemonchiffon;
-  padding: 20px;
+  background-color: rgb(0, 140, 255);
+  padding: 5px;
+  color: #fff;
+  display: flex;
+  margin-bottom: 5px;
   font-size: 1.2rem;
   border-radius: 10px;
   text-decoration: none;
@@ -1725,6 +1726,10 @@ marquee{
   &:hover{
     background-color: blue;
     color: lemonchiffon;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    transform: scale(1.02);
+    box-shadow: 10px 10px 20px 5px rgb(31, 139, 255);
   }
 }
 .terminate-container {
