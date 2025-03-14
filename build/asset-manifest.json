@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8fef021d.css",
+    "main.js": "/static/js/main.fa5aeadd.js",
+    "static/js/213.366d099a.chunk.js": "/static/js/213.366d099a.chunk.js",
+    "static/js/455.3d14aa5c.chunk.js": "/static/js/455.3d14aa5c.chunk.js",
+    "static/js/488.9c4565b6.chunk.js": "/static/js/488.9c4565b6.chunk.js",
+    "static/media/lavozimyoriqnomasi.png": "/static/media/lavozimyoriqnomasi.05699fc56af9468e0393.png",
+    "static/media/logo2.png": "/static/media/logo2.1d68b090e79a71d3e630.png",
+    "static/media/logo-png.png": "/static/media/logo-png.6b0dda4a5d8d275caec0.png",
+    "static/media/note.png": "/static/media/note.ba8dbca023724b2fd5de.png",
+    "index.html": "/index.html",
+    "main.8fef021d.css.map": "/static/css/main.8fef021d.css.map",
+    "main.fa5aeadd.js.map": "/static/js/main.fa5aeadd.js.map",
+    "213.366d099a.chunk.js.map": "/static/js/213.366d099a.chunk.js.map",
+    "455.3d14aa5c.chunk.js.map": "/static/js/455.3d14aa5c.chunk.js.map",
+    "488.9c4565b6.chunk.js.map": "/static/js/488.9c4565b6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8fef021d.css",
+    "static/js/main.fa5aeadd.js"
+  ]
+}
