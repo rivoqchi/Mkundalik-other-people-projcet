@@ -16,7 +16,7 @@ function Tuzilma() {
     const getMyData = async () => {
       try {
         const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-        setMyType(data.user.forNG);        
+        setMyType(data.user.forNG);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

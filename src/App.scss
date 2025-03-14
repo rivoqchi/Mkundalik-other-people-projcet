@@ -1029,11 +1029,12 @@ button:focus {
   width: 10rem;
 }
 .scheduleshistory{
-  background-color: rgba(0, 132, 255, 0.102);
-  // border-radius: 5px;
-  box-shadow: 3px 3px 10px 3px rgb(214, 214, 214);
+  // background-color: rgba(0, 132, 255, 0.102);
+  // background-color: lemonchiffon;
+  border-radius: 20px;
+  background: rgb(35, 64, 255);
   margin: 10px;
-  padding: 10px;
+  padding: 20px;
 }
 .schedulerated{
   border-left: 3px solid green;
@@ -1047,17 +1048,28 @@ button:focus {
   margin-bottom: 10px;
   width: 100%;
   border: none;
-  border-radius: 3px;
-  box-shadow: 3px 3px 10px 3px rgb(184, 184, 184);
-  background-color: rgba(0, 128, 0, 0.848);
+  // border-radius: 15px;
+  // box-shadow: 0px 0px 10px 0px rgb(192, 192, 192);
+  background-color: rgb(0, 179, 0);
+  transition: .3s all ease-out !important;
   color: #fff;
-  transition: .5 ease-out;
+  border-radius: 10px;
   &:hover{
     box-shadow: none;
-    transform: scale(1.03);
-    background-color: rgb(0, 179, 0)
+    // transform: scale(1.03);
+  background-color: rgba(0, 128, 0, 0.848);
   }
 }
+.unrated{
+  background: none;
+  border: 1px solid #fff;
+  color: #fff;
+  &:hover{
+    background-color: #fff;
+    color: rgb(0, 0, 136);
+  }
+}
+
 .excla{
   color: gold;
   background-color: red;
@@ -1190,14 +1202,6 @@ button:focus {
   padding: 5px;
   border-radius: 50%;
   margin-left: 10px;
-}
-.unrated{
-  background-color: rgb(255, 166, 0);
-  color: #111;
-  &:hover{
-    background-color: rgb(0, 72, 179);
-    color: #fff;
-  }
 }
 .rating-container {
   text-align: center;
@@ -1713,7 +1717,7 @@ marquee{
   margin: 10px !important;
 
 }
-.abouttap{
+.abouttap{  
   background-color: rgb(0, 140, 255);
   padding: 5px;
   color: #fff;

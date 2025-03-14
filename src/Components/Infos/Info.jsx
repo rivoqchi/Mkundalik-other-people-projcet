@@ -46,10 +46,10 @@ const Info = () => {
             </p>
                 <h4>Foydali havolalar:</h4>
             <div className="aboutmenu">
-                <Link to={`/${myRole}/about/statistics`} className='abouttap'><div><i class="fa-solid fa-chart-simple"></i> Umumiy statistika</div></Link>
-                <Link to={`/${myRole}/about/news`} className='abouttap'><div><i class="fa-solid fa-envelope"></i> Yangiliklar</div></Link>
-                <Link to={`/${myRole}/about/faq`} className='abouttap'><div><i class="fa-solid fa-question"></i> FAQ</div></Link>
-                <Link to={`/${myRole}/about/application`} className='abouttap'><div><i class="fa-solid fa-blender-phone"></i> Taklif va shikoyatlar</div></Link>
+            <Link to={`/${myRole}/about/statistics`} className='abouttap'><div><i class="fa-solid fa-chart-simple"></i> Umumiy statistika</div></Link>
+                 <Link to={`/${myRole}/about/news`} className='abouttap'><div><i class="fa-solid fa-envelope"></i> Yangiliklar</div></Link>
+                 <Link to={`/${myRole}/about/faq`} className='abouttap'><div><i class="fa-solid fa-question"></i> FAQ</div></Link>
+                 <Link to={`/${myRole}/about/application`} className='abouttap'><div><i class="fa-solid fa-blender-phone"></i> Taklif va shikoyatlar</div></Link>
             </div>
         </div>
     );
