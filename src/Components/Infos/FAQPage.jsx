@@ -22,7 +22,12 @@ const FAQPage = () => {
           </Accordion.Body>
         </Accordion.Item>
 
-
+        <Accordion.Item eventKey="10">
+           <Accordion.Header >Mening kundalik hisobotimning mazmuni o`zgarib ketyapti!</Accordion.Header>
+           <Accordion.Body className='faqbody'>
+             Kundalik hisobotning mazmuniga faqatgina profil egasi javobgar hisoblanadi. O`zgarib ketishining sababi - ko`p foydalanuvchilar "Google translate" orqali o`zbek tilidan boshqa tilga sahifani tarjima qilish funksiyasini yoqib qo`yishganlarida sahifani avtomatik o`zgartirib yuboryapti, Bazaga esa yozilgan barcha ma'lumotlar boradi.
+           </Accordion.Body>
+         </Accordion.Item>
 
 
 
@@ -62,6 +67,41 @@ const FAQPage = () => {
           </Accordion.Body>
         </Accordion.Item>
 
+        <Accordion.Item eventKey="14">
+           <Accordion.Header>Tizimda rollar ma'nolari?</Accordion.Header>
+           <Accordion.Body className='faqbody'>
+             Tizimda 7 xil turdagi rollar mavjud: <br />
+             1. "employee" - bu xodim uchun, bunday turdagi xodimlar faqatgina hisobot yozishi mumkin. <br />
+             2. "admin" - asosan bo`lim boshliqlari foydalanadigan rol hisoblanadi va biriktirilgan xodimlarni baholash hamda kundalik yozish funksiyasi mavjud. <br />
+             3. "department" - xizmat boshlig`i profili. Ushbu profilda kundalik hisobot yozish va bo`lim boshliqlarining kundalik hisobotlarini baholash funksiyasi, tashkiliy tuzilmaning barcha xodimlarining yozgan kundaliklarini ko`ra olish imkoniyati mavjud. <br />
+             4. "complex" - Kompleks raxbar (Asosan, metropoliten boshlig`i o`rinbosarlari uchun). Ushbu profilda kundalik hisobot yozish va xizmat boshliqlarining kundalik hisobotlarini baholash funksiyasi, kompleksning barcha xodimlarining yozgan kundaliklarini ko`ra olish imkoniyati mavjud. <br />
+             5. "boss" - Boshliq profili. Bu turdagi profilda kundalik hisobot yozilmaydi. Monitoring, statistika sahifalari mavjud. Metropolitendagi barcha xodimlarning hisobotlarini ko`ra oladi.<br />
+             6. "commission" - E'tirozlarni ko`rib chiqish komissiyasi. Bu turdagi profilda kundalik hisobot yozilmaydi. Kelib tushgan e'tirozlarni hal qilish uchun maxsus sahifa mavjud.<br />
+             7. "superadmin" - Barcha funksiya mavjud. Yangi xodim qo`shish, xodimlarning lavozimini o`zgartirish, ma'lum xodimni tizimdan o`chirib yuborish, barcha xodimlarning kundalik hisobotlarini ko`ra olish va boshqa funksiyalar mavjud.<br />
+           </Accordion.Body>
+         </Accordion.Item>
+ 
+         <Accordion.Item eventKey="13">
+           <Accordion.Header>Baholash qancha vaqtda ko`rib chiqilishi kerak?</Accordion.Header>
+           <Accordion.Body className='faqbody'>
+             Kundalik hisobot yakunlangan kundan boshlab 3 ish kuni ichida ko`rib chiqiladi.
+           </Accordion.Body>
+         </Accordion.Item>
+ 
+         <Accordion.Item eventKey="12">
+           <Accordion.Header>Hisobotga   qo`yilgan ballar nimani anglatadi?</Accordion.Header>
+           <Accordion.Body className='faqbody'>
+             Biriktirilgan boshliq tomonidan kundalik hisobotlarga qo`yiladigan ballar: 75-100 ball: yaxshi; 50-74 ball: o`rtacha; 1-49 ball: qoniqarsiz.
+           </Accordion.Body>
+         </Accordion.Item>
+ 
+         <Accordion.Item eventKey="11">
+           <Accordion.Header>Bahoga nisbatan e'tirozlarni ko`rib chiqish jarayoni qanday?</Accordion.Header>
+           <Accordion.Body className='faqbody'>
+             Boshlig`ingiz tomonidan qo`yilgan bahoga nisbatan e'tirozingiz bo`lsa kundalik hisobotning pastki qismida "<i class="fa-solid fa-triangle-exclamation"></i>" belgisi ustiga bosish kerak. E'tirozingizni batafsil bayon qilganingizdan so`ng, murojaatingiz maxsus komissiya tomonidan ko`rib chiqiladi.
+           </Accordion.Body>
+         </Accordion.Item>
+
         <Accordion.Item eventKey="5">
           <Accordion.Header>Boshlig‘im hisobotimni past ball bilan baholadi, lekin men vazifalarimni to‘liq bajarganman</Accordion.Header>
           <Accordion.Body className='faqbody'>
@@ -86,7 +126,7 @@ const FAQPage = () => {
         <Accordion.Item eventKey="8">
           <Accordion.Header>Parolni qayerdan o‘zgartirsam bo‘ladi?</Accordion.Header>
           <Accordion.Body className='faqbody'>
-            "Mening Ma'lumotlarim" bo‘limida parolingizni o‘zgartirishingiz mumkin. Agar profilingizga kira olmasangiz, "NIB" xizmati xodimlariga yoki <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a> elektron pochtasiga ariza yozib qoldiring.
+            "Mening Ma'lumotlarim" bo‘limida parolingizni o‘zgartirishingiz mumkin. Agar profilingizga kira olmasangiz, "NIB" xizmati xodimlariga xat bilan, og`zaki yoki <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a> elektron pochtasiga ariza yozish orqali murojaat qiling.
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>

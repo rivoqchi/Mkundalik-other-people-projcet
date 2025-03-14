@@ -9,6 +9,7 @@ function RatingMyAdmins() {
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [myData, setMyData] = useState([]);
+  const [isNZS, setIsNZS] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const id = window.localStorage.getItem("user_id")
   const [loading, setLoading] = useState(false);
@@ -16,22 +17,30 @@ function RatingMyAdmins() {
   const getMySectionSchedules = async () => {
     setLoading(true);
     try {
-      let url = ``;
-      if (myRole === "department") {
-        url = `${API}/schedules/getmysection/admin/${myId}`;
-      } else if (myRole === "admin") {
-        url = `${API}/schedules/getmysection/${myId}`;
-      } else if (myRole === "complex") {
-        url = `${API}/schedules/getmysection/department/${myId}`;
-      }
-      const { data } = await axios.get(url);
-      setMySectionSchedules(data.schedules);
-      setLoading(false);
+        let url = ``;
+        let body = {}; // Agar isNZS true bo‘lsa, nzs=true jo‘natiladi
+
+        if (myRole === "department") {
+            url = `${API}/schedules/getmysection/admin/${myId}`;
+        } else if (myRole === "admin") {
+            url = `${API}/schedules/getmysection/${myId}`;
+        } else if (myRole === "complex") {
+            url = `${API}/schedules/getmysection/department/${myId}`;
+            if (isNZS === true) {
+                body.nzs = true;
+            }
+        }
+
+        // Body'ni to'g'ri yuborish kerak!
+        const { data } = await axios.post(url, body);
+        setMySectionSchedules(data.schedules);
+        setLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
+        console.error("Error fetching data:", error);
+        setLoading(false);
     }
-  };
+};
+
   
   useEffect(() => {
     if (myRole && myId) {
@@ -43,6 +52,9 @@ function RatingMyAdmins() {
     const {data} = await axios.get(`${API}/auth/mydata/${id}`)
     
     setMyData(data.user)
+    if(data.user.role === `complex` && data.user.complex === `Kompleks  NZS (Qurilish bo'yicha)`){
+      setIsNZS(true)
+    }
     if (data.user.role === 'employee') {
     setMyRole("user")
     }else if (data.user.role === 'admin') {
@@ -97,25 +109,36 @@ function RatingMyAdmins() {
   <ProgressBar label={`${greenPercentage}%`} animated striped variant="success" now={greenPercentage} key={1} />
   <ProgressBar label={`${redPercentage}%`} animated variant="danger" now={redPercentage} key={2} />
 </ProgressBar>
-      </div>
+      </div><hr />
       <div className="scheduleshistory">
         {mySectionSchedules.map((i) => (
           <>
-            <Link
-              className="text-decoration-none"
-              to={`/${myRole}/rate/schedule/${i._id}`}
-              key={i._id}
+          <Link className="text-decoration-none" to={`/${myRole}/rate/schedule/${i._id}`} key={i._id}>
+            <button
+              className={`schedulehistorybtn ${!i.rated ? "unrated" : "rated"}`}
+              style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
             >
-              <button
-                className={`schedulehistorybtn ${
-                  !i.rated ? "unrated" : "rated"
-                }`}
-              >
-                <span className="bold">{i.beginnerName}</span>ning {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
-                {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}
-              </button>
-            </Link>
-          </>
+              {/* Chap tomon: User icon + Beginner Name */}
+              <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <i className="fa-solid fa-user"></i>
+                <span className="bold">{i.beginnerName}</span>
+              </span>
+        
+              {/* O'ng tomon: StartedAt + Calendar icon + Yulduzcha */}
+              <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span>{i.startedAt.slice(0, 10)}</span>
+                {i.rated && (
+                  <span className="yulduzcha" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                    <i className="fa-regular fa-star"></i> {i.rated}
+                  </span>
+                )}
+                <i className="fa-solid fa-calendar-days"></i>
+              </span>
+            </button>
+          </Link>
+        </>
+        
+        
         ))}
       </div>
     </>

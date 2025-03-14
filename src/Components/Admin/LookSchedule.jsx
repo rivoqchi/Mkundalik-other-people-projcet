@@ -330,6 +330,7 @@ function ScheduleRate() {
           </div>
         </div>
       </div>
+      <div className="d-flex justify-content-evenly align-items-center">
       <button
         onClick={generatePDF}
         className="pdf-download-btn"
@@ -338,6 +339,7 @@ function ScheduleRate() {
         <i className="fa-solid fa-download"></i> PDF юклаб олиш
       </button>
       <DownloadDocx thisScheduleHistory={thisScheduleHistory} currentDateTime={currentDateTime} degree={degree} />
+      </div>
 
 
 
