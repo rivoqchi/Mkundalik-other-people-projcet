@@ -16,6 +16,7 @@ function ScheduleNew() {
   const [myDepartment, setMyDepartment] = useState([]);
   const [loading, setLoading] = useState(false);
   const [myComplex, setMyComplex] = useState([]);
+  const [myPosition, setMyPosition] = useState([]);
   const [myDegree, setMyDegree] = useState([]);
   const [myRole, setMyRole] = useState([]);
 
@@ -30,6 +31,7 @@ function ScheduleNew() {
       setMyDepartment(data.user.department);
       setMyComplex(data.user.complex);
       setMyDegree(data.user.degree);
+      setMyPosition(data.user.employee);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -50,7 +52,6 @@ function ScheduleNew() {
 
   const [countdown, setCountdown] = useState(5);
 
-
   // Modal holatlari
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -61,7 +62,7 @@ function ScheduleNew() {
 
   const [currentTaskIndex, setCurrentTaskIndex] = useState(null); // Edit va Delete uchun
   const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun  const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun
-console.log(taskData, 6);
+  console.log(taskData, 6);
 
   // Modalni yopish funksiyalari
   const handleCloseEdit = () => setShowEdit(false);
@@ -92,7 +93,9 @@ console.log(taskData, 6);
   const handleShowEnd = () => {
     setShowEnd(true);
   };
-
+  if(myPosition === false){
+    navigate("/fill")
+  }
   // Sana va ish holatini olish
   useEffect(() => {
     const currentDate = new Date()
@@ -100,7 +103,7 @@ console.log(taskData, 6);
       .replace(/[/]/g, ".");
     setDate(currentDate);
     console.log(currentDate);
-  
+
     axios
       .get(`${API}/schedules/checktoday/${myId}`)
       .then((res) => {
@@ -113,36 +116,43 @@ console.log(taskData, 6);
           const startedDate = fetchedWorkingOn.startedAt?.split(" ")[0];
           setOnWork(true);
           setLoading(false);
-  
+
           if (startedDate !== today) {
             if (fetchedWorkingOn.tasks && fetchedWorkingOn.tasks.length > 0) {
               console.log(`Avto yakunlash, ${myId}, ${fetchedWorkingOn._id}`);
               axios
-                .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {myId})
-                .then((response) => 
-                  console.log("Avto yakunlandi:", response.data),
+                .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {
+                  myId,
+                })
+                .then(
+                  (response) => console.log("Avto yakunlandi:", response.data),
                   setTerminate("Auto terminated"),
                   setOnWork(false),
                   setTasks([])
-              )
-                .catch((error) => console.error("Avto yakunlashda xatolik:", error));
+                )
+                .catch((error) =>
+                  console.error("Avto yakunlashda xatolik:", error)
+                );
             } else {
               axios
-                .delete(`${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`)
-                .then((response) => console.log("O'chirildi:", response.data),
-                setTerminate("Auto deleted"),
-                setOnWork(false),
-                setTasks([])
-              )
+                .delete(
+                  `${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`
+                )
+                .then(
+                  (response) => console.log("O'chirildi:", response.data),
+                  setTerminate("Auto deleted"),
+                  setOnWork(false),
+                  setTasks([])
+                )
                 .catch((error) => console.error("O‘chirishda xatolik:", error));
             }
           } else {
             console.log("Davom eting...");
           }
-  
+
           setWorkingOn(fetchedWorkingOn);
           setTasks(fetchedWorkingOn.tasks || []);
-          
+
           // Sekundomer boshlanish vaqtini sozlash
           if (fetchedWorkingOn.startedAt) {
             const start = new Date(
@@ -239,7 +249,6 @@ console.log(taskData, 6);
     }
   };
 
-
   useEffect(() => {
     if (terminate) {
       const timer = setInterval(() => {
@@ -265,7 +274,7 @@ console.log(taskData, 6);
       department: myDepartment,
       complex: myComplex,
       role: myRole,
-      degree: myDegree
+      degree: myDegree,
     };
 
     axios.post(`${API}/schedules/create`, payload).then((res) => {
@@ -292,25 +301,28 @@ console.log(taskData, 6);
           </button>
         )}
 
-{terminate && (
-      <div className="terminate-container">
-        <p className="terminate-message">
-          {terminate === "Auto terminated" ? (
-            "Yangi kuningiz bilan! Sizning yakunlanmagan hisobotingiz muvaffaqiyatli saqlandi."
-          ) : terminate === "Auto deleted" ? (
-            "Oldingi kunlarda boshlagan ammo hech qanday vazifa kiritilmagan hisobotingiz avtomatik o`chirib yuborildi. Eslatib o`tamiz, har kuni soat 23:59 dan so`ng barcha ochiq hisobotlar yopiladi va yangi kun uchun alohida hisobot yaratishingiz kerak"
-          ) : (
-            <>
-              <i className="fa-solid fa-play"></i> Your session was terminated
-            </>
-          )}
-        </p>
-        <div className="countdown">
-          <span className="countdown-number">{countdown}</span>
-          <p className="countdown-text">sekunddan so‘ng sahifa yangilanadi</p>
-        </div>
-      </div>
-    )}
+        {terminate && (
+          <div className="terminate-container">
+            <p className="terminate-message">
+              {terminate === "Auto terminated" ? (
+                "Yangi kuningiz bilan! Sizning yakunlanmagan hisobotingiz muvaffaqiyatli saqlandi."
+              ) : terminate === "Auto deleted" ? (
+                "Oldingi kunlarda boshlagan ammo hech qanday vazifa kiritilmagan hisobotingiz avtomatik o`chirib yuborildi. Eslatib o`tamiz, har kuni soat 23:59 dan so`ng barcha ochiq hisobotlar yopiladi va yangi kun uchun alohida hisobot yaratishingiz kerak"
+              ) : (
+                <>
+                  <i className="fa-solid fa-play"></i> Your session was
+                  terminated
+                </>
+              )}
+            </p>
+            <div className="countdown">
+              <span className="countdown-number">{countdown}</span>
+              <p className="countdown-text">
+                sekunddan so‘ng sahifa yangilanadi
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Tasks */}
         <div>
@@ -355,14 +367,14 @@ console.log(taskData, 6);
           {onWork && (
             <>
               <div className="mb-5">
-              <div className="button-container mt-5">
-                <button onClick={handleShowCreate} className="taskin">
-                  <i className="fa-solid fa-plus"></i> Qo`shish
-                </button>
-                <button onClick={handleShowEnd} className="taskin2">
-                  <i className="fa-regular fa-circle-stop"></i> Yakunlash
-                </button>
-              </div>
+                <div className="button-container mt-5">
+                  <button onClick={handleShowCreate} className="taskin">
+                    <i className="fa-solid fa-plus"></i> Qo`shish
+                  </button>
+                  <button onClick={handleShowEnd} className="taskin2">
+                    <i className="fa-regular fa-circle-stop"></i> Yakunlash
+                  </button>
+                </div>
               </div>
             </>
           )}

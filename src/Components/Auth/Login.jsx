@@ -127,7 +127,7 @@ const Login = () => {
                     </div>
                     <button className='signuplogin' onClick={clickSubmit}>Kirish</button>
 
-                    <p className="dontacc mt-3">Akkauntingiz yo`qmi? <Link to='/signup'>Ro`yxatdan o`tish</Link></p>
+                    <p className="dontacc mt-3">Parolni unutdingizmi? <Link to='/signup'>Parolni tiklash</Link></p>
                     <br /><br />
                 </div>
             </div>

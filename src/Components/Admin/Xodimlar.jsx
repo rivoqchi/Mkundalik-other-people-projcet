@@ -51,19 +51,19 @@ function Xodimlar() {
   // Xodimlar ro‘yxatini olish
   const getMyEmployees = async (role) => {
     try {
-      const { data } = await axios.get(`${API}/auth/getmyemployees`, {
-        params: {
-          role,
-          section: mySection,
-          department: myDepartment,
-          complex: myComplex,
-        }, // Role query orqali yuboriladi
-      });
-      setEmployees(data.employees); // Xodimlar ro‘yxatini saqlash
+        const params = { role, section: mySection, department: myDepartment, complex: myComplex };
+        
+        if (myComplex === "Kompleks  NZS (Qurilish bo'yicha)" && myRole === "complex") {
+            params.forNZS = true;
+        }
+
+        const { data } = await axios.get(`${API}/auth/getmyemployees`, { params });
+        setEmployees(data.employees);
     } catch (error) {
-      console.error("Error fetching employees:", error);
+        console.error("Error fetching employees:", error);
     }
-  };
+};
+
 
   // Ma'lumotlarni yuklash
   useEffect(() => {

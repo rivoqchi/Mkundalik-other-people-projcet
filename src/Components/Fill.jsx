@@ -106,6 +106,7 @@ const [myRole, setMyRole] = useState([]);
       await axios.put(`${API}/auth/fill/${myId}`, data);
       setAlert({ show: true, type: "success", message: "Xodim muvaffaqiyatli qo'shildi!" });
       navigate(`/${myRole}`);
+      window.localStorage.setItem("permission", true);
     } catch (error) {
       setAlert({ show: true, type: "error", message: error.response?.data?.message || "Xatolik yuz berdi!" });
     }
@@ -117,8 +118,9 @@ const [myRole, setMyRole] = useState([]);
         <img className="logoonform" src={logo} alt="" />
         </div>
         <h3 className="text-center">
-            Qatorlarni to`ldiring:
+            Davom etish uchun qatorlarni to`ldiring:
         </h3>
+        <h3 className="text-center blueword">{window.localStorage.getItem('fullName')}</h3>
       {alert.show && <Alert type={alert.type} message={alert.message} />}
       <form className="fill-form" onSubmit={handleSubmit}>
         <div className="form-group">

@@ -63,7 +63,7 @@ const Test = () => {
                     {/* <button className='signuplogin' onClick={clickSubmit}>Login</button> */}
                     <button className='signuplogin' onClick={checkToken}>Check token</button>
                     <p className="dontacc mt-3">
-                        Akkauntingiz yo`qmi? <Link to='/signup'>Ro`yxatdan o`tish</Link>
+                        Parolni unutdingizmi? <Link to='/signup'>Parolni tiklash</Link>
                     </p><br /><br />
                     <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2>
                 </div>
