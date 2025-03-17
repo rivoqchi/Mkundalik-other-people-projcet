@@ -7,7 +7,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
-function Aside() {
+import { useTranslation } from "react-i18next";
+
+function Aside() {  
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const location = useLocation(); // Hozirgi yo'lni olish
   let token = window.localStorage.getItem("token");
@@ -47,50 +51,50 @@ function Aside() {
           <li className={location.pathname === '/user/schedule/new' ? 'active' : ''}>
             <Link to="/user/schedule/new">
               <i className="fa-solid fa-list-check"></i>
-              <span>Kundalik ishlarni qayd etish</span>
+              <span>{t("qaydEtish")}</span>
             </Link>
           </li>
           <li className={location.pathname === '/user/schedule/history' ? 'active' : ''}>
             <Link to="/user/schedule/history">
               <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>Kundalik ish faoliyatim</span>
+              <span>{t("faoliyatim")}</span>
             </Link>
           </li>
           <li className={location.pathname === '/user/profile' ? 'active' : ''}>
             <Link to="/user/profile">
               <i className="fa-regular fa-user"></i>
-              <span>Mening ma'lumotlarim</span>
+              <span>{t("myInfo")}</span>
             </Link>
           </li>
           <li>
             <Link onClick={handleShow}>
               <i className="fa-solid fa-arrow-right-from-bracket"></i>
-              <span>Chiqish</span>
+              <span>{t("logOut")}</span>
             </Link>
           </li>
 
-                    {/* <li className={location.pathname === '/commission/about' ? 'active' : ''}>
-                      <Link to="/user/about">
-                        <i class="fa-solid fa-info"></i>
-                        <span>Dastur haqida</span><span className="newtop">NEW</span>
-                      </Link>
-                    </li> */}
+            <li className={location.pathname === '/user/about/statistics' ? 'active' : ''}>
+            <Link to="/user/about/statistics">
+              <i class="fa-solid fa-info"></i>
+              <span>Statistika</span><span className="newtop">NEW</span>
+            </Link>
+          </li>
 
 
         </ul>
       </nav>
     </div>
-        <Modal centered show={show} onHide={handleClose}>
+    <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Chiqish</Modal.Title>
+          <Modal.Title>{t("logOut")}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Profildan chiqmoqchimisiz?</Modal.Body>
+        <Modal.Body>{t("profildanchiqmoqchimisiz")}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Bekor qilish
+          {t("bekorqilish")}
           </Button>
           <Button variant="danger" onClick={logout}>
-            Chiqish
+          {t("logOut")}
           </Button>
         </Modal.Footer>
       </Modal>

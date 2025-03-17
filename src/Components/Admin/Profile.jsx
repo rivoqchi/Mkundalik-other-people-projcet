@@ -9,7 +9,10 @@ import FileView from "../FileView";
 import LinkTelegram from "../Auth/LinkTelegram";
 import LavozimYoriqnomasi from "./LavozimYoriqnomasi";
 import EditProfile from "../EditProfile";
+import { useTranslation } from "react-i18next";
+
 function Profile() {
+  const { t } = useTranslation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -86,18 +89,18 @@ function Profile() {
       <div className="profil">
         <div className="d-flex justify-content-center align-items-center">
           <img className="profiledagilogo" src={logo} alt="logo" />
-          <h1>Xodim profili</h1>
+          <h1>{t("kundaliktarixim")}</h1>
         </div>
         <div className="text-end">
         <Button className="text-end" variant="primary" onClick={handleShow}>
-        <i class="fa-solid fa-user-pen"></i> Tahrirlash
+        <i class="fa-solid fa-user-pen"></i> {t("edit")}
       </Button>
         </div>
-        <h5>Umumiy ma'lumotlar</h5>
+        <h5>{t("umumiyinfo")}</h5>
 
         <div className="profiledatum">
           <div className="datum">
-            <p className="ours">F.I.Sh</p>
+            <p className="ours">{t("umumiyinfo")}</p>
             <p className="theirs">{myData.name}</p>
           </div>
 

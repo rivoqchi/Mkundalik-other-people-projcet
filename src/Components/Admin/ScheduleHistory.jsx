@@ -3,9 +3,11 @@ import { API } from "../../config";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import LoadingScreen from "../Additional/LoadingScreen";
+import { useTranslation } from "react-i18next";
 
 
 function SchduleHistory() {
+  const { t } = useTranslation();
   const myId = window.localStorage.getItem("user_id");
   const [myScheduleHistory, setMyScheduleHistory] = useState([]);
     const [myRole, setMyRole] = useState([])
@@ -60,10 +62,10 @@ function SchduleHistory() {
     <>
       {loading && <LoadingScreen loading={true} />}
 
-      <h1 className="text-center">Kundalik ish faoliyatlarim tarixi</h1>
+      <h1 className="text-center">{t("kundaliktarixim")}</h1>
       <div className="ratedschedulescount d-flex mx-3 justify-content-between">
-        <p>Jami: {myScheduleHistory.length}</p>
-        <span>Baholangan: {myScheduleHistory.filter((item) => item.rated).length}</span>
+        <p>{t("jami")}: {myScheduleHistory.length}</p>
+        <span>{t("baholangan")}: {myScheduleHistory.filter((item) => item.rated).length}</span>
       </div>
       <div className="scheduleshistory">
         {myScheduleHistory.map((i) => (
@@ -85,7 +87,7 @@ function SchduleHistory() {
                   !i.closed ? "uncompletedschedule" : "completed"
                 }`}
               >
-                {i.startedAt.slice(0, 10)} da bajarilgan ishlar hisoboti
+                {i.startedAt.slice(0, 10)} {t("dabajarilgan")}
                 {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}
               </button>
             </Link>

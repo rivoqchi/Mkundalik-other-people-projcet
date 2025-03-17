@@ -8,8 +8,11 @@ import { API } from "../../config";
 import Alert from "../Additional/Alert";
 import LoadingScreen from "../Additional/LoadingScreen";
 import { m } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
-function ScheduleNew() {
+function ScheduleNew() {    
+  const { t } = useTranslation();
+
   const myId = window.localStorage.getItem("user_id");
   const [myName, setMyName] = useState([]);
   const [mySection, setMySection] = useState([]);
@@ -297,46 +300,39 @@ function ScheduleNew() {
 
         {!onWork && (
           <button className="start-button" onClick={handleShowStart}>
-            <i class="fa-solid fa-play"></i> Ishni boshlash
+            <i class="fa-solid fa-play"></i> {t("ishniboshlash")}
           </button>
         )}
 
         {terminate && (
-          <div className="terminate-container">
-            <p className="terminate-message">
-              {terminate === "Auto terminated" ? (
-                "Yangi kuningiz bilan! Sizning yakunlanmagan hisobotingiz muvaffaqiyatli saqlandi."
-              ) : terminate === "Auto deleted" ? (
-                "Oldingi kunlarda boshlagan ammo hech qanday vazifa kiritilmagan hisobotingiz avtomatik o`chirib yuborildi. Eslatib o`tamiz, har kuni soat 23:59 dan so`ng barcha ochiq hisobotlar yopiladi va yangi kun uchun alohida hisobot yaratishingiz kerak"
-              ) : (
-                <>
-                  <i className="fa-solid fa-play"></i> Your session was
-                  terminated
-                </>
-              )}
-            </p>
-            <div className="countdown">
-              <span className="countdown-number">{countdown}</span>
-              <p className="countdown-text">
-                sekunddan so‘ng sahifa yangilanadi
-              </p>
-            </div>
-          </div>
-        )}
+      <div className="terminate-container">
+        <p className="terminate-message">
+          {terminate === "Auto terminated"
+            ? t("auto_terminated")
+            : terminate === "Auto deleted"
+            ? t("auto_deleted")
+            : t("session_terminated")}
+        </p>
+        <div className="countdown">
+          <span className="countdown-number">{countdown}</span>
+          <p className="countdown-text">{t("sekunddansongavtomatikyangilanadi")}</p>
+        </div>
+      </div>
+    )}
 
         {/* Tasks */}
         <div>
           {onWork && (
             <>
               <div className="taskk">
-                <span className="blueword">{startedAt}</span> da boshladingiz.
+                <span className="blueword">{startedAt}</span> {t("daboshladingiz")}
               </div>
               <div className="timer">
                 {Math.floor(timer / 3600)
                   .toString()
                   .padStart(2, "0")}
                 :{(Math.floor(timer / 60) % 60).toString().padStart(2, "0")}:
-                {(timer % 60).toString().padStart(2, "0")} ishdasiz
+                {(timer % 60).toString().padStart(2, "0")} {t("ishdasiz")}
               </div>
             </>
           )}
@@ -369,10 +365,10 @@ function ScheduleNew() {
               <div className="mb-5">
                 <div className="button-container mt-5">
                   <button onClick={handleShowCreate} className="taskin">
-                    <i className="fa-solid fa-plus"></i> Qo`shish
+                    <i className="fa-solid fa-plus"></i> {t("qoshish")}
                   </button>
                   <button onClick={handleShowEnd} className="taskin2">
-                    <i className="fa-regular fa-circle-stop"></i> Yakunlash
+                    <i className="fa-regular fa-circle-stop"></i> {t("Yakunlash")}
                   </button>
                 </div>
               </div>
@@ -384,7 +380,7 @@ function ScheduleNew() {
         <Modal size="lg" centered show={showCreate} onHide={handleCloseCreate}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-solid fa-plus"></i> Yangi vazifa qo`shish
+              <i className="fa-solid fa-plus"></i> {t("yangivazifaqoshish")}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -402,7 +398,7 @@ function ScheduleNew() {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleCreateTask}>
-              Saqlash
+            {t("saqlash")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -410,7 +406,7 @@ function ScheduleNew() {
         <Modal centered show={showEdit} onHide={handleCloseEdit}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-solid fa-pen"></i> Vazifani o'zgartirish
+              <i className="fa-solid fa-pen"></i> {t("vazifaniozgartirish")}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -423,7 +419,7 @@ function ScheduleNew() {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleEditTask}>
-              Saqlash
+            {t("saqlash")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -431,15 +427,15 @@ function ScheduleNew() {
         <Modal centered show={showDelete} onHide={handleCloseDelete}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-solid fa-trash"></i> O'chirish
+              <i className="fa-solid fa-trash"></i> {t("ochirish")}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Ushbu vazifani o'chirishga ishonchingiz komilmi?
+          {t("areyousuretodelete")}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={handleDeleteTask}>
-              O'chirish
+            {t("ochirish")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -447,25 +443,25 @@ function ScheduleNew() {
         <Modal centered show={showEnd} onHide={handleCloseEnd}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-regular fa-circle-stop"></i> Yakunlash
+              <i className="fa-regular fa-circle-stop"></i> {t("yakunlash")}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>Ishni tugatishga aminmisiz?</Modal.Body>
+          <Modal.Body>{t("areyousuretoend")}</Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleEndTask}>
-              Yakunlash
+            {t("yakunlash")}
             </Button>
           </Modal.Footer>
         </Modal>
 
         <Modal centered show={showStart} onHide={handleCloseStart}>
           <Modal.Header closeButton>
-            <Modal.Title>Boshlash</Modal.Title>
+            <Modal.Title>{t("boshlash")}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Ishni boshlaysizmi?</Modal.Body>
+          <Modal.Body>{t("areyousuretostart")}</Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleStartWork}>
-              Boshlash
+            {t("boshlash")}
             </Button>
           </Modal.Footer>
         </Modal>
