@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import logo2 from './Images/logo2.png';
-import { Link } from 'react-router-dom';
-import { fetchRole } from '../Components/Auth/CheckAuth';
-
+import React, { useEffect, useState } from "react";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import { Link } from "react-router-dom";
+import { fetchRole } from "../Components/Auth/CheckAuth";
+import LanguageSelector from "./LangSelect";
+import logo2 from "./Images/logo-png.png";
+import { useTranslation } from "react-i18next";
 function Navbarr() {
   const [role, setRole] = useState(null);
-  
-  // Foydalanuvchi rolini aniqlash
+    const { t } = useTranslation();
+
   useEffect(() => {
     const fetchUserRole = async () => {
       const userRole = await fetchRole();
@@ -18,56 +19,56 @@ function Navbarr() {
     fetchUserRole();
   }, []);
 
-  // Profil linki uchun rol asosida yo'nalish
   const getProfileLink = () => {
-    
-    if (role === 'employee'){
-      return '/user';
-    } else if (role === 'admin'){
-      return '/admin';
-    } else if (role === 'superadmin'){
-      return '/superadmin';
-    } else if (role === 'complex'){
-      return '/complex';
-    } else if (role === 'boss'){
-      return '/boss';
-    } else if (role === 'commission'){
-      return '/commission';
-    } else if (role === 'department'){
-      return '/department';
-    } else if (role === 'staff'){
-      return '/staff';
-    } else if (role === 'hr'){
-      return '/hr';
-    } else if (role === 'new'){
-      return '/iamnew';
-    }else{
-      return '/login'; // Default link (avtorizatsiya qilinmaganlar uchun)
-    }
+    const rolePaths = {
+      employee: "/user",
+      admin: "/admin",
+      superadmin: "/superadmin",
+      complex: "/complex",
+      boss: "/boss",
+      commission: "/commission",
+      department: "/department",
+      staff: "/staff",
+      hr: "/hr",
+      new: "/iamnew",
+    };
+    return rolePaths[role] || "/login";
   };
 
   return (
     <Navbar collapseOnSelect expand="lg" className="navbarrr">
       <Container>
         <Link className="text-decoration-none" to="/">
-          <img className="logo2" src={logo2} alt="" /> Toshkent metropoliteni
+          <img className="logo5" src={logo2} alt="Logo" />
         </Link>
 
-        
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto"></Nav>
+
+          {/* Tillar tanlash dropdowni */}
+
           <Nav>
-            {/* Default Login link */}
-            {role === null || role === undefined && (
-              <Link title="Profilga kirish" to="/login">
-                <i className="fa-solid fa-user profilgakirish"></i>Login
+          <a title={t("dasfoyyoriq")} target="_blank" href={`/templates/instructions.pdf`} className="nav-link">
+          {t("dasfoyyoriq")}
+          </a>
+          <Link title={t("faq")} to={`${getProfileLink()}/about/faq`} className="nav-link">
+          {t("faq")}
+          </Link>
+          <Link title={t("statistika")} to={`${getProfileLink()}/about/statistics`} className="nav-link">
+          {t("statistika")}
+          </Link>
+
+
+          <LanguageSelector />
+            {!role && (
+              <Link title={t("login")} to="/login" className="nav-link navprofile">
+                {t("login")}
               </Link>
             )}
-            {/* Profil link */}
             {role && (
-              <Link title="Profil" to={getProfileLink()}>
-                <i className="fa-solid fa-user profilgakirish"></i>Dashboard
+              <Link title={t("profil")} to={`${getProfileLink()}/profile`} className="nav-link navprofile">
+                {t("profil")}
               </Link>
             )}
           </Nav>

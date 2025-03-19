@@ -13,7 +13,10 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Alert from "../Additional/Alert";
 import DownloadDocx from "./DownloadDocx";
+import { useTranslation } from "react-i18next";
+
 function ScheduleRate() {
+  const { t } = useTranslation();
   const myId = window.localStorage.getItem("user_id");
   const myFullName = window.localStorage.getItem("fullName");
   const [myData, setMyData] = useState([]);
@@ -203,31 +206,31 @@ function ScheduleRate() {
           </div>
           <div className="scheduleinfo">
             <div className="schedulebajaruvchilar">
-              <i className="fa-regular fa-user"></i> Ҳисоботни бажарган ходим:{" "}
+              <i className="fa-regular fa-user"></i> {t("didone")}:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-building-ngo"></i> Комплекс:{" "}
+              <i class="fa-solid fa-building-ngo"></i> {t("complex")}:{" "}
               <span>{thisScheduleHistory.complex}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-users-viewfinder"></i> Ташкилий тузилма:{" "}
+              <i class="fa-solid fa-users-viewfinder"></i> {t("tashtuzilma")}:{" "}
               <span>{thisScheduleHistory.department}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users"></i> Бўлим:{" "}
+              <i className="fa-solid fa-users"></i> {t("section")}:{" "}
               <span>{thisScheduleHistory.section}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-file-contract"></i> Лавозими:{" "}
-              <span>{degree || "Ma'lumot topilmadi"}</span>
+              <i class="fa-solid fa-file-contract"></i> {t("degree")}:{" "}
+              <span>{degree || t("infonotfound")}</span>
             </div>
           </div>
           <br />
           <p className="ochilgan text-center">
             <b>{thisScheduleHistory?.startedAt?.slice(0, 10) || "N/A"}</b>
           </p>
-          <h5 className="text-center">Кундалик бажарилган ишлар ҲИСОБОТИ:</h5>
+          <h5 className="text-center">{t("kunhisoboti")}:</h5>
           <div className="scheduletasks">
             {thisScheduleHistory.tasks?.map((task, index) => (
               <div key={index} className="task-item">
@@ -247,7 +250,7 @@ function ScheduleRate() {
           <br />
           <div>
             <div className="scheduleconfirms text-end mb-1">
-              Маълумотлар тўғрилигини тасдиқлайди:{" "}
+            {t("infotasdiqlaydi")}:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
 
@@ -258,14 +261,13 @@ function ScheduleRate() {
                   {thisScheduleHistory?.rated ? (
                     thisScheduleHistory.ratedName ? (
                       <>
-                        <b>{thisScheduleHistory.ratedName}</b> томонидан
-                        баҳоланди:
+                        <b>{thisScheduleHistory.ratedName}</b> {t("ratedBy")}:
                       </>
                     ) : (
-                      "Баҳоланган"
+                      t("rated")
                     )
                   ) : (
-                    "Баҳоланмаган"
+                    t("nonrated")
                   )}
                 </h5>
                 <span className="rateschhh">
@@ -276,7 +278,7 @@ function ScheduleRate() {
                       {"/100"}
                     </div>
                   ) : (
-                    "Ma'lumot topilmadi"
+                    t("infonotfound")
                   )}
                 </span>
               </div>
@@ -286,7 +288,7 @@ function ScheduleRate() {
             {thisScheduleHistory.comment && (
               <div className="commentsch align-items-center justify-content-between d-flex">
                 <div className="">
-                  <b>Baholovchi fikri:</b> {thisScheduleHistory.comment}
+                  <b>{t("comment")}:</b> {thisScheduleHistory.comment}
                 </div>
                 <i
                   disabled={thisScheduleHistory.reported}
@@ -302,9 +304,8 @@ function ScheduleRate() {
           <div className="d-flex align-items-center justify-content-between">
             <div className="pdfqr">
               <div className="exclamationqr">
-                Ҳужжатнининг ҳақиқийлигини текшириш учун ушбу QR кодни
-                сканерланг. <br />
-                Ҳужжат фақатгина{" "}
+              {t("checkwithqr")}. <br />
+              {t("doconly")}{" "}
                 <a
                   href="http://mkundalik.uz"
                   target="_blank"
@@ -312,10 +313,9 @@ function ScheduleRate() {
                 >
                   mkundalik.uz
                 </a>{" "}
-                сайтида тақдим этилади.
+                {t("onsite")}
                 <br />
-                Ушбу ҳисоботда келтирилган барча ишлар мазмунига ҳисоботни
-                шакллантирган ходим масъул ҳисобланади. PDF ва DOCX форматдаги хужжатларнинг иккиси ҳам бир хил кучга эга.
+                {t("egasijavobgar")}.
                 <div className="current-datetime text-end mx-5">
                   {currentDateTime}
                 </div>
@@ -330,8 +330,14 @@ function ScheduleRate() {
           </div>
         </div>
       </div>
-      <div className="d-flex align-items-center justify-content-evenly">
-      <button onClick={generatePDF} className="pdf-download-btn" style={{ margin: "20px 0" }}><i className="fa-solid fa-download"></i> PDF юклаб олиш</button>
+      <div className="d-flex justify-content-evenly align-items-center">
+      <button
+        onClick={generatePDF}
+        className="pdf-download-btn"
+        style={{ margin: "20px 0" }}
+      >
+        <i className="fa-solid fa-download"></i> {t("pdf")}
+      </button>
       <DownloadDocx thisScheduleHistory={thisScheduleHistory} currentDateTime={currentDateTime} degree={degree} />
       </div>
 
@@ -339,12 +345,10 @@ function ScheduleRate() {
 
       <Modal size="lg" centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Baholash natijalariga e'tiroz bildirish</Modal.Title>
+          <Modal.Title>{t("etiroz")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <b>{thisScheduleHistory.ratedName}</b> tomonidan qo`yilgan bahoga
-          e'tiroz bildiryapsiz. Ushbu masala tegishli komissiya a'zolariga
-          yetkazilishi uchun holatni batafsil bayon qiling:
+          <b>{thisScheduleHistory.ratedName}</b> {t("batafsilbayonforcommission")}:
         </Modal.Body>
         <div className="text-center">
           <textarea
@@ -356,10 +360,10 @@ function ScheduleRate() {
         </div>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Yopish
+          {t("close")}
           </Button>
           <Button variant="danger" onClick={(e) => handleReport(e)}>
-            E’tiroz Bildirish
+          {t("report")}
           </Button>
         </Modal.Footer>
       </Modal>

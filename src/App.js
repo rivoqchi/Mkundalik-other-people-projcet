@@ -25,10 +25,16 @@ import LinkTelegram from "./Components/Auth/LinkTelegram";
 import LoginWithTelegram from "./Components/Auth/LoginWithTelegram";
 import AllUsers from './Components/SuperAdmin/AllUsers';
 import Sorry from "./Components/Additional/Sorry";
+import LangSelect from "./Components/LangSelect";
+
+import "./i18n";
+import { useTranslation } from "react-i18next";
+
 function App() {
   return (
     <>
       <div>
+        {/* <LangSelect /> */}
         <Router>
           <XatolikXabar/>
           {/* <Sorry/> */}

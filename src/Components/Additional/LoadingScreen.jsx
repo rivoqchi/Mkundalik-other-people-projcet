@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Spinner } from "react-bootstrap";
 import logo from "../Images/logo2.png";
+import { useTranslation } from "react-i18next";
 
 const LoadingScreen = ({ loading }) => {
-  const messages = ["Iltimos, kuting...", "Yuklanmoqda...", "Bir soniya..."];
+  const { t } = useTranslation();
+  const messages = [t("please_wait"), t("loading"), t("one_second")];
   const [currentMessage, setCurrentMessage] = useState(messages[0]);
 
   useEffect(() => {
@@ -15,7 +17,7 @@ const LoadingScreen = ({ loading }) => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [messages]);
 
   return (
     loading && (

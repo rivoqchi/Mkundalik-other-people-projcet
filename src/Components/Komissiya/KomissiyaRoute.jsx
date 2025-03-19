@@ -9,6 +9,7 @@ import EtirozLook from './EtirozLook';
 import PleaseInstruction from '../Asking/PleaseInstruction';
 import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
 import Info from '../Infos/Info';
+import Navbarr from '../Navbar';
 import News from '../Infos/News';
 import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
@@ -22,8 +23,10 @@ function KomissiyaRoute() {
           <Aside />
           {/* <PleaseInstruction/> */}
         </div>
-        <div className=" col-12 col-md-9">
-          <div className="p-3">
+        {/* O'ng taraf: Navbar va asosiy content */}
+        <div className="col-9 d-flex flex-column p-0">
+          <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
+          <div className="p-3 flex-grow-1">
             <Routes>
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />

@@ -11,9 +11,11 @@ import PleaseInstruction from '../Asking/PleaseInstruction'
 import Info from '../Infos/Info';
 import News from '../Infos/News';
 import UmumiyStat from '../Infos/UmumiyStat';
+import Navbarr from '../Navbar';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
+import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 function EmployeeRoute() {
   return (
     <div className="container-fluid">
@@ -22,8 +24,10 @@ function EmployeeRoute() {
           <Aside />
           {/* <PleaseInstruction/> */}
         </div>
-        <div className=" col-12 col-md-9">
-          <div className="p-3">
+        {/* O'ng taraf: Navbar va asosiy content */}
+        <div className="col-9 d-flex flex-column p-0">
+          <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
+          <div className="p-3 flex-grow-1">
             <Routes>
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
@@ -37,6 +41,7 @@ function EmployeeRoute() {
               <Route path="/schedule/new" exact element={<ScheduleNew />} />
               <Route path="/schedule/history" exact element={<ScheduleHistory />} />
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
+              <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
           </div>

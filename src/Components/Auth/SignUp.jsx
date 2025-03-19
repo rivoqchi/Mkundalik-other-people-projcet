@@ -85,7 +85,7 @@ const Signup = () => {
         <>
         <h1>403</h1>
         <div className="text-center">
-            Faqatgina tizim administratori tizimga qo`shishi mumkin. <br />
+            Parolni tiklash uchun NIB xodimlariga murojaat qiling, yoki <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a> pochtasiga ariza qoldiring. <br />
             tizim administratoriga murojaat qiling.
             </div><br />
             <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a><br /><br /><br />

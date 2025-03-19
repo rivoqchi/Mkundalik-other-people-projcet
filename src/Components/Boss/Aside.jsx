@@ -7,7 +7,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
+import { useTranslation } from "react-i18next";
 function Aside() {  
+    const { t } = useTranslation();
     const [show, setShow] = useState(false);
   
     const handleClose = () => setShow(false);
@@ -46,57 +48,64 @@ function Aside() {
         <li className={location.pathname === '/boss/monitoring' ? 'active' : ''}>
             <Link disabled to="/boss/rating/complexes">
             <i class="fa-solid fa-chart-pie"></i>
-            <span>Raxbar nazoratidagilar</span>
+            <span>{t("raxbarnazoratidagilar")}</span>
             </Link>
           </li>
           <li className={location.pathname === '/boss/structure' ? 'active' : ''}>
             <Link to="/boss/structure">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Tashkiliy tuzilma</span>
+              <span>{t("tashkiliytuzilma")}</span>
             </Link>
           </li>
           <li className={location.pathname === '/boss/statistics' ? 'active' : ''}>
             <Link to="/boss/statistics">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Statistika</span>
+              <span>{t("statistika")}</span>
             </Link>
           </li>
           <li className={location.pathname === '/boss/profile' ? 'active' : ''}>
             <Link to="/boss/profile">
               <i className="fa-regular fa-user"></i>
-              <span>Mening ma'lumotlarim</span>
+              <span>{t("myInfo")}</span>
             </Link>
           </li>
-          <li>
-            <Link onClick={handleShow}>
-              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-              <span>Chiqish</span>
-            </Link>
-          </li>
-
-          {/* <li className={location.pathname === '/boss/profile' ? 'active' : ''}>
-            <Link to="/boss/about">
-              <i class="fa-solid fa-info"></i>
-              <span>Dastur haqida</span><span className="newtop">NEW</span>
-            </Link>
-          </li> */}
+                    <li className={location.pathname === '/complex/about/statistics' ? 'active' : ''}>
+                      <Link to="/complex/about/statistics">
+                        <i class="fa-solid fa-info"></i>
+                        <span>{t("statistika")}</span><span className="newtop">NEW</span>
+                      </Link>
+                    </li>
+                              
+                    <li className={location.pathname === '/department/instructions' ? 'active' : ''}>
+                      <Link to="/department/instructions">
+                        <i class="fa-solid fa-book"></i>
+                          <span>{t("foydalanishyoriqnomasi")}</span><span className="newtop">NEW</span>
+                      </Link>
+                    </li>
+                              
+                    <li>
+                      <Link onClick={handleShow}>
+                        <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>{t("logOut")}</span>
+                      </Link>
+                    </li>
         </ul>
       </nav>
     </div>
-            <Modal centered show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Chiqish</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Profildan chiqmoqchimisiz?</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Bekor qilish
-              </Button>
-              <Button variant="danger" onClick={logout}>
-                Chiqish
-              </Button>
-            </Modal.Footer>
-          </Modal>
+    <Modal centered show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("logOut")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{t("profildanchiqmoqchimisiz")}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+          {t("bekorqilish")}
+          </Button>
+          <Button variant="danger" onClick={logout}>
+          {t("logOut")}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

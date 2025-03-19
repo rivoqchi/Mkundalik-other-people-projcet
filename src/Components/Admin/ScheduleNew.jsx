@@ -8,14 +8,18 @@ import { API } from "../../config";
 import Alert from "../Additional/Alert";
 import LoadingScreen from "../Additional/LoadingScreen";
 import { m } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
-function ScheduleNew() {
+function ScheduleNew() {    
+  const { t } = useTranslation();
+
   const myId = window.localStorage.getItem("user_id");
   const [myName, setMyName] = useState([]);
   const [mySection, setMySection] = useState([]);
   const [myDepartment, setMyDepartment] = useState([]);
   const [loading, setLoading] = useState(false);
   const [myComplex, setMyComplex] = useState([]);
+  const [myPosition, setMyPosition] = useState([]);
   const [myDegree, setMyDegree] = useState([]);
   const [myRole, setMyRole] = useState([]);
 
@@ -30,6 +34,7 @@ function ScheduleNew() {
       setMyDepartment(data.user.department);
       setMyComplex(data.user.complex);
       setMyDegree(data.user.degree);
+      setMyPosition(data.user.employee);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -50,7 +55,6 @@ function ScheduleNew() {
 
   const [countdown, setCountdown] = useState(5);
 
-
   // Modal holatlari
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -61,7 +65,7 @@ function ScheduleNew() {
 
   const [currentTaskIndex, setCurrentTaskIndex] = useState(null); // Edit va Delete uchun
   const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun  const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun
-console.log(taskData, 6);
+  console.log(taskData, 6);
 
   // Modalni yopish funksiyalari
   const handleCloseEdit = () => setShowEdit(false);
@@ -92,7 +96,9 @@ console.log(taskData, 6);
   const handleShowEnd = () => {
     setShowEnd(true);
   };
-
+  if(myPosition === false){
+    navigate("/fill")
+  }
   // Sana va ish holatini olish
   useEffect(() => {
     const currentDate = new Date()
@@ -100,7 +106,7 @@ console.log(taskData, 6);
       .replace(/[/]/g, ".");
     setDate(currentDate);
     console.log(currentDate);
-  
+
     axios
       .get(`${API}/schedules/checktoday/${myId}`)
       .then((res) => {
@@ -113,36 +119,43 @@ console.log(taskData, 6);
           const startedDate = fetchedWorkingOn.startedAt?.split(" ")[0];
           setOnWork(true);
           setLoading(false);
-  
+
           if (startedDate !== today) {
             if (fetchedWorkingOn.tasks && fetchedWorkingOn.tasks.length > 0) {
               console.log(`Avto yakunlash, ${myId}, ${fetchedWorkingOn._id}`);
               axios
-                .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {myId})
-                .then((response) => 
-                  console.log("Avto yakunlandi:", response.data),
+                .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {
+                  myId,
+                })
+                .then(
+                  (response) => console.log("Avto yakunlandi:", response.data),
                   setTerminate("Auto terminated"),
                   setOnWork(false),
                   setTasks([])
-              )
-                .catch((error) => console.error("Avto yakunlashda xatolik:", error));
+                )
+                .catch((error) =>
+                  console.error("Avto yakunlashda xatolik:", error)
+                );
             } else {
               axios
-                .delete(`${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`)
-                .then((response) => console.log("O'chirildi:", response.data),
-                setTerminate("Auto deleted"),
-                setOnWork(false),
-                setTasks([])
-              )
+                .delete(
+                  `${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`
+                )
+                .then(
+                  (response) => console.log("O'chirildi:", response.data),
+                  setTerminate("Auto deleted"),
+                  setOnWork(false),
+                  setTasks([])
+                )
                 .catch((error) => console.error("O‘chirishda xatolik:", error));
             }
           } else {
             console.log("Davom eting...");
           }
-  
+
           setWorkingOn(fetchedWorkingOn);
           setTasks(fetchedWorkingOn.tasks || []);
-          
+
           // Sekundomer boshlanish vaqtini sozlash
           if (fetchedWorkingOn.startedAt) {
             const start = new Date(
@@ -239,7 +252,6 @@ console.log(taskData, 6);
     }
   };
 
-
   useEffect(() => {
     if (terminate) {
       const timer = setInterval(() => {
@@ -255,6 +267,7 @@ console.log(taskData, 6);
     }
   }, [terminate]);
   const handleStartWork = () => {
+    setLoading(true)
     if (handleShowStart) {
       handleCloseStart();
     }
@@ -265,12 +278,13 @@ console.log(taskData, 6);
       department: myDepartment,
       complex: myComplex,
       role: myRole,
-      degree: myDegree
+      degree: myDegree,
     };
 
     axios.post(`${API}/schedules/create`, payload).then((res) => {
       setOnWork(true);
       setWorkingOn(res.data.newSchedule);
+      setLoading(false)
       setAlert({ show: true, type: "success", message: "Boshlandi!" });
     });
   };
@@ -288,26 +302,22 @@ console.log(taskData, 6);
 
         {!onWork && (
           <button className="start-button" onClick={handleShowStart}>
-            <i class="fa-solid fa-play"></i> Ishni boshlash
+            <i class="fa-solid fa-play"></i> {t("ishniboshlash")}
           </button>
         )}
 
-{terminate && (
+        {terminate && (
       <div className="terminate-container">
         <p className="terminate-message">
-          {terminate === "Auto terminated" ? (
-            "Yangi kuningiz bilan! Sizning yakunlanmagan hisobotingiz muvaffaqiyatli saqlandi."
-          ) : terminate === "Auto deleted" ? (
-            "Oldingi kunlarda boshlagan ammo hech qanday vazifa kiritilmagan hisobotingiz avtomatik o`chirib yuborildi. Eslatib o`tamiz, har kuni soat 23:59 dan so`ng barcha ochiq hisobotlar yopiladi va yangi kun uchun alohida hisobot yaratishingiz kerak"
-          ) : (
-            <>
-              <i className="fa-solid fa-play"></i> Your session was terminated
-            </>
-          )}
+          {terminate === "Auto terminated"
+            ? t("auto_terminated")
+            : terminate === "Auto deleted"
+            ? t("auto_deleted")
+            : t("session_terminated")}
         </p>
         <div className="countdown">
           <span className="countdown-number">{countdown}</span>
-          <p className="countdown-text">sekunddan so‘ng sahifa yangilanadi</p>
+          <p className="countdown-text">{t("sekunddansongavtomatikyangilanadi")}</p>
         </div>
       </div>
     )}
@@ -317,14 +327,14 @@ console.log(taskData, 6);
           {onWork && (
             <>
               <div className="taskk">
-                <span className="blueword">{startedAt}</span> da boshladingiz.
+                <span className="blueword">{startedAt}</span> {t("daboshladingiz")}
               </div>
               <div className="timer">
                 {Math.floor(timer / 3600)
                   .toString()
                   .padStart(2, "0")}
                 :{(Math.floor(timer / 60) % 60).toString().padStart(2, "0")}:
-                {(timer % 60).toString().padStart(2, "0")} ishdasiz
+                {(timer % 60).toString().padStart(2, "0")} {t("ishdasiz")}
               </div>
             </>
           )}
@@ -355,14 +365,14 @@ console.log(taskData, 6);
           {onWork && (
             <>
               <div className="mb-5">
-              <div className="button-container mt-5">
-                <button onClick={handleShowCreate} className="taskin">
-                  <i className="fa-solid fa-plus"></i> Qo`shish
-                </button>
-                <button onClick={handleShowEnd} className="taskin2">
-                  <i className="fa-regular fa-circle-stop"></i> Yakunlash
-                </button>
-              </div>
+                <div className="button-container mt-5">
+                  <button onClick={handleShowCreate} className="taskin">
+                    <i className="fa-solid fa-plus"></i> {t("qoshish")}
+                  </button>
+                  <button onClick={handleShowEnd} className="taskin2">
+                    <i className="fa-regular fa-circle-stop"></i> {t("yakunlash")}
+                  </button>
+                </div>
               </div>
             </>
           )}
@@ -372,7 +382,7 @@ console.log(taskData, 6);
         <Modal size="lg" centered show={showCreate} onHide={handleCloseCreate}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-solid fa-plus"></i> Yangi vazifa qo`shish
+              <i className="fa-solid fa-plus"></i> {t("yangivazifaqoshish")}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -390,7 +400,7 @@ console.log(taskData, 6);
           </Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleCreateTask}>
-              Saqlash
+            {t("saqlash")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -398,7 +408,7 @@ console.log(taskData, 6);
         <Modal centered show={showEdit} onHide={handleCloseEdit}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-solid fa-pen"></i> Vazifani o'zgartirish
+              <i className="fa-solid fa-pen"></i> {t("vazifaniozgartirish")}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -411,7 +421,7 @@ console.log(taskData, 6);
           </Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleEditTask}>
-              Saqlash
+            {t("saqlash")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -419,15 +429,15 @@ console.log(taskData, 6);
         <Modal centered show={showDelete} onHide={handleCloseDelete}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-solid fa-trash"></i> O'chirish
+              <i className="fa-solid fa-trash"></i> {t("ochirish")}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Ushbu vazifani o'chirishga ishonchingiz komilmi?
+          {t("areyousuretodelete")}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={handleDeleteTask}>
-              O'chirish
+            {t("ochirish")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -435,25 +445,25 @@ console.log(taskData, 6);
         <Modal centered show={showEnd} onHide={handleCloseEnd}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-regular fa-circle-stop"></i> Yakunlash
+              <i className="fa-regular fa-circle-stop"></i> {t("yakunlash")}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>Ishni tugatishga aminmisiz?</Modal.Body>
+          <Modal.Body>{t("areyousuretoend")}</Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleEndTask}>
-              Yakunlash
+            {t("yakunlash")}
             </Button>
           </Modal.Footer>
         </Modal>
 
         <Modal centered show={showStart} onHide={handleCloseStart}>
           <Modal.Header closeButton>
-            <Modal.Title>Boshlash</Modal.Title>
+            <Modal.Title>{t("boshlash")}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Ishni boshlaysizmi?</Modal.Body>
+          <Modal.Body>{t("areyousuretostart")}</Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleStartWork}>
-              Boshlash
+            {t("boshlash")}
             </Button>
           </Modal.Footer>
         </Modal>
