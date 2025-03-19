@@ -1,4 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 *{
+  font-family: ubuntu;
   text-decoration: none;
 }
 .alert-close {
@@ -2054,47 +2056,109 @@ h4 {
 .abouttap:hover i {
   transform: rotate(10deg);
 }
-// 
+.logo5{
+  width: 8rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.logo5:hover {
+  transform: scale(1.1);
+}
+
+.navbarrr {
+  background-color: #ecf5ff;
+  padding: 20px 20px !important;
+  transition: all 0.3s ease-in-out;
+}
+.profilgakirish {
+  margin-right: 5px;
+}
+
 .language-selector {
-  position: fixed;
-  z-index: 999;
-  top: 20px;
-  right: 20px;
+  position: relative;
+  display: inline-block;
+}
+.langi{
+  margin-right: 20px;
+  font-size: 1.5rem;
+}
+.lang-btn {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  background: #0486e9d0;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
   transition: all 0.3s ease-in-out;
 }
 
-.language-selector:hover {
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-.lang-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
 .lang-btn img {
-  width: 30px;
-  height: 20px;
-  border-radius: 4px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  width: 20px;
+  height: 14px;
+  margin-right: 8px;
 }
 
-.lang-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+.lang-btn span {
+  margin-right: 8px;
 }
 
-.lang-btn.active {
-  border: 2px solid #007bff;
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
   border-radius: 5px;
+  list-style: none;
+  margin-top: 5px;
+  background-color: #fff;
+  padding: 0;
+  box-shadow: 0 4px 20px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: drop .2s;
+}
+@keyframes drop {
+  from{
+    transform: translate(0px, -30px);
+  }
+}
+.lang-dropdown li {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  opacity: 0;
+  transform: translateY(-5px);
+  animation: dropdownFadeIn 0.1s forwards ease-in-out;
+}
+
+.lang-dropdown li img {
+  width: 20px;
+  height: 14px;
+  margin-right: 8px;
+}
+
+.lang-dropdown li:hover {
+  background: #d4d4d4;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+.navprofile{
+  color: #fff !important;
+  background-color: #053786 !important;
+  padding: 20px;
+  font-weight: bold !important;
+  margin-left: 20px;
+  border-radius: 10px;
 }

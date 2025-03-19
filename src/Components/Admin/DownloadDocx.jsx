@@ -5,10 +5,12 @@ import Docxtemplater from "docxtemplater";
 import QRCode from "qrcode";
 import ImageModule from "docxtemplater-image-module-free";
 import jsPDF from "jspdf";
+import { useTranslation } from "react-i18next";
 
 const DownloadDocx = ({ thisScheduleHistory, degree, currentDateTime }) => {
   const [qrBase64, setQrBase64] = useState("");
 
+  const { t } = useTranslation();
   // QR kod yaratish va uni Base64 formatga o‘tkazish
   const generateQRCode = async (text) => {
     try {
@@ -77,7 +79,7 @@ const DownloadDocx = ({ thisScheduleHistory, degree, currentDateTime }) => {
   return (
     <div>
       <button onClick={generateDocx} className="pdf-download-btn">
-      <i className="fa-solid fa-download"></i> .DOCX юклаб олиш
+      <i className="fa-solid fa-download"></i> {t("docx")}
       </button>
     </div> 
   );

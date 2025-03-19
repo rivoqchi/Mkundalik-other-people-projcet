@@ -3,8 +3,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { API } from "../../config";
 import LoadingScreen from "../Additional/LoadingScreen";
+import { useTranslation } from "react-i18next";
 
 function Xodimlar() {
+  const { t } = useTranslation();
   const [employees, setEmployees] = useState([]); // Xodimlar ro‘yxati
   const [myData, setMyData] = useState(null);
   const [mySection, setMySection] = useState(null);
@@ -97,10 +99,11 @@ function Xodimlar() {
     <div className="azolari">
       <h3>{dataa} a'zolari</h3>
       <div>
-        {employees.length > 0
-          ? `${employees.length} ta xodimlar ro‘yxatga olingan`
-          : "Sizga biriktirilgan xodimlar topilmadi"}
-      </div>
+  {employees.length > 0
+    ? `${employees.length} ${t("taxodimroyxatgaolingan")}`
+    : t("connectednotfound")}
+</div>
+
     </div>
   </div>
   <div className="xodimlartable">
@@ -112,29 +115,29 @@ function Xodimlar() {
       <thead>
         <tr>
           <th>N</th>
-          <th>F.I.Sh</th>
-          <th>Telefon</th>
-          <th>Bo'lim</th>
-          <th>Lavozim</th>
-          <th>Millati</th>
-          <th>Tug'ilgan kuni</th>
-          <th>Tug'ilgan joyi</th>
-          <th>Yashash manzili</th>
-          <th>Ma'lumoti</th>
-          <th>Mutaxassisligi</th>
-          <th>Tizimga qo'shildi</th>
+          <th>{t("fish")}</th>
+          <th>{t("tel")}</th>
+          <th>{t("section")}</th>
+          <th>{t("degree")}</th>
+          <th>{t("nationality")}</th>
+          <th>{t("dateOfBirth")}</th>
+          <th>{t("placeOfBirth")}</th>
+          <th>{t("address")}</th>
+          <th>{t("education")}</th>
+          <th>{t("speciality")}</th>
+          <th>{t("firstAct")}</th>
         </tr>
       </thead>
       <tbody>
         {employees.map((employee, index) => (
           <tr key={employee._id}>
             <td>{index + 1}</td>
-            <td title="Xodimning barcha kundaliklarini ko`rish uchun bosing">
+            <td title={t("taptoknowallinfoaboutemployee")}>
               <Link to={`/${myRole}/schedule/history/${employee._id}`}>
                 {employee.name}
               </Link>
             </td>
-            <td title="Telefon qilish uchun bosing">
+            <td title={t("taptoknowphone")}>
               <a href={`tel:${employee.phone}`}>{employee.phone}</a>
             </td>
             <td>{employee.section}</td>

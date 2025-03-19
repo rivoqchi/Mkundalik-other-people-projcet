@@ -3,11 +3,14 @@ import { Modal, Button, Form, OverlayTrigger, Tooltip, Alert } from 'react-boots
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaComment } from 'react-icons/fa';
 import {API} from '../config';
+import { useTranslation } from "react-i18next";
+
 function XatolikXabar() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
+  const { t } = useTranslation();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -27,14 +30,16 @@ function XatolikXabar() {
       
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Xatolik haqida xabar berish</Modal.Title>
+          <Modal.Title>{t("xatolikxabar")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <a className='pointer' href="mailto:mkundalik@tashmetro.uz">
-              <Form.Label>mkundalik@tashmetro.uz</Form.Label>
-              </a>
+              
+              <Form.Label><a className='pointer' href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a></Form.Label>
+              <br />
+              <Form.Label><i class="fa-solid fa-phone-volume"></i> 53-89</Form.Label>
+              
             </Form.Group>
           </Form>
         </Modal.Body>

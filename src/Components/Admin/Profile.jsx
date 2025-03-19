@@ -100,12 +100,12 @@ function Profile() {
 
         <div className="profiledatum">
           <div className="datum">
-            <p className="ours">{t("umumiyinfo")}</p>
+            <p className="ours">{t("fish")}</p>
             <p className="theirs">{myData.name}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Telefon raqam</p>
+            <p className="ours">{t("tel")}</p>
             <p className="theirs">{myData.phone}</p>
           </div>
 
@@ -142,89 +142,89 @@ function Profile() {
           </div> */}
 
           <div className="datum">
-            <p className="ours">Kompleks</p>
+            <p className="ours">{t("complex")}</p>
             <p className="theirs">{myData.complex}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Xizmat</p>
+            <p className="ours">{t("department")}</p>
             <p className="theirs">{myData.department}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Bo`lim</p>
+            <p className="ours">{t("section")}</p>
             <p className="theirs">{myData.section}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Lavozim</p>
+            <p className="ours">{t("degree")}</p>
             <p className="theirs">{myData.degree}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Ro`yxatdan o`tgan sana</p>
+            <p className="ours">{t("firstAct")}</p>
             <p className="theirs">{myData.firstAct}</p>
           </div>
 
-          <h5>Shaxsiy ma'lumotlar</h5>
+          <h5>{t("shaxsiymalumotlar")}</h5>
 
           <div className="datum">
-            <p className="ours">Millati</p>
+            <p className="ours">{t("nationality")}</p>
             <p className="theirs">{myData.nationality}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Ma'lumot</p>
+            <p className="ours">{t("education")}</p>
             <p className="theirs">{myData.education}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Yo`nalish</p>
+            <p className="ours">{t("speciality")}</p>
             <p className="theirs">{myData.speciality}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Tug`ilgan sana</p>
+            <p className="ours">{t("dateOfBirth")}</p>
             <p className="theirs">{myData.dateOfBirth}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Tug`ilgan manzil</p>
+            <p className="ours">{t("placeOfBirth")}</p>
             <p className="theirs">{myData.placeOfBirth}</p>
           </div>
 
           <div className="datum">
-            <p className="ours">Yashash manzil</p>
+            <p className="ours">{t("address")}</p>
             <p className="theirs">{myData.address}</p>
           </div>
 
           <div className="datum align-items-center">
-            <p className="ours align-items-center">Lavozim yo`riqnomasi:</p>
+            <p className="ours align-items-center">{t("lavozimyoriqnomasi")}:</p>
             <LavozimYoriqnomasi />
           </div>
         </div>
 
-        <h5>Parolni yangilash</h5>
+        <h5>{t("updatePass")}</h5>
         <div className="changepass">
           <input
             type="password"
-            placeholder="Eski parolni kiriting:"
+            placeholder={t("oldPass")}
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
           />
           <input
             type="password"
-            placeholder="Yangi parol yarating:"
+            placeholder={t("newPass")}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
-          <button onClick={handlePasswordChange}>Parolni Yangilash</button>
+          <button onClick={handlePasswordChange}>{t("updatePass")}</button>
           {message && <p>{message}</p>}
         </div>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Ma'lumotlarni o`zgartirish</Modal.Title>
+          <Modal.Title>{t("xatolikxabar")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditProfile/>

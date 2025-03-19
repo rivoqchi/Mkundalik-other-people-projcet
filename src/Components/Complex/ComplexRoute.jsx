@@ -8,6 +8,7 @@ import Confirm from '../Admin/Confirm';
 import AddNewUser from '../Admin/AddNewUser';
 import Sections from '../Admin/Sections';
 import NewSection from '../Admin/NewSection';
+import Navbarr from '../Navbar';
 import EditSection from '../Admin/EditSection';
 import Aside from './Aside';
 import ScheduleNew from '../Admin/ScheduleNew';
@@ -24,6 +25,7 @@ import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
+import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 function ComplexRoute() {
   return (
     <div className="container-fluid">
@@ -32,8 +34,10 @@ function ComplexRoute() {
           <Aside />
           {/* <PleaseInstruction/> */}
         </div>
-        <div className=" col-12 col-md-9">
-          <div className="p-3">
+        {/* O'ng taraf: Navbar va asosiy content */}
+        <div className="col-9 d-flex flex-column p-0">
+          <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
+          <div className="p-3 flex-grow-1">
             <Routes>
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
@@ -57,6 +61,7 @@ function ComplexRoute() {
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
+              <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
           </div>

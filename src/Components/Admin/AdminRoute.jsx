@@ -21,20 +21,25 @@ import PleaseInstruction from '../Asking/PleaseInstruction'
 import SeeSelectedSchedules from './SeeSelectedSchedules';
 import Info from '../Infos/Info';
 import News from '../Infos/News';
+import Navbarr from '../Navbar';
 import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
+import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 function AdminRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
+        {/* Chap taraf: Aside */}
         <div className="col-3 p-0">
           <Aside />
-          {/* <PleaseInstruction/> */}
         </div>
-        <div className=" col-12 col-md-9">
-          <div className="p-3">
+
+        {/* O'ng taraf: Navbar va asosiy content */}
+        <div className="col-9 d-flex flex-column p-0">
+          <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
+          <div className="p-3 flex-grow-1">
             <Routes>
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
@@ -55,7 +60,7 @@ function AdminRoute() {
               <Route path="/sections/add" exact element={<NewSection />} />
               <Route path="/profile" exact element={<Profile />} />
               <Route path="/employees" exact element={<Xodimlar />} />
-              <Route path="/instructions" exact element={<Instructions />} />
+              <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />

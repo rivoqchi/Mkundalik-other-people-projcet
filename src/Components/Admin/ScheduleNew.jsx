@@ -267,6 +267,7 @@ function ScheduleNew() {
     }
   }, [terminate]);
   const handleStartWork = () => {
+    setLoading(true)
     if (handleShowStart) {
       handleCloseStart();
     }
@@ -283,6 +284,7 @@ function ScheduleNew() {
     axios.post(`${API}/schedules/create`, payload).then((res) => {
       setOnWork(true);
       setWorkingOn(res.data.newSchedule);
+      setLoading(false)
       setAlert({ show: true, type: "success", message: "Boshlandi!" });
     });
   };
@@ -368,7 +370,7 @@ function ScheduleNew() {
                     <i className="fa-solid fa-plus"></i> {t("qoshish")}
                   </button>
                   <button onClick={handleShowEnd} className="taskin2">
-                    <i className="fa-regular fa-circle-stop"></i> {t("Yakunlash")}
+                    <i className="fa-regular fa-circle-stop"></i> {t("yakunlash")}
                   </button>
                 </div>
               </div>
