@@ -49,9 +49,9 @@ function Navbarr() {
           {/* Tillar tanlash dropdowni */}
 
           <Nav>
-          <Link title={t("dasfoyyoriq")} to={`/templates/instructions.pdf`} className="nav-link">
+          <a title={t("dasfoyyoriq")} target="blank" href={`/templates/instructions.pdf`} className="nav-link">
           {t("dasfoyyoriq")}
-          </Link>
+          </a>
           <Link title={t("faq")} to={`${getProfileLink()}/about/faq`} className="nav-link">
           {t("faq")}
           </Link>
