@@ -37,7 +37,7 @@ function App() {
         {/* <LangSelect /> */}
         <Router>
           <XatolikXabar/>
-          {/* <Sorry/> */}
+          <Sorry/>
           {/* <AllowNotification/> */}
           <Routes>
             <Route path="/" exact element={<Main />} />
