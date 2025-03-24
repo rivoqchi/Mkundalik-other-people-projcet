@@ -26,7 +26,8 @@ import LoginWithTelegram from "./Components/Auth/LoginWithTelegram";
 import AllUsers from './Components/SuperAdmin/AllUsers';
 import Sorry from "./Components/Additional/Sorry";
 import LangSelect from "./Components/LangSelect";
-
+import SportRoute from "./Components/Sport/SportRoute";
+import ATRoute from "./Components/AT/ATRoute";
 import "./i18n";
 import { useTranslation } from "react-i18next";
 
@@ -64,6 +65,14 @@ function App() {
 
             <Route element={<ProtectedRoute allowedRoles={["complex", "hr", "superadmin"]} />}>
               <Route path="/complex/*" element={<ComplexRoute />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["sport", "superadmin"]} />}>
+              <Route path="/sport/*" element={<SportRoute />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["at", "superadmin"]} />}>
+              <Route path="/at/*" element={<ATRoute />} />
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={["commission", "superadmin"]} />}>

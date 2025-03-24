@@ -24,6 +24,8 @@ function RatingMyAdmins() {
         url = `${API}/schedules/getmysection/admin/${myId}`;
       } else if (myRole === "admin") {
         url = `${API}/schedules/getmysection/${myId}`;
+      } else if (myRole === "boss") {
+        url = `${API}/schedules/getmysection/complex/${myId}`;
       } else if (myRole === "complex") {
         url = `${API}/schedules/getmysection/department/${myId}`;
         if (isNZS === true) {

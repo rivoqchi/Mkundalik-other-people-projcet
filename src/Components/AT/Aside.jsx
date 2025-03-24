@@ -8,14 +8,14 @@ import Modal from 'react-bootstrap/Modal';
 import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
 import { useTranslation } from "react-i18next";
+
 function Aside() {  
-    const { t } = useTranslation();
     const [show, setShow] = useState(false);
-  
+    const { t } = useTranslation();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
   const navigate = useNavigate();
-  const location = useLocation(); // Hozirgi yo'lni olish
+  const location = useLocation();
   let token = window.localStorage.getItem("token");
 
   const logout = async () => {
@@ -39,43 +39,31 @@ function Aside() {
       <div className="aside-logo">
         <div className="d-flex align-items-center justify-content-center">
         <img className='noteimg' src={note} alt="" />
-        <Link to='/boss/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+        <Link to='/at/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
         </div>
       <h5>{window.localStorage.getItem("fullName")}</h5>
-        <p>{window.localStorage.getItem("degree")}</p>      </div>
+        <p>{window.localStorage.getItem("degree")}</p>      
+      </div>
       <nav className="aside-menu">
         <ul>
-        <li className={location.pathname === '/boss/rating/ours' ? 'active' : ''}>
-            <Link disabled to="/boss/rating/ours">
+          <li className={location.pathname === '/at/profile' ? 'active' : ''}>
+            <Link to="/at/profile">
             <i class="fa-solid fa-chart-pie"></i>
-            <span>{t("raxbarnazoratidagilar")}</span>
+              <span>{t("yangixodiiim")}</span>
             </Link>
-          </li>
-          <li className={location.pathname === '/boss/structure' ? 'active' : ''}>
-            <Link to="/boss/structure">
-              <i className="fa-solid fa-sitemap"></i>
-              <span>{t("tashkiliytuzilma")}</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/boss/about/statistics' ? 'active' : ''}>
-                      <Link to="/boss/about/statistics">
-                        <i class="fa-solid fa-info"></i>
-                        <span>{t("statistika")}</span>
-                      </Link>
-                    </li>
-          <li className={location.pathname === '/boss/profile' ? 'active' : ''}>
-            <Link to="/boss/profile">
+          </li>         
+          <li className={location.pathname === '/at/profile' ? 'active' : ''}>
+            <Link to="/at/profile">
               <i className="fa-regular fa-user"></i>
               <span>{t("myInfo")}</span>
             </Link>
           </li>
-                              
-                    <li>
-                      <Link onClick={handleShow}>
-                        <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                        <span>{t("logOut")}</span>
-                      </Link>
-                    </li>
+          <li>
+            <Link onClick={handleShow}>
+              <i className="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>{t("logOut")}</span>
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>

@@ -24,6 +24,8 @@ function Main() {
         hr: "/hr",
         boss: "/boss",
         commission: "/commission",
+        commission: "/at",
+        commission: "/sport",
         staff: "/staff",
       };
 

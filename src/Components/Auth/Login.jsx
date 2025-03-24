@@ -57,6 +57,8 @@ const Login = () => {
                             department: "/department",
                             hr: "/hr",
                             commission: "/commission",
+                            sport: "/sport",
+                            at: "/at",
                             boss: "/boss"
                         };
                         navigate(routes[data.employee.role]);
@@ -72,6 +74,8 @@ const Login = () => {
                         department: "/department/dashboard",
                         hr: "/hr/dashboard",
                         commission: "/commission/dashboard",
+                        commission: "/sport/dashboard",
+                        commission: "/at/dashboard",
                         boss: "/boss/dashboard"
                     };
                     navigate(routes[data.employee.role]);

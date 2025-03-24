@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import uzFlag from "./Images/Flags/uz.png";
 import ruFlag from "./Images/Flags/ru.png";
@@ -7,6 +7,14 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 function LanguageSelector() {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Default tilni o‘rnatish (localStorage bo‘sh bo‘lsa)
+  useEffect(() => {
+    const savedLang = localStorage.getItem("lng") || "uz"; 
+    if (i18n.language !== savedLang) {
+      i18n.changeLanguage(savedLang);
+    }
+  }, [i18n]);
 
   const languages = [
     { code: "uz", name: "O‘zbek", flag: uzFlag },
@@ -20,18 +28,20 @@ function LanguageSelector() {
     setIsOpen(false);
   };
 
+  const currentLang = languages.find((l) => l.code === i18n.language) || languages[0];
+
   return (
     <div className="language-selector">
       <button className="lang-btn" onClick={() => setIsOpen(!isOpen)}>
-        <img src={languages.find(l => l.code === i18n.language)?.flag} alt="Flag" />
-        <span>{languages.find(l => l.code === i18n.language)?.name}</span>
+        <img src={currentLang.flag} alt="Flag" />
+        <span>{currentLang.name}</span>
         {isOpen ? <FaChevronUp /> : <FaChevronDown />}
       </button>
 
       {isOpen && (
         <ul className="lang-dropdown">
           {languages.map((lang, index) => (
-            <li key={lang.code} onClick={() => changeLanguage(lang.code)} style={{ animationDelay: `${0 + index * .1}s` }}>
+            <li key={lang.code} onClick={() => changeLanguage(lang.code)} style={{ animationDelay: `${index * 0.1}s` }}>
               <img src={lang.flag} alt={lang.name} />
               {lang.name}
             </li>

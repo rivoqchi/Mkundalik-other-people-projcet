@@ -26,6 +26,8 @@ function Navbarr() {
       superadmin: "/superadmin",
       complex: "/complex",
       boss: "/boss",
+      commission: "/at",
+      commission: "/sport",
       commission: "/commission",
       department: "/department",
       staff: "/staff",

@@ -11,8 +11,8 @@ function RatingMyAdmins() {
 
   const getMySectionSchedules = async () => {
     try {
-      const { data } = await axios.get(`${API}/schedules/getmysection/complex/${myId}`);
-      setMySectionSchedules(data.schedules);
+      const { data } = await axios.get(`${API}/commission/getopenedones`);
+      setMySectionSchedules(data.reports);      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -42,7 +42,7 @@ function RatingMyAdmins() {
   }, [])
   return (
     <>
-      <h1 className="text-center">Mening bo`limlarim ko`rsatkichlari</h1>
+      <h1 className="text-center">Kelib tushgan e'tirozlar</h1>
       <div className="ratedschedulescount d-flex mx-3 justify-content-between">
         <p>Jami: {mySectionSchedules.length}</p>
         <span>Baholadingiz: {mySectionSchedules.filter((item) => item.rated).length}</span>
@@ -53,7 +53,7 @@ function RatingMyAdmins() {
           <>
             <Link
               className="text-decoration-none"
-              to={`/${myRole}/rate/schedule/${i._id}`}
+              to={`/${myRole}/objection/${i._id}`}
               key={i._id}
             >
               <button
@@ -61,7 +61,7 @@ function RatingMyAdmins() {
                   !i.rated ? "unrated" : "rated"
                 }`}
               >
-                <span className="bold">{i.beginnerName}</span>ning {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
+                <span className="bold">{i.reporterName}</span>ning  e'tirozi
                 {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}
               </button>
             </Link>
