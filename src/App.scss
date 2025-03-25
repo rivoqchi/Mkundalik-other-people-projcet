@@ -9,7 +9,23 @@
   right: 5px;
   cursor: pointer;
 }
-
+@media (max-width: 768px) {
+  .navv {
+    width: 100% !important;
+  }
+}
+.sporteditbtn{
+  background-color: orange;
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  transition: .2s ease-out;
+  cursor: pointer;
+  &:hover{
+    background-color: green;
+    transform: scale(1.05);
+  }
+}
 .alert {
   z-index: 999 !important;
   position: fixed !important;
@@ -2161,4 +2177,114 @@ h4 {
   font-weight: bold !important;
   margin-left: 20px;
   border-radius: 10px;
+}
+// normativlar
+/* Umumiy Container */
+.normative-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header qismi */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-btn {
+  font-size: 24px;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease-out, background 0.3s ease-out;
+}
+
+.add-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Normativ kartalar */
+.normative-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease-in-out;
+}
+
+.normative-container:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.defaultbtn {
+  font-size: 20px;
+  padding: 5px 15px;
+  transition: 0.3s;
+}
+
+.defaultbtn:hover {
+  transform: scale(1.1);
+}
+
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.custom-table {
+  border-radius: 10px;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.custom-table thead {
+  background-color: #28a745;
+  color: white;
+  text-align: center;
+}
+
+.custom-table tbody tr {
+  transition: 0.3s;
+}
+
+.custom-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.custom-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notfoundpng{
+  width: 10rem;
+}
+.warningtext{
+  color: rgb(255, 136, 0);
 }

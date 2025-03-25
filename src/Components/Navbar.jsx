@@ -31,6 +31,7 @@ function Navbarr() {
       commission: "/commission",
       department: "/department",
       staff: "/staff",
+      sport: "/sport",
       hr: "/hr",
       new: "/iamnew",
     };

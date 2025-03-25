@@ -307,6 +307,9 @@ const AddNewUser = () => {
                   Tizimni nazorat qilish komissiyasi (Commission)
                 </option>
                 <option value="hr">Kadrlar bo`limi (HR)</option>
+                <option value="sport">Sport murabbiysi</option>
+                <option value="at">AKT</option>
+                <option value="lang">Chet tillari nazoratchisi</option>
               </select>
             </div>
             <div className="form-group selectstatus">

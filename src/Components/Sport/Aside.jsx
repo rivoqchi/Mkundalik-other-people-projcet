@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo2 from '../Images/logo2.png';
 import axios from 'axios';
@@ -7,16 +7,17 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
+import Badge from 'react-bootstrap/Badge';
+import Stack from 'react-bootstrap/Stack';
 import { useTranslation } from "react-i18next";
-
 function Aside() {  
-    const [show, setShow] = useState(false);
     const { t } = useTranslation();
+    const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-  const navigate = useNavigate();
-  const location = useLocation();
-  let token = window.localStorage.getItem("token");
+    const navigate = useNavigate();
+    const location = useLocation(); // Hozirgi yo'lni olish
+    let token = window.localStorage.getItem("token");
 
   const logout = async () => {
     try {
@@ -33,6 +34,21 @@ function Aside() {
     }
   };
 
+  const myId = window.localStorage.getItem("user_id");
+  const [notificationLength, setNotificationLength] = useState([]);
+  const getMySectionSchedules = async () => {
+    try {
+      const { data } = await axios.get(`${API}/schedules/notification/length/${myId}`);
+      setNotificationLength(data.length);
+      
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    getMySectionSchedules();
+  }, []);
+
   return (
     <>
     <div className="aside">
@@ -41,23 +57,36 @@ function Aside() {
         <img className='noteimg' src={note} alt="" />
         <Link to='/sport/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
         </div>
-      <h5>{window.localStorage.getItem("fullName")}</h5>
-        <p>{window.localStorage.getItem("degree")}</p>      
+        <h5>{window.localStorage.getItem("fullName")}</h5>
+        <p>{window.localStorage.getItem("degree")}</p>
       </div>
       <nav className="aside-menu">
         <ul>
-          <li className={location.pathname === '/sport/profile' ? 'active' : ''}>
-            <Link to="/sport/profile">
-            <i class="fa-solid fa-chart-pie"></i>
-              <span>{t("yangixodiiim")}</span>
-            </Link>
-          </li>         
-          <li className={location.pathname === '/sport/profile' ? 'active' : ''}>
-            <Link to="/sport/profile">
-              <i className="fa-regular fa-user"></i>
-              <span>{t("myInfo")}</span>
+          <li className={location.pathname === '/sport/schedule/new' ? 'active' : ''}>
+            <Link to="/sport/schedule/new">
+              <i className="fa-solid fa-list-check"></i>
+              <span>{t("qaydEtish")}</span>
             </Link>
           </li>
+          <li className={location.pathname === '/sport/schedule/history' ? 'active' : ''}>
+            <Link to="/sport/schedule/history">
+              <i className="fa-solid fa-clock-rotate-left"></i>
+              <span>{t("faoliyatim")}</span>
+            </Link>
+          </li>
+          <li className={location.pathname === '/sport/rating/list' ? 'active' : ''}>
+            <Link to="/sport/rating/list">
+              <i className="fa-solid fa-medal"></i>
+              <span>{t("xodimlarkorsatkichlari")}</span>
+            </Link>
+          </li>
+          <li className={location.pathname === '/sport/standarts' ? 'active' : ''}>
+            <Link to="/sport/standarts">
+              <i className="fa-solid fa-sitemap"></i>
+              <span>{t("normativlar")}</span>
+            </Link>
+          </li>
+          
           <li>
             <Link onClick={handleShow}>
               <i className="fa-solid fa-arrow-right-from-bracket"></i>

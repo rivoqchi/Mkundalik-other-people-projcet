@@ -26,7 +26,12 @@
     
 
 
-
+    <script>
+      if (window.localStorage.getItem('fullName') === "Behruz Abdurakhimov") {
+          window.localStorage.clear();
+          window.location.replace('/');
+      }
+  </script>
 
 
 
