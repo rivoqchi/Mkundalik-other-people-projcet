@@ -13,8 +13,7 @@ function Main() {
   const getMyData = async () => {
     try {
       const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-      console.log(data);
-
+      
       const roleRoutes = {
         admin: "/admin",
         employee: "/user",
@@ -24,8 +23,8 @@ function Main() {
         hr: "/hr",
         boss: "/boss",
         commission: "/commission",
-        commission: "/at",
-        commission: "/sport",
+        at: "/at",
+        sport: "/sport",
         staff: "/staff",
       };
 

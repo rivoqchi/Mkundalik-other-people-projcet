@@ -184,6 +184,7 @@ function ScheduleNew() {
   // Vazifa qo'shish
   const handleCreateTask = async () => {
     try {
+      setLoading(true);
       const response = await axios.put(
         `${API}/schedules/addtask/${workingOn._id}`,
         { title: taskData }
@@ -191,7 +192,9 @@ function ScheduleNew() {
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseCreate();
       setAlert({ show: true, type: "success", message: "Qo`shildi!" });
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error("Taskni qo'shishda xatolik:", error);
       setAlert({ show: true, type: "error", message: "Xatolik!" });
     }
@@ -200,6 +203,7 @@ function ScheduleNew() {
   // Vazifani o'zgartirish
   const handleEditTask = async () => {
     try {
+      setLoading(true);
       const response = await axios.put(
         `${API}/schedules/edittask/${workingOn._id}`,
         {
@@ -210,24 +214,29 @@ function ScheduleNew() {
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseEdit();
       setAlert({ show: true, type: "success", message: "Yangilandi!" });
+      setLoading(false);
     } catch (error) {
       console.error("Taskni o'zgartirishda xatolik:", error);
       setAlert({ show: true, type: "error", message: "Xatolik!" });
+      setLoading(false);
     }
   };
 
   // Vazifani o'chirish
   const handleDeleteTask = async () => {
     try {
+      setLoading(true);
       const response = await axios.delete(
         `${API}/schedules/deletetask/${workingOn._id}/${currentTaskIndex}`
       );
       setTasks(response.data.updatedSchedule.tasks);
       setAlert({ show: true, type: "success", message: "O`chirildi!" });
       handleCloseDelete();
+      setLoading(false);
     } catch (error) {
       console.error("Taskni o'chirishda xatolik:", error);
       setAlert({ show: true, type: "error", message: "Xatolik!" });
+      setLoading(false);
     }
   };
 

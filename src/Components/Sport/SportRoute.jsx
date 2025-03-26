@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import NotFound404 from '../Additional/NotFound404';
 import Dashboard from './Dashboard';
 import Normativ from './Normativ';
-import Department from '../Redirects/Department';
+import Sport from '../Redirects/Sport';
 import Profile from '../Admin/Profile';
 import FilterNewUsers from '../Admin/FilterNewUsers';
 import Confirm from '../Admin/Confirm';
@@ -19,7 +19,7 @@ import Xodimlar from '../Admin/Xodimlar';
 import LookSchedule from '../Admin/LookSchedule';
 import ScheduleRate from '../Admin/ScheduleRate';
 import Instructions from '../Admin/Instructions';
-import PleaseInstruction from '../Asking/PleaseInstruction'
+import PleaseInstruction from '../Asking/PleaseInstruction';
 import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
 import Info from '../Infos/Info';
 import News from '../Infos/News';
@@ -28,7 +28,7 @@ import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
-function DepartmentRoute() {
+function SportRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
@@ -47,7 +47,7 @@ function DepartmentRoute() {
               <Route path="/about/application" exact element={<Application />} />
               <Route path="/about/faq" exact element={<FAQPage />} />
               
-              <Route path="/" exact element={<Department />} />
+              <Route path="/" exact element={<Sport />} />
               <Route path="/dashboard" exact element={<Dashboard />} />
               <Route path="/standarts" exact element={<Normativ />} />
               <Route path="/schedule/new" exact element={<ScheduleNew />} />
@@ -74,4 +74,4 @@ function DepartmentRoute() {
   );
 }
 
-export default DepartmentRoute;
+export default SportRoute;

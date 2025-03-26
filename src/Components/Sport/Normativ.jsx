@@ -3,22 +3,34 @@ import axios from "axios";
 import { API } from "../../config";
 import { Modal, Button, Table, Form } from "react-bootstrap";
 import notfound from "../Images/notfound.png";
+import LoadingScreen from "../Additional/LoadingScreen";
 function Normativ() {
   const [allNormatives, setAllNormatives] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [limit, setLimit] = useState("");
   const [for5, setFor5] = useState("");
   const [for4, setFor4] = useState("");
   const [for3, setFor3] = useState("");
+  const [for2, setFor2] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  const [selectedNormativeId, setSelectedNormativeId] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const getAllNormatives = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${API}/sport/getall`);
       setAllNormatives(data.normatives || []);
+      setLoading(false);
     } catch (err) {
       console.log("Normativlarni yuklashda xatolik yuz berdi.");
+      setLoading(false);
     }
   };
 
@@ -27,37 +39,64 @@ function Normativ() {
   }, []);
 
   const addNormative = async () => {
+    setLoading(true);
     if (!name || !type) {
       alert("Iltimos, barcha maydonlarni to'ldiring!");
       return;
+      setLoading(false);
     }
     try {
-      await axios.post(`${API}/sport/add`, { name, type, limit, for5, for4, for3 });
-      console.log(name, type, limit, for5, for4, for3);
+      setLoading(true);
+      await axios.post(`${API}/sport/add`, {
+        name,
+        type,
+        limit,
+        for5,
+        for4,
+        for3,
+        for2,
+      });
       setName("");
       setType("");
       setLimit("");
       setFor5("");
       setFor4("");
       setFor3("");
+      setFor2("");
       setShowModal(false);
       getAllNormatives();
-      
+      setLoading(false);
     } catch (err) {
       console.log("Normativ qo'shishda xatolik yuz berdi.");
+      setLoading(false);
     }
   };
 
   const deleteNormative = async (id) => {
     try {
+      setLoading(true);
       await axios.delete(`${API}/sport/delete/${id}`);
       getAllNormatives();
+      setLoading(false);
     } catch (err) {
       console.log("Normativni o'chirishda xatolik yuz berdi.");
+      setLoading(false);
     }
   };
+  useEffect(() => {
+    if (limit) {
+      const limitValue = parseInt(limit, 10);
+      setFor5(Math.round(limitValue * 0.86)); // 86%
+      setFor4(Math.round(limitValue * 0.71)); // 71%
+      setFor3(Math.round(limitValue * 0.56)); // 56%
+      setFor2(Math.round(limitValue * 0)); // %
+    }
+  }, [limit]); // limit o'zgarsa, avtomatik hisoblanadi
 
   return (
+    <>
+      {loading && <LoadingScreen loading={true} />}
+
     <div className="normative-container">
       <div className="header">
         <h2>Normativlar</h2>
@@ -82,6 +121,7 @@ function Normativ() {
               <th>5 Baho</th>
               <th>4 Baho</th>
               <th>3 Baho</th>
+              <th>2 Baho</th>
               <th>Amallar</th>
             </tr>
           </thead>
@@ -96,20 +136,24 @@ function Normativ() {
                   <td>{norm.for5 || "-"}</td>
                   <td>{norm.for4 || "-"}</td>
                   <td>{norm.for3 || "-"}</td>
+                  <td>{norm.for2 || "-"}</td>
                   <td>
                     <Button
                       variant="danger"
                       size="sm"
-                      onClick={() => deleteNormative(norm._id)}
+                      onClick={() => {
+                        setSelectedNormativeId(norm._id); // O'chirish uchun ID saqlash
+                        handleShow(); // Modalni ochish
+                      }}
                     >
-                      ❌ O'chirish
+                      O‘chirish
                     </Button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="8" className="text-center">
+                <td colSpan="9" className="text-center">
                   <img className="notfoundpng" src={notfound} alt="" />
                   <h5>Hozircha normativlar yo'q</h5>
                 </td>
@@ -126,8 +170,10 @@ function Normativ() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3">              
-        <Form.Label className="text-center"><h5>Normativ nomi</h5></Form.Label>
+            <Form.Group className="mb-3">
+              <Form.Label className="text-center">
+                <h5>Normativ nomi</h5>
+              </Form.Label>
 
               <Form.Control
                 type="text"
@@ -137,7 +183,9 @@ function Normativ() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-            <Form.Label className="text-center"><h5>Turi</h5></Form.Label>
+              <Form.Label className="text-center">
+                <h5>Turi</h5>
+              </Form.Label>
               <div className="d-flex justify-content-evenly">
                 <Form.Check
                   type="radio"
@@ -159,47 +207,61 @@ function Normativ() {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label className="text-center"><h5>Baho uchun minimal qiymatlar</h5></Form.Label>
               <div className="">
-              <Form.Label>Limit</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="20"
-                value={limit}
-                onChange={(e) => setLimit(e.target.value)}
-              />
+                <Form.Label>
+                  <h5>Limit</h5>
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="20"
+                  value={limit}
+                  onChange={(e) => setLimit(e.target.value)}
+                />
               </div>
+              <Form.Label className="text-center">
+                <h5>Baho uchun minimal qiymatlar</h5>
+              </Form.Label>
               <div className="row">
                 <div className="col">
-              <Form.Label>5 baho</Form.Label>
+                  <Form.Label>5 baho</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="14"
                     value={for5}
                     onChange={(e) => setFor5(e.target.value)}
                   />
                 </div>
                 <div className="col">
-                <Form.Label>4 baho</Form.Label>
+                  <Form.Label>4 baho</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="16"
                     value={for4}
                     onChange={(e) => setFor4(e.target.value)}
                   />
                 </div>
                 <div className="col">
-                <Form.Label>3 baho</Form.Label>
+                  <Form.Label>3 baho</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="18"
                     value={for3}
                     onChange={(e) => setFor3(e.target.value)}
                   />
                 </div>
-              </div><div className="text-center">daqiqa / miqdor</div>
+                <div className="col">
+                  <Form.Label>2 baho</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={for2}
+                    onChange={(e) => setFor2(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="text-center">sekund / miqdor</div>
             </Form.Group>
           </Form>
+          <div className="warningtext">
+            Diqqat! mazkur normativni yaratganingizdan keyin uni o`zgartira
+            olmaysiz.
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
@@ -210,7 +272,29 @@ function Normativ() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <Modal centered show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Normativni o‘chirish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Ushbu normativni o‘chirmoqchimisiz?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Yopish
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              deleteNormative(selectedNormativeId); // O‘chirish
+              handleClose(); // Modalni yopish
+            }}
+          >
+            O‘chirish
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
+    </>
   );
 }
 

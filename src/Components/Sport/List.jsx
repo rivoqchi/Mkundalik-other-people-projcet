@@ -8,20 +8,75 @@ function Xodimlar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [allEmployees, setAllEmployees] = useState([]);
   const [allComplexes, setAllComplexes] = useState([]);
+  const [allNormatives, setAllNormatives] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedNorm, setSelectedNorm] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const [ball, setBall] = useState(null);
+  console.log(selectedEmployee?._id);
+
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
     setSelectedEmployee(null);
+    setInputValue("");
+    setBall(null);
+    setSelectedNorm(null);
     setShow(false);
-  };  const handleShow = (employee) => {
+  };
+  const handleShow = (employee) => {
     setSelectedEmployee(employee);
     setShow(true);
+  };
+  const handleSelectChange = (e) => {
+    const norm = allNormatives.find((n) => n._id === e.target.value);
+    setSelectedNorm(norm);
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(Number(e.target.value));
+  };
+
+  const handleSave = async () => {
+    if (!selectedNorm || !inputValue) {
+      alert("Barcha maydonlarni to‘ldirish talab qilinadi!");
+      return;
+    }
+
+    if (inputValue > selectedNorm.limit) {
+      alert(`Kiritilgan qiymat normativ limitidan oshib ketdi! Limit: ${selectedNorm.limit}`);
+      return;
+    }
+
+    let calculatedBall = null;
+    if (inputValue >= selectedNorm.for5) calculatedBall = 5;
+    else if (inputValue >= selectedNorm.for4) calculatedBall = 4;
+    else if (inputValue >= selectedNorm.for3) calculatedBall = 3;
+    else if (inputValue >= selectedNorm.for2) calculatedBall = 2;
+
+    if (!calculatedBall) {
+      alert("Kiritilgan qiymat baholash mezonlariga to‘g‘ri kelmadi!");
+      return;
+    }
+
+    setBall(calculatedBall);
+
+    try {
+      await axios.put(`${API}/auth/score/sport/${selectedEmployee?._id}`, {
+        ball: calculatedBall,
+        norm: selectedNorm.name,
+      });
+      alert("Baholash muvaffaqiyatli amalga oshirildi!");
+      handleClose();
+    } catch (error) {
+      console.error("Xatolik yuz berdi:", error);
+      alert("Xatolik yuz berdi, qayta urinib ko‘ring.");
+    }
   };
   // Xodimlarni olish
   const getAllEmployees = async (role = "") => {
@@ -66,10 +121,23 @@ function Xodimlar() {
     }
   };
 
+  const getAllNormatives = async (req, res) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data } = await axios.get(`${API}/sport/getall`);
+      setAllNormatives(data.normatives);
+    } catch (err) {
+      setError("Xodimlarni yuklashda xatolik yuz berdi.");
+    } finally {
+    }
+  };
+
   // Sahifa yuklanganda API chaqiriladi
   useEffect(() => {
     getAllEmployees();
     getAllComplexes();
+    getAllNormatives();
   }, []);
 
   // Filtrlash funksiyasi (role va kompleks bo‘yicha)
@@ -194,29 +262,48 @@ function Xodimlar() {
         <Modal.Body>
           {selectedEmployee ? (
             <>
-            <p>
-              <strong>{selectedEmployee.degree}</strong>
-            </p>
+              <p>
+                <strong>{selectedEmployee.degree}</strong>
+              </p>
               <p>
                 <strong>Telefon:</strong> {selectedEmployee.phone}
               </p>
               <p>
-                <strong>Tashkiliy tuzilma:</strong> {`${selectedEmployee.complex}`}
+                <strong>Tashkiliy tuzilma:</strong>{" "}
+                {`${selectedEmployee.complex}`}
               </p>
+              {/* Mana shu joydan jadval chiqsin va norm hamda ballari ko`rinsin oxirida trash rasmi bo`lsin trash rasmini bosganda await axios.delete(`${API}/auth/score/sport/${selectedEmployee._id}`, {
+        data: { norm },
+      }); qilishi kerak.. */}
             </>
           ) : (
             "Ma'lumot topilmadi"
           )}
         </Modal.Body>
         <Modal.Body>
-          <input type="number" />
+        <div className="text-center">
+          <select name="normatives" id="normatives" onChange={handleSelectChange}>
+            <option disabled selected value="">
+              Normativ tanlang:
+            </option>
+            {allNormatives.map((norm) => (
+              <option key={norm._id} value={norm._id}>
+                {norm.name}
+              </option>
+            ))}
+          </select>
+          <div>
+            <br />
+            <input type="number" placeholder="Qiymat kiriting" value={inputValue} onChange={handleInputChange} />
+          </div>
+        </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Yopish
           </Button>
-          <Button variant="success" onClick={handleClose}>
-            O'zgarishlarni saqlash
+          <Button variant="success" onClick={handleSave}>
+            O‘zgarishlarni saqlash
           </Button>
         </Modal.Footer>
       </Modal>
