@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal, Button, Spinner, Alert, Form } from "react-bootstrap";
 import { API } from "../../config";
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import loadinggif from "../Images/loading.gif";
 function Xodimlar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [allEmployees, setAllEmployees] = useState([]);
@@ -12,13 +11,13 @@ function Xodimlar() {
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [limitedNorm, setLimitedNorm] = useState(null);
   const [error, setError] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [selectedNorm, setSelectedNorm] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [ball, setBall] = useState(null);
-  console.log(selectedEmployee?._id);
-
 
   const [show, setShow] = useState(false);
 
@@ -28,10 +27,22 @@ function Xodimlar() {
     setBall(null);
     setSelectedNorm(null);
     setShow(false);
+    setLimitedNorm(false);
   };
-  const handleShow = (employee) => {
-    setSelectedEmployee(employee);
+  const handleShow = async (employee) => {
     setShow(true);
+    setLoading2(true);
+    try {
+      const { data } = await axios.get(`${API}/auth/getuser/${employee?._id}`);
+      setSelectedEmployee(data.user);
+      setLoading2(false);
+
+      // Agar sport.length >= 2 bo‘lsa, setLimitedNorm(true), aks holda false
+      setLimitedNorm(data.user.sport && data.user.sport.length >= 2);
+    } catch (err) {
+      setError("Xodimlarni yuklashda xatolik yuz berdi.");
+      setLoading2(false);
+    }
   };
   const handleSelectChange = (e) => {
     const norm = allNormatives.find((n) => n._id === e.target.value);
@@ -49,7 +60,9 @@ function Xodimlar() {
     }
 
     if (inputValue > selectedNorm.limit) {
-      alert(`Kiritilgan qiymat normativ limitidan oshib ketdi! Limit: ${selectedNorm.limit}`);
+      alert(
+        `Kiritilgan qiymat normativ limitidan oshib ketdi! Limit: ${selectedNorm.limit}`
+      );
       return;
     }
 
@@ -73,6 +86,7 @@ function Xodimlar() {
       });
       alert("Baholash muvaffaqiyatli amalga oshirildi!");
       handleClose();
+      setSelectedEmployee();
     } catch (error) {
       console.error("Xatolik yuz berdi:", error);
       alert("Xatolik yuz berdi, qayta urinib ko‘ring.");
@@ -120,7 +134,20 @@ function Xodimlar() {
       console.error("Error fetching complexes:", err);
     }
   };
-
+  const handleDeleteSport = async (norm) => {
+    try {
+      setLoading2(true)
+      await axios.delete(`${API}/auth/score/sport/delete/${selectedEmployee._id}`, {
+        data: { norm },
+      });
+      const { data } = await axios.get(`${API}/auth/getuser/${selectedEmployee._id}`);
+      setLimitedNorm(data.user.sport && data.user.sport.length >= 2);
+      setSelectedEmployee(data.user); // Yangilash
+      setLoading2(false)
+    } catch (error) {
+      console.error("Xatolik yuz berdi!", error);
+    }
+  };
   const getAllNormatives = async (req, res) => {
     setLoading(true);
     setError(null);
@@ -260,7 +287,15 @@ function Xodimlar() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {selectedEmployee ? (
+          {loading2 ? (
+            <div className="text-center">
+              <img
+                src={loadinggif}
+                className="loadinggiff"
+                alt="Yuklanmoqda..."
+              />
+            </div>
+          ) : selectedEmployee ? (
             <>
               <p>
                 <strong>{selectedEmployee.degree}</strong>
@@ -270,33 +305,98 @@ function Xodimlar() {
               </p>
               <p>
                 <strong>Tashkiliy tuzilma:</strong>{" "}
-                {`${selectedEmployee.complex}`}
+                {selectedEmployee.department}
               </p>
-              {/* Mana shu joydan jadval chiqsin va norm hamda ballari ko`rinsin oxirida trash rasmi bo`lsin trash rasmini bosganda await axios.delete(`${API}/auth/score/sport/${selectedEmployee._id}`, {
-        data: { norm },
-      }); qilishi kerak.. */}
+              <hr />
+              {selectedEmployee.sport && selectedEmployee.sport.length > 0 ? (
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr style={{ backgroundColor: "#333", color: "white" }}>
+                      <th style={thStyle}>#</th>
+                      <th style={thStyle}>Norm</th>
+                      <th style={thStyle}>Ball</th>
+                      <th style={thStyle}>O'chirish</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedEmployee.sport.map((item, index) => (
+                      <tr
+                        key={index}
+                        style={{
+                          backgroundColor:
+                            index % 2 === 0 ? "#f2f2f2" : "white",
+                        }}
+                      >
+                        <td style={tdStyle}>{index + 1}</td>
+                        <td style={tdStyle}>{item.norm}</td>
+                        <td style={tdStyle}>{item.ball}</td>
+                        <td style={tdStyle}>
+                          <button
+                            onClick={() => handleDeleteSport(item.norm)}
+                            style={{
+                              background: "red",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "5px",
+                              padding: "5px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <div className="dele">
+                              O`chirish{" "}
+                              <i className="fa-solid fa-trash dele"></i>
+                            </div>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>Normativ topshirmagan</p>
+              )}
             </>
           ) : (
             "Ma'lumot topilmadi"
           )}
         </Modal.Body>
         <Modal.Body>
-        <div className="text-center">
-          <select name="normatives" id="normatives" onChange={handleSelectChange}>
-            <option disabled selected value="">
-              Normativ tanlang:
-            </option>
-            {allNormatives.map((norm) => (
-              <option key={norm._id} value={norm._id}>
-                {norm.name}
+          <div className="text-center">
+            {/* Agar limitedNorm true bo‘lsa, disable qilamiz */}
+            <select
+              name="normatives"
+              id="normatives"
+              onChange={handleSelectChange}
+              disabled={limitedNorm}
+            >
+              <option disabled selected value="">
+                Normativ tanlang:
               </option>
-            ))}
-          </select>
-          <div>
-            <br />
-            <input type="number" placeholder="Qiymat kiriting" value={inputValue} onChange={handleInputChange} />
+              {allNormatives.map((norm) => (
+                <option key={norm._id} value={norm._id}>
+                  {norm.name}
+                </option>
+              ))}
+            </select>
+
+            <div>
+              <br />
+              <input
+                type="number"
+                placeholder="Qiymat kiriting"
+                value={inputValue}
+                onChange={handleInputChange}
+                disabled={limitedNorm} // Agar limitedNorm true bo‘lsa, input ham disabled bo‘ladi
+              />
+            </div>
+
+            {/* Faqat limitedNorm true bo‘lsa, p elementi chiqadi */}
+            {limitedNorm && (
+              <p style={{ color: "red", marginTop: "10px" }}>
+                Yangi normativ kiritish uchun yuqoridagilardan birini o‘chiring
+              </p>
+            )}
           </div>
-        </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -310,5 +410,16 @@ function Xodimlar() {
     </>
   );
 }
+
+const thStyle = {
+  padding: "10px",
+  border: "1px solid black",
+  textAlign: "left",
+};
+
+const tdStyle = {
+  padding: "10px",
+  border: "1px solid black",
+};
 
 export default Xodimlar;

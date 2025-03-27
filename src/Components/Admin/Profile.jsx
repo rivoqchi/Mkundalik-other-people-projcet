@@ -99,12 +99,12 @@ function Profile() {
         <h5>{t("umumiyinfo")}</h5>
 
         <div className="profiledatum">
-          <div className="datum">
-            <p className="ours">{t("fish")}</p>
+        <div className="datum align-items-center">
+        <p className="ours">{t("fish")}</p>
             <p className="theirs">{myData.name}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("tel")}</p>
             <p className="theirs">{myData.phone}</p>
           </div>
@@ -141,59 +141,59 @@ function Profile() {
             </p>
           </div> */}
 
-          <div className="datum">
-            <p className="ours">{t("complex")}</p>
+<div className="datum align-items-center">
+<p className="ours">{t("complex")}</p>
             <p className="theirs">{myData.complex}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("department")}</p>
             <p className="theirs">{myData.department}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("section")}</p>
             <p className="theirs">{myData.section}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("degree")}</p>
             <p className="theirs">{myData.degree}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("firstAct")}</p>
             <p className="theirs">{myData.firstAct}</p>
           </div>
 
           <h5>{t("shaxsiymalumotlar")}</h5>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("nationality")}</p>
             <p className="theirs">{myData.nationality}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("education")}</p>
             <p className="theirs">{myData.education}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("speciality")}</p>
             <p className="theirs">{myData.speciality}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("dateOfBirth")}</p>
             <p className="theirs">{myData.dateOfBirth}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("placeOfBirth")}</p>
             <p className="theirs">{myData.placeOfBirth}</p>
           </div>
 
-          <div className="datum">
+          <div className="datum align-items-center">
             <p className="ours">{t("address")}</p>
             <p className="theirs">{myData.address}</p>
           </div>
@@ -202,6 +202,25 @@ function Profile() {
             <p className="ours align-items-center">{t("lavozimyoriqnomasi")}:</p>
             <LavozimYoriqnomasi />
           </div>
+
+          <div className="datum align-items-center">
+  <p className="ours">{t("sportnatijam")}</p>
+  <div className="theirs">
+  {myData.sport && myData.sport.length > 0 ? (
+    <>
+      {myData.sport.map((item, index) => (
+        <p key={index} className="theirs warningtext">
+          {item.norm}: {item.ball} ball
+        </p>
+      ))}
+      <hr />
+        <strong>Jami:</strong> {myData.sport.reduce((sum, item) => sum + item.ball, 0)} ball
+    </>
+  ) : (
+    <p className="theirs">Ma'lumot yo'q</p>
+  )}
+  </div>
+</div>
         </div>
 
         <h5>{t("updatePass")}</h5>
