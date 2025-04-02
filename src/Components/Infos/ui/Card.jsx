@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { API } from "../../../config";
 import axios from "axios";
 import LoadingScreen from "../../Additional/LoadingScreen";
+import { BarChart } from "@mui/x-charts/BarChart";
+import { axisClasses } from "@mui/x-charts/ChartsAxis";
 
 const AnimatedNumber = ({ value, duration = 1000 }) => {
   const [count, setCount] = useState(0);
@@ -12,7 +14,7 @@ const AnimatedNumber = ({ value, duration = 1000 }) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = (timestamp - startTimestamp) / duration;
       if (progress < 1) {
-        setCount(Math.floor(value * Math.pow(progress, 0.8))); // `ease-out` effekti
+        setCount(Math.floor(value * Math.pow(progress, 0.8)));
         requestAnimationFrame(step);
       } else {
         setCount(value);
@@ -26,16 +28,34 @@ const AnimatedNumber = ({ value, duration = 1000 }) => {
 
 const Card = () => {
   const [loading, setLoading] = useState(false);
-  const [todaySchedulesCount, setTodaySchedulesCount] = useState(0);
-  const [schedulesCount, setSchedulesCount] = useState(0);
-  const [employeesCount, setEmployeesCount] = useState(0);
+  const [stats, setStats] = useState({
+    employeesCount: 0,
+    schedulesCount: 0,
+    todaySchedulesCount: 0,
+    lengthData: [],
+    ratedData: [],
+  });
 
   const getAllStatistics = async () => {
     setLoading(true);
-    const { data } = await axios.get(`${API}/statistics/getall`);
-    setEmployeesCount(data.employeesCount);
-    setSchedulesCount(data.schedulesCount);
-    setTodaySchedulesCount(data.todaySchedulesCount);
+    try {
+      const { data } = await axios.get(`${API}/statistics`);
+      setStats({
+        employeesCount: data.employeesCount,
+        schedulesCount: data.schedulesCount,
+        todaySchedulesCount: data.todaySchedulesCount,
+        lengthData: data.top10Departments.map((item) => ({
+          name: item._id || "Noma'lum",
+          miqdor: item.count || 0,
+        })),
+        ratedData: data.top10RatedDepartments.map((item) => ({
+          name: item._id || "Noma'lum",
+          miqdor: item.avgRated || 0,
+        })),
+      });
+    } catch (error) {
+      console.error("Error fetching statistics:", error);
+    }
     setLoading(false);
   };
 
@@ -54,7 +74,7 @@ const Card = () => {
             </div>
             <div className="card-boddy">
               <h3 className="card-title">
-                <AnimatedNumber value={employeesCount} />
+                <AnimatedNumber value={stats.employeesCount} />
               </h3>
               <p className="card-text">Xodim tizimda</p>
             </div>
@@ -68,7 +88,7 @@ const Card = () => {
             </div>
             <div className="card-boddy">
               <h3 className="card-title">
-                <AnimatedNumber value={todaySchedulesCount} />
+                <AnimatedNumber value={stats.todaySchedulesCount} />
               </h3>
               <p className="card-text">Bugun yozilgan hisobotlar</p>
             </div>
@@ -82,13 +102,31 @@ const Card = () => {
             </div>
             <div className="card-boddy">
               <h3 className="card-title">
-                <AnimatedNumber value={schedulesCount} />
+                <AnimatedNumber value={stats.schedulesCount} />
               </h3>
               <p className="card-text">Umumiy hisobotlar</p>
             </div>
           </div>
         </div>
       </div>
+
+    <div className="row">
+      <div className="col-6">
+        <div className="p-3 statdiv">
+          <h5 className="stath1 text-center">Top 10 eng ko`p kundalik hisobotlarni qayd etgan tarkibiy tuzilmalar</h5>
+          <BarChart dataset={stats.lengthData} xAxis={[{ scaleType: "band", dataKey: "name", tickPlacement: "middle" }]} yAxis={[{ label: "Jami hisobotlar soni:" }]} series={[{ dataKey: "miqdor", label: "Jami hisobotlar soni:" }]} height={300} sx={{ [`& .${axisClasses.directionY} .${axisClasses.label}`]: { transform: "translateX(-10px)" } }} />
+        </div>
+      </div>
+
+      <div className="col-6">
+      <div className="p-3 statdiv statdiv2">
+        <h5 className="stath1 text-center">Kundalik hisobotlarning o`rtacha bahosi bo`yicha top 10 tarkibiy tuzilmalar</h5>
+        <BarChart dataset={stats.ratedData} xAxis={[{ scaleType: "band", dataKey: "name", tickPlacement: "middle" }]} yAxis={[{ label: "O`rtacha ball:" }]} series={[{ dataKey: "miqdor", label: "O`rtacha ball:" }]} height={300} sx={{ [`& .${axisClasses.directionY} .${axisClasses.label}`]: { transform: "translateX(-10px)" } }} />
+      </div>
+      </div>
+    </div>
+
+
     </>
   );
 };

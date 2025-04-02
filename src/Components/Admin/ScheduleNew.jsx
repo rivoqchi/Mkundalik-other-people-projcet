@@ -9,8 +9,9 @@ import Alert from "../Additional/Alert";
 import LoadingScreen from "../Additional/LoadingScreen";
 import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
-function ScheduleNew() {    
+function ScheduleNew() {
   const { t } = useTranslation();
 
   const myId = window.localStorage.getItem("user_id");
@@ -62,11 +63,9 @@ function ScheduleNew() {
   const [showEnd, setShowEnd] = useState(false);
   const [showStart, setShowStart] = useState(false);
   const [terminate, setTerminate] = useState("");
-
+  const [type, setType] = useState("");
   const [currentTaskIndex, setCurrentTaskIndex] = useState(null); // Edit va Delete uchun
   const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun  const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun
-  console.log(taskData, 6);
-
   // Modalni yopish funksiyalari
   const handleCloseEdit = () => setShowEdit(false);
   const handleCloseDelete = () => setShowDelete(false);
@@ -74,9 +73,10 @@ function ScheduleNew() {
   const handleCloseEnd = () => setShowEnd(false);
   const handleCloseStart = () => setShowStart(false);
 
-  const handleShowEdit = (index, title) => {
+  const handleShowEdit = (index, title, source) => {
     setCurrentTaskIndex(index);
     setTaskData(title);
+    setType(source);
     setShowEdit(true);
   };
   const handleShowStart = () => {
@@ -96,8 +96,8 @@ function ScheduleNew() {
   const handleShowEnd = () => {
     setShowEnd(true);
   };
-  if(myPosition === false){
-    navigate("/fill")
+  if (myPosition === false) {
+    navigate("/fill");
   }
   // Sana va ish holatini olish
   useEffect(() => {
@@ -187,18 +187,20 @@ function ScheduleNew() {
       setLoading(true);
       const response = await axios.put(
         `${API}/schedules/addtask/${workingOn._id}`,
-        { title: taskData }
+        { title: taskData, source: type }
       );
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseCreate();
-      setAlert({ show: true, type: "success", message: "Qo`shildi!" });
+      setAlert({ show: true, type: "success", message: "Qo‘shildi!" });
       setLoading(false);
+      resetType();
     } catch (error) {
       setLoading(false);
-      console.error("Taskni qo'shishda xatolik:", error);
+      console.error("Taskni qo‘shishda xatolik:", error);
       setAlert({ show: true, type: "error", message: "Xatolik!" });
     }
   };
+  const resetType = () => setType("");
 
   // Vazifani o'zgartirish
   const handleEditTask = async () => {
@@ -209,6 +211,7 @@ function ScheduleNew() {
         {
           index: currentTaskIndex,
           title: taskData,
+          source: type,
         }
       );
       setTasks(response.data.updatedSchedule.tasks);
@@ -276,7 +279,7 @@ function ScheduleNew() {
     }
   }, [terminate]);
   const handleStartWork = () => {
-    setLoading(true)
+    setLoading(true);
     if (handleShowStart) {
       handleCloseStart();
     }
@@ -293,7 +296,7 @@ function ScheduleNew() {
     axios.post(`${API}/schedules/create`, payload).then((res) => {
       setOnWork(true);
       setWorkingOn(res.data.newSchedule);
-      setLoading(false)
+      setLoading(false);
       setAlert({ show: true, type: "success", message: "Boshlandi!" });
     });
   };
@@ -316,27 +319,30 @@ function ScheduleNew() {
         )}
 
         {terminate && (
-      <div className="terminate-container">
-        <p className="terminate-message">
-          {terminate === "Auto terminated"
-            ? t("auto_terminated")
-            : terminate === "Auto deleted"
-            ? t("auto_deleted")
-            : t("session_terminated")}
-        </p>
-        <div className="countdown">
-          <span className="countdown-number">{countdown}</span>
-          <p className="countdown-text">{t("sekunddansongavtomatikyangilanadi")}</p>
-        </div>
-      </div>
-    )}
+          <div className="terminate-container">
+            <p className="terminate-message">
+              {terminate === "Auto terminated"
+                ? t("auto_terminated")
+                : terminate === "Auto deleted"
+                ? t("auto_deleted")
+                : t("session_terminated")}
+            </p>
+            <div className="countdown">
+              <span className="countdown-number">{countdown}</span>
+              <p className="countdown-text">
+                {t("sekunddansongavtomatikyangilanadi")}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Tasks */}
         <div>
           {onWork && (
             <>
               <div className="taskk">
-                <span className="blueword">{startedAt}</span> {t("daboshladingiz")}
+                <span className="blueword">{startedAt}</span>{" "}
+                {t("daboshladingiz")}
               </div>
               <div className="timer">
                 {Math.floor(timer / 3600)
@@ -353,10 +359,20 @@ function ScheduleNew() {
                 <span>{task.title}</span>
               </div>
               <div className="task-btns d-flex justify-content-between">
-                <div className=""></div>
+                <div className="">
+                {task.source === "majburiyat" && (
+                  <i className="fa-regular sources majburiyat fa-face-grin"></i>
+                )}
+                {task.source === "qoshimcha" && (
+                  <i className="fa-regular sources qoshimcha fa-face-grin"></i>
+                )}
+                {task.source === "tashabbus" && (
+                  <i className="fa-regular sources tashabbus fa-face-grin"></i>
+                )}
+                </div>
                 <div className="task-actions">
                   <button
-                    onClick={() => handleShowEdit(index, task.title)}
+                    onClick={() => handleShowEdit(index, task.title, task.source)}
                     className="text-end editbtn"
                   >
                     <i className="fa-solid fa-pen"></i>
@@ -379,14 +395,22 @@ function ScheduleNew() {
                     <i className="fa-solid fa-plus"></i> {t("qoshish")}
                   </button>
                   <button onClick={handleShowEnd} className="taskin2">
-                    <i className="fa-regular fa-circle-stop"></i> {t("yakunlash")}
+                    <i className="fa-regular fa-circle-stop"></i>{" "}
+                    {t("yakunlash")}
                   </button>
                 </div>
               </div>
             </>
           )}
         </div>
-
+<div className="warningtext">
+{t("ushbustikerlar")}
+  <ul className="list-unstyled">
+    <li><i class="fa-regular sources majburiyat fa-face-grin"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i class="fa-regular sources qoshimcha fa-face-grin-beam"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i class="fa-regular sources tashabbus fa-face-laugh-squint"></i> - {t("xodimtashabbusi")}</li>
+  </ul>
+</div>
         {/* Modal oynalar */}
         <Modal size="lg" centered show={showCreate} onHide={handleCloseCreate}>
           <Modal.Header closeButton>
@@ -394,7 +418,7 @@ function ScheduleNew() {
               <i className="fa-solid fa-plus"></i> {t("yangivazifaqoshish")}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className="forbeg">
             <textarea
               className="kghgv"
               value={taskData}
@@ -407,32 +431,130 @@ function ScheduleNew() {
               <i className="fa-solid fa-paperclip"></i>
             </div> */}
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="success" onClick={handleCreateTask}>
-            {t("saqlash")}
-            </Button>
-          </Modal.Footer>
+          <div>
+            <div className="tanlovv row">
+              <label>
+                <input
+                  type="radio"
+                  name="taskType"
+                  value="majburiyat"
+                  checked={type === "majburiyat"}
+                  onChange={(e) => setType(e.target.value)}
+                />
+                {t("lavozimmajburiyati")}
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="taskType"
+                  value="qoshimcha"
+                  checked={type === "qoshimcha"}
+                  onChange={(e) => setType(e.target.value)}
+                />
+                {t("rahbartomonidanqoshimcha")}
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="taskType"
+                  value="tashabbus"
+                  checked={type === "tashabbus"}
+                  onChange={(e) => setType(e.target.value)}
+                />
+                {t("xodimtashabbusi")}
+              </label>
+            </div>
+
+            <Modal.Footer>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>}
+                show={!type}
+              >
+                <span>
+                  <Button
+                    variant="success"
+                    onClick={handleCreateTask}
+                    disabled={!type}
+                  >
+                    {t("saqlash")}
+                  </Button>
+                </span>
+              </OverlayTrigger>
+            </Modal.Footer>
+          </div>
         </Modal>
 
-        <Modal centered show={showEdit} onHide={handleCloseEdit}>
+        <Modal centered size="lg" show={showEdit} onHide={handleCloseEdit}>
           <Modal.Header closeButton>
             <Modal.Title>
               <i className="fa-solid fa-pen"></i> {t("vazifaniozgartirish")}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className="forbeg">
             <textarea
               className="kghgv"
               value={taskData}
               onChange={(e) => setTaskData(e.target.value)}
-              rows="6"
+              rows="10"
             />
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="success" onClick={handleEditTask}>
-            {t("saqlash")}
-            </Button>
-          </Modal.Footer>
+          <div>
+            <div className="tanlovv row">
+              <label>
+                <input
+                  type="radio"
+                  name="taskType"
+                  value="majburiyat"
+                  checked={type === "majburiyat"}
+                  onChange={(e) => setType(e.target.value)}
+                />
+                {t("lavozimmajburiyati")}
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="taskType"
+                  value="qoshimcha"
+                  checked={type === "qoshimcha"}
+                  onChange={(e) => setType(e.target.value)}
+                />
+                {t("rahbartomonidanqoshimcha")}
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="taskType"
+                  value="tashabbus"
+                  checked={type === "tashabbus"}
+                  onChange={(e) => setType(e.target.value)}
+                />
+                {t("xodimtashabbusi")}
+              </label>
+            </div>
+
+            <Modal.Footer>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>}
+                show={!type}
+              >
+                <span>
+                  <Button
+                    variant="success"
+                    onClick={handleEditTask}
+                    disabled={!type}
+                  >
+                    {t("saqlash")}
+                  </Button>
+                </span>
+              </OverlayTrigger>
+            </Modal.Footer>
+          </div>
         </Modal>
 
         <Modal centered show={showDelete} onHide={handleCloseDelete}>
@@ -441,9 +563,7 @@ function ScheduleNew() {
               <i className="fa-solid fa-trash"></i> {t("ochirish")}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-          {t("areyousuretodelete")}
-          </Modal.Body>
+          <Modal.Body>{t("areyousuretodelete")}</Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={handleDeleteTask}>
             {t("ochirish")}
@@ -460,7 +580,7 @@ function ScheduleNew() {
           <Modal.Body>{t("areyousuretoend")}</Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleEndTask}>
-            {t("yakunlash")}
+              {t("yakunlash")}
             </Button>
           </Modal.Footer>
         </Modal>
@@ -472,7 +592,7 @@ function ScheduleNew() {
           <Modal.Body>{t("areyousuretostart")}</Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleStartWork}>
-            {t("boshlash")}
+              {t("boshlash")}
             </Button>
           </Modal.Footer>
         </Modal>

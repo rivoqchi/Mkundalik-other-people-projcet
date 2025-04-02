@@ -925,19 +925,6 @@
 .taskscreate{
   min-height: 40vh;
 }
-.kghgv{
-  width: 100%;
-  font-size: 1.5rem;
-  padding: 10px;
-  background-color: rgb(240, 240, 240);
-}
-.kghgva{
-  width: 90%;
-  font-size: 1.2rem;
-  padding: 10px;
-  border: 1px solid #007bff;
-  background-color: rgba(255, 250, 205, 0.664);
-}
 .uploadif{
   background-color: rgb(225, 225, 225);
   text-align: center;
@@ -2290,4 +2277,75 @@ h4 {
 }
 .loadinggiff{
   width: 5rem;
+}
+// 
+.tanlovv {
+  padding: 10px;
+  background: #c4eaff92;
+  border-radius: 8px;
+  --bs-gutter-x: 0 !important;
+  height: auto;
+  align-items: center;
+}
+
+.tanlovv label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Textni to'g'ri tomonlash */
+  gap: 8px;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: background 0.3s ease;
+  background-color: rgba(199, 23, 199, 0.327);
+}
+
+.tanlovv label:hover {
+  background: blue;
+  color: #fff;
+}
+
+.tanlovv input[type="radio"] {
+  accent-color: #28a745;
+  transform: scale(1.2);
+  margin-right: 8px; /* Radio tugmaning matndan ajralishi uchun */
+}
+.forbeg{
+  background-color: #ecf5ff;
+}
+.kghgv{
+  width: 100%;
+  font-size: 1.5rem;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 20px;
+  border: 1px solid #a0ccff;
+}
+.kghgva{
+  width: 90%;
+  font-size: 1.2rem;
+  padding: 10px;
+  border: 1px solid #007bff;
+  background-color: rgba(255, 250, 205, 0.664);
+}
+.sources{
+  border-radius: 50%;
+  padding: 5px;
+}
+.majburiyat{
+  color: #fff;
+  background-color: #007bff;
+}
+.qoshimcha{
+  color: #fff;
+  background-color: green;
+}
+.tashabbus{
+  color: #fff;
+  background-color: rgb(229, 39, 229);
+}
+marquee{
+  background-color: rgba(0, 128, 0, 0.735);
+  color: #fff;
 }

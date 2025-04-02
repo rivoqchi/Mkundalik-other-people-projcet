@@ -92,10 +92,13 @@
     "dasfoyyoriq": "Dasturdan foydalanish yo`riqnomasi",
     "faq": "FAQ",
     "profil": "Profil",
-
-
-    
+    "ushbustikerlar": "Ushbu stikerlar vazifaning turini ko`rsatadi:",
     "xodimlarkorsatkichlari": "Xodimlarning sport ko`rsatkichlari",
     "normativlar": "Normativlar",
-    "sportnatijam": "Mening sport ko`rstkichlarim"
+    "sportnatijam": "Mening sport ko`rstkichlarim",
+    "lavozimmajburiyati": "Lavozim majburiyatlari doirasidagi ishlar",
+    "rahbartomonidanqoshimcha": "Rahbar tomonidan berilgan qo'shimcha vazifalar",
+    "xodimtashabbusi": "Xodim tashabbusi bilan bajarilgan samaradorlikni oshirishga qaratilgan ishlar",
+    "turinitanlang": "Turini tanlang"
+
 }
