@@ -2331,7 +2331,8 @@ h4 {
 }
 .sources{
   border-radius: 50%;
-  padding: 5px;
+  padding: 3px;
+  font-size: .7rem;
 }
 .majburiyat{
   color: #fff;
@@ -2348,4 +2349,13 @@ h4 {
 marquee{
   background-color: rgba(0, 128, 0, 0.735);
   color: #fff;
+}
+.iconimiz i{
+  color: rgb(255, 132, 0);
+}
+.redicon{
+  color: red !important;
+}
+.normativicon{
+  color: rgb(0, 225, 255) !important;
 }

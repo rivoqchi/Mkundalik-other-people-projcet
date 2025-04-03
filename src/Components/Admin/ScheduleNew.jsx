@@ -300,7 +300,11 @@ function ScheduleNew() {
       setAlert({ show: true, type: "success", message: "Boshlandi!" });
     });
   };
-
+  const renderTooltip = (props, source) => (
+    <Tooltip id="button-tooltip" {...props}>
+      {source}
+    </Tooltip>
+  );
   return (
     <>
       {loading && <LoadingScreen loading={true} />}
@@ -361,14 +365,20 @@ function ScheduleNew() {
               <div className="task-btns d-flex justify-content-between">
                 <div className="">
                 {task.source === "majburiyat" && (
-                  <i className="fa-regular sources majburiyat fa-face-grin"></i>
-                )}
-                {task.source === "qoshimcha" && (
-                  <i className="fa-regular sources qoshimcha fa-face-grin"></i>
-                )}
-                {task.source === "tashabbus" && (
-                  <i className="fa-regular sources tashabbus fa-face-grin"></i>
-                )}
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("lavozimmajburiyati"))}>
+    <i title={t("lavozimmajburiyati")} className="fa-regular sources majburiyat fa-face-grin"></i>
+  </OverlayTrigger>
+)}
+{task.source === "qoshimcha" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("rahbartomonidanqoshimcha"))}>
+    <i title={t("rahbartomonidanqoshimcha")} className="fa-regular sources qoshimcha fa-face-grin"></i>
+  </OverlayTrigger>
+)}
+{task.source === "tashabbus" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("xodimtashabbusi"))}>
+    <i title={t("xodimtashabbusi")} className="fa-regular sources tashabbus fa-face-grin"></i>
+  </OverlayTrigger>
+)}
                 </div>
                 <div className="task-actions">
                   <button

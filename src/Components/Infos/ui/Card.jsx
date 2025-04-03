@@ -32,6 +32,11 @@ const Card = () => {
     employeesCount: 0,
     schedulesCount: 0,
     todaySchedulesCount: 0,
+    sectionsCount: 0,
+    sectorsCount: 0,
+    complexesCount: 0,
+    reportsCount: 0,
+    normativCount: 0,
     lengthData: [],
     ratedData: [],
   });
@@ -44,6 +49,11 @@ const Card = () => {
         employeesCount: data.employeesCount,
         schedulesCount: data.schedulesCount,
         todaySchedulesCount: data.todaySchedulesCount,
+        sectionsCount: data.sectionsCount,
+        sectorsCount: data.sectorsCount,
+        complexesCount: data.complexesCount,
+        reportsCount: data.reportsCount,
+        normativCount: data.normativCount,
         lengthData: data.top10Departments.map((item) => ({
           name: item._id || "Noma'lum",
           miqdor: item.count || 0,
@@ -126,6 +136,79 @@ const Card = () => {
       </div>
     </div>
 
+    <div className="row mb-3 mt-3">
+
+
+        <div className="col-12 col-md-4">
+          <div className="d-flex iconyellow statcard align-items-center justify-content-evenly">
+            <div className="iconimiz">
+              <i className="fa-solid fa-cogs"></i>
+            </div>
+            <div className="card-boddy">
+              <h3 className="card-title">
+                <AnimatedNumber value={stats.complexesCount} />
+              </h3>
+              <p className="card-text">Komplekslar soni</p>
+            </div>
+          </div>
+        </div>
+        <div className="col-12 col-md-4">
+          <div className="d-flex iconred statcard align-items-center justify-content-evenly">
+            <div className="iconimiz">
+              <i className="fa-solid fa-layer-group"></i>
+            </div>
+            <div className="card-boddy">
+              <h3 className="card-title">
+                <AnimatedNumber value={stats.sectorsCount} />
+              </h3>
+              <p className="card-text">Xizmatlar soni</p>
+            </div>
+          </div>
+        </div>
+        <div className="col-12 col-md-4">
+          <div className="d-flex iconpurple statcard align-items-center justify-content-evenly">
+            <div className="iconimiz">
+              <i className="fa-solid fa-building"></i>
+            </div>
+            <div className="card-boddy">
+              <h3 className="card-title">
+                <AnimatedNumber value={stats.sectionsCount} />
+              </h3>
+              <p className="card-text">Bo`limlar soni</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="row mb-3">
+        <div className="col-12 col-md-6">
+          <div className="d-flex iconlightblue statcard align-items-center justify-content-evenly">
+            <div className="iconimiz">
+              <i className="fa-solid redicon fa-file-alt"></i>
+            </div>
+            <div className="card-boddy">
+              <h3 className="card-title">
+                <AnimatedNumber value={stats.reportsCount} />
+              </h3>
+              <p className="card-text">Kelib tushgan shikoyatlar soni</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 col-md-6">
+          <div className="d-flex icondarkblue statcard align-items-center justify-content-evenly">
+            <div className="iconimiz">
+              <i className="fa-solid normativicon fa-balance-scale"></i>
+            </div>
+            <div className="card-boddy">
+              <h3 className="card-title">
+                <AnimatedNumber value={stats.normativCount} />
+              </h3>
+              <p className="card-text">Sport normativlari soni</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </>
   );
