@@ -8,8 +8,14 @@ import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
 import { format } from "date-fns";
 import { Modal, Button, Form } from "react-bootstrap";
+import DownloadDocx from "./DownloadDocx"; 
+import { useTranslation } from "react-i18next";
+import logomk from "../Images/logo-png.png";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
 function ScheduleRate() {
+    const { t } = useTranslation();
+  
   const myId = window.localStorage.getItem("user_id");
   const fullName = window.localStorage.getItem("fullName");
   const [myData, setMyData] = useState([]);
@@ -38,7 +44,6 @@ function ScheduleRate() {
   useEffect(() => {
     getMyData();
   }, []);
-
   const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
   const [comment, setComment] = useState(thisScheduleHistory.comment || "");
   const [isCommentEmpty, setIsCommentEmpty] = useState(false);
@@ -56,6 +61,7 @@ function ScheduleRate() {
       );
       setThisScheduleHistory(data.thehistory);
       setChecking(data.thehistory.beginnerId);
+      setManualRating(data.thehistory.rated || 0);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -134,54 +140,74 @@ function ScheduleRate() {
       console.error("Error submitting rating:", error);
     }
   };
-
+  const renderTooltip = (props, source) => (
+    <Tooltip id="button-tooltip" {...props}>
+      {source}
+    </Tooltip>
+  );
   return (
     <>
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">
           <div className="scheduletepa">
-            <div className="align-items-center justify-content-between d-flex">
-              <img className="schedulelogo" src={logo} alt="logo" />
-              <h3 className="px-2">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК</h3>
+            <div className="row">
+              <div className="col-4 fw-bold text-center">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК
+              Кундалик ҳисоботларни шакллантириш электрон платформаси</div>
+              <div className="col-4 text-center">
+                <img className="schedulelogo" src={logo} alt="logo" /><br />
+                <img className="schedulelogo2 p-3" src={logomk} alt="logo" />
+              </div>
+              <div className="col-4 fw-bold text-center">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК
+              Создание ежедневных отчетов электронная платформа</div>
             </div>
           </div>
           <div className="scheduleinfo">
             <div className="schedulebajaruvchilar">
-              <i className="fa-regular fa-user"></i> Ҳисоботни бажарган ходим:{" "}
+              <i className="fa-regular fa-user"></i> {t("didone")}:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-building-ngo"></i> Комплекс:{" "}
+              <i class="fa-solid fa-building-ngo"></i> {t("complex")}:{" "}
               <span>{thisScheduleHistory.complex}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-users-viewfinder"></i> Ташкилий тузилма:{" "}
+              <i class="fa-solid fa-users-viewfinder"></i> {t("tashtuzilma")}:{" "}
               <span>{thisScheduleHistory.department}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users"></i> Бўлим:{" "}
+              <i className="fa-solid fa-users"></i> {t("section")}:{" "}
               <span>{thisScheduleHistory.section}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-file-contract"></i> Лавозими:{" "}
-              <span>{thisScheduleHistory?.degree || "Ma'lumot topilmadi"}</span>
+              <i class="fa-solid fa-file-contract"></i> {t("degree")}:{" "}
+              <span>{thisScheduleHistory.degree || t("infonotfound")}</span>
             </div>
           </div>
           <br />
           <p className="ochilgan text-center">
             <b>{thisScheduleHistory?.startedAt?.slice(0, 10) || "N/A"}</b>
           </p>
-          <h5 className="text-center">Кундалик бажарилган ишлар ҲИСОБОТИ:</h5>
+          <h5 className="text-center">{t("kunhisoboti")}:</h5>
           <div className="scheduletasks">
             {thisScheduleHistory.tasks?.map((task, index) => (
               <div key={index} className="task-item">
                 <div className="">
-                  {index + 1}. <span>{task.title}</span>
-                </div>
-                <div className="">
-                  <Link>
-                    <span>{task.source}</span>
-                  </Link>
+                {task.source === "majburiyat" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("lavozimmajburiyati"))}>
+    <i title={t("lavozimmajburiyati")} className="fa-solid sources majburiyat fa-square"></i>
+  </OverlayTrigger>
+)}
+{task.source === "qoshimcha" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("rahbartomonidanqoshimcha"))}>
+    <i title={t("rahbartomonidanqoshimcha")} className="fa-solid sources qoshimcha fa-square"></i>
+  </OverlayTrigger>
+)}
+{task.source === "tashabbus" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("xodimtashabbusi"))}>
+    <i title={t("xodimtashabbusi")} className="fa-solid sources tashabbus fa-square"></i>
+  </OverlayTrigger>
+)}
+<b>{index + 1}.</b> <span>{task.title}</span>
                 </div>
                 <hr />
               </div>
@@ -190,10 +216,17 @@ function ScheduleRate() {
           <br />
           <div>
             <div className="scheduleconfirms text-end mb-1">
-              Маълумотлар тўғрилигини тасдиқлайди:{" "}
+            {t("infotasdiqlaydi")}:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
-
+            <div className="warningtext">
+{t("ushbustikerlar")}
+  <ul className="list-unstyled">
+    <li><i class="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i class="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i class="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
+  </ul>
+</div>
             <div className="schedulerated">
               <div className="text-center">
                 <Button
@@ -205,71 +238,90 @@ function ScheduleRate() {
                 </Button>
               </div>
               <div className="schedulerated">
-                <div className="justify-content-between d-flex">
-                  <h5>Баҳоланган: </h5>
-                  <span className="rateschhh">
-                    {thisScheduleHistory.rated ? (
-                      <div className="align-items-center justify-content-center">
-                        <i className="fa-regular fa-star"></i>
-                        {thisScheduleHistory.rated}
-                        {"/100"}
-                      </div>
+              <div className="justify-content-between d-flex">
+                <h5>
+                  {thisScheduleHistory?.rated ? (
+                    thisScheduleHistory.ratedName ? (
+                      <>
+                        <b>{thisScheduleHistory.ratedName}</b> {t("ratedBy")}:
+                      </>
                     ) : (
-                      "Yo'q"
-                    )}
-                  </span>
-                </div>
+                      t("rated")
+                    )
+                  ) : (
+                    t("nonrated")
+                  )}
+                </h5>
+                <span className="rateschhh">
+                  {thisScheduleHistory.rated ? (
+                    <div className="align-items-center justify-content-center">
+                      <i className="fa-regular fa-star"></i>
+                      {thisScheduleHistory.rated}
+                      {"/100"}
+                    </div>
+                  ) : (
+                    t("infonotfound")
+                  )}
+                </span>
               </div>
+            </div>
 
-              {thisScheduleHistory.comment && (
-              <div className="commentsch">
-                <b>Baholovchi fikri:</b> {thisScheduleHistory.comment}
+            {thisScheduleHistory.comment && (
+              <div className="commentsch align-items-center justify-content-between d-flex">
+                <div className="">
+                  <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                </div>
+                <i
+                  disabled={thisScheduleHistory.reported}
+                  class="fa-solid excla fa-triangle-exclamation"
+                ></i>
               </div>
             )}
-            <div className="scheduleconfirms text-end mb-1">
-            Баҳолади:{" "}
-              <span>{thisScheduleHistory.ratedName}</span>
-            </div>
             </div>
           </div>
           <div className="d-flex align-items-center justify-content-between">
-            <div className="pdfqr">
-              <div className="exclamationqr">
-                Ҳужжатнининг ҳақиқийлигини текшириш учун ушбу QR кодни
-                сканерланг. <br />
-                Ҳужжат фақатгина{" "}
-                <a
-                  href="http://mkundalik.uz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  mkundalik.uz
-                </a>{" "}
-                сайтида тақдим этилади.
-                <br />
-                Ушбу ҳисоботда келтирилган барча ишлар мазмунига ҳисоботни
-                шакллантирган ходим масъул ҳисобланади.
-                <div className="current-datetime text-end mx-5">
-                  {currentDateTime}
-                </div>
-              </div>
-            </div>
-            <div
-              className="qr-container text-center"
-              style={{ marginLeft: "20px" }}
-            >
-              <QRCodeSVG value={currentUrl} size={80} />
-            </div>
-          </div>
+                      <div className="pdfqr">
+                        <div className="exclamationqr">
+                          {t("checkwithqr")}. <br />
+                          {t("doconly")}{" "}
+                          <a
+                            href="http://mkundalik.uz"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            mkundalik.uz
+                          </a>{" "}
+                          {t("onsite")}
+                          <br />
+                          {t("egasijavobgar")}.
+                          <div className="current-datetime text-end mx-5">
+                            {currentDateTime}
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="qr-container text-center"
+                        style={{ marginLeft: "20px" }}
+                      >
+                        <QRCodeSVG value={currentUrl} size={80} />
+                      </div>
+                    </div>
         </div>
       </div>
-      <button
-        onClick={generatePDF}
-        className="pdf-download-btn"
-        style={{ margin: "20px 0" }}
-      >
-        <i className="fa-solid fa-download"></i> PDF юклаб олиш
-      </button>
+      <div className="d-flex justify-content-evenly align-items-center">
+        <button
+          onClick={generatePDF}
+          className="pdf-download-btn"
+          style={{ margin: "20px 0" }}
+        >
+          <i className="fa-solid fa-download"></i> {t("pdf")}
+        </button>
+        <DownloadDocx
+          thisScheduleHistory={thisScheduleHistory}
+          currentDateTime={currentDateTime}
+          degree={thisScheduleHistory.degree}
+        />
+      </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>

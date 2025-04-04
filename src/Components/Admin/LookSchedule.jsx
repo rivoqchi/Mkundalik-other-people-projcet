@@ -14,6 +14,7 @@ import Modal from "react-bootstrap/Modal";
 import Alert from "../Additional/Alert";
 import DownloadDocx from "./DownloadDocx";
 import { useTranslation } from "react-i18next";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
 function ScheduleRate() {
   const { t } = useTranslation();
@@ -31,11 +32,15 @@ function ScheduleRate() {
   const handleClose = () => setShow(false);
   const handleShow = () => {
     if (thisScheduleHistory.reported) {
-        setAlert({ show: true, type: "error", message: "Siz e'tiroz bildirib bo`lgansiz!", });
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Siz e'tiroz bildirib bo`lgansiz!",
+      });
     } else {
-        setShow(true);
+      setShow(true);
     }
-};
+  };
   const [reportData, setReportData] = useState("");
 
   const getMyData = async () => {
@@ -159,7 +164,7 @@ function ScheduleRate() {
           message: "Muvaffaqiyatli yuborildi!",
         });
         thisScheduleHistory.reported = true;
-        handleClose()
+        handleClose();
       } catch (error) {
         setAlert({ show: true, type: "error", message: "Xatolik yuz berdi!" });
       }
@@ -184,7 +189,11 @@ function ScheduleRate() {
       console.error("Error fetching degree:", error);
     }
   };
-
+  const renderTooltip = (props, source) => (
+    <Tooltip id="button-tooltip" {...props}>
+      {source}
+    </Tooltip>
+  );
   return (
     <>
       {alert.show && <Alert type={alert.type} message={alert.message} />}
@@ -194,14 +203,19 @@ function ScheduleRate() {
         <div className="scheduleshistory">
           <div className="scheduletepa">
             <div className="row">
-              <div className="col-4 fw-bold text-center">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК
-              Кундалик ҳисоботларни шакллантириш электрон платформаси</div>
+              <div className="col-4 fw-bold text-center">
+                "ТОШКEНТ МEТРОПОЛИТEНИ" ДУК Кундалик ҳисоботларни шакллантириш
+                электрон платформаси
+              </div>
               <div className="col-4 text-center">
-                <img className="schedulelogo" src={logo} alt="logo" /><br />
+                <img className="schedulelogo" src={logo} alt="logo" />
+                <br />
                 <img className="schedulelogo2 p-3" src={logomk} alt="logo" />
               </div>
-              <div className="col-4 fw-bold text-center">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК
-              Создание ежедневных отчетов электронная платформа</div>
+              <div className="col-4 fw-bold text-center">
+                "ТОШКEНТ МEТРОПОЛИТEНИ" ДУК Создание ежедневных отчетов
+                электронная платформа
+              </div>
             </div>
           </div>
           <div className="scheduleinfo">
@@ -235,25 +249,41 @@ function ScheduleRate() {
             {thisScheduleHistory.tasks?.map((task, index) => (
               <div key={index} className="task-item">
                 <div className="">
-                  <b>{index + 1}.</b> <span>{task.title}</span>
-                </div>
-                <div className="">
-                  <Link>
-                    <span>{task.source}</span>
-                  </Link>
+                {task.source === "majburiyat" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("lavozimmajburiyati"))}>
+    <i title={t("lavozimmajburiyati")} className="fa-solid sources majburiyat fa-square"></i>
+  </OverlayTrigger>
+)}
+{task.source === "qoshimcha" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("rahbartomonidanqoshimcha"))}>
+    <i title={t("rahbartomonidanqoshimcha")} className="fa-solid sources qoshimcha fa-square"></i>
+  </OverlayTrigger>
+)}
+{task.source === "tashabbus" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("xodimtashabbusi"))}>
+    <i title={t("xodimtashabbusi")} className="fa-solid sources tashabbus fa-square"></i>
+  </OverlayTrigger>
+)}
+<b>{index + 1}.</b> <span>{task.title}</span>
                 </div>
                 <hr />
-                {/* checkpoint (bunda misol uchun 3-hisobot chegarada turgan bo`lsa dastlabki sahifada 2-hisobot oxirgisi bo`ladi, 3 va undan keyingilari next page ga o`tishi kerak) */}
               </div>
             ))}
           </div>
           <br />
           <div>
             <div className="scheduleconfirms text-end mb-1">
-            {t("infotasdiqlaydi")}:{" "}
+              {t("infotasdiqlaydi")}:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
-
+            <div className="warningtext">
+{t("ushbustikerlar")}
+  <ul className="list-unstyled">
+    <li><i class="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i class="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i class="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
+  </ul>
+</div>
             {/* checkpoint */}
             <div className="schedulerated">
               <div className="justify-content-between d-flex">
@@ -304,8 +334,8 @@ function ScheduleRate() {
           <div className="d-flex align-items-center justify-content-between">
             <div className="pdfqr">
               <div className="exclamationqr">
-              {t("checkwithqr")}. <br />
-              {t("doconly")}{" "}
+                {t("checkwithqr")}. <br />
+                {t("doconly")}{" "}
                 <a
                   href="http://mkundalik.uz"
                   target="_blank"
@@ -331,24 +361,27 @@ function ScheduleRate() {
         </div>
       </div>
       <div className="d-flex justify-content-evenly align-items-center">
-      <button
-        onClick={generatePDF}
-        className="pdf-download-btn"
-        style={{ margin: "20px 0" }}
-      >
-        <i className="fa-solid fa-download"></i> {t("pdf")}
-      </button>
-      <DownloadDocx thisScheduleHistory={thisScheduleHistory} currentDateTime={currentDateTime} degree={degree} />
+        <button
+          onClick={generatePDF}
+          className="pdf-download-btn"
+          style={{ margin: "20px 0" }}
+        >
+          <i className="fa-solid fa-download"></i> {t("pdf")}
+        </button>
+        <DownloadDocx
+          thisScheduleHistory={thisScheduleHistory}
+          currentDateTime={currentDateTime}
+          degree={degree}
+        />
       </div>
-
-
 
       <Modal size="lg" centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{t("etiroz")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <b>{thisScheduleHistory.ratedName}</b> {t("batafsilbayonforcommission")}:
+          <b>{thisScheduleHistory.ratedName}</b>{" "}
+          {t("batafsilbayonforcommission")}:
         </Modal.Body>
         <div className="text-center">
           <textarea
@@ -360,10 +393,10 @@ function ScheduleRate() {
         </div>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-          {t("close")}
+            {t("close")}
           </Button>
           <Button variant="danger" onClick={(e) => handleReport(e)}>
-          {t("report")}
+            {t("report")}
           </Button>
         </Modal.Footer>
       </Modal>

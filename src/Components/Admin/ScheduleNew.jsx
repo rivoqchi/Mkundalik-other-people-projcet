@@ -344,7 +344,7 @@ function ScheduleNew() {
         <div>
           {onWork && (
             <>
-              <div className="taskk">
+              <div className="taskk d-flex">
                 <span className="blueword">{startedAt}</span>{" "}
                 {t("daboshladingiz")}
               </div>
@@ -360,26 +360,25 @@ function ScheduleNew() {
           {tasks.map((task, index) => (
             <div key={index} className="taskk">
               <div className="task">
-                <span>{task.title}</span>
+                {task.source === "majburiyat" && (
+                  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("lavozimmajburiyati"))}>
+                    <i title={t("lavozimmajburiyati")} className="fa-solid sources majburiyat fa-square"></i>
+                  </OverlayTrigger>
+                )}
+                {task.source === "qoshimcha" && (
+                  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("rahbartomonidanqoshimcha"))}>
+                    <i title={t("rahbartomonidanqoshimcha")} className="fa-solid sources qoshimcha fa-square"></i>
+                  </OverlayTrigger>
+                )}
+                {task.source === "tashabbus" && (
+                  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("xodimtashabbusi"))}>
+                    <i title={t("xodimtashabbusi")} className="fa-solid sources tashabbus fa-square"></i>
+                  </OverlayTrigger>
+                )}
+<b>{index + 1}. </b>
+                <span className="asdqweh">{task.title}</span>
               </div>
               <div className="task-btns d-flex justify-content-between">
-                <div className="">
-                {task.source === "majburiyat" && (
-  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("lavozimmajburiyati"))}>
-    <i title={t("lavozimmajburiyati")} className="fa-regular sources majburiyat fa-face-grin"></i>
-  </OverlayTrigger>
-)}
-{task.source === "qoshimcha" && (
-  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("rahbartomonidanqoshimcha"))}>
-    <i title={t("rahbartomonidanqoshimcha")} className="fa-regular sources qoshimcha fa-face-grin"></i>
-  </OverlayTrigger>
-)}
-{task.source === "tashabbus" && (
-  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("xodimtashabbusi"))}>
-    <i title={t("xodimtashabbusi")} className="fa-regular sources tashabbus fa-face-grin"></i>
-  </OverlayTrigger>
-)}
-                </div>
                 <div className="task-actions">
                   <button
                     onClick={() => handleShowEdit(index, task.title, task.source)}
@@ -416,9 +415,9 @@ function ScheduleNew() {
 <div className="warningtext">
 {t("ushbustikerlar")}
   <ul className="list-unstyled">
-    <li><i class="fa-regular sources majburiyat fa-face-grin"></i> - {t("lavozimmajburiyati")}</li>
-    <li><i class="fa-regular sources qoshimcha fa-face-grin-beam"></i> - {t("rahbartomonidanqoshimcha")}</li>
-    <li><i class="fa-regular sources tashabbus fa-face-laugh-squint"></i> - {t("xodimtashabbusi")}</li>
+    <li><i class="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i class="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i class="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
   </ul>
 </div>
         {/* Modal oynalar */}
