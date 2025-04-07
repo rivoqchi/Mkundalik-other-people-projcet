@@ -43,7 +43,9 @@ function Aside() {
         <p>{window.localStorage.getItem("degree")}</p>
       </div>
       <nav className="aside-menu">
-        <ul>
+        <div className="tuzilmalarcontrol">
+        <h5>Tuzilmalar boshqaruvi</h5>
+          <ul className='ggfgf'>
           <li className={location.pathname === '/superadmin/complex' ? 'active' : ''}>
             <Link to="/superadmin/complex">
             <i class="fa-solid fa-code-fork"></i>
@@ -53,7 +55,7 @@ function Aside() {
           <li className={location.pathname === '/superadmin/departments' ? 'active' : ''}>
             <Link to="/superadmin/departments">
             <i class="fa-solid fa-building-user"></i>
-              <span>Departamentlar</span>
+              <span>Xizmatlar</span>
             </Link>
           </li>
           <li className={location.pathname === '/superadmin/sections' ? 'active' : ''}>
@@ -62,10 +64,19 @@ function Aside() {
               <span>Bo`limlar</span>
             </Link>
           </li>
+          </ul>
+        </div>
+        <ul>
           <li className={location.pathname === '/superadmin/info/employee' ? 'active' : ''}>
             <Link to="/superadmin/employees">
               <i className="fa-solid fa-sitemap"></i>
               <span>Xodimlar</span>
+            </Link>
+          </li>
+          <li className={location.pathname === '/superadmin/report' ? 'active' : ''}>
+            <Link to="/superadmin/report">
+            <i class="fa-solid fa-receipt"></i>
+              <span>Davriy hisobot</span><span className="newtop">NEW</span>
             </Link>
           </li>
           <li className={location.pathname === '/superadmin/profile' ? 'active' : ''}>
@@ -86,7 +97,7 @@ function Aside() {
           <li className={location.pathname === '/superadmin/profile' ? 'active' : ''}>
             <Link to="/superadmin/about">
               <i class="fa-solid fa-info"></i>
-              <span>Dastur haqida</span><span className="newtop">NEW</span>
+              <span>Dastur haqida</span>
             </Link>
           </li>
         </ul>

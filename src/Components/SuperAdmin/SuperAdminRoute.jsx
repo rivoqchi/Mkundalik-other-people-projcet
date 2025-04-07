@@ -30,6 +30,7 @@ import News from '../Infos/News';
 import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
+import Report from './Report';
 import FAQPage from '../Infos/FAQPage';
 function SuperAdminRoute() {
   return (
@@ -62,6 +63,7 @@ function SuperAdminRoute() {
               <Route path="/departments/add" exact element={<NewDepartment />} />
               <Route path="/departments/edit/:id" exact element={<EditDepartment />} />
               <Route path="/complex" exact element={<Complexes />} />
+              <Route path="/report" exact element={<Report />} />
               <Route path="/complex/add" exact element={<NewComplex />} />
               <Route path="/complex/edit/:id" exact element={<EditComplex />} />
               <Route path="/profile" exact element={<Profile />} />

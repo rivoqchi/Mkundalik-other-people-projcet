@@ -315,6 +315,18 @@ function ScheduleNew() {
         <div className="date">
           <i className="fa-solid fa-calendar-days"></i> {date}
         </div>
+        <div className="warningtext ushbustikerlar mb-4">
+  <h5>{t("ushbustikerlar")}</h5>
+  2025-yil 7-apreldan boshlab tizimda baholash tartibida o`zgartirishlar kiritildi
+  <ul className="list-unstyled">
+    <li><i class="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i class="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i class="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
+  </ul>
+  <p className="redword container">{t("dastlabkibaholashmezoni2")} <br />
+  {t("dastlabkibaholashmezoni3")}
+  </p>
+</div>
 
         {!onWork && (
           <button className="start-button" onClick={handleShowStart}>
@@ -399,6 +411,9 @@ function ScheduleNew() {
           {onWork && (
             <>
               <div className="mb-5">
+                <div className="redword">
+                {t("dastlabkibaholashmezoni")}
+                </div>
                 <div className="button-container mt-5">
                   <button onClick={handleShowCreate} className="taskin">
                     <i className="fa-solid fa-plus"></i> {t("qoshish")}
@@ -412,14 +427,6 @@ function ScheduleNew() {
             </>
           )}
         </div>
-<div className="warningtext">
-{t("ushbustikerlar")}
-  <ul className="list-unstyled">
-    <li><i class="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
-    <li><i class="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
-    <li><i class="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
-  </ul>
-</div>
         {/* Modal oynalar */}
         <Modal size="lg" centered show={showCreate} onHide={handleCloseCreate}>
           <Modal.Header closeButton>
@@ -474,6 +481,7 @@ function ScheduleNew() {
                 />
                 {t("xodimtashabbusi")}
               </label>
+              <span className="redword newcitata">{t("dastlabkibaholashmezoni4")}</span>
             </div>
 
             <Modal.Footer>

@@ -6,9 +6,9 @@ function Sorry() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("tas-ix")) {
+    if (!localStorage.getItem("updatev1")) {
       setShow(true);
-      localStorage.setItem("tas-ix", "true");
+      localStorage.setItem("updatev1", "true");
     }
   }, []);
 
@@ -16,25 +16,23 @@ function Sorry() {
 
   return (
     <>
-      <Modal centered show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title><b>Ҳурматли фойдаланувчилар!</b></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <b>22-23 март</b> кунлари серверларимиз Ўзбекистон Республикаси <b>TAS-IX</b> тармоғига уланиш жараёни <span className="greenword">МУВАФФАҚИЯТЛИ ЯКУНЛАНДИ</span>! <br />
-
-        Шу муносабат билан сайтимизда техник профилактика ишлари олиб борилди.
-        <br /><br />
-        Эндиликда серверлар аввалгидан тезроқ ва барқарор ишлайди. Янги имкониятлардан фойдаланиб, янада қулай хизматдан баҳраманд бўлишингиз мумкин!
-        <br /><br />
-        <b>Тушунганингиз учун раҳмат!</b>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={handleClose}>
-          Тушундим
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Modal size="lg" centered show={show} onHide={handleClose}>
+  <Modal.Header closeButton>
+    <Modal.Title><b>Ҳурматли фойдаланувчилар!</b></Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <b>Ҳурматли фойдаланувчилар!</b><br />
+    Тизимнинг баҳолаш қисмига қисман ўзгартишлар киритилганини маълум қиламиз. Унга кўра, раҳбарга лавозим мажбуриятлари доирасидаги ишлар учун - 5 балл, раҳбар томонидан берилган қўшимча вазифалар учун - 7 балл, ҳамда ходим ташаббуси билан бажарилган самарадорликни оширишга қаратилган ишлар учун - 10 баллдан тахминан баҳолар таклиф қилинмоқда. <br />
+    Якуний қарорни раҳбар тасдиқлаши ёки ўз хоҳишига кўра балл қўйиши мумкин. <br />
+    Ҳисоботни ёзишда ва баҳолашда масъулиятли бўлишингизни сўраймиз. <br />
+    <b>mkundalik.uz</b>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="success" onClick={handleClose}>
+      Тушундим
+    </Button>
+  </Modal.Footer>
+</Modal>
     </>
   );
 }

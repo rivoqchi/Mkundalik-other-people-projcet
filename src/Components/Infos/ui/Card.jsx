@@ -190,7 +190,7 @@ const Card = () => {
               <h3 className="card-title">
                 <AnimatedNumber value={stats.reportsCount} />
               </h3>
-              <p className="card-text">Kelib tushgan shikoyatlar soni</p>
+              <p className="card-text">Rahbar bahosiga bo’lgan shikoyatlar</p>
             </div>
           </div>
         </div>
@@ -198,7 +198,7 @@ const Card = () => {
         <div className="col-12 col-md-6">
           <div className="d-flex icondarkblue statcard align-items-center justify-content-evenly">
             <div className="iconimiz">
-              <i className="fa-solid normativicon fa-balance-scale"></i>
+            <i class="fa-solid normativicon fa-volleyball"></i>
             </div>
             <div className="card-boddy">
               <h3 className="card-title">

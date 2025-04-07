@@ -92,13 +92,17 @@
     "dasfoyyoriq": "Dasturdan foydalanish yo`riqnomasi",
     "faq": "FAQ",
     "profil": "Profil",
-    "ushbustikerlar": "Ushbu stikerlar vazifaning turini ko`rsatadi:",
+    "ushbustikerlar": "Ushbu stikerlar vazifaning turini ko`rsatadi va taxminiy ballar quyidagicha:",
     "xodimlarkorsatkichlari": "Xodimlarning sport ko`rsatkichlari",
     "normativlar": "Normativlar",
     "sportnatijam": "Mening sport ko`rstkichlarim",
-    "lavozimmajburiyati": "Lavozim majburiyatlari doirasidagi ishlar",
-    "rahbartomonidanqoshimcha": "Rahbar tomonidan berilgan qo'shimcha vazifalar",
-    "xodimtashabbusi": "Xodim tashabbusi bilan bajarilgan samaradorlikni oshirishga qaratilgan ishlar",
-    "turinitanlang": "Turini tanlang"
+    "lavozimmajburiyati": "Lavozim majburiyatlari doirasidagi ishlar - 5 ball",
+    "rahbartomonidanqoshimcha": "Rahbar tomonidan berilgan qo'shimcha vazifalar - 7 ball",
+    "xodimtashabbusi": "Xodim tashabbusi bilan bajarilgan samaradorlikni oshirishga qaratilgan ishlar - 10 ball",
+    "turinitanlang": "Turini tanlang",
+    "dastlabkibaholashmezoni": "Diqqat! Dastlabki baholash mezoni yuqorida ko‘rsatilgan. Mazkur funksiya rahbarga yengillik bo`lishi uchun keltirilayotganini inobatga olshingiz so`raladi. Yakuniy qarorni o‘zaro rahbaringiz belgilaydi.",
+    "dastlabkibaholashmezoni2": "Eslatib o`tamiz, barcha baholarning mazmuniga kundalik hisobotni yozgan xodim mas'ul bo`lib, baholariga bevosita raxbari javobgar hisoblanadi.",
+    "dastlabkibaholashmezoni3": "Agar hisobot 3 kun ichida rahbar tomonidan baholanmasa, tahminiy baho avtomatik ravishda qo`yiladi.",
+    "dastlabkibaholashmezoni4": "Ishning to`liq mazmunini yoritib bering, agar jamoaviy ish bo`lsa ishning aynan qaysi qismini bajarganingizni keltirishingiz so`raladi. Har qanday bahoni sun’iy oshirishga bo‘lgan harakatlar ustida maxsus komissiya o‘z faoliyatini olib borayotganini ma’lum qilamiz."
 
 }

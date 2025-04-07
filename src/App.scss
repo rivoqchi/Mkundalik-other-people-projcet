@@ -571,7 +571,8 @@
 }
 
 .aside-menu li a:hover {
-  background-color: #2d3748 !important;
+  background-color: #194ca3 !important;
+  border-radius: 10px;
 }
 
 .aside-menu li a.active {
@@ -796,8 +797,19 @@
   cursor: pointer;
   box-shadow: 0px 0px 10px 10px rgb(220, 220, 220);
   transition: 2s;
+  animation: toDown 4s ease-out;
 }
-
+@keyframes toDown {
+  0% {
+    transform: translateY(-60px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+}
 .start-button:hover {
   background: blue;
   box-shadow: none;
@@ -1140,10 +1152,39 @@ button:focus {
 .scheduleconfirms span{
   font-weight: bold;
 }
-.bahoinput input{
+.bahoinput input {
   margin: 10px;
-  font-size: 1.2rem;
-  background-color: antiquewhite;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 10px;
+  background-color: green;
+  // background: linear-gradient(270deg, #5100ff, #b700ff, #5900ff, #e100ff);
+  background-size: 600% 600%;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  animation: aiGradient 2s ease infinite;
+  transition: opacity 0.3s ease;
+}
+.ourai{
+  color: rgb(77, 0, 128);
+  font-size: 2rem;
+}
+.bahoinput input.no-ai {
+  animation: none !important;
+  background: green !important;
+}
+@keyframes aiGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 .rateschhh{
   font-size: 1.4rem;
@@ -1644,6 +1685,7 @@ marquee{
   margin-top: 100px !important;
 }
 .newcitata {
+  width: 80% !important;
   animation: newcitata 1s;
   margin: 20px;
   background: linear-gradient(45deg, rgb(245, 31, 156), rgb(157, 0, 255)); /* Qizil gradient fon */
@@ -1651,13 +1693,12 @@ marquee{
   padding: 12px 20px; /* Ichki bo‘shliq */
   border-radius: 6px; /* Burchaklarni yumshatish */
   font-weight: bold; /* Matnni qalin qilish */
-  font-size: 16px; /* Matn o‘lchami */
+  font-size: 10px; /* Matn o‘lchami */
   text-align: center; /* Matnni markazga olish */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Soyali effekt */
   display: inline-block; /* Blok element sifatida chiqish */
   text-transform: uppercase; /* Katta harflar */
   position: relative; /* Before va after uchun */
-  z-index: -1 !important;
 }
 @keyframes newcitata {
   from{
@@ -2333,7 +2374,8 @@ h4 {
   background-color: rgba(255, 250, 205, 0.664);
 }
 .sources{
-margin-right: 3px;
+  margin-right: 3px;
+  font-weight: bold;
 }
 .majburiyat{
   color: #007bff;
@@ -2356,4 +2398,71 @@ marquee{
 }
 .normativicon{
   color: rgb(0, 225, 255) !important;
+}
+.tuzilmalarcontrol{
+  background-color: #253553 !important;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+// 
+.report-page-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f7fc;
+}
+
+.report-page-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.report-page-date-selector {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.report-page-date-input {
+  width: 200px;
+  margin-top: 10px;
+}
+
+.report-page-submit-button {
+  margin-top: 20px;
+  width: 200px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.report-page-submit-button:disabled {
+  background-color: #d6d6d6;
+}
+
+.report-page-submit-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.report-page-header {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+}
+.formal{
+  width: 12rem;
+}
+.ushbustikerlar{
+  align-items: center;
+  background-color: #d1e7ff;
+  padding: 30px 0px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px 5px rgb(180, 180, 180);
+  animation: opacity0to1 2s;
 }

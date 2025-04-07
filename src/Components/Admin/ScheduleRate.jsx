@@ -12,7 +12,7 @@ import DownloadDocx from "./DownloadDocx";
 import { useTranslation } from "react-i18next";
 import logomk from "../Images/logo-png.png";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-
+import { Spinner } from 'react-bootstrap';
 function ScheduleRate() {
     const { t } = useTranslation();
   
@@ -49,8 +49,30 @@ function ScheduleRate() {
   const [isCommentEmpty, setIsCommentEmpty] = useState(false);
   const [checking, setChecking] = useState([]);
   const [manualRating, setManualRating] = useState("");
+  const [tasdiq, setTasdiq] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [setAI, setSetAi] = useState(false);
+  useEffect(() => {
+    if (showModal) {
+      setSetAi(false);
 
+  let summarizedBall = 0;
+  let tasks = thisScheduleHistory.tasks || [];
+  tasks.forEach(task => {
+  if (task.source === 'majburiyat') {
+    summarizedBall += 5; // majburiyat uchun 5ga ko'paytirish
+  } else if (task.source === 'qoshimcha') {
+    summarizedBall += 7; // qoshimcha uchun 7ga ko'paytirish
+  } else if (task.source === 'tashabbus') {
+    summarizedBall += 10; // tashabbus uchun 10ga ko'paytirish
+  }
+  setManualRating(summarizedBall)
+});
+    } else {
+      setSetAi(false);
+    }
+  }, [showModal]);
+  
   const { id } = useParams();
   const componentRef = useRef();
   const navigate = useNavigate();
@@ -61,7 +83,7 @@ function ScheduleRate() {
       );
       setThisScheduleHistory(data.thehistory);
       setChecking(data.thehistory.beginnerId);
-      setManualRating(data.thehistory.rated || 0);
+      // setManualRating(data.thehistory.rated || 0);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -114,8 +136,8 @@ function ScheduleRate() {
     if (value < 1) {
       alert("Eng kamida 1 ball qo`ya olasiz");
       setManualRating(1);
-    } else if (value > 100) {
-      setManualRating(100);
+    } else if (value > 220) {
+      setManualRating(220);
     } else {
       setManualRating(value);
     }
@@ -257,7 +279,7 @@ function ScheduleRate() {
                     <div className="align-items-center justify-content-center">
                       <i className="fa-regular fa-star"></i>
                       {thisScheduleHistory.rated}
-                      {"/100"}
+                      {"/220"}
                     </div>
                   ) : (
                     t("infonotfound")
@@ -325,7 +347,7 @@ function ScheduleRate() {
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Баҳолаш</Modal.Title>
+          <Modal.Title>Баҳолаш <span className="redword">(Test)</span></Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="stars">
@@ -340,14 +362,23 @@ function ScheduleRate() {
             ))}
           </div>
           <div className="bahoinput text-center">
-            <input
-              type="number"
-              value={manualRating}
-              onChange={handleInputChange}
-              min="1"
-              max="100"
-            />
-          </div>
+            {/* <div className="">
+            <i class="fa-solid ourai fa-robot"></i>
+    {setAI && (
+      <Spinner animation="border" size="sm" className="input-spinner" />
+    )}
+            </div> */}
+  <div className="redword">Tizim taklif qilayotgan ball:</div> <div className="">* o`zgartirish mumkin.</div>
+  <input
+    type="number"
+    value={manualRating}
+    onChange={handleInputChange}
+    min="1"
+    max="220"
+    // className={setAI ? '' : 'no-ai'}
+    // disabled={setAI}
+    />
+</div>
           <textarea
             className={`kghgv ${isCommentEmpty ? "commentquacke" : ""}`}
             value={comment}
@@ -356,8 +387,13 @@ function ScheduleRate() {
               setComment(e.target.value);
               setIsCommentEmpty(false); // Foydalanuvchi yozishni boshlasa, class o‘chadi
             }}
-            rows="5"
+            rows="3"
           />
+          {/* <div className="row">
+            <div className="col-6 text-center">
+              <button className="w-100"onClick={() => setTasdiq(true)}>Bahoni tasdiqlash</button>
+            </div>
+          </div> */}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
