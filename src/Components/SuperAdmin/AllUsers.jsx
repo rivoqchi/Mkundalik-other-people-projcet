@@ -174,26 +174,44 @@ function Xodimlar() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredEmployees.map((employee, index) => (
-                                <tr key={employee._id}>
-                                    <td>{index + 1}</td>
-                                    <td>{employee.name}</td>
-                                    <td>{employee.phone}</td>
-                                    <td>{employee.role}</td>
-                                    <td>{employee.complex}</td>
-                                    <td>{employee.department}</td>
-                                    <td>{employee.section}</td>
-                                    <td>{employee.degree}</td>
-                                    <td>{employee.nationality}</td>
-                                    <td>{employee.dateOfBirth}</td>
-                                    <td>{employee.placeOfBirth}</td>
-                                    <td>{employee.address}</td>
-                                    <td>{employee.education}</td>
-                                    <td>{employee.speciality}</td>
-                                    <td>{employee.firstAct}</td>
-                                </tr>
-                            ))}
-                        </tbody>
+  {filteredEmployees.map((employee, index) => (
+    <tr key={employee._id}>
+      <td>{index + 1}</td>
+      <td title={employee.name}>
+        {employee.name?.length > 20 ? employee.name.slice(0, 20) + "..." : employee.name}
+      </td>
+      <td>{employee.phone}</td>
+      <td>{employee.role}</td>
+      <td title={employee.complex}>
+        {employee.complex?.length > 20 ? employee.complex.slice(0, 20) + "..." : employee.complex}
+      </td>
+      <td title={employee.department}>
+        {employee.department?.length > 20 ? employee.department.slice(0, 20) + "..." : employee.department}
+      </td>
+      <td title={employee.section}>
+        {employee.section?.length > 20 ? employee.section.slice(0, 20) + "..." : employee.section}
+      </td>
+      <td title={employee.degree}>
+        {employee.degree?.length > 20 ? employee.degree.slice(0, 20) + "..." : employee.degree}
+      </td>
+      <td>{employee.nationality}</td>
+      <td>{employee.dateOfBirth}</td>
+      <td title={employee.placeOfBirth}>
+        {employee.placeOfBirth?.length > 20 ? employee.placeOfBirth.slice(0, 20) + "..." : employee.placeOfBirth}
+      </td>
+      <td title={employee.address}>
+        {employee.address?.length > 20 ? employee.address.slice(0, 20) + "..." : employee.address}
+      </td>
+      <td title={employee.education}>
+        {employee.education?.length > 20 ? employee.education.slice(0, 20) + "..." : employee.education}
+      </td>
+      <td title={employee.speciality}>
+        {employee.speciality?.length > 20 ? employee.speciality.slice(0, 20) + "..." : employee.speciality}
+      </td>
+      <td>{employee.firstAct}</td>
+    </tr>
+  ))}
+</tbody>
                     </table>
                 )}
                 </div>

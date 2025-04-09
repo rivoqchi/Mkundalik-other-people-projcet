@@ -66,13 +66,31 @@ function Aside() {
           </li>
           </ul>
         </div>
-        <ul>
-          <li className={location.pathname === '/superadmin/info/employee' ? 'active' : ''}>
-            <Link to="/superadmin/employees">
+
+        <div className="tuzilmalarcontrol mt-2">
+        <h5>Xodimlar boshqaruvi</h5>
+          <ul className='ggfgf'>
+          <li className={location.pathname === '/superadmin/employees/adduser' ? 'active' : ''}>
+            <Link to="/superadmin/employees/adduser">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Xodimlar</span>
+              <span>Yangi xodim qo`shish</span>
             </Link>
           </li>
+          <li className={location.pathname === '/superadmin/employees/allusers' ? 'active' : ''}>
+            <Link to="/superadmin/employees/allusers">
+              <i className="fa-solid fa-sitemap"></i>
+              <span>Barcha xodimlar</span>
+            </Link>
+          </li>
+          <li className={location.pathname === '/superadmin/employees/switchuser' ? 'active' : ''}>
+            <Link to="/superadmin/employees/switchuser">
+              <i className="fa-solid fa-sitemap"></i>
+              <span>Lavozimni o`zgartirish</span>
+            </Link>
+          </li>
+          </ul>
+        </div>
+        <ul>
           <li className={location.pathname === '/superadmin/report' ? 'active' : ''}>
             <Link to="/superadmin/report">
             <i class="fa-solid fa-receipt"></i>
@@ -94,7 +112,7 @@ function Aside() {
 
 
 
-          <li className={location.pathname === '/superadmin/profile' ? 'active' : ''}>
+          <li className={location.pathname === '/superadmin/about' ? 'active' : ''}>
             <Link to="/superadmin/about">
               <i class="fa-solid fa-info"></i>
               <span>Dastur haqida</span>

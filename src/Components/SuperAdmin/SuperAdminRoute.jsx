@@ -6,6 +6,7 @@ import Profile from '../Admin/Profile';
 import FilterNewUsers from '../Admin/FilterNewUsers';
 import Confirm from '../Admin/Confirm';
 import AddNewUser from '../Admin/AddNewUser';
+import Navbarr from '../Navbar';
 import Sections from '../Admin/Sections';
 import NewSection from '../Admin/NewSection';
 import EditSection from '../Admin/EditSection';
@@ -32,6 +33,7 @@ import About from '../Infos/About';
 import Application from '../Infos/Application';
 import Report from './Report';
 import FAQPage from '../Infos/FAQPage';
+import SwitchUser from './SwitchUser';
 function SuperAdminRoute() {
   return (
     <div className="container-fluid">
@@ -40,8 +42,9 @@ function SuperAdminRoute() {
           <Aside />
           {/* <PleaseInstruction/> */}
         </div>
-        <div className=" col-12 navv col-md-9">
-          <div className="p-3">
+        <div className="col-9 navv d-flex flex-column p-0">
+          <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
+          <div className="p-3 flex-grow-1">
             <Routes>
               <Route path="/" exact element={<SuperAdmin />} />
               <Route path="/dashboard" exact element={<Dashboard />} />
@@ -69,6 +72,7 @@ function SuperAdminRoute() {
               <Route path="/profile" exact element={<Profile />} />
               <Route path="/employees" exact element={<Xodimlar />} />
               <Route path="/employees/allusers" exact element={<AllUsers />} />
+              <Route path="/employees/switchuser" exact element={<SwitchUser />} />
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
