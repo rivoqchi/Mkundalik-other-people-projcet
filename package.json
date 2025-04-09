@@ -38,6 +38,7 @@
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
     "react-to-pdf": "^1.0.1",
+    "react-toastify": "^11.0.5",
     "recharts": "^2.15.1",
     "sass": "^1.83.1",
     "scss": "^0.2.4",

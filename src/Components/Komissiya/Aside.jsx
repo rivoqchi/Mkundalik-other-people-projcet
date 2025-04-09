@@ -58,8 +58,8 @@ function Aside() {
               <span>{t("halqilinganetirozlar")}</span>
             </Link>
           </li>
-          <li className={location.pathname === '/commission/profile' ? 'active' : ''}>
-            <Link to="/commission/profile">
+          <li className={location.pathname === '/commission/monitoring' ? 'active' : ''}>
+            <Link to="/commission/monitoring">
             <i class="fa-solid fa-chart-pie"></i>
               <span>{t("monitoring")}</span>
             </Link>

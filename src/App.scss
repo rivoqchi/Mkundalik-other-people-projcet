@@ -65,11 +65,17 @@
 
 }
 .alert-success {
-  background-color: rgba(0, 128, 0, 0.836) !important;
+  background-color: rgb(0, 128, 0) !important;
 }
 
 .alert-error {
-  background-color: rgba(255, 92, 92, 0.934) !important;
+  background-color: rgb(255, 92, 92) !important;
+}
+.tretre{
+  background-color: red !important;
+  height: 75vh;
+  overflow-x: scroll !important;
+  overflow-y: scroll !important;
 }
 .profilgakirish{
   background-color: gray;
