@@ -317,15 +317,14 @@ function ScheduleNew() {
         </div>
         <div className="warningtext ushbustikerlar mb-4">
   <h5>{t("ushbustikerlar")}</h5>
-  2025-yil 7-apreldan boshlab tizimda baholash tartibida o`zgartirishlar kiritildi
   <ul className="list-unstyled">
     <li><i class="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
     <li><i class="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
     <li><i class="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
   </ul>
-  <p className="redword container">{t("dastlabkibaholashmezoni2")} <br />
+  {/* <p className="redword container">{t("dastlabkibaholashmezoni2")} <br />
   {t("dastlabkibaholashmezoni3")}
-  </p>
+  </p> */}
 </div>
 
         {!onWork && (
@@ -439,7 +438,7 @@ function ScheduleNew() {
               className="kghgv"
               value={taskData}
               onChange={(e) => setTaskData(e.target.value)}
-              rows="10"
+              rows="6"
             />
             {/* <div className="uploadif">
             <h5>Xujjatni yuklang (agar bo`lsa)</h5>
@@ -515,7 +514,7 @@ function ScheduleNew() {
               className="kghgv"
               value={taskData}
               onChange={(e) => setTaskData(e.target.value)}
-              rows="10"
+              rows="6"
             />
           </Modal.Body>
           <div>

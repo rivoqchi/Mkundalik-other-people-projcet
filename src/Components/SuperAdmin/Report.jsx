@@ -3,11 +3,13 @@ import axios from "axios";
 import { Button, Spinner, Form } from "react-bootstrap";
 import { API } from "../../config";
 import * as XLSX from "xlsx"; // xlsx kutubxonasini import qilamiz
-import logo from '../Images/logo-png.png'
+import logo from "../Images/logo-png.png";
 function Report() {
   const [date, setDate] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filterByComplex, setFilterByComplex] = useState({});
+  const [complexes, setComplexes] = useState([]);
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -17,25 +19,29 @@ function Report() {
     return `${day}.${month}.${year}`;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!date) {
-      alert("Iltimos, sana tanlang");
-      return;
-    }
-    const formattedDate = formatDate(date);
-    setLoading(true);
-    try {
-      const { data } = await axios.post(`${API}/auth/getallemployeestoreport`, {
-        date: formattedDate,
-      });
-      setData(data.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!date) {
+    alert("Iltimos, sana tanlang");
+    return;
+  }
+
+  const formattedDate = formatDate(date);
+  setLoading(true);
+
+  try {
+    const { data } = await axios.post(`${API}/auth/getallemployeestoreport`, {
+      date: formattedDate,
+      complex: filterByComplex.name,
+    });
+    setData(data.data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleExportToExcel = () => {
     // Excel faylini yaratish uchun ma'lumotni tayyorlash
@@ -46,24 +52,30 @@ function Report() {
 
     // Tezda eng yuqori satrni qo'shish
     const formattedDate = formatDate(new Date()); // Sana formatlash
-    excelData.push(["Ходимларнинг кундалик ишлар ҳисоботларини белгиланган вақт ичида бажарганлиги ёки бажармаганлиги тўғрисида МАЪЛУМОТНОМА", formattedDate]);
+    excelData.push([
+      "Ходимларнинг кундалик ишлар ҳисоботларини белгиланган вақт ичида бажарганлиги ёки бажармаганлиги тўғрисида МАЪЛУМОТНОМА",
+      formattedDate,
+    ]);
     rowIndex++; // Bosh satrni qo'shgandan keyin satrni yangilash
 
     data.forEach((item) => {
-        // Sektor nomini qo'shish va bold qilish
-        excelData.push([item.sectorName]);
-        const sectorCell = `A${rowIndex + 1}`; // Sektor nomining joylashuvi
-        wsData[sectorCell] = { v: item.sectorName, s: { font: { bold: true } } }; // Sektor nomini bold qilish
+      // Sektor nomini qo'shish va bold qilish
+      excelData.push([item.sectorName]);
+      const sectorCell = `A${rowIndex + 1}`; // Sektor nomining joylashuvi
+      wsData[sectorCell] = { v: item.sectorName, s: { font: { bold: true } } }; // Sektor nomini bold qilish
 
-        // Xodimlar va ularning statuslari
-        item.sectorEmployees.forEach((emp, empIndex) => {
-            excelData.push([emp.employeeName, emp.employeeStatus ? "БАЖАРГАН" : "БАЖАРМАГАН"]);
-            rowIndex++; // Har bir xodimdan keyin satrni yangilash
-        });
+      // Xodimlar va ularning statuslari
+      item.sectorEmployees.forEach((emp, empIndex) => {
+        excelData.push([
+          emp.employeeName,
+          emp.employeeStatus ? "БАЖАРГАН" : "БАЖАРМАГАН",
+        ]);
+        rowIndex++; // Har bir xodimdan keyin satrni yangilash
+      });
 
-        // Bo'sh qator qo'shish
-        excelData.push([]);
-        rowIndex++; // Bo'sh qatorni qo'shgandan keyin satrni yangilash
+      // Bo'sh qator qo'shish
+      excelData.push([]);
+      rowIndex++; // Bo'sh qatorni qo'shgandan keyin satrni yangilash
     });
 
     // Xlsx faylini yaratish
@@ -77,24 +89,74 @@ function Report() {
 
     // Excel faylini yuklab olish
     XLSX.writeFile(wb, "Employee_Report.xlsx");
-};
+  };
+  const getAllComplexes = async () => {
+    try {
+      const { data } = await axios.get(`${API}/complexes/getall`);
+      setComplexes(data.complexes);
+    } catch (err) {
+      console.error("Error fetching complexes:", err);
+    }
+  };
+  useEffect(() => {
+    getAllComplexes();
+  }, []);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFilterByComplex((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   return (
     <div className="report-page-container">
-        <div className="text-center">
+      <div className="text-center">
         <img className="formal" src={logo} alt="" />
         <div className="container">
-        <h5 className="p-3">Ходимларнинг кундалик ишлар ҳисоботларини белгиланган вақт ичида бажарганлиги ёки бажармаганлиги тўғрисида<br />МАЪЛУМОТНОМА</h5>
+          <h5 className="p-3">
+            Ходимларнинг кундалик ишлар ҳисоботларини белгиланган вақт ичида
+            бажарганлиги ёки бажармаганлиги тўғрисида
+            <br />
+            МАЪЛУМОТНОМА
+          </h5>
         </div>
-        </div>
+      </div>
+      <div className="d-flex w-100 justify-content-between align-items-center">
         <Button
-        variant="success"
-        onClick={handleExportToExcel}
-        className="mt-4"
-        disabled={loading || data.length === 0}
-      >
-        Excel formatida yuklab olish
-      </Button>
+          variant="success"
+          onClick={handleExportToExcel}
+          className="mt-4"
+          disabled={loading || data.length === 0}
+        >
+          Excel formatida yuklab olish
+        </Button>
+
+        <Form.Group>
+  <Form.Label>Kompleks</Form.Label>
+  <Form.Control
+    as="select"
+    name="complex"
+    value={filterByComplex?.name || ""}
+    onChange={(e) => {
+      const selectedName = e.target.value;
+      if (selectedName === "") {
+        setFilterByComplex({});
+      } else {
+        setFilterByComplex({ name: selectedName });
+      }
+    }}
+  >
+    <option value="">Hammasi:</option>
+    {complexes.map((item) => (
+      <option key={item._id} value={item.name}>
+        {item.name}
+      </option>
+    ))}
+  </Form.Control>
+</Form.Group>
+
+      </div>
       <form onSubmit={handleSubmit} className="report-page-form">
         <div className="report-page-date-selector">
           <Form.Label htmlFor="date" className="report-page-form-label">
@@ -109,13 +171,20 @@ function Report() {
           />
         </div>
         <Button
-          type="submit"
-          variant="primary"
-          className="report-page-submit-button"
-          disabled={loading}
-        >
-          {loading ? "Yuklanmoqda..." : "Hisobotni ko'rsatish"}
-        </Button>
+  type="submit"
+  variant="primary"
+  className="report-page-submit-button korsatish"
+  disabled={loading}
+>
+  {loading ? (
+    "Yuklanmoqda..."
+  ) : (
+    <>
+      Hisobotni ko'rsatish <i className="fa-solid fa-receipt"></i>
+    </>
+  )}
+</Button>
+
       </form>
 
       {date && !loading && (
@@ -140,7 +209,11 @@ function Report() {
                     <tr key={empIndex}>
                       <td className="col-10">{emp.employeeName}</td>
                       <td className="col-2">
-                        <span className={emp.employeeStatus ? "text-success" : "text-danger"}>
+                        <span
+                          className={
+                            emp.employeeStatus ? "text-success" : "text-danger"
+                          }
+                        >
                           {emp.employeeStatus ? "БАЖАРГАН" : "БАЖАРМАГАН"}
                         </span>
                       </td>

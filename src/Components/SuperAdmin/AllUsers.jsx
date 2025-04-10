@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 import { Modal, Button, Spinner, Alert, Form } from 'react-bootstrap';
 import { API } from '../../config';
 import * as XLSX from 'xlsx';
@@ -158,6 +159,7 @@ function Xodimlar() {
                             <tr>
                                 <th>N</th>
                                 <th>F.I.Sh</th>
+                                <th>Hisobotlari</th>
                                 <th>Telefon</th>
                                 <th>Rol</th>
                                 <th>Kompleks</th>
@@ -180,6 +182,7 @@ function Xodimlar() {
       <td title={employee.name}>
         {employee.name?.length > 20 ? employee.name.slice(0, 20) + "..." : employee.name}
       </td>
+      <td><Link to={`/superadmin/schedule/history/${employee._id}`}><button className='hisobotkorish'>Ko`rish <i class="fa-solid fa-arrow-up-right-from-square"></i></button></Link></td>
       <td>{employee.phone}</td>
       <td>{employee.role}</td>
       <td title={employee.complex}>
