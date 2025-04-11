@@ -19,20 +19,23 @@ import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
+
 function BossRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-3 p-0">
-          <Aside />
+        {/* Chapdagi Aside panel */}
+        <div className="col-2 p-0">
+          <Aside /> {/* Chap panel */}
           {/* <PleaseInstruction/> */}
         </div>
-        {/* O'ng taraf: Navbar va asosiy content */}
-        <div className="col-9 navv d-flex flex-column p-0">
+
+        {/* O‘ng taraf: Navbar va asosiy content */}
+        <div className="col-10 navv d-flex flex-column p-0">
           <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
           <div className="p-3 flex-grow-1">
             <Routes>
-            <Route path="/about" exact element={<Info />} />
+              <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
               <Route path="/about/statistics" exact element={<UmumiyStat />} />
               <Route path="/about/application" exact element={<Application />} />

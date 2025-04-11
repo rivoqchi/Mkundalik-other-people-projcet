@@ -24,11 +24,11 @@ function DepartmentRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-3 p-0">
+        <div className="col-2 p-0">
           <Aside />
           {/* <PleaseInstruction/> */}
         </div>
-        <div className=" col-12 col-md-9">
+        <div className=" col-12 col-md-10">
           <div className="p-3">
             <Routes>
               <Route path="/" exact element={<Hr />} />

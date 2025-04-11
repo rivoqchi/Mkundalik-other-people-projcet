@@ -7,7 +7,7 @@ import ScheduleNew from '../Admin/ScheduleNew';
 import ScheduleHistory from '../Admin/ScheduleHistory';
 import Aside from './Aside';
 import LookSchedule from '../Admin/LookSchedule';
-import PleaseInstruction from '../Asking/PleaseInstruction'
+import PleaseInstruction from '../Asking/PleaseInstruction';
 import Info from '../Infos/Info';
 import News from '../Infos/News';
 import UmumiyStat from '../Infos/UmumiyStat';
@@ -16,16 +16,18 @@ import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
+
 function EmployeeRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-3 p-0">
-          <Aside />
-          {/* <PleaseInstruction/> */}
+        {/* Chap taraf: Aside */}
+        <div className="col-2 p-0">
+          <Aside /> {/* Chap panel */}
         </div>
+
         {/* O'ng taraf: Navbar va asosiy content */}
-        <div className="col-9 d-flex navv flex-column p-0">
+        <div className="col-10 d-flex navv flex-column p-0">
           <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
           <div className="p-3 flex-grow-1">
             <Routes>

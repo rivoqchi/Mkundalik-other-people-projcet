@@ -527,16 +527,27 @@
 /* Asosiy dizayn */
 .aside {
   overflow-y: auto;
-  width: 300px;
-  height: 100vh;
+  height: 100vh;  /* Ekran balandligiga mos keladi */
   background-color: #1a202c;
   color: #fff;
+  left: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: fixed;
+  // position: fixed;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
+
+.col-10 {
+  height: 100vh;  /* Ekran balandligi */
+  overflow-y: scroll;  /* Pastki qismga scroll qo‘shiladi */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 .aside-logo {
   margin: 20px 0;
@@ -561,10 +572,9 @@
   margin: 0;
 }
 
-.aside-menu li {
-  width: 100%;
+.aside-menu{
+  text-align: center;
 }
-
 .aside-menu li a {
   display: flex;
   align-items: center;
@@ -577,7 +587,7 @@
 
 .aside-menu li a:hover {
   background-color: #194ca3 !important;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .aside-menu li a.active {
@@ -605,9 +615,10 @@
   display: inline-block;
 }
 .active {
-  background-color: #3467cc !important;
+  // background-color: #3467cc !important;
+  background-color: #2f477c !important;
   font-weight: bold !important;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: -3px 3px 10px 1px rgb(42, 60, 142);
   animation: toright 1s forwards;
 }
@@ -2437,7 +2448,6 @@ marquee{
 
 .report-page-date-selector {
   display: flex;
-  flex-direction: column;
   margin-bottom: 20px;
 }
 
@@ -2504,4 +2514,12 @@ marquee{
     box-shadow: 0px 0px 10px 3px green;
     transform: scale(1.05);
   }
+}
+.bgf{
+  background-color: rgb(226, 248, 255);
+  align-items: center;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px 1px rgb(180, 180, 180);
 }

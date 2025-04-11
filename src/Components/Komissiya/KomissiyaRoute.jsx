@@ -15,15 +15,18 @@ import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
+
 function KomissiyaRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
+        {/* Chapdagi Aside panel */}
         <div className="col-3 p-0">
-          <Aside />
+          <Aside /> {/* Chap panel */}
           {/* <PleaseInstruction/> */}
         </div>
-        {/* O'ng taraf: Navbar va asosiy content */}
+
+        {/* O‘ng taraf: Navbar va asosiy content */}
         <div className="col-9 d-flex navv flex-column p-0">
           <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
           <div className="p-3 flex-grow-1">

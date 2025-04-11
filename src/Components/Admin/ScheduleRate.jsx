@@ -66,6 +66,9 @@ function ScheduleRate() {
   } else if (task.source === 'tashabbus') {
     summarizedBall += 10; // tashabbus uchun 10ga ko'paytirish
   }
+  if(summarizedBall > 100) {
+    summarizedBall = 100; // maksimal ball 100 ga teng
+  }
   setManualRating(summarizedBall)
 });
     } else {
@@ -136,8 +139,8 @@ function ScheduleRate() {
     if (value < 1) {
       alert("Eng kamida 1 ball qo`ya olasiz");
       setManualRating(1);
-    } else if (value > 220) {
-      setManualRating(220);
+    } else if (value > 100) {
+      setManualRating(100);
     } else {
       setManualRating(value);
     }
@@ -279,7 +282,7 @@ function ScheduleRate() {
                     <div className="align-items-center justify-content-center">
                       <i className="fa-regular fa-star"></i>
                       {thisScheduleHistory.rated}
-                      {"/220"}
+                      {"/100"}
                     </div>
                   ) : (
                     t("infonotfound")
@@ -347,7 +350,7 @@ function ScheduleRate() {
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Баҳолаш <span className="redword">(Test)</span></Modal.Title>
+          <Modal.Title>Баҳолаш</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="stars">
@@ -374,7 +377,7 @@ function ScheduleRate() {
     value={manualRating}
     onChange={handleInputChange}
     min="1"
-    max="220"
+    max="100"
     // className={setAI ? '' : 'no-ai'}
     // disabled={setAI}
     />

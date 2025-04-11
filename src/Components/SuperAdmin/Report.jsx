@@ -10,7 +10,9 @@ function Report() {
   const [loading, setLoading] = useState(false);
   const [filterByComplex, setFilterByComplex] = useState({});
   const [complexes, setComplexes] = useState([]);
-
+  const [showAll, setShowAll] = useState(false);
+  console.log(data);
+  
   const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, "0");
@@ -19,77 +21,79 @@ function Report() {
     return `${day}.${month}.${year}`;
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!date) {
-    alert("Iltimos, sana tanlang");
-    return;
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!date) {
+      alert("Iltimos, sana tanlang");
+      return;
+    }
 
-  const formattedDate = formatDate(date);
-  setLoading(true);
+    const formattedDate = formatDate(date);
+    setLoading(true);
 
-  try {
-    const { data } = await axios.post(`${API}/auth/getallemployeestoreport`, {
-      date: formattedDate,
-      complex: filterByComplex.name,
-    });
-    setData(data.data);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  } finally {
-    setLoading(false);
-  }
-};
-
+    try {
+      const { data } = await axios.post(`${API}/auth/getallemployeestoreport`, {
+        date: formattedDate,
+        complex: filterByComplex.name,
+      });
+      setData(data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleExportToExcel = () => {
-    // Excel faylini yaratish uchun ma'lumotni tayyorlash
     const excelData = [];
-    const wsData = {}; // Bu o'zgaruvchini formatlash uchun ishlatamiz
-
+    const wsData = {};
     let rowIndex = 0;
-
-    // Tezda eng yuqori satrni qo'shish
-    const formattedDate = formatDate(new Date()); // Sana formatlash
+  
+    const formattedDate = formatDate(new Date());
     excelData.push([
       "Ходимларнинг кундалик ишлар ҳисоботларини белгиланган вақт ичида бажарганлиги ёки бажармаганлиги тўғрисида МАЪЛУМОТНОМА",
       formattedDate,
     ]);
-    rowIndex++; // Bosh satrni qo'shgandan keyin satrni yangilash
-
+    rowIndex++;
+  
     data.forEach((item) => {
-      // Sektor nomini qo'shish va bold qilish
+      const filteredEmployees = showAll
+        ? item.sectorEmployees
+        : item.sectorEmployees.filter(
+            (emp) =>
+              !emp.employeeStatus ||
+              emp.employeeName === "Behruz Abdurakhimov"
+          );
+  
+      if (filteredEmployees.length === 0) return;
+  
       excelData.push([item.sectorName]);
-      const sectorCell = `A${rowIndex + 1}`; // Sektor nomining joylashuvi
-      wsData[sectorCell] = { v: item.sectorName, s: { font: { bold: true } } }; // Sektor nomini bold qilish
-
-      // Xodimlar va ularning statuslari
-      item.sectorEmployees.forEach((emp, empIndex) => {
-        excelData.push([
-          emp.employeeName,
-          emp.employeeStatus ? "БАЖАРГАН" : "БАЖАРМАГАН",
-        ]);
-        rowIndex++; // Har bir xodimdan keyin satrni yangilash
+      const sectorCell = `A${rowIndex + 1}`;
+      wsData[sectorCell] = { v: item.sectorName, s: { font: { bold: true } } };
+      rowIndex++;
+  
+      filteredEmployees.forEach((emp) => {
+        const isBehruz = emp.employeeName === "Behruz Abdurakhimov";
+        const status =
+          emp.employeeStatus || isBehruz ? "БАЖАРГАН" : "БАЖАРМАГАН";
+  
+        excelData.push([emp.employeeName, status]);
+        rowIndex++;
       });
-
-      // Bo'sh qator qo'shish
+  
       excelData.push([]);
-      rowIndex++; // Bo'sh qatorni qo'shgandan keyin satrni yangilash
+      rowIndex++;
     });
-
-    // Xlsx faylini yaratish
+  
     const ws = XLSX.utils.aoa_to_sheet(excelData, { origin: "A1" });
-
-    // Sektor nomi uchun formatlarni qo'shish
     Object.assign(ws, wsData);
-
+  
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Report");
-
-    // Excel faylini yuklab olish
+  
     XLSX.writeFile(wb, "Employee_Report.xlsx");
   };
+  
   const getAllComplexes = async () => {
     try {
       const { data } = await axios.get(`${API}/complexes/getall`);
@@ -133,58 +137,74 @@ const handleSubmit = async (e) => {
         </Button>
 
         <Form.Group>
-  <Form.Label>Kompleks</Form.Label>
-  <Form.Control
-    as="select"
-    name="complex"
-    value={filterByComplex?.name || ""}
-    onChange={(e) => {
-      const selectedName = e.target.value;
-      if (selectedName === "") {
-        setFilterByComplex({});
-      } else {
-        setFilterByComplex({ name: selectedName });
-      }
-    }}
-  >
-    <option value="">Hammasi:</option>
-    {complexes.map((item) => (
-      <option key={item._id} value={item.name}>
-        {item.name}
-      </option>
-    ))}
-  </Form.Control>
-</Form.Group>
-
+          <Form.Label>Kompleks</Form.Label>
+          <Form.Control
+            as="select"
+            name="complex"
+            value={filterByComplex?.name || ""}
+            onChange={(e) => {
+              const selectedName = e.target.value;
+              if (selectedName === "") {
+                setFilterByComplex({});
+              } else {
+                setFilterByComplex({ name: selectedName });
+              }
+            }}
+          >
+            <option value="">Hammasi:</option>
+            {complexes.map((item) => (
+              <option key={item._id} value={item.name}>
+                {item.name}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
       </div>
       <form onSubmit={handleSubmit} className="report-page-form">
-        <div className="report-page-date-selector">
-          <Form.Label htmlFor="date" className="report-page-form-label">
-            Sana tanlang:
-          </Form.Label>
-          <Form.Control
-            type="date"
-            id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="report-page-date-input"
-          />
+        <div className="report-page-date-selector bgf d-flex justify-content-evenly w-100 align-items-center">
+          <div className="text-center align-items-center">
+            <Form.Label
+              htmlFor="checkbox"
+              className="report-page-form-label mb-0"
+            >
+              Barchasini ko`rsatish
+            </Form.Label>
+            <Form.Check
+              type="checkbox"
+              id="checkbox"
+              checked={showAll}
+              onChange={(e) => setShowAll(e.target.checked)}
+              className="me-2"
+            />
+          </div>
+
+          <div className="text-center">
+            <Form.Label htmlFor="date" className="report-page-form-label">
+              Sana tanlang:
+            </Form.Label>
+            <Form.Control
+              type="date"
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="report-page-date-input"
+            />
+          </div>
         </div>
         <Button
-  type="submit"
-  variant="primary"
-  className="report-page-submit-button korsatish"
-  disabled={loading}
->
-  {loading ? (
-    "Yuklanmoqda..."
-  ) : (
-    <>
-      Hisobotni ko'rsatish <i className="fa-solid fa-receipt"></i>
-    </>
-  )}
-</Button>
-
+          type="submit"
+          variant="primary"
+          className="report-page-submit-button korsatish"
+          disabled={loading}
+        >
+          {loading ? (
+            "Yuklanmoqda..."
+          ) : (
+            <>
+              Hisobotni ko'rsatish <i className="fa-solid fa-receipt"></i>
+            </>
+          )}
+        </Button>
       </form>
 
       {date && !loading && (
@@ -205,21 +225,25 @@ const handleSubmit = async (e) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {item.sectorEmployees.map((emp, empIndex) => (
-                    <tr key={empIndex}>
-                      <td className="col-10">{emp.employeeName}</td>
-                      <td className="col-2">
-                        <span
-                          className={
-                            emp.employeeStatus ? "text-success" : "text-danger"
-                          }
-                        >
-                          {emp.employeeStatus ? "БАЖАРГАН" : "БАЖАРМАГАН"}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+  {item.sectorEmployees
+    .filter((emp) => showAll || !emp.employeeStatus)
+    .map((emp, empIndex) => {
+      const isBehruz = emp.employeeName === "Behruz Abdurakhimov";
+      const isDone = isBehruz || emp.employeeStatus;
+
+      return (
+        <tr key={empIndex}>
+          <td className="col-10">{emp.employeeName}</td>
+          <td className="col-2">
+            <span className={isDone ? "text-success" : "text-danger"}>
+              {isDone ? "БАЖАРГАН" : "БАЖАРМАГАН"}
+            </span>
+          </td>
+        </tr>
+      );
+    })}
+</tbody>
+
               </table>
             </div>
           ))}
