@@ -6,13 +6,14 @@ import * as XLSX from "xlsx"; // xlsx kutubxonasini import qilamiz
 import logo from "../Images/logo-png.png";
 function Report() {
   const [date, setDate] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filterByComplex, setFilterByComplex] = useState({});
   const [complexes, setComplexes] = useState([]);
   const [showAll, setShowAll] = useState(false);
-  console.log(data);
-  
+
   const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, "0");
@@ -23,19 +24,23 @@ function Report() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!date) {
-      alert("Iltimos, sana tanlang");
+    if (!startDate || !endDate) {
+      alert("Iltimos, boshlanish va tugash sanalarini tanlang");
       return;
     }
 
-    const formattedDate = formatDate(date);
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+
     setLoading(true);
 
     try {
       const { data } = await axios.post(`${API}/auth/getallemployeestoreport`, {
-        date: formattedDate,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
         complex: filterByComplex.name,
       });
+      console.log(data.data);
       setData(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -49,38 +54,50 @@ function Report() {
     const wsData = {};
     let rowIndex = 0;
   
-    const formattedDate = formatDate(new Date());
     excelData.push([
       "Ходимларнинг кундалик ишлар ҳисоботларини белгиланган вақт ичида бажарганлиги ёки бажармаганлиги тўғрисида МАЪЛУМОТНОМА",
-      formattedDate,
     ]);
     rowIndex++;
   
-    data.forEach((item) => {
-      const filteredEmployees = showAll
-        ? item.sectorEmployees
-        : item.sectorEmployees.filter(
-            (emp) =>
-              !emp.employeeStatus ||
-              emp.employeeName === "Behruz Abdurakhimov"
-          );
-  
-      if (filteredEmployees.length === 0) return;
-  
-      excelData.push([item.sectorName]);
-      const sectorCell = `A${rowIndex + 1}`;
-      wsData[sectorCell] = { v: item.sectorName, s: { font: { bold: true } } };
+    data.forEach((dayItem) => {
+      // Sana yoziladi
+      excelData.push([`${dayItem.date}`]);
+      const dateCell = `A${rowIndex + 1}`;
+      wsData[dateCell] = { v: dayItem.date, s: { font: { bold: true, sz: 14 } } };
       rowIndex++;
   
-      filteredEmployees.forEach((emp) => {
-        const isBehruz = emp.employeeName === "Behruz Abdurakhimov";
-        const status =
-          emp.employeeStatus || isBehruz ? "БАЖАРГАН" : "БАЖАРМАГАН";
+      dayItem.data.forEach((item) => {
+        const filteredEmployees = showAll
+          ? item.sectorEmployees
+          : item.sectorEmployees.filter(
+              (emp) =>
+                !emp.employeeStatus || emp.employeeName === "Behruz Abdurakhimov"
+            );
   
-        excelData.push([emp.employeeName, status]);
+        if (filteredEmployees.length === 0) return;
+  
+        // Sektor nomi
+        excelData.push([item.sectorName]);
+        const sectorCell = `A${rowIndex + 1}`;
+        wsData[sectorCell] = { v: item.sectorName, s: { font: { bold: true } } };
+        rowIndex++;
+  
+        // Har bir xodim
+        filteredEmployees.forEach((emp) => {
+          const isBehruz = emp.employeeName === "Behruz Abdurakhimov";
+          const status =
+            emp.employeeStatus || isBehruz ? "БАЖАРГАН" : "БАЖАРМАГАН";
+  
+          excelData.push([emp.employeeName, status]);
+          rowIndex++;
+        });
+  
+        // Bo‘sh qatordan keyin yangi sektor
+        excelData.push([]);
         rowIndex++;
       });
   
+      // Har bir sana ketidan bo‘sh qatordan keyin yangi sana
       excelData.push([]);
       rowIndex++;
     });
@@ -91,9 +108,10 @@ function Report() {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Report");
   
-    XLSX.writeFile(wb, "Employee_Report.xlsx");
+    XLSX.writeFile(wb, startDate + "_" + endDate + " mkundalik hisobot.xlsx");
   };
   
+
   const getAllComplexes = async () => {
     try {
       const { data } = await axios.get(`${API}/complexes/getall`);
@@ -178,17 +196,31 @@ function Report() {
             />
           </div>
 
-          <div className="text-center">
-            <Form.Label htmlFor="date" className="report-page-form-label">
-              Sana tanlang:
-            </Form.Label>
-            <Form.Control
-              type="date"
-              id="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="report-page-date-input"
-            />
+          <div className="">
+            <div className="text-center">
+              <Form.Label htmlFor="date" className="report-page-form-label">
+                Boshlanish sanasi:
+              </Form.Label>
+              <Form.Control
+                type="date"
+                id="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="report-page-date-input"
+              />
+            </div>
+            <div className="text-center">
+              <Form.Label htmlFor="date" className="report-page-form-label">
+                Tugash sanasi:
+              </Form.Label>
+              <Form.Control
+                type="date"
+                id="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="report-page-date-input"
+              />
+            </div>
           </div>
         </div>
         <Button
@@ -213,42 +245,54 @@ function Report() {
       {loading && <Spinner animation="border" variant="primary" />}
 
       {!loading && data.length > 0 && (
-        <div className="report-page-table">
-          {data.map((item, index) => (
-            <div className="m-5" key={index}>
-              <h5 className="text-center">{item.sectorName}</h5>
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th className="col-10">Xodim</th>
-                    <th className="col-2">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-  {item.sectorEmployees
-    .filter((emp) => showAll || !emp.employeeStatus)
-    .map((emp, empIndex) => {
-      const isBehruz = emp.employeeName === "Behruz Abdurakhimov";
-      const isDone = isBehruz || emp.employeeStatus;
+  <div className="report-page-table">
+    {data.map((dayItem, dayIndex) => (
+      <div key={dayIndex} className="mb-5">
+        <h1 className="text-center mb-4">{dayItem.date}</h1>
 
-      return (
-        <tr key={empIndex}>
-          <td className="col-10">{emp.employeeName}</td>
-          <td className="col-2">
-            <span className={isDone ? "text-success" : "text-danger"}>
-              {isDone ? "БАЖАРГАН" : "БАЖАРМАГАН"}
-            </span>
-          </td>
-        </tr>
-      );
-    })}
-</tbody>
+        {dayItem.data.map((item, index) => (
+          <div className="m-5" key={index}>
+            <h5 className="text-center">{item.sectorName}</h5>
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th className="col-10">Xodim</th>
+                  <th className="col-2">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {item.sectorEmployees &&
+                  item.sectorEmployees
+                    .filter((emp) => showAll || !emp.employeeStatus)
+                    .map((emp, empIndex) => {
+                      const isBehruz =
+                        emp.employeeName === "Behruz Abdurakhimov";
+                      const isDone = isBehruz || emp.employeeStatus;
 
-              </table>
-            </div>
-          ))}
-        </div>
-      )}
+                      return (
+                        <tr key={empIndex}>
+                          <td className="col-10">{emp.employeeName}</td>
+                          <td className="col-2">
+                            <span
+                              className={
+                                isDone ? "text-success" : "text-danger"
+                              }
+                            >
+                              {isDone ? "БАЖАРГАН" : "БАЖАРМАГАН"}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+)}
+
     </div>
   );
 }
