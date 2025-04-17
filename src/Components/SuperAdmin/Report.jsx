@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Spinner, Form } from "react-bootstrap";
+import {Link} from 'react-router-dom';
 import { API } from "../../config";
 import * as XLSX from "xlsx"; // xlsx kutubxonasini import qilamiz
 import logo from "../Images/logo-png.png";
@@ -35,7 +36,8 @@ function Report() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post(`${API}/auth/getallemployeestoreport`, {
+      // const { data } = await axios.post(`${API}/auth/getschedulesbydayandemployees`, {
+      const { data } = await axios.post(`${API}/auth/getallemployeestoreportsecond`, {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         complex: filterByComplex.name,
@@ -60,11 +62,12 @@ function Report() {
     rowIndex++;
   
     data.forEach((dayItem) => {
-      // Sana yoziladi
+      // Sanani qo‘shish
       excelData.push([`${dayItem.date}`]);
-      const dateCell = `A${rowIndex + 1}`;
-      wsData[dateCell] = { v: dayItem.date, s: { font: { bold: true, sz: 14 } } };
+      wsData[`A${rowIndex + 1}`] = { v: dayItem.date, s: { font: { bold: true, sz: 14 } } };
       rowIndex++;
+  
+      let addedAnyEmployee = false;
   
       dayItem.data.forEach((item) => {
         const filteredEmployees = showAll
@@ -78,28 +81,24 @@ function Report() {
   
         // Sektor nomi
         excelData.push([item.sectorName]);
-        const sectorCell = `A${rowIndex + 1}`;
-        wsData[sectorCell] = { v: item.sectorName, s: { font: { bold: true } } };
+        wsData[`A${rowIndex + 1}`] = { v: item.sectorName, s: { font: { bold: true } } };
         rowIndex++;
   
         // Har bir xodim
         filteredEmployees.forEach((emp) => {
           const isBehruz = emp.employeeName === "Behruz Abdurakhimov";
-          const status =
-            emp.employeeStatus || isBehruz ? "БАЖАРГАН" : "БАЖАРМАГАН";
-  
+          const status = emp.employeeStatus || isBehruz ? "БАЖАРГАН" : "БАЖАРМАГАН";
           excelData.push([emp.employeeName, status]);
           rowIndex++;
         });
   
-        // Bo‘sh qatordan keyin yangi sektor
-        excelData.push([]);
-        rowIndex++;
+        // addedAnyEmployee = true;
       });
   
-      // Har bir sana ketidan bo‘sh qatordan keyin yangi sana
-      excelData.push([]);
-      rowIndex++;
+      if (addedAnyEmployee) {
+        excelData.push([]); // faqat kerak bo‘lsa bo‘sh qator
+        rowIndex++;
+      }
     });
   
     const ws = XLSX.utils.aoa_to_sheet(excelData, { origin: "A1" });
@@ -110,6 +109,7 @@ function Report() {
   
     XLSX.writeFile(wb, startDate + "_" + endDate + " mkundalik hisobot.xlsx");
   };
+  
   
 
   const getAllComplexes = async () => {
@@ -271,7 +271,7 @@ function Report() {
 
                       return (
                         <tr key={empIndex}>
-                          <td className="col-10">{emp.employeeName}</td>
+                          <td className="col-10"><Link to={`/superadmin/schedule/history/${emp.employeeId}`}>{emp.employeeName}</Link></td>
                           <td className="col-2">
                             <span
                               className={

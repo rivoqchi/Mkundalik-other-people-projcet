@@ -1,82 +1,120 @@
-import React, { useState, useEffect } from "react";
-import { API } from "../../config";
-import axios from "axios";
-import { Link, useParams } from "react-router-dom";
-function SeeSelectedSchedules() {
-  const myId = window.localStorage.getItem("user_id");
-  const [mySectionSchedules, setMySectionSchedules] = useState([]);
-  const [myData, setMyData] = useState([]);
-  const [myRole, setMyRole] = useState([]);
-  const id = window.localStorage.getItem("user_id")
-  let thescheduleid = useParams();
-    
-  const getMySectionSchedules = async () => {
-    try {
-      const { data } = await axios.get(`${API}/schedules/getallbyuserid/${thescheduleid.id}`);
-      setMySectionSchedules(data.history);
-      
-    } catch (error) {
-      console.error("Error fetching data:", error);
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+const getDaysInMonth = (month, year) => {
+  return new Date(year, month, 0).getDate();
+};
+
+const getStartDayOfWeek = (month, year) => {
+  const day = new Date(year, month, 1).getDay();
+  return (day === 0 ? 6 : day - 1); // Yakshanba 0 bo'ladi, uni oxiriga o'tkazamiz
+};
+
+const monthsList = [
+  'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun',
+  'Iyul', 'Avgust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'
+];
+
+const weekDays = ['Du', 'Se', 'Chor', 'Pay', 'Ju', 'Sh', 'Ya'];
+
+const CalendarComponent = () => {
+  const currentDate = new Date();
+  const [month, setMonth] = useState(currentDate.getMonth());
+  const [year, setYear] = useState(currentDate.getFullYear());
+
+  const maxYear = currentDate.getFullYear();
+  const maxMonth = currentDate.getMonth();
+  const maxDay = currentDate.getDate();
+
+  const handlePrev = () => {
+    if (month === 0) {
+      setMonth(11);
+      setYear((prev) => prev - 1);
+    } else {
+      setMonth((prev) => prev - 1);
     }
   };
-  useEffect(() => {
-    getMySectionSchedules();
-  }, []);
-  const getMyData = async () =>{
-    const {data} = await axios.get(`${API}/auth/mydata/${myId}`)
-    
-    setMyData(data.user)
-    if (data.user.role === 'employee') {
-    setMyRole("user")
-    }else if (data.user.role === 'admin') {
-        setMyRole("admin")
-    }else if (data.user.role === 'superadmin') {
-      setMyRole("superadmin")
-    }else if (data.user.role === 'complex') {
-    setMyRole("complex")
-    }else if (data.user.role === 'department') {
-      setMyRole("department")
-    }else if (data.user.role === 'hr') {
-      setMyRole("hr")
-    }else if (data.user.role === 'boss') {
-      setMyRole("boss")
-    }else if (data.user.role === 'commission') {
-      setMyRole("commission")
+
+  const handleNext = () => {
+    if (month === maxMonth && year === maxYear) return;
+    if (month === 11) {
+      setMonth(0);
+      setYear((prev) => prev + 1);
+    } else {
+      setMonth((prev) => prev + 1);
     }
-  }
-  useEffect(() =>{
-    getMyData()
-  }, [])
+  };
+let name = "Abdurakhimov B. G."
+  const daysInMonth = getDaysInMonth(month + 1, year);
+  const startDay = getStartDayOfWeek(month, year);
+
+  const days = Array.from({ length: startDay + daysInMonth }, (_, i) => {
+    if (i < startDay) return null;
+    return i - startDay + 1;
+  });
+
+  const isFutureDay = (day) => {
+    return (
+      year > maxYear ||
+      (year === maxYear && month > maxMonth) ||
+      (year === maxYear && month === maxMonth && day > maxDay)
+    );
+  };
+
   return (
-    <>
-      <h1 className="text-center">{mySectionSchedules.length === 0 ? "Ma'lumot topilmadi" : mySectionSchedules[0].beginnerName}</h1>
-      <div className="ratedschedulescount d-flex mx-3 justify-content-between">
-        <p>Jami: {mySectionSchedules.length}</p>
-        <span>Baholangan: {mySectionSchedules.filter((item) => item.rated).length}</span>
+    <div className="calendar-container">
+      <div className="calendar-controls">
+        <button onClick={handlePrev} className="calendar-btn">⬅️</button>
+
+        <select value={year} onChange={(e) => setYear(Number(e.target.value))} className="calendar-select">
+          {Array.from({ length: 10 }).map((_, i) => {
+            const y = maxYear - i;
+            return (
+              <option key={y} value={y}>{y}</option>
+            );
+          })}
+        </select>
+
+        <select value={month} onChange={(e) => setMonth(Number(e.target.value))} className="calendar-select">
+          {monthsList.map((m, i) => (
+            <option key={i} value={i} disabled={year === maxYear && i > maxMonth}>
+              {m}
+            </option>
+          ))}
+        </select>
+
+        <button
+          onClick={handleNext}
+          className={`calendar-btn ${year === maxYear && month === maxMonth ? 'calendar-btn-disabled' : ''}`}
+        >
+          ➡️
+        </button>
       </div>
 
-      <div className="scheduleshistory">
-        {mySectionSchedules.map((i) => (
-          <>
-            <Link
-              className="text-decoration-none"
-              to={`/${myRole}/archive/schedule/${i._id}`}
-              key={i._id}
-            >
-              <button
-                className={`schedulehistorybtn ${
-                  !i.rated ? "unrated" : "rated"
-                }`}
-              >
-                {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
-                {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}
-              </button>
-            </Link>
-          </>
+      <div className="calendar-grid calendar-weekdays">
+        {weekDays.map((day, index) => (
+          <div key={index} className="calendar-weekday-label">{day}</div>
         ))}
       </div>
-    </>
-  );
-}
 
-export default SeeSelectedSchedules;
+      <motion.div layout className="calendar-grid calendar-grid-7">
+        {days.map((day, index) => (
+          <motion.div
+            key={index}
+            whileHover={day && !isFutureDay(day) ? { scale: 1.1, rotate: 1 } : {}}
+            className={`calendar-day ${!day ? 'calendar-day-empty' : ''} ${day && isFutureDay(day) ? 'calendar-day-disabled' : ''}`}
+          >
+            {day || ''}
+            
+            <div className="calendar-rated"><i class="fa-solid calendar-likedby fa-thumbs-up"></i> {name?.length > 6
+                    ? name.slice(0, 6) + "..."
+                    : name}<span>90</span></div>
+            <div className="calendar-green"></div>
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
+export default CalendarComponent;

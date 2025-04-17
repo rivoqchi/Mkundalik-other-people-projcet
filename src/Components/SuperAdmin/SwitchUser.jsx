@@ -8,6 +8,9 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
+import {Link} from "react-router-dom";
+import * as XLSX from "xlsx";
+
 import { API } from "../../config";
 import { saveAs } from "file-saver";
 import { FaPen } from "react-icons/fa";
@@ -17,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LoadingScreen from "../Additional/LoadingScreen";
 function Xodimlar() {
   const [newPassword, setNewPassword] = useState("");
+  const [schedules, setSchedules] = useState(false);
 
   const [show3, setShow3] = useState(false);
   const [show4, setShow4] = useState(false);
@@ -55,6 +59,22 @@ function Xodimlar() {
   const [editData, setEditData] = useState({});
   const [showPopup, setShowPopup] = useState(false);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+
+    const exportToExcel = () => {
+      const worksheet = XLSX.utils.json_to_sheet(filteredEmployees);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Xodimlar");
+  
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const data = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+      });
+  
+      saveAs(data, "Xodimlar.xlsx");
+    };
 
   const getAllEmployees = async (role = "") => {
     setLoading(true);
@@ -167,10 +187,16 @@ function Xodimlar() {
   // Faqat Saqlash bosilganda ishlaydi
   const handleSave = async () => {
     setLoading(true);
+
+    // switch yoqilgan bo‘lsa, schedules ni qo‘shamiz
+    const dataToSend = schedules
+      ? { ...selectedEmployee, schedules: true }
+      : selectedEmployee;
+
     try {
       await axios.put(
         `${API}/auth/editauser/${selectedEmployee._id}`,
-        selectedEmployee
+        dataToSend
       );
       setAlert({
         show: true,
@@ -223,26 +249,32 @@ function Xodimlar() {
       {alert.show && <Alert2 type={alert.type} message={alert.message} />}
       {loading && <LoadingScreen loading={true} />}
 
-      <div className="d-flex justify-content-between align-items-center mt-3">
-        <Form.Control
-          type="text"
-          placeholder="Qidirish"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <div className="d-flex">
-          <Button
-            className="mr-2"
-            variant="secondary"
-            onClick={() => setSearchTerm("")}
-          >
-            Reset
-          </Button>
-          <Button variant="primary" onClick={() => setShowModal(true)}>
-            Filter
-          </Button>
-        </div>
-      </div>
+      <div className="text-center d-flex justify-content-between xodimlarbuttons">
+              <Button variant="success" className="mt-3" onClick={exportToExcel}>
+                Excel formatida yuklab olish <i class="fa-solid fa-table"></i>
+              </Button>
+              <Form.Control
+                type="text"
+                className="mt-3"
+                placeholder="Qidirish"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Button
+                variant="secondary"
+                className="mt-3"
+                onClick={() => setSearchTerm("")}
+              >
+                Reset <i class="fa-solid fa-rotate-right"></i>
+              </Button>
+              <Button
+                variant="primary"
+                className="mt-3"
+                onClick={() => setShowModal(true)}
+              >
+                Filter <i class="fa-solid fa-filter"></i>
+              </Button>
+            </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
@@ -294,6 +326,7 @@ function Xodimlar() {
             <tr>
               <th>N</th>
               <th>F.I.Sh</th>
+              <th>Hisobotlari</th>
               <th>Telefon</th>
               <th>Rol</th>
               <th>Kompleks</th>
@@ -315,6 +348,15 @@ function Xodimlar() {
                     ? emp.name.slice(0, 20) + "..."
                     : emp.name}
                 </td>
+                
+                                    <td>
+                                      <Link to={`/superadmin/schedule/history/${emp._id}`}>
+                                        <button className="hisobotkorish">
+                                          Ko`rish{" "}
+                                          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </button>
+                                      </Link>
+                                    </td>
                 <td title={emp.phone}>{emp.phone}</td>
                 <td title={emp.role}>{emp.role}</td>
                 <td title={emp.complex}>
@@ -500,21 +542,36 @@ function Xodimlar() {
               </Form.Group>
             </Form>
             {/* <div className="redword">Hech kim o`zgartirmasin! Hali tayyor emas.</div> */}
-            <div className="text-center m-2">
-              <Button onClick={handleShow4} variant="primary">
-                Parolni o`zgartirish
-              </Button>
+            <div className="row m-2 align-items-center">
+              <div className="col-6 text-start">
+                <Button onClick={handleShow4} variant="primary">
+                  Parolni o‘zgartirish
+                </Button>
+              </div>
+              <div className="col-6 text-end d-flex justify-content-end align-items-center gap-2">
+                <p className="rem08 mb-0">+ hisobotlarini ko‘chirish</p>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={schedules}
+                    onChange={(e) => setSchedules(e.target.checked)}
+                  />{" "}
+                  <span className="slider round"></span>
+                </label>
+              </div>
             </div>
           </Modal.Body>
           {editing && (
             <Modal.Footer>
               <div className="d-flex justify-content-between w-100">
                 <Button onClick={handleShow3} variant="danger">
-                  Tizimdan o`chirish
+                  Tizimdan o‘chirish
                 </Button>
-                <Button onClick={handleSave} variant="success">
-                  Saqlash
-                </Button>
+                <div className="d-flex align-items-center gap-2">
+                  <Button onClick={handleSave} variant="success">
+                    Saqlash
+                  </Button>
+                </div>
               </div>
             </Modal.Footer>
           )}

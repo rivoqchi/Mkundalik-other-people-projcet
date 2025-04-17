@@ -118,7 +118,7 @@ function ScheduleRate() {
       heightLeft -= pdfHeight;
     }
 
-    pdf.save("hisobot.pdf");
+    pdf.save(`${thisScheduleHistory.beginnerName}_${thisScheduleHistory.startedAt.slice(0, 10)}_mkundalik.uz.pdf`);
   };
 
   const currentUrl = `https://mkundalik.uz/documents/archive/schedule/${thisScheduleHistory._id}`;

@@ -39,7 +39,7 @@ function ComplexRoute() {
         {/* O'ng taraf: Navbar va asosiy content */}
         <div className="col-10 navv d-flex flex-column p-0">
           <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
-          <div className="p-3 flex-grow-1">
+          <div className="p-3 bg-always flex-grow-1">
             <Routes>
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
