@@ -74,8 +74,8 @@ function SuperAdminRoute() {
               <Route path="/complex/edit/:id" exact element={<EditComplex />} />
               <Route path="/profile" exact element={<Profile />} />
               <Route path="/employees" exact element={<Xodimlar />} />
-              <Route path="/employees/allusers" exact element={<AllUsers />} />
-              <Route path="/employees/switchuser" exact element={<SwitchUser />} />
+              <Route path="/employees/allusers" exact element={<SwitchUser />} />
+              {/* <Route path="/employees/switchuser" exact element={<SwitchUser />} /> */}
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />

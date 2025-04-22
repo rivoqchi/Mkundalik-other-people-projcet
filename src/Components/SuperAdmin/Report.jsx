@@ -12,7 +12,9 @@ function Report() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filterByComplex, setFilterByComplex] = useState({});
+  const [filterByDepartment, setFilterByDepartment] = useState({});
   const [complexes, setComplexes] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
   const formatDate = (date) => {
@@ -41,6 +43,7 @@ function Report() {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         complex: filterByComplex.name,
+        department: filterByDepartment.name,
       });
       console.log(data.data);
       setData(data.data);
@@ -120,8 +123,17 @@ function Report() {
       console.error("Error fetching complexes:", err);
     }
   };
+  const getAllDepartments = async () => {
+    try {
+      const { data } = await axios.get(`${API}/sectors/getall`);      
+      setDepartments(data.sections);
+    } catch (err) {
+      console.error("Error fetching complexes:", err);
+    }
+  };
   useEffect(() => {
     getAllComplexes();
+    getAllDepartments();
   }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -144,7 +156,6 @@ function Report() {
           </h5>
         </div>
       </div>
-      <div className="d-flex w-100 justify-content-between align-items-center">
         <Button
           variant="success"
           onClick={handleExportToExcel}
@@ -153,6 +164,7 @@ function Report() {
         >
           Excel formatida yuklab olish
         </Button>
+      <div className="d-flex w-100 justify-content-between align-items-center">
 
         <Form.Group>
           <Form.Label>Kompleks</Form.Label>
@@ -169,13 +181,37 @@ function Report() {
               }
             }}
           >
-            <option value="">Hammasi:</option>
+            <option value="">Barcha komplekslar:</option>
             {complexes.map((item) => (
               <option key={item._id} value={item.name}>
                 {item.name}
               </option>
             ))}
           </Form.Control>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label>Xizmat</Form.Label>
+          <Form.Control
+  as="select"
+  name="department"
+  value={filterByDepartment.name || ""}
+  onChange={(e) => {
+    const selectedName2 = e.target.value;
+    if (selectedName2 === "") {
+      setFilterByDepartment({});
+    } else {
+      setFilterByDepartment({ name: selectedName2 });
+    }
+  }}
+>
+  <option value="">Barcha xizmatlar:</option>
+  {departments?.map((item) => ( // departments mavjudligini tekshirish
+    <option key={item._id} value={item.name}>
+      {item.name}
+    </option>
+  ))}
+</Form.Control>
         </Form.Group>
       </div>
       <form onSubmit={handleSubmit} className="report-page-form">
@@ -216,7 +252,7 @@ function Report() {
               <Form.Control
                 type="date"
                 id="date"
-                value={endDate}
+                value={endDate || startDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 className="report-page-date-input"
               />

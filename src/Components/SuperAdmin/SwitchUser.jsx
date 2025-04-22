@@ -21,6 +21,7 @@ import LoadingScreen from "../Additional/LoadingScreen";
 function Xodimlar() {
   const [newPassword, setNewPassword] = useState("");
   const [schedules, setSchedules] = useState(false);
+console.log(schedules);
 
   const [show3, setShow3] = useState(false);
   const [show4, setShow4] = useState(false);

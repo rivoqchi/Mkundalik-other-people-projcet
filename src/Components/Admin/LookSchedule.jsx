@@ -26,7 +26,6 @@ function ScheduleRate() {
   const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
   const [checking, setChecking] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [degree, setMyDegree] = useState([]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -173,22 +172,6 @@ function ScheduleRate() {
   };
 
   let lavozimegasi = thisScheduleHistory.beginnerId;
-  useEffect(() => {
-    if (thisScheduleHistory?.beginnerId) {
-      getMyDegree(thisScheduleHistory.beginnerId);
-    }
-  }, [thisScheduleHistory]);
-
-  const getMyDegree = async (beginnerId) => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(`${API}/auth/getlavozim/${beginnerId}`);
-      setMyDegree(data.degree);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching degree:", error);
-    }
-  };
   const renderTooltip = (props, source) => (
     <Tooltip id="button-tooltip" {...props}>
       {source}
@@ -237,7 +220,7 @@ function ScheduleRate() {
             </div>
             <div className="schedulebajaruvchilar">
               <i class="fa-solid fa-file-contract"></i> {t("degree")}:{" "}
-              <span>{degree || t("infonotfound")}</span>
+              <span>{thisScheduleHistory.degree || t("infonotfound")}</span>
             </div>
           </div>
           <br />
@@ -371,7 +354,7 @@ function ScheduleRate() {
         <DownloadDocx
           thisScheduleHistory={thisScheduleHistory}
           currentDateTime={currentDateTime}
-          degree={degree}
+          degree={thisScheduleHistory.degree}
         />
       </div>
 

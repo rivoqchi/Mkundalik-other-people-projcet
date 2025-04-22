@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 *{
   font-family: ubuntu;
   text-decoration: none;
@@ -339,7 +340,10 @@
 
 }
 .redback, .backred {
-  background-color: red;
+  background-color: red !important;
+}
+.weekend-background{
+  background-color: rgba(255, 18, 18, 0.151) !important;
 }
 .i404{
   background-color: red;
@@ -2586,11 +2590,65 @@ input:checked + .slider:before {
   flex-direction: column;
   align-items: center;
 }
-
+.calendar-onhover{
+  background-color: #3d3d6c;
+  color: #fff;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px 1px gray;
+  &:hover{
+    background-color: #fff;
+    color: #053786;
+    box-shadow: 0px 10px 20px 1px gray;
+    transform: scale(0.98);
+  }
+}
 .calendar-controls {
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
+}
+.div-container {
+  position: relative;
+  display: inline-block;
+}
+
+.calendar-tooltip {
+  text-align: left;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 450px;
+  background: #fff;
+  border: none;
+  padding: 20px;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+}
+.calendar-tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.calendar-tooltip-wrapper {
+  position: absolute;
+  top: -220px; /* tugmaning ustiga chiqishi uchun */
+  left: 0;
+  background: #fff;
+  color: #333;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 280px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+.calendar-tooltip-wrapper p {
+  margin: 4px 0;
+  font-size: 14px;
 }
 
 .calendar-select {
@@ -2621,7 +2679,7 @@ input:checked + .slider:before {
 }
 
 .calendar-btn-disabled {
-  background-color: #f5f5f5;
+  background-color: #fff;
   color: #999999;
   pointer-events: none;
 }
@@ -2633,8 +2691,16 @@ input:checked + .slider:before {
   width: 100%;
   max-width: 1200px;
 }
+.calendar-link {
+  text-decoration: none;
+  display: block;
+  height: 100%;
+  width: 100%;
+  color: inherit;
+}
 
 .calendar-day {
+  font-family: Poppins, sans-serif;
   position: relative;
   background-color: #eef6ff;
   padding: 2rem 0;
@@ -2669,7 +2735,7 @@ input:checked + .slider:before {
 }
 .calendar-weekday-label {
   padding: 0.5rem 0;
-  background-color: rgba(14, 0, 63, 0.534);
+  background-color: rgba(0, 1, 63, 0.76);
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -2687,11 +2753,17 @@ input:checked + .slider:before {
   right: 20px;
   border-bottom: 3px solid red;
 }
-.calendar-rated {
+.calendar-blue {
   position: absolute;
-  bottom: 5px;
+  bottom: 3px;
   left: 20px;
   right: 20px;
+  border-bottom: 3px solid rgba(0, 132, 255, 0.705);
+}
+.calendar-rated {
+  position: absolute;
+  top: 0px;
+  right: 0px;
   font-size: 0.8rem;
   white-space: nowrap;
   overflow: hidden;
@@ -2707,9 +2779,24 @@ input:checked + .slider:before {
   font-size: 1.3rem;
   background-color: green;
   color: #fff;
-  border-top-right-radius: 10px;
+  border-top-right-radius: 20px;
   padding: 0 6px;
 }
-.calendar-likedby{
-  
+.download-btn {
+  margin-top: 5px;
+  position: absolute;
+  padding: 5px 10px;
+  left: 10px;
+  top: 10px;
+  background-color: #fff;
+  color: green;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.download-btn:hover {
+  background-color: green;
+  color: #fff;
 }

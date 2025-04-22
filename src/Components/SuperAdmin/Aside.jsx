@@ -82,12 +82,12 @@ function Aside() {
               <span>Barcha xodimlar</span>
             </Link>
           </li>
-          <li className={location.pathname === '/superadmin/employees/switchuser' ? 'active' : ''}>
+          {/* <li className={location.pathname === '/superadmin/employees/switchuser' ? 'active' : ''}>
             <Link to="/superadmin/employees/switchuser">
               <i className="fa-solid fa-sitemap"></i>
               <span>Lavozimni o`zgartirish</span>
             </Link>
-          </li>
+          </li> */}
           </ul>
         </div>
         <ul>

@@ -185,7 +185,15 @@ const AddNewUser = () => {
       });
     }
   };
-
+  useEffect(() => {
+    const phoneDigits = values.phone.replace(/\D/g, ""); // faqat raqamlar
+    if (phoneDigits.length >= 4) {
+      const last4 = phoneDigits.slice(-4);
+      setValues((prev) => ({ ...prev, password: last4 }));
+    } else {
+      setValues((prev) => ({ ...prev, password: "" }));
+    }
+  }, [values.phone]);
   const saveToFile = () => {
     const data = `Avtorizatsiya mkundalik.uz: \n\nTelefon: ${phone} \nParol: ${password} \n\nIsm: ${name} \nKompleks: ${complex}  \nDepartament: ${department}  \nBo'lim: ${section} \nLavozim: ${degree}\nStatus: ${status} \nTasdiqlagan shaxs: Tizim administratori \n\nmkundalik.uz -> Kirish`;
     const blob = new Blob([data], { type: "text/plain" });
@@ -232,30 +240,32 @@ const AddNewUser = () => {
               />
             </div>
             <div className="form-group">
-              <label className="lab" htmlFor="phone">
-                Telefon raqami
-              </label>
-              <input
-                id="phone"
-                type="text"
-                onChange={handleChange("phone")}
-                placeholder="Telefon raqami"
-                value={phone}
-              />
-            </div>
+        <label className="lab" htmlFor="phone">
+          Telefon raqami
+        </label>
+        <input
+          id="phone"
+          type="text"
+          onChange={handleChange("phone")}
+          placeholder="Telefon raqami"
+          value={phone}
+        />
+      </div>
 
-            <div className="form-group">
-              <label className="lab" htmlFor="password">
-                Parol
-              </label>
-              <input
-                id="password"
-                type="text"
-                onChange={handleChange("password")}
-                placeholder="Parol yarating"
-                value={password}
-              />
-            </div>
+      <div className="form-group">
+        <label className="lab" htmlFor="password">
+          Parol
+        </label>
+        <input
+          id="password"
+          type="text"
+          onChange={handleChange("password")}
+          placeholder="Parol yarating"
+          value={password}
+          disabled
+          readOnly // foydalanuvchi tahrirlay olmasin
+        />
+      </div>
             <div className="form-group">
               <label className="lab" htmlFor="degree">
                 Lavozimi
