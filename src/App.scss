@@ -529,10 +529,21 @@
 /* Asosiy dizayn */
 /* Asosiy dizayn */
 /* Asosiy dizayn */
+.asidefixed{
+  position: fixed;
+  z-index: 9999;
+}
+
+.navbarrr {
+  background-color: #000a1d;
+  color: #fff !important;
+  padding: 20px 20px !important;
+  transition: all 0.3s ease-in-out;
+}
 .aside {
   overflow-y: auto;
   height: 100vh;  /* Ekran balandligiga mos keladi */
-  background-color: #1a202c;
+  background-color: #000a1d;
   color: #fff;
   left: 0;
   bottom: 0;
@@ -540,7 +551,6 @@
   flex-direction: column;
   align-items: center;
   // position: fixed;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .col-110 {
@@ -591,8 +601,7 @@
 }
 
 .aside-menu li a:hover {
-  background-color: #194ca3 !important;
-  border-radius: 5px;
+  background-color: #001d52 !important;
 }
 
 .aside-menu li a.active {
@@ -614,18 +623,17 @@
 .aside-menu li a i {
   margin-right: 15px;
   font-size: 1.2rem;
+  color: #00dc82; /* Ikon rangi qora */
 }
 
 .aside-menu li a span {
   display: inline-block;
 }
 .active {
-  // background-color: #3467cc !important;
-  background-color: #2f477c !important;
-  font-weight: bold !important;
-  border-radius: 5px;
-  box-shadow: -3px 3px 10px 1px rgb(42, 60, 142);
-  animation: toright 1s forwards;
+  background-color: #001d52  !important;
+}
+.active a span{
+  color: #fff !important;
 }
 @keyframes toright {
   0% {
@@ -635,8 +643,8 @@
     transform: translateX(10px);
   }
 }
-.active i {
-  color: #a0cbff; /* Ikon rangi qora */
+.aside-menu {
+  width: 100% !important;
 }
 
 .aside-menu li a span {
@@ -2142,11 +2150,6 @@ h4 {
   transform: scale(1.1);
 }
 
-.navbarrr {
-  background-color: #ecf5ff;
-  padding: 20px 20px !important;
-  transition: all 0.3s ease-in-out;
-}
 .profilgakirish {
   margin-right: 5px;
 }
@@ -2230,6 +2233,11 @@ h4 {
     opacity: 1;
     transform: translateY(0px);
   }
+}
+.nav-link{
+  color: #fff !important;
+  font-size: 1.2rem !important;
+  padding: 10px 20px !important;
 }
 .navprofile{
   color: #fff !important;
@@ -2430,8 +2438,9 @@ marquee{
   color: rgb(0, 225, 255) !important;
 }
 .tuzilmalarcontrol{
-  background-color: #253553 !important;
+  background-color: #1d2c47 !important;
   padding: 10px;
+  margin: 10px;
   border-radius: 15px;
   }
   // ukkk{

@@ -33,8 +33,11 @@ function AdminRoute() {
     <div className="container-fluid">
       <div className="row">
         {/* Chap taraf: Aside */}
-        <div className="col-2 p-0">
+        <div className="col-2 asidefixed p-0">
           <Aside />
+        </div>
+        <div className="col-2 p-0">
+          
         </div>
 
         {/* O'ng taraf: Navbar va asosiy content */}
