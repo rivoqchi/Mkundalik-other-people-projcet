@@ -10,7 +10,7 @@ import LoadingScreen from "../Additional/LoadingScreen";
 import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-
+import calendar from "../Images/calendar.png";
 function ScheduleNew() {
   const { t } = useTranslation();
 
@@ -310,29 +310,42 @@ function ScheduleNew() {
       {loading && <LoadingScreen loading={true} />}
 
       {alert.show && <Alert type={alert.type} message={alert.message} />}
-      <div className="schedule-container">
-        {/* Sana */}
-        <div className="date">
-          <i className="fa-solid fa-calendar-days"></i> {date}
-        </div>
-        <div className="warningtext ushbustikerlar mb-4">
-  <h5>{t("ushbustikerlar")}</h5>
-  <ul className="list-unstyled">
-    <li><i class="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
-    <li><i class="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
-    <li><i class="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
-  </ul>
-  {/* <p className="redword container">{t("dastlabkibaholashmezoni2")} <br />
+      <div className="oqrang text-center m-3 ushbustikerlar mb-4">
+          <h5>{t("ushbustikerlar")}</h5>
+          <ul className="list-unstyled">
+            <li>
+              <i class="fa-solid sources majburiyat fa-square"></i> -{" "}
+              {t("lavozimmajburiyati")}
+            </li>
+            <li>
+              <i class="fa-solid sources qoshimcha fa-square"></i> -{" "}
+              {t("rahbartomonidanqoshimcha")}
+            </li>
+            <li>
+              <i class="fa-solid sources tashabbus fa-square"></i> -{" "}
+              {t("xodimtashabbusi")}
+            </li>
+          </ul>
+          {/* <p className="redword container">{t("dastlabkibaholashmezoni2")} <br />
   {t("dastlabkibaholashmezoni3")}
   </p> */}
-</div>
+        </div>
+      <div className="schedule-container align-items-center m-0 justify-content-center row">
+        {/* Sana */}
+        
 
+        
+        <div className="date col-12 col-md-6 text-center">
+          <img className="startcal" src={calendar} alt="" />
+</div>
+<div className="date col-12 col-md-6 text-center">
+          {date}<br/>
         {!onWork && (
           <button className="start-button" onClick={handleShowStart}>
             <i class="fa-solid fa-play"></i> {t("ishniboshlash")}
           </button>
         )}
-
+</div>
         {terminate && (
           <div className="terminate-container">
             <p className="terminate-message">
@@ -355,44 +368,69 @@ function ScheduleNew() {
         <div>
           {onWork && (
             <>
-              <div className="taskk d-flex">
-                <span className="blueword">{startedAt}</span>{" "}
-                {t("daboshladingiz")}
-              </div>
-              <div className="timer">
+              <span className="timer">
                 {Math.floor(timer / 3600)
                   .toString()
                   .padStart(2, "0")}
                 :{(Math.floor(timer / 60) % 60).toString().padStart(2, "0")}:
                 {(timer % 60).toString().padStart(2, "0")} {t("ishdasiz")}
-              </div>
+              </span>
             </>
           )}
           {tasks.map((task, index) => (
             <div key={index} className="taskk">
               <div className="task">
                 {task.source === "majburiyat" && (
-                  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("lavozimmajburiyati"))}>
-                    <i title={t("lavozimmajburiyati")} className="fa-solid sources majburiyat fa-square"></i>
+                  <OverlayTrigger
+                    placement="top"
+                    delay={{ show: 0, hide: 0 }}
+                    overlay={(props) =>
+                      renderTooltip(props, t("lavozimmajburiyati"))
+                    }
+                  >
+                    <i
+                      title={t("lavozimmajburiyati")}
+                      className="fa-solid sources majburiyat fa-square"
+                    ></i>
                   </OverlayTrigger>
                 )}
                 {task.source === "qoshimcha" && (
-                  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("rahbartomonidanqoshimcha"))}>
-                    <i title={t("rahbartomonidanqoshimcha")} className="fa-solid sources qoshimcha fa-square"></i>
+                  <OverlayTrigger
+                    placement="top"
+                    delay={{ show: 0, hide: 0 }}
+                    overlay={(props) =>
+                      renderTooltip(props, t("rahbartomonidanqoshimcha"))
+                    }
+                  >
+                    <i
+                      title={t("rahbartomonidanqoshimcha")}
+                      className="fa-solid sources qoshimcha fa-square"
+                    ></i>
                   </OverlayTrigger>
                 )}
                 {task.source === "tashabbus" && (
-                  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("xodimtashabbusi"))}>
-                    <i title={t("xodimtashabbusi")} className="fa-solid sources tashabbus fa-square"></i>
+                  <OverlayTrigger
+                    placement="top"
+                    delay={{ show: 0, hide: 0 }}
+                    overlay={(props) =>
+                      renderTooltip(props, t("xodimtashabbusi"))
+                    }
+                  >
+                    <i
+                      title={t("xodimtashabbusi")}
+                      className="fa-solid sources tashabbus fa-square"
+                    ></i>
                   </OverlayTrigger>
                 )}
-<b>{index + 1}. </b>
+                <b>{index + 1}. </b>
                 <span className="asdqweh">{task.title}</span>
               </div>
               <div className="task-btns d-flex justify-content-between">
                 <div className="task-actions">
                   <button
-                    onClick={() => handleShowEdit(index, task.title, task.source)}
+                    onClick={() =>
+                      handleShowEdit(index, task.title, task.source)
+                    }
                     className="text-end editbtn"
                   >
                     <i className="fa-solid fa-pen"></i>
@@ -410,9 +448,6 @@ function ScheduleNew() {
           {onWork && (
             <>
               <div className="mb-5">
-                <div className="redword">
-                {t("dastlabkibaholashmezoni")}
-                </div>
                 <div className="button-container mt-5">
                   <button onClick={handleShowCreate} className="taskin">
                     <i className="fa-solid fa-plus"></i> {t("qoshish")}
@@ -480,13 +515,14 @@ function ScheduleNew() {
                 />
                 {t("xodimtashabbusi")}
               </label>
-              <span className="redword newcitata">{t("dastlabkibaholashmezoni4")}</span>
             </div>
 
             <Modal.Footer>
               <OverlayTrigger
                 placement="top"
-                overlay={<Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>}
+                overlay={
+                  <Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>
+                }
                 show={!type}
               >
                 <span>
@@ -556,7 +592,9 @@ function ScheduleNew() {
             <Modal.Footer>
               <OverlayTrigger
                 placement="top"
-                overlay={<Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>}
+                overlay={
+                  <Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>
+                }
                 show={!type}
               >
                 <span>
@@ -582,7 +620,7 @@ function ScheduleNew() {
           <Modal.Body>{t("areyousuretodelete")}</Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={handleDeleteTask}>
-            {t("ochirish")}
+              {t("ochirish")}
             </Button>
           </Modal.Footer>
         </Modal>

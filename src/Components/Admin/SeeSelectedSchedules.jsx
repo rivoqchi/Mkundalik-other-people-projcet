@@ -3,16 +3,19 @@ import { motion } from "framer-motion";
 import { API } from "../../config";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import { format } from "date-fns";
+import DownloadDocx from "./DownloadDocx";
 
 const getDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
 };
 
+
 const getStartDayOfWeek = (month, year) => {
   const day = new Date(year, month, 1).getDay();
   return day === 0 ? 6 : day - 1;
 };
-
+const currentDateTime = format(new Date(), "dd.MM.yyyy HH:mm");
 const monthsList = [
   "Yanvar",
   "Fevral",
@@ -31,6 +34,8 @@ const monthsList = [
 const weekDays = ["Du", "Se", "Chor", "Pay", "Ju", "Sh", "Ya"];
 
 const CalendarComponent = () => {
+const [route, setRoute] = useState(null);
+
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [mySectionBeginner, setMySectionBeginner] = useState([]);
@@ -117,10 +122,38 @@ const CalendarComponent = () => {
     );
   };
 
+  useEffect(() => {
+    const role = window.localStorage.getItem("role");
+    if (role === "admin") {
+      setRoute("/admin");
+    } else if (role === "superadmin") {
+      setRoute("/superadmin");
+    } else if (role === "complex") {
+      setRoute("/complex");
+    } else if (role === "department") {
+      setRoute("/department");
+    } else if (role === "hr") {
+      setRoute("/hr");
+    } else if (role === "boss") {
+      setRoute("/boss");
+    } else if (role === "commission") {
+      setRoute("/commission");
+    } else if (role === "staff") {
+      setRoute("/staff");
+    } else if (role === "at") {
+      setRoute("/at");
+    } else if (role === "sport") {
+      setRoute("/sport");
+    } else{
+      setRoute("/null");
+    }
+  }, []);
   return (
     <div className="calendar-container">
+      <p className="redword">Eslatma: Ushbu sahifadagi kalendardagi kunlar ranglar orqali belgilangan. Xodim mazkur kunda kundalik hisobot yozgan bo‘lsa — ko‘k rang, baholangan bo‘lsa — yashil rang, hisobot yozilmagan bo‘lsa — qizil rang bilan ajratib ko‘rsatiladi. Xaftaning dam olish kunlari ajratib ko`rsatilgan, (agar) shu kunlarda hisobot yozilsa ham ma'lumotlar saqlanadi.</p>
       <div className="row w-100 align-items-center justify-content-center">
         <div className="col-12 col-md-6 text-center">
+
           <div
             className="div-container"
             onMouseEnter={() => setShowTooltip(true)}
@@ -129,7 +162,6 @@ const CalendarComponent = () => {
             <button className="calendar-onhover">
               {mySectionBeginner.name}, <i>{mySectionBeginner.degree}</i>
             </button>
-
             {showTooltip && (
               <div className="calendar-tooltip userdatadiv">
                 <p>
@@ -277,12 +309,16 @@ const CalendarComponent = () => {
 
       {/* Yuklab olish tugmasi faqat calendar-green yoki calendar-blue uchun */}
       {showDownloadButton && (
-        <button
+        <>
+          <Link to={`${route}/archive/schedule/${schedule._id}?download=true`}>
+          <button
           className="download-btn"
           onClick={() => console.log(schedule._id)}
         >
           <i class="fa-solid fa-arrow-down"></i>
         </button>
+          </Link>
+        </>
       )}
     </motion.div>
   );
@@ -290,7 +326,7 @@ const CalendarComponent = () => {
   return schedule && !isDisabled ? (
     <Link
       key={index}
-      to={`/superadmin/archive/schedule/${schedule._id}`}
+      to={`${route}/archive/schedule/${schedule._id}`}
       className="calendar-link"
     >
       {cellContent}

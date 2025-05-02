@@ -1,144 +1,175 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import { signIn } from './CheckAuth';
-import { API } from '../../config';
+import logomk from '../Images/logo-png.png';
+import LoadingScreen from '../Additional/LoadingScreen';
 import Alert from '../Additional/Alert';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
-import LoginWithTelegram from './LoginWithTelegram';
-import LoadingScreen from '../Additional/LoadingScreen';
-import logomk from '../Images/logo-png.png';
-import logomet from '../Images/logo2.png';
+import {
+  Modal,
+  Button,
+  Spinner,
+  Form,
+  InputGroup,
+} from "react-bootstrap";
+
 const Login = () => {
-    const [loading, setLoading] = useState(false);
-    const [alert, setAlert] = useState({ show: false, type: "", message: "" });
-    const [values, setValues] = useState({ phone: '+998', password: '' });
-    const [showPassword, setShowPassword] = useState(false); // Parolni ko'rsatish yoki yashirish uchun
-    const navigate = useNavigate();
-    const { phone, password } = values;
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+  const [values, setValues] = useState({ phone: '+998', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-    const handleChange = (name) => (event) => {
-        setValues({ ...values, [name]: event.target.value });
-    };
+  const { phone, password } = values;
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            clickSubmit(event);
+  const handleChange = (name) => (e) => {
+    setValues({ ...values, [name]: e.target.value });
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      clickSubmit(event);
+    }
+  };
+
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const clickSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    signIn({ phone, password }).then((data) => {
+      if (data.error) {
+        setLoading(false);
+        setAlert({ show: true, type: "error", message: data.error });
+      } else if (data.employee.role !== "new") {
+        window.localStorage.setItem("token", data.token);
+        window.localStorage.setItem("fullName", data.employee.name);
+        window.localStorage.setItem("degree", data.employee.degree);
+        window.localStorage.setItem("phone", data.employee.phone);
+        window.localStorage.setItem("role", data.employee.role);
+        window.localStorage.setItem("user_id", data.employee._id);
+        setValues({ phone: '', password: '' });
+        if (data.employee.employee) {
+          if (data.employee.role) {
+            const routes = {
+              employee: "/user",
+              admin: "/admin",
+              superadmin: "/superadmin",
+              complex: "/complex",
+              department: "/department",
+              hr: "/hr",
+              commission: "/commission",
+              sport: "/sport",
+              at: "/at",
+              boss: "/boss"
+            };
+            navigate(routes[data.employee.role]);
+          }
+        } else {
+          const routes = {
+            employee: "/user/dashboard",
+            admin: "/admin/dashboard",
+            superadmin: "/superadmin/dashboard",
+            complex: "/complex/dashboard",
+            department: "/department/dashboard",
+            hr: "/hr/dashboard",
+            commission: "/commission/dashboard",
+            sport: "/sport/dashboard",
+            at: "/at/dashboard",
+            boss: "/boss/dashboard"
+          };
+          navigate(routes[data.employee.role]);
         }
-    };
+      } else {
+        navigate('/iamnew');
+      }
+    }).catch(() => {
+      setAlert({ show: true, type: "error", message: "Serverda xatolik yuz berdi!" });
+    });
+  };
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const clickSubmit = (event) => {
-        setLoading(true);
-        event.preventDefault();
-        setAlert({ show: false, type: "", message: "" });
-
-        signIn({ phone, password }).then((data) => {
-            if (data.error) {
-                setLoading(false);
-                setAlert({ show: true, type: "error", message: data.error });
-            } else if(data.employee.role !== "new"){
-                window.localStorage.setItem("token", data.token);
-                window.localStorage.setItem("fullName", data.employee.name);
-                window.localStorage.setItem("degree", data.employee.degree);
-                window.localStorage.setItem("phone", data.employee.phone);
-                window.localStorage.setItem("user_id", data.employee._id);
-                setValues({ phone: '', password: '' });
-                if(data.employee.employee){
-                    if (data.employee.role) {
-                        const routes = {
-                            employee: "/user",
-                            admin: "/admin",
-                            superadmin: "/superadmin",
-                            complex: "/complex",
-                            department: "/department",
-                            hr: "/hr",
-                            commission: "/commission",
-                            sport: "/sport",
-                            at: "/at",
-                            boss: "/boss"
-                        };
-                        navigate(routes[data.employee.role]);
-                        navigate(routes[data.employee.role] || "/fill");
-                    }
-                } 
-                else {
-                    const routes = {
-                        employee: "/user/dashboard",
-                        admin: "/admin/dashboard",
-                        superadmin: "/superadmin/dashboard",
-                        complex: "/complex/dashboard",
-                        department: "/department/dashboard",
-                        hr: "/hr/dashboard",
-                        commission: "/commission/dashboard",
-                        commission: "/sport/dashboard",
-                        commission: "/at/dashboard",
-                        boss: "/boss/dashboard"
-                    };
-                    navigate(routes[data.employee.role]);
-                    navigate('/fill');
-                }
-            } else {
-                navigate('/iamnew');
-            }
-        }).catch(() => {
-            setAlert({ show: true, type: "error", message: "Serverda xatolik yuz berdi!" });
-        });
-    };
-
-    return (
-        <>
+  return (
+    <>
       {loading && <LoadingScreen loading={true} />}
+      <Navbar />
+      <MDBContainer fluid className='loginpg background-radial-gradient overflow-hidden'>
+        <MDBRow>
+          <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
+            <h1 className="my-5 display-3 fw-bold ls-tight px-3 text-white">
+              Tizimga <br />
+              <span style={{ color: 'hsl(218, 81%, 75%)' }}>Kirish</span>
+            </h1>
+            <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
+              Xizmatdan foydalanish uchun tizimga kiring<br />
+            </p>
+          </MDBCol>
 
-        <Navbar/>
-        <div className="Auth">
-            {alert.show && <Alert type={alert.type} message={alert.message} />}
-            <div className="Auth__body">
-                <div className="Auth__body-form">
-                    <img className='loginlogo' src={logomk} alt="" />
-                    <h2 className='text-center'><i className="fa-solid fa-right-to-bracket"></i> Tizimga kirish</h2>
-                    <input
-                        type="text"
-                        onChange={handleChange('phone')}
-                        placeholder="Telefon raqamingiz:"
-                        value={phone}
-                        onKeyDown={handleKeyDown}
+          <MDBCol md='6' className='position-relative'>
+            <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
+            <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
+
+            <MDBCard className='my-5 bg-glass'>
+              <MDBCardBody className='p-5'>
+
+                {alert.show && <Alert type={alert.type} message={alert.message} />}
+
+                <img src={logomk} alt="Logo" className="w-50 mx-auto d-block mb-4" />
+
+                <div className="new-input-group mb-4">
+
+                  <InputGroup>
+                    <InputGroup.Text className='inpgr'>+998</InputGroup.Text>
+                    <Form.Control
+                      type="number"
+                      className='inpgr shadow-none'
+                      placeholder="XXXXXXXXX"
+                      value={phone.slice(4)} // faqat +998 dan keyingi qismini ko‘rsatadi
+                      onKeyDown={handleKeyDown}
+                      onChange={(e) =>
+                        setValues({ ...values, phone: '+998' + e.target.value })
+                      }
                     />
-                    <div style={{ position: "relative" }}>
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            onChange={handleChange('password')}
-                            placeholder="Parol:"
-                            value={password}
-                            onKeyDown={handleKeyDown}
-                            style={{ width: "100%", paddingRight: "40px" }} // O‘ng tomonda ikonka uchun joy qoldirish
-                        />
-                        <i
-                            className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-                            onClick={togglePasswordVisibility}
-                            style={{
-                                position: "absolute",
-                                right: "10px",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                cursor: "pointer",
-                                color: "#777"
-                            }}
-                        ></i>
-                    </div>
-                    <button className='signuplogin' onClick={clickSubmit}>Kirish</button>
-
-                    <p className="dontacc mt-3">Parolni unutdingizmi? <Link to='/signup'>Parolni tiklash</Link></p>
-                    <br /><br />
+                  </InputGroup>
                 </div>
-            </div>
-        </div>
-        <Footer/>
-        </>
-    );
+
+                <div className="new-input-group mb-4">
+                  <Form.Group controlId="formPassword">
+                    <Form.Label>Parol</Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                      className='inpgr shadow-none'
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Parolingiz"
+                        value={password}
+                        onKeyDown={handleKeyDown}
+                        onChange={handleChange('password')}
+                      />
+                      <Button variant="outline-secondary" className='inpgr' onClick={togglePasswordVisibility}>
+                        {showPassword ? <i class="fa-solid fa-eye-slash"></i> : <i class="fa-solid fa-eye"></i>}
+                      </Button>
+                    </InputGroup>
+                  </Form.Group>
+                </div>
+
+                <button className='w-100 login-btn mb-4' size='md' onClick={clickSubmit}>Kirish</button>
+
+                <p className="text-center mt-3">
+                  Parolni unutdingizmi? <Link to='/signup'>Tiklash</Link>
+                </p>
+
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+      <Footer />
+    </>
+  );
 };
 
 export default Login;

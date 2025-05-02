@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import LoadingScreen from "../Additional/LoadingScreen";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import { useNavigate } from "react-router-dom";
 
 function RatingMyAdmins() {
   const myId = window.localStorage.getItem("user_id");
@@ -13,6 +14,7 @@ function RatingMyAdmins() {
   const [myRole, setMyRole] = useState([]);
   const id = window.localStorage.getItem("user_id");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const getMySectionSchedules = async () => {
     setLoading(true);
@@ -34,6 +36,8 @@ function RatingMyAdmins() {
       }
   
       const { data } = await axios.post(url, body);
+      console.log(data);
+      
       setMySectionSchedules(data.schedules || []); // Agar schedules yo‘q bo‘lsa, bo‘sh massiv qo‘shish
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -101,7 +105,7 @@ function RatingMyAdmins() {
   }, [mySectionSchedules]);
 
   return (
-    <>
+    <div className="mh100">
       {loading && <LoadingScreen loading={true} />}
       <h1 className="text-center">Xodimlarim ko`rsatkichlari</h1>
       <div className="stataboutrating">
@@ -137,58 +141,43 @@ function RatingMyAdmins() {
         </ProgressBar>
       </div>
       <hr />
-      <div className="scheduleshistory">
-        {mySectionSchedules.map((i) => (
-          <>
-            <Link
-              className="text-decoration-none"
-              to={`/${myRole}/rate/schedule/${i._id}`}
-              key={i._id}
-            >
-              <button
-                className={`schedulehistorybtn ${
-                  !i.rated ? "unrated" : "rated"
-                }`}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                {/* Chap tomon: User icon + Beginner Name */}
-                <span
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <i className="fa-solid fa-user"></i>
-                  <span className="bold">{i.beginnerName}</span>
-                </span>
+      <table className="schedule-history-table">
+  <thead>
+    <tr>
+      <th>F.I.Sh.</th>
+      <th>Bajargan sanasi</th>
+      <th>Baholangan</th>
+    </tr>
+  </thead>
+  <tbody>
+    {mySectionSchedules.map((i) => (
+      <tr
+        key={i._id}
+        className={`history-row ${i.rated ? "row-rated" : "row-unrated"}`}
+        onClick={() => navigate(`/${myRole}/rate/schedule/${i._id}`)}
+        style={{ cursor: "pointer" }}
+      >
+        <td className="history-name">
+          <i className="fa-solid fa-user"></i> {i.beginnerName}
+        </td>
+        <td className="history-date">
+          <i className="fa-solid fa-calendar-days"></i> {i.startedAt.slice(0, 10)}
+        </td>
+        <td className="history-status">
+          {i.rated ? (
+            <span>
+              <i className="fa-regular fa-star"></i> {i.rated}
+            </span>
+          ) : (
+            "Yo‘q"
+          )}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-                {/* O'ng tomon: StartedAt + Calendar icon + Yulduzcha */}
-                <span
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <span>{i.startedAt.slice(0, 10)}</span>
-                  {i.rated && (
-                    <span
-                      className="yulduzcha"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                      }}
-                    >
-                      <i className="fa-regular fa-star"></i> {i.rated}
-                    </span>
-                  )}
-                  <i className="fa-solid fa-calendar-days"></i>
-                </span>
-              </button>
-            </Link>
-          </>
-        ))}
-      </div>
-    </>
+    </div>
   );
 }
 

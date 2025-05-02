@@ -5,13 +5,12 @@ function NotAllowed() {
     
     return ( 
         <>
-        <div className='text-center page404 m-5'>
-            <h1 className='h22'><b>403</b></h1>
-            <h3><i className="fa-solid fa-triangle-exclamation i404"></i> Ta'qiq</h3>
-            <p>Kirish taqiqlanadi!</p>
-            <Link to="/login"><button className='defaultbutton'>Kirish</button></Link><br /><br />
-            <Link to="/"><button className='defaultbutton'>Bosh sahifaga</button></Link>
-        </div>
+            <div className="page404 align-items-center   text-center">
+                <h1 className='h1404 pt-5'><b>403</b></h1>
+                <h3><i className="fa-solid fa-triangle-exclamation i404"></i> Ta'qiq topildi!</h3>
+                <p>Ehtimol, token muddati tugagan...</p>
+                <Link to="/"><button className='defaultbutton'>Bosh sahifaga</button></Link><br /><br />
+            </div>
         </>
      );
 }

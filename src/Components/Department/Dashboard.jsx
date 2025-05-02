@@ -4,7 +4,7 @@ import logo from '../Images/logo2.png';
 function Dashboard() {
     return ( 
         <>
-        <h1 className="text-center">
+        <h1 className="text-center mh100">
              <img className='logoondashboard' src={logo} alt="" /><br />
              Dashboard <br /><br />
              <Link to="/department/schedule/new"><button className='defaultbtn'><h5>Yangi hisobotga o`tish</h5></button></Link>

@@ -1,8 +1,99 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import {Link} from 'react-router-dom';
+import logo from './Images/logo-png.png';
 function Footer() {
+    const [route, setRoute] = useState("");
+  
+  useEffect(() => {
+      const role = window.localStorage.getItem("role");
+      if (role === "admin") {
+        setRoute("/admin");
+      } else if (role === "employee") {
+        setRoute("/user");
+      } else if (role === "superadmin") {
+        setRoute("/superadmin");
+      } else if (role === "complex") {
+        setRoute("/complex");
+      } else if (role === "department") {
+        setRoute("/department");
+      } else if (role === "hr") {
+        setRoute("/hr");
+      } else if (role === "boss") {
+        setRoute("/boss");
+      } else if (role === "commission") {
+        setRoute("/commission");
+      } else if (role === "staff") {
+        setRoute("/staff");
+      } else if (role === "at") {
+        setRoute("/at");
+      } else if (role === "sport") {
+        setRoute("/sport");
+      } else{
+        setRoute("/null");
+      }
+    }, []);
+
     return ( 
         <>
-        
+        <footer className="footer m-0 row white">
+        <div className="col-12 col-md-4 text-start">
+          <img src={logo} className="footer-logo" alt="logo" />
+          <p>
+            Xodimlar potensiali monitoringgi bo`yicha O`zbekistondagi birinchi
+            kundalik hisobotlarni elektron qayd etish platformasi &copy; —
+            2025-yil fevral oyida “Toshkent metropoliteni” DUK'da birinchi marta
+            ishga tushirilgan.
+          </p>
+          <p>v1.0.0 (Test)</p>
+        </div>
+        <div className="col-12 col-md-4">
+          <ul className="list-unstyled bbg text-start">
+            <li>
+              <Link to={`${route}/ablout/statistics`}>
+                <i class="fa-solid fa-chart-simple"></i> Statistika
+              </Link>
+            </li>
+            <li>
+              <Link to="/templates/instructions.pdf">
+                <i class="fa-solid fa-book"></i> Dasturdan foydalanish
+                yo`riqnomasi
+              </Link>
+            </li>
+            {/* <li>
+              <Link disabled to="/documents/privacy-policy">
+                <i class="fa-solid fa-shield-halved"></i> Maxfiylik siyosati
+              </Link>
+            </li> */}
+          </ul>
+        </div>
+
+        <div className="col-12 col-md-4">
+          <ul className="list-unstyled bbg text-start">
+            <li>
+              <a href="tel:+998712413140">
+                <i class="fa-solid fa-phone-volume"></i> +998 (71) 241-31-40
+              </a>
+            </li>
+            <li>
+              <div className="ctrl-enter">
+                <i class="fa-solid fa-phone-volume"></i> Ichki raqam: 53-89
+              </div>
+            </li>
+            <li>
+              <a href="mailto:mkundalik@tashmetro.uz">
+                <i class="fa-solid fa-envelope"></i> mkundalik@tashmetro.uz
+              </a>
+            </li>
+            <br />
+            <span className="ctrl-enter">
+              Agar tizimdan xatolik topsangiz Ctrl + Enter tugmalarini bosing
+            </span>
+            <br />
+            <span className="ctrl-enter">Barcha huquqlar himoyalangan.</span>
+            <p className="ctrl-enter">Toshkent - 2025</p>
+          </ul>
+        </div>
+      </footer>
         </>
      );
 }

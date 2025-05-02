@@ -18,8 +18,8 @@ function LanguageSelector() {
 
   const languages = [
     { code: "uz", name: "O‘zbek", flag: uzFlag },
-    { code: "uz_cyr", name: "Ўзбек", flag: uzFlag },
-    { code: "ru", name: "Русский", flag: ruFlag },
+    { code: "uz_cyr", name: "Ўзбек (test)", flag: uzFlag },
+    { code: "ru", name: "Русский (test)", flag: ruFlag },
   ];
 
   const changeLanguage = (lang) => {

@@ -10,8 +10,10 @@ import LinkTelegram from "../Auth/LinkTelegram";
 import LavozimYoriqnomasi from "./LavozimYoriqnomasi";
 import EditProfile from "../EditProfile";
 import { useTranslation } from "react-i18next";
+import Accordion from 'react-bootstrap/Accordion';
 
 function Profile() {
+  let token = window.localStorage.getItem("token");
   const { t } = useTranslation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -34,7 +36,20 @@ function Profile() {
   const handleViewFile = (fileId) => {
     setViewingFileId(fileId);
   };
-
+  const logout = async () => {
+    try {
+      const response = await axios.get(`${API}/auth/logout`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      window.localStorage.clear();
+      window.location.replace('/');
+    } catch (error) {
+      console.error("Chiqishda xatolik yuz berdi:", error);
+    }
+  };
   const getMyData = async () => {
     setLoading(true);
     const { data } = await axios.get(`${API}/auth/mydata/${id}`);
@@ -60,7 +75,6 @@ function Profile() {
     setMyDepartment(data.user.department);
     setMyComplex(data.user.complex);
     setLoading(false);
-
   };
   useEffect(() => {
     getMyData();
@@ -222,8 +236,10 @@ function Profile() {
   </div>
 </div>
         </div>
-
-        <h5>{t("updatePass")}</h5>
+        <Accordion defaultActiveKey="0">
+      <Accordion.Item eventKey="1">
+        <Accordion.Header>{t("updatePass")}</Accordion.Header>
+        <Accordion.Body>
         <div className="changepass">
           <input
             type="password"
@@ -237,18 +253,29 @@ function Profile() {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
-          <button onClick={handlePasswordChange}>{t("updatePass")}</button>
-          {message && <p>{message}</p>}
         </div>
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
+    <hr />
+          {message && <p>{message}</p>}
+    <div className="d-flex justify-content-between w-100">
+            <Button className="btn-primary" onClick={handlePasswordChange}>{t("updatePass")}</Button>
+            <Button className="btn-danger" onClick={handleShow}>{t("logOut")} <i className="fa-solid fa-arrow-right-from-bracket"></i></Button>
+          </div>
       </div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{t("xatolikxabar")}</Modal.Title>
+          <Modal.Title>{t("logOut")}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <EditProfile/>
-        </Modal.Body>
+        <Modal.Body>{t("profildanchiqmoqchimisiz")}</Modal.Body>
         <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+          {t("bekorqilish")}
+          </Button>
+          <Button variant="danger" onClick={logout}>
+          {t("logOut")}
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

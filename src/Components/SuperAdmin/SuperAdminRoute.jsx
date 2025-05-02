@@ -34,20 +34,23 @@ import Application from '../Infos/Application';
 import Report from './Report';
 import FAQPage from '../Infos/FAQPage';
 import SwitchUser from './SwitchUser';
-
+import Footer from '../Footer';
 function SuperAdminRoute() {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Chapdagi Aside panel */}
-        <div className="col-2 p-0">
-          <Aside /> {/* Chap panel */}
+        {/* Chap taraf: Aside */}
+        <div className="col-2 asidefixed p-0">
+          <Aside />
         </div>
-        
-        {/* O‘ng taraf: Navbar va asosiy content */}
-        <div className="col-10 navv d-flex flex-column p-0">
+        <div className="col-2 p-0">
+          
+        </div>
+
+        {/* O'ng taraf: Navbar va asosiy content */}
+        <div className="col-10 overflow-y-auto h-100vh navv d-flex flex-column p-0">
+          <div className="bg-always pt-5 flex-grow-1">
           <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
-          <div className="p-3 bg-always flex-grow-1">
             <Routes>
               <Route path="/" exact element={<SuperAdmin />} />
               <Route path="/dashboard" exact element={<Dashboard />} />
@@ -81,6 +84,7 @@ function SuperAdminRoute() {
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
+            <Footer/>
           </div>
         </div>
       </div>

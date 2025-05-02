@@ -114,36 +114,6 @@ function Aside() {
                 <span>{t("xodimlar")}</span>
               </Link>
             </li>
-            <li
-              className={location.pathname === "/admin/profile" ? "active" : ""}
-            >
-              <Link to="/admin/profile">
-                <i className="fa-regular fa-user"></i>
-                <span>{t("myInfo")}</span>
-              </Link>
-            </li>
-
-            <li className={location.pathname === '/admin/about/statistics' ? 'active' : ''}>
-            <Link to="/admin/about/statistics">
-              <i class="fa-solid fa-info"></i>
-              <span>{t("statistika")}</span><span className="newtop">NEW</span>
-            </Link>
-            </li>
-
-            <li className={location.pathname === '/admin/instructions' ? 'active' : ''}>
-            <Link to="/admin/instructions">
-            <i class="fa-solid fa-book"></i>
-              <span>{t("foydalanishyoriqnomasi")}</span><span className="newtop">NEW</span>
-            </Link>
-            </li>
-
-            <li>
-              <Link onClick={handleShow}>
-                <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                <span>{t("logOut")}</span>
-              </Link>
-            </li>
-
           </ul>
         </nav>
       </div>

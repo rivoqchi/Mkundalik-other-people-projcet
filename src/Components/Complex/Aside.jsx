@@ -94,19 +94,6 @@ function Aside() {
               <span>{t("xodimlar")}</span>
             </Link>
           </li>
-          <li className={location.pathname === '/complex/profile' ? 'active' : ''}>
-            <Link to="/complex/profile">
-              <i className="fa-regular fa-user"></i>
-              <span>{t("myInfo")}</span>
-            </Link>
-          </li>
-                    
-          <li>
-            <Link onClick={handleShow}>
-              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-              <span>{t("logOut")}</span>
-            </Link>
-          </li>
         </ul>
       </nav>
     </div>

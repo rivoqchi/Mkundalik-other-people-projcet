@@ -15,8 +15,10 @@ import Alert from "../Additional/Alert";
 import DownloadDocx from "./DownloadDocx";
 import { useTranslation } from "react-i18next";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { useLocation } from "react-router-dom"; // URL parametrlarini olish uchun
 
 function ScheduleRate() {
+  const location = useLocation(); // URL ma'lumotlarini olish
   const { t } = useTranslation();
   const myId = window.localStorage.getItem("user_id");
   const myFullName = window.localStorage.getItem("fullName");
@@ -85,7 +87,7 @@ function ScheduleRate() {
   useEffect(() => {
     getThisScheduleHistory();
   }, []);
-
+  
   // PDF yaratish funksiyasi
   const generatePDF = async () => {
     const input = componentRef.current;
@@ -177,6 +179,15 @@ function ScheduleRate() {
       {source}
     </Tooltip>
   );
+    // URL parametrlarini tekshirish va generatePDF funksiyasini chaqirish
+    useEffect(() => {
+      const searchParams = new URLSearchParams(location.search);
+      if (searchParams.get("download") === "true" && thisScheduleHistory._id) {
+        generatePDF(); // PDF-ni avtomatik yuklab olish
+      }
+    }, [location.search, thisScheduleHistory]); // `thisScheduleHistory` o'zgarganda qayta ishlaydi
+
+    
   return (
     <>
       {alert.show && <Alert type={alert.type} message={alert.message} />}

@@ -30,6 +30,7 @@ import SportRoute from "./Components/Sport/SportRoute";
 import ATRoute from "./Components/AT/ATRoute";
 import "./i18n";
 import { useTranslation } from "react-i18next";
+import CtrlEnter from './Components/CtrlEnter';
 
 function App() {
   return (
@@ -37,8 +38,9 @@ function App() {
       <div>
         {/* <LangSelect /> */}
         <Router>
+          <CtrlEnter/>
           <XatolikXabar/>
-          <Sorry/>
+          {/* <Sorry/> */}
           {/* <AllowNotification/> */}
           <Routes>
             <Route path="/" exact element={<Main />} />

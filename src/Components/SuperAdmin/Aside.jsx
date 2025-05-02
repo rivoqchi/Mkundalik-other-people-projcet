@@ -43,8 +43,6 @@ function Aside() {
         <p>{window.localStorage.getItem("degree")}</p>
       </div>
       <nav className="aside-menu">
-        <div className="tuzilmalarcontrol">
-        <h5>Tuzilmalar boshqaruvi</h5>
           <ul className='ggfgf'>
           <li className={location.pathname === '/superadmin/complex' ? 'active' : ''}>
             <Link to="/superadmin/complex">
@@ -65,10 +63,7 @@ function Aside() {
             </Link>
           </li>
           </ul>
-        </div>
-
-        <div className="tuzilmalarcontrol mt-2">
-        <h5>Xodimlar boshqaruvi</h5>
+<hr />
           <ul className='ggfgf'>
           <li className={location.pathname === '/superadmin/employees/adduser' ? 'active' : ''}>
             <Link to="/superadmin/employees/adduser">
@@ -82,31 +77,13 @@ function Aside() {
               <span>Barcha xodimlar</span>
             </Link>
           </li>
-          {/* <li className={location.pathname === '/superadmin/employees/switchuser' ? 'active' : ''}>
-            <Link to="/superadmin/employees/switchuser">
-              <i className="fa-solid fa-sitemap"></i>
-              <span>Lavozimni o`zgartirish</span>
-            </Link>
-          </li> */}
           </ul>
-        </div>
+          <hr />
         <ul>
           <li className={location.pathname === '/superadmin/report' ? 'active' : ''}>
             <Link to="/superadmin/report">
             <i class="fa-solid fa-receipt"></i>
-              <span>Davriy hisobot</span><span className="newtop">NEW</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/profile' ? 'active' : ''}>
-            <Link to="/superadmin/profile">
-              <i className="fa-regular fa-user"></i>
-              <span>Mening ma'lumotlarim</span>
-            </Link>
-          </li>
-          <li>
-            <Link onClick={handleShow}>
-              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-              <span>Chiqish</span>
+              <span>Davriy hisobot</span>
             </Link>
           </li>
 

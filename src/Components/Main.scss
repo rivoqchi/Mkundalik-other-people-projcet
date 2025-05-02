@@ -1,4 +1,4 @@
-.navv {
+.navvv {
   background-color: #030712;
   color: #f3f4f6;
   font-family: 'Roboto', sans-serif;
@@ -28,7 +28,17 @@
 .nav-links a:hover {
   color: #3b82f6;
 }
-
+.mainpg{
+  animation: opacity0to1 1s ease-in-out;
+}
+@keyframes opacity0to1 {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .login-btn {
   background-color: #053786;
   border: none;
@@ -37,11 +47,15 @@
   border-radius: 16px;
   transition: 0.3s;
   border-bottom: 3px solid #042863;
-  transition: 1s !important;
+  transition: all 1s !important;
   &:active{
     border-bottom: none;
     transform: translate(0px, 3px);
   }
+}
+.login-btn:hover {
+  transform: scale(1.05);
+  background-color: #2563eb;
 }
 .yellowword{
   color: #fbbf24;
@@ -62,10 +76,6 @@
   padding: 15px;
   border-radius: 15px;
   background-color: #061327;
-}
-.login-btn:hover {
-  transform: scale(1.05);
-  background-color: #2563eb;
 }
 .hamburger {
   display: none;
@@ -172,7 +182,9 @@
   }
 }
 
-.footer {
+footer {
+  margin: none !important;
+  overflow: hidden !important;
   text-align: center;
   padding: 20px;
   background-color: #111827;
@@ -183,4 +195,23 @@
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
+}
+.ctrl-enter{
+  font-size: 0.9rem;
+}
+.bbg li{
+  margin-bottom: 3px;
+}
+.bbg li a{
+  color: #f3f4f6;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: 0.3s;
+  &:hover{
+    color: #3b82f6;
+  }
+}
+.footer-logo{
+  width: 10rem;
+  margin-bottom: 20px;
 }
