@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {Link} from 'react-router-dom';
 import logo from './Images/logo-png.png';
+import { useTranslation } from "react-i18next";
 function Footer() {
     const [route, setRoute] = useState("");
-  
+    const { t } = useTranslation();
   useEffect(() => {
       const role = window.localStorage.getItem("role");
       if (role === "admin") {
@@ -38,25 +39,20 @@ function Footer() {
         <footer className="footer m-0 row white">
         <div className="col-12 col-md-4 text-start">
           <img src={logo} className="footer-logo" alt="logo" />
-          <p>
-            Xodimlar potensiali monitoringgi bo`yicha O`zbekistondagi birinchi
-            kundalik hisobotlarni elektron qayd etish platformasi &copy; —
-            2025-yil fevral oyida “Toshkent metropoliteni” DUK'da birinchi marta
-            ishga tushirilgan.
+          <p>{t("aboutfooter")}
           </p>
-          <p>v1.0.0 (Test)</p>
+          <p>v1.0.0</p>
         </div>
         <div className="col-12 col-md-4">
           <ul className="list-unstyled bbg text-start">
             <li>
-              <Link to={`${route}/ablout/statistics`}>
-                <i class="fa-solid fa-chart-simple"></i> Statistika
+              <Link to={`${route}/about/statistics`}>
+                <i class="fa-solid fa-chart-simple"></i> {t("statistika")}
               </Link>
             </li>
             <li>
               <Link to="/templates/instructions.pdf">
-                <i class="fa-solid fa-book"></i> Dasturdan foydalanish
-                yo`riqnomasi
+                <i class="fa-solid fa-book"></i> {t("dasfoyyoriq")}
               </Link>
             </li>
             {/* <li>
@@ -76,7 +72,7 @@ function Footer() {
             </li>
             <li>
               <div className="ctrl-enter">
-                <i class="fa-solid fa-phone-volume"></i> Ichki raqam: 53-89
+                <i class="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 53-89
               </div>
             </li>
             <li>
@@ -86,10 +82,10 @@ function Footer() {
             </li>
             <br />
             <span className="ctrl-enter">
-              Agar tizimdan xatolik topsangiz Ctrl + Enter tugmalarini bosing
+            {t("ctrlenter")}
             </span>
             <br />
-            <span className="ctrl-enter">Barcha huquqlar himoyalangan.</span>
+            <span className="ctrl-enter">{t("allrightsreserved")}.</span>
             <p className="ctrl-enter">Toshkent - 2025</p>
           </ul>
         </div>

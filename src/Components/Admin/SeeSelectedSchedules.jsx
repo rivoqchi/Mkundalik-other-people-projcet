@@ -128,6 +128,8 @@ const [route, setRoute] = useState(null);
       setRoute("/admin");
     } else if (role === "superadmin") {
       setRoute("/superadmin");
+    } else if (role === "employee") {
+      setRoute("/user");
     } else if (role === "complex") {
       setRoute("/complex");
     } else if (role === "department") {
@@ -207,7 +209,7 @@ const [route, setRoute] = useState(null);
         <div className="col-12 col-md-6 text-center">
           <div className="calendar-controls">
             <button onClick={handlePrev} className="calendar-btn">
-              ⬅️
+            <i class="fa-solid fa-arrow-left"></i>
             </button>
 
             <select
@@ -249,7 +251,7 @@ const [route, setRoute] = useState(null);
                   : ""
               }`}
             >
-              ➡️
+              <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </div>

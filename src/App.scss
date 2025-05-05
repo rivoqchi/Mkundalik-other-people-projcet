@@ -283,13 +283,17 @@ input.form-control.active{
   padding: 14px 20px;
   color: white;
   border-radius: 16px;
-  transition: 0.3s;
+  transition: 3s;
   border-bottom: 3px solid #042863;
   transition: all 1s !important;
   &:active{
     border-bottom: none;
     transform: translate(0px, 3px);
   }
+}
+.login-btn:active, .defaultbutton:active, .defaultbtn:active, .start-button:active {
+  transform: translate(0px, 3px);
+  box-shadow: none;
 }
 .login-btn:hover, .defaultbutton:hover, .defaultbtn:hover, .start-button:hover {
   transform: scale(1.05);
@@ -2944,5 +2948,13 @@ input:checked + .slider:before {
   }
   100% {
     transform: translateY(-10px);
+  }
+}
+.borderrad50{
+  border-bottom: 2px solid red !important;
+  border-radius: 10px !important;
+  &:active{
+    border-bottom: none !important;
+    transform: translate(0px, 3px) !important;
   }
 }

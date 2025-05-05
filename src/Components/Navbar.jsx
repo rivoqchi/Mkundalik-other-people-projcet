@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "./Images/logo-png.png";
@@ -10,12 +12,34 @@ import LangSelect from "./LangSelect";
 import logo2 from "./Images/logo-png.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { API } from "../config";
 import { useTranslation } from "react-i18next";
+
 function Navbarr() {
+  let token = window.localStorage.getItem("token");
   const [role, setRole] = useState(null);
   const { t } = useTranslation();
   const [route, setRoute] = useState("");
   let isSignedIn = window.localStorage.getItem("token") ? true : false;
+  const logout = async () => {
+    try {
+      const response = await axios.get(`${API}/auth/logout`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      window.localStorage.clear();
+      window.location.replace('/');
+    } catch (error) {
+      console.error("Chiqishda xatolik yuz berdi:", error);
+    }
+  };
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
@@ -77,6 +101,7 @@ function Navbarr() {
   };
 
   return (
+    <>
     <Navbar collapseOnSelect expand="lg" className="navbarrr">
       <Container>
         <nav className="nav">
@@ -88,16 +113,16 @@ function Navbarr() {
 
           <div className={`nav-links ${isOpen ? "open" : ""}`}>
             <a onClick={() => setIsOpen(false)} href="/">
-              <li>Bosh sahifa</li>
+              <li>{t("main")}</li>
             </a>
             <Link onClick={() => setIsOpen(false)} to={`${route}/about/statistics`}>
-              <li>Statistika</li>
+              <li>{t("statistika")}</li>
             </Link>
             <a
               onClick={() => setIsOpen(false)}
               href="/templates/instructions.pdf"
             >
-              <li>Yo'riqnoma</li>
+              <li>{t("instruction")}</li>
             </a>
             <LangSelect />
             {isSignedIn ? (
@@ -108,17 +133,37 @@ function Navbarr() {
               </Link>
             ) : (
               <Link onClick={() => setIsOpen(false)} to="/login">
-                <button className="login-btn">Kabinetga kirish</button>
+                <button className="login-btn">{t("entertocabinet")}</button>
               </Link>
             )}
+          {token && (
+  <Button className="btn-danger borderrad50" onClick={handleShow}>
+    <i className="fa-solid fa-arrow-right-from-bracket"></i>
+  </Button>
+)}
           </div>
-
           <div className="hamburger" onClick={toggleMenu}>
             <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
           </div>
         </nav>
       </Container>
     </Navbar>
+    <Modal centered show={show} onHide={handleClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>{t("logOut")}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>{t("profildanchiqmoqchimisiz")}</Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={handleClose}>
+      {t("bekorqilish")}
+      </Button>
+      <Button variant="danger" onClick={logout}>
+      {t("logOut")}
+      </Button>
+    </Modal.Footer>
+  </Modal>
+
+    </>
   );
 }
 

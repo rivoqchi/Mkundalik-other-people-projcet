@@ -12,11 +12,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import "./Main.scss";
 import Navbarr from "./Navbar";
+import { useTranslation } from "react-i18next";
 function Main() {
   const [isOpen, setIsOpen] = useState(false);
   let isSignedIn = window.localStorage.getItem("token") ? true : false;
   const [route, setRoute] = useState("");
 
+  const { t } = useTranslation();
   
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -48,31 +50,9 @@ function Main() {
     }
   }, []);
 
-  
-
-  let updatedButton = false;
-
-// Agar localStorage da updated yo‘q bo‘lsa — tugma ko‘rsatiladi
-if (window.localStorage.getItem("updated") === null || window.localStorage.getItem("updated") === "false") {
-  updatedButton = true;
-}
-
-function updateFunction() {
-  window.localStorage.clear(); // hamma localStorage tozalanadi
-  window.localStorage.setItem("updated", "true"); // qaytadan yoziladi
-  window.location.reload(); // sahifa yangilanadi
-}
-
 
   return (
     <div className="navvv mainpg ">
-
-
-{updatedButton && (
-      <button onClick={updateFunction} className="text-center updatebutton">
-        Yangilanish mavjud <br /> Bosing
-      </button>
-    )}
 
 
       <nav className="nav">
@@ -82,27 +62,31 @@ function updateFunction() {
 
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
           <a onClick={() => setIsOpen(false)} href="#">
-            <li>Bosh sahifa</li>
+            <li>{t("main")}</li>
           </a>
           <a onClick={() => setIsOpen(false)} href="#statistika">
-            <li>Statistika</li>
+            <li>{t("statistika")}</li>
           </a>
           <a
             onClick={() => setIsOpen(false)}
             href="/templates/instructions.pdf"
           >
-            <li>Yo'riqnoma</li>
+            <li>{t("instruction")}</li>
           </a>
           <LangSelect />
-          {isSignedIn ? (
+          
+          <Link onClick={() => setIsOpen(false)} to="/login">
+                <button className="login-btn">{t("privatecab")}</button>
+              </Link>
+          {/* {isSignedIn ? (
             <Link onClick={() => setIsOpen(false)} to={`${route}/dashboard`}>
-                <button className="login-btn">Shaxsiy kabinet</button>
+                <button className="login-btn">{t("privatecab")}</button>
                 </Link>
           ) : (
             <Link onClick={() => setIsOpen(false)} to="/login">
-              <button className="login-btn">Kabinetga kirish</button>
+              <button className="login-btn">{t("privatecab")}</button>
             </Link>
-          )}
+          )} */}
         </div>
 
         <div className="hamburger" onClick={toggleMenu}>
@@ -113,18 +97,20 @@ function updateFunction() {
         <div className="col-12 col-md-6 text-center">
           <header className="hero">
             <h1>MKUNDALIK.UZ</h1>
-            <p>
-              Xodimlarning ish faoliyatini elektron qayd etish axborot tizimi
+            <p>{t("axtizim")}
             </p>
-            {isSignedIn ? (
+              <Link onClick={() => setIsOpen(false)} to="/login">
+                <button className="login-btn">{t("privatecab")}</button>
+              </Link>
+            {/* {isSignedIn ? (
               <Link onClick={() => setIsOpen(false)} to={`${route}/dashboard`}>
-                <button className="login-btn">Shaxsiy kabinet</button>
+                <button className="login-btn">{t("privatecab")}</button>
               </Link>
             ) : (
               <Link onClick={() => setIsOpen(false)} to="/login">
-                <button className="login-btn">Kabinetga kirish</button>
+                <button className="login-btn">{t("privatecab")}h</button>
               </Link>
-            )}
+            )} */}
           </header>
         </div>
         <div className="col-12 col-md-6 text-center w100">
@@ -133,22 +119,18 @@ function updateFunction() {
       </div>
 
       <div className="bu-qanday-ishlaydi hero">
-        <h1>Bu qanday ishlaydi?</h1>
+        <h1>{t("howdoesitwork")}?</h1>
         <p>
-          Xodimlarning ish jarayonini nazorat qilish va ularning faoliyatini
-          raqamlashtirish maqsadida yaratilgan ushbu platforma quyidagi
-          ketma-ketlikda ishlaydi:
+          {t("howdoesitworkdesc")}:
         </p>
 
         <div className="row howdoesitwork align-items-center">
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-1"></i> Xodim tizimga biriktiriladi
+              <i class="fa-solid fa-1"></i> {t("howdoesitworkdesc2")}
             </h2>
             <p>
-              Har bir xodim uchun shaxsiy profil yaratiladi va u ish joyiga
-              hamda rahbariga biriktiriladi. Xodim ushbu profil orqali o`z
-              ma'lumotlarini to`ldiradi va ish jadvalini kuzatib borishi mumkin.
+            {t("howdoesitworkdesc3")}.
             </p>
           </div>
           <div className="col-12 col-md-6 align-items-center">
@@ -162,12 +144,10 @@ function updateFunction() {
           </div>
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-2"></i> Kunlik hisobotlarni kiritadi
+              <i class="fa-solid fa-2"></i> {t("howdoesitworkdesc4")}
             </h2>
             <p>
-              Xodim o`zining ish faoliyati bo`yicha har kunlik hisobotni tizimga
-              kiritadi. Hisobotlar belgilangan me'yor va shaklda taqdim etiladi
-              hamda tizimda saqlanadi.
+            {t("howdoesitworkdesc5")}.
             </p>
           </div>
         </div>
@@ -175,10 +155,10 @@ function updateFunction() {
         <div className="row howdoesitwork align-items-center">
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-3"></i> Rahbar uni baholaydi
+              <i class="fa-solid fa-3"></i> {t("howdoesitworkdesc6")}
             </h2>
             <p>
-              Rahbarlar kunlik hisobotlarni ko‘rib chiqib, har bir faoliyat
+            {t("howdoesitworkdesc7")}Rahbarlar kunlik hisobotlarni ko‘rib chiqib, har bir faoliyat
               uchun ball va izoh beradi. Baholash tizimi shaffof va ochiq tarzda
               amalga oshiriladi.
             </p>
@@ -194,10 +174,10 @@ function updateFunction() {
           </div>
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-4"></i> Reyting natijalari taqdim etiladi
+              <i class="fa-solid fa-4"></i> {t("howdoesitworkdesc8")}Reyting natijalari taqdim etiladi
             </h2>
             <p>
-              Kun, hafta va oy yakunlari bo`yicha barcha xodimlarning reyting
+            {t("howdoesitworkdesc9")}Kun, hafta va oy yakunlari bo`yicha barcha xodimlarning reyting
               natijalari shakllantiriladi. Bu natijalar rahbariyat va xodimlar
               uchun ochiq bo`lib, mukofot va rag`batlantirish jarayonlariga asos
               bo`lib xizmat qiladi.
@@ -207,14 +187,14 @@ function updateFunction() {
       </div>
 
       <div id="statistika" className="statistics hero">
-        <h1>Statistika</h1>
-        <p>"Toshkent metropoliteni" DUK</p>
+        <h1>{t("statistika")}</h1>
+        <p>{t("tashmetroduk")}"Toshkent metropoliteni" DUK</p>
         <div className="statistics-main text-center">
           <div className="statistics-main2">
-            <h1 className="son">650+</h1> <p>xodimlar</p>
+            <h1 className="son">650+</h1> <p>{t("xodimlar")}</p>
           </div>
           <div className="statistics-main2">
-            <h1 className="son">22000+</h1> <p>yozilgan hisobotlar</p>
+            <h1 className="son">22000+</h1> <p>{t("wroten")}yozilgan hisobotlar</p>
           </div>
         </div>
         {/* <div className="row">
@@ -307,8 +287,8 @@ function updateFunction() {
               </div>
             </li>
             <li>
-              <a href="mailto:support@mkundalik.uz">
-                <i class="fa-solid fa-envelope"></i> support@mkundalik.uz
+              <a href="mailto:mkundalik@tashmetro.uz">
+                <i class="fa-solid fa-envelope"></i> mkundalik@tashmetro.uz
               </a>
             </li>
             <br />

@@ -103,6 +103,32 @@
     "dastlabkibaholashmezoni": "Diqqat! Dastlabki baholash mezoni yuqorida ko‘rsatilgan. Mazkur funksiya rahbarga yengillik bo`lishi uchun keltirilayotganini inobatga olshingiz so`raladi. Yakuniy qarorni o‘zaro rahbaringiz belgilaydi.",
     "dastlabkibaholashmezoni2": "Eslatib o`tamiz, barcha baholarning mazmuniga kundalik hisobotni yozgan xodim mas'ul bo`lib, baholariga bevosita raxbari javobgar hisoblanadi.",
     "dastlabkibaholashmezoni3": "Agar hisobot 3 kun ichida rahbar tomonidan baholanmasa, tahminiy baho avtomatik ravishda qo`yiladi.",
-    "dastlabkibaholashmezoni4": "Ishning to`liq mazmunini yoritib bering, agar jamoaviy ish bo`lsa ishning aynan qaysi qismini bajarganingizni keltirishingiz so`raladi. Har qanday bahoni sun’iy oshirishga bo‘lgan harakatlar ustida maxsus komissiya o‘z faoliyatini olib borayotganini ma’lum qilamiz."
+    "dastlabkibaholashmezoni4": "Ishning to`liq mazmunini yoritib bering, agar jamoaviy ish bo`lsa ishning aynan qaysi qismini bajarganingizni keltirishingiz so`raladi. Har qanday bahoni sun’iy oshirishga bo‘lgan harakatlar ustida maxsus komissiya o‘z faoliyatini olib borayotganini ma’lum qilamiz.",
+
+    "main": "Bosh sahifa",
+    "instruction": "Yo`riqnoma",
+    "entertocabinet": "Kabinetga kirish",
+    "aboutfooter": "Xodimlar potensiali monitoringgi bo`yicha O`zbekistondagi birinchi kundalik hisobotlarni elektron qayd etish platformasi ©️; — 2025-yil fevral oyida “Toshkent metropoliteni” DUK'da birinchi martaishga tushirilgan.",
+    "ichkiraqam": "Ichki raqam",
+    "ctrlenter": "Agar tizimdan xatolik topsangiz Ctrl + Enter tugmalarini bosing",
+    "privatecab": "Shaxsiy kabinet",
+    "allrightsreserved": "Barcha huquqlar himoyalangan",
+    "axtizim": "Xodimlarning ish faoliyatini elektron qayd etish axborot tizimi",
+    "howdoesitwork": "Bu qanday ishlaydi",
+    "howdoesitworkdesc": "Xodimlarning ish jarayonini nazorat qilish va ularning faoliyatini raqamlashtirish maqsadida yaratilgan ushbu platforma quyidagi ketma-ketlikda ishlaydi",
+    "howdoesitworkdesc2": "Xodim tizimga biriktiriladi",
+    "howdoesitworkdesc3": "Har bir xodim uchun shaxsiy profil yaratiladi va u ish joyiga hamda rahbariga biriktiriladi. Xodim ushbu profil orqali o`z ma'lumotlarini to`ldiradi va ish jadvalini kuzatib borishi mumkin",
+    "howdoesitworkdesc4": "Kunlik hisobotlarni kiritadi",
+    "howdoesitworkdesc5": "Xodim o`zining ish faoliyati bo`yicha har kunlik hisobotni tizimga kiritadi. Hisobotlar belgilangan me'yor va shaklda taqdim etiladi hamda tizimda saqlanadi",
+    "howdoesitworkdesc6": "Rahbar uni baholaydi",
+    "howdoesitworkdesc7": "",
+    "howdoesitworkdesc8": "",
+    "howdoesitworkdesc9": "",
+    "howdoesitworkdesc10": "",
+    "howdoesitworkdesc11": "",
+    "howdoesitworkdesc12": "",
+    "howdoesitworkdesc13": "",
+    "howdoesitworkdesc14": "",
+    "howdoesitworkdesc15": ""
 
 }

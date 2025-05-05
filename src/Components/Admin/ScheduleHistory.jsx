@@ -135,6 +135,8 @@ const CalendarComponent = () => {
     const role = window.localStorage.getItem("role");
     if (role === "admin") {
       setRoute("/admin");
+    } else if (role === "employee") {
+      setRoute("/user");
     } else if (role === "superadmin") {
       setRoute("/superadmin");
     } else if (role === "complex") {
@@ -216,7 +218,7 @@ const CalendarComponent = () => {
         <div className="col-12 col-md-6 text-center">
           <div className="calendar-controls">
             <button onClick={handlePrev} className="calendar-btn">
-              ⬅️
+            <i class="fa-solid fa-arrow-left"></i>
             </button>
 
             <select
@@ -258,7 +260,7 @@ const CalendarComponent = () => {
                   : ""
               }`}
             >
-              ➡️
+              <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </div>

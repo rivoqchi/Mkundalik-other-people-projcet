@@ -36,8 +36,6 @@ function RatingMyAdmins() {
       }
   
       const { data } = await axios.post(url, body);
-      console.log(data);
-      
       setMySectionSchedules(data.schedules || []); // Agar schedules yo‘q bo‘lsa, bo‘sh massiv qo‘shish
     } catch (error) {
       console.error("Error fetching data:", error);
