@@ -104,7 +104,6 @@
     "dastlabkibaholashmezoni2": "Eslatib o`tamiz, barcha baholarning mazmuniga kundalik hisobotni yozgan xodim mas'ul bo`lib, baholariga bevosita raxbari javobgar hisoblanadi.",
     "dastlabkibaholashmezoni3": "Agar hisobot 3 kun ichida rahbar tomonidan baholanmasa, tahminiy baho avtomatik ravishda qo`yiladi.",
     "dastlabkibaholashmezoni4": "Ishning to`liq mazmunini yoritib bering, agar jamoaviy ish bo`lsa ishning aynan qaysi qismini bajarganingizni keltirishingiz so`raladi. Har qanday bahoni sun’iy oshirishga bo‘lgan harakatlar ustida maxsus komissiya o‘z faoliyatini olib borayotganini ma’lum qilamiz.",
-
     "main": "Bosh sahifa",
     "instruction": "Yo`riqnoma",
     "entertocabinet": "Kabinetga kirish",
@@ -121,14 +120,10 @@
     "howdoesitworkdesc4": "Kunlik hisobotlarni kiritadi",
     "howdoesitworkdesc5": "Xodim o`zining ish faoliyati bo`yicha har kunlik hisobotni tizimga kiritadi. Hisobotlar belgilangan me'yor va shaklda taqdim etiladi hamda tizimda saqlanadi",
     "howdoesitworkdesc6": "Rahbar uni baholaydi",
-    "howdoesitworkdesc7": "",
-    "howdoesitworkdesc8": "",
-    "howdoesitworkdesc9": "",
-    "howdoesitworkdesc10": "",
-    "howdoesitworkdesc11": "",
-    "howdoesitworkdesc12": "",
-    "howdoesitworkdesc13": "",
-    "howdoesitworkdesc14": "",
-    "howdoesitworkdesc15": ""
+    "howdoesitworkdesc7": "Rahbarlar kunlik hisobotlarni ko‘rib chiqib, har bir faoliyat uchun ball va izoh beradi. Baholash tizimi shaffof va ochiq tarzda amalga oshiriladi",
+    "howdoesitworkdesc8": "Reyting natijalari taqdim etiladi",
+    "howdoesitworkdesc9": "Kun, hafta va oy yakunlari bo`yicha barcha xodimlarning reyting natijalari shakllantiriladi. Bu natijalar rahbariyat va xodimlar uchun ochiq bo`lib, mukofot va rag`batlantirish jarayonlariga asos bo`lib xizmat qiladi",
+    "tashmetroduk": "«Toshkent metropoliteni» DUK",
+    "wroten": "yozilgan hisobotlar"
 
 }

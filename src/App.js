@@ -31,7 +31,7 @@ import ATRoute from "./Components/AT/ATRoute";
 import "./i18n";
 import { useTranslation } from "react-i18next";
 import CtrlEnter from './Components/CtrlEnter';
-
+import UmumiyStat from "./Components/Infos/UmumiyStat";
 function App() {
   return (
     <>
@@ -45,6 +45,7 @@ function App() {
           <Routes>
             <Route path="/" exact element={<Main />} />
             <Route path="/fill" exact element={<Fill />} />
+            <Route path="/statistika" exact element={<UmumiyStat />} />
 
             <Route path="/login" exact element={<Login />} />
             <Route path="/signup" exact element={<SignUp />} />

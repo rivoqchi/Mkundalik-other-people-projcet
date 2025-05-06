@@ -158,9 +158,7 @@ function Main() {
               <i class="fa-solid fa-3"></i> {t("howdoesitworkdesc6")}
             </h2>
             <p>
-            {t("howdoesitworkdesc7")}Rahbarlar kunlik hisobotlarni ko‘rib chiqib, har bir faoliyat
-              uchun ball va izoh beradi. Baholash tizimi shaffof va ochiq tarzda
-              amalga oshiriladi.
+            {t("howdoesitworkdesc7")}.
             </p>
           </div>
           <div className="col-12 col-md-6 align-items-center">
@@ -174,13 +172,10 @@ function Main() {
           </div>
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-4"></i> {t("howdoesitworkdesc8")}Reyting natijalari taqdim etiladi
+              <i class="fa-solid fa-4"></i> {t("howdoesitworkdesc8")}
             </h2>
             <p>
-            {t("howdoesitworkdesc9")}Kun, hafta va oy yakunlari bo`yicha barcha xodimlarning reyting
-              natijalari shakllantiriladi. Bu natijalar rahbariyat va xodimlar
-              uchun ochiq bo`lib, mukofot va rag`batlantirish jarayonlariga asos
-              bo`lib xizmat qiladi.
+            {t("howdoesitworkdesc9")}.
             </p>
           </div>
         </div>
@@ -188,13 +183,13 @@ function Main() {
 
       <div id="statistika" className="statistics hero">
         <h1>{t("statistika")}</h1>
-        <p>{t("tashmetroduk")}"Toshkent metropoliteni" DUK</p>
+        <p>{t("tashmetroduk")}</p>
         <div className="statistics-main text-center">
           <div className="statistics-main2">
             <h1 className="son">650+</h1> <p>{t("xodimlar")}</p>
           </div>
           <div className="statistics-main2">
-            <h1 className="son">22000+</h1> <p>{t("wroten")}yozilgan hisobotlar</p>
+            <h1 className="son">22000+</h1> <p>{t("wroten")}</p>
           </div>
         </div>
         {/* <div className="row">
@@ -247,28 +242,19 @@ function Main() {
         <div className="col-12 col-md-4 text-start">
           <img src={logo} className="footer-logo" alt="logo" />
           <p>
-            Xodimlar potensiali monitoringgi bo`yicha O`zbekistondagi birinchi
-            kundalik hisobotlarni elektron qayd etish platformasi &copy; —
-            2025-yil fevral oyida “Toshkent metropoliteni” DUK'da birinchi marta
-            ishga tushirilgan.
+          {t("aboutfooter")}
           </p>
         </div>
         <div className="col-12 col-md-4">
           <ul className="list-unstyled bbg text-start">
             <li>
               <Link to="/statistika">
-                <i class="fa-solid fa-chart-simple"></i> Statistika
+                <i class="fa-solid fa-chart-simple"></i> {t("statistika")}
               </Link>
             </li>
             <li>
               <Link to="/templates/instructions.pdf">
-                <i class="fa-solid fa-book"></i> Dasturdan foydalanish
-                yo`riqnomasi
-              </Link>
-            </li>
-            <li>
-              <Link to="/documents/privacy-policy">
-                <i class="fa-solid fa-shield-halved"></i> Maxfiylik siyosati
+                <i class="fa-solid fa-book"></i> {t("dasfoyyoriq")}
               </Link>
             </li>
           </ul>
@@ -283,7 +269,7 @@ function Main() {
             </li>
             <li>
               <div className="ctrl-enter">
-                <i class="fa-solid fa-phone-volume"></i> Ichki raqam: 53-89
+                <i class="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 53-89
               </div>
             </li>
             <li>
@@ -293,10 +279,10 @@ function Main() {
             </li>
             <br />
             <span className="ctrl-enter">
-              Agar tizimdan xatolik topsangiz Ctrl + Enter tugmalarini bosing
+            {t("ctrlenter")}
             </span>
             <br />
-            <span className="ctrl-enter">Barcha huquqlar himoyalangan.</span>
+            <span className="ctrl-enter">{t("allrightsreserved")}.</span>
             <p className="ctrl-enter">Toshkent - 2025</p>
           </ul>
         </div>
