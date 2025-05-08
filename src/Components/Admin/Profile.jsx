@@ -2,15 +2,15 @@ import axios from "axios";
 import { API } from "../../config";
 import React, { useState, useEffect } from "react";
 import logo from "../Images/logo2.png";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 import LoadingScreen from "../Additional/LoadingScreen";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 import FileView from "../FileView";
 import LinkTelegram from "../Auth/LinkTelegram";
 import LavozimYoriqnomasi from "./LavozimYoriqnomasi";
 import EditProfile from "../EditProfile";
 import { useTranslation } from "react-i18next";
-import Accordion from 'react-bootstrap/Accordion';
+import Accordion from "react-bootstrap/Accordion";
 
 function Profile() {
   let token = window.localStorage.getItem("token");
@@ -33,6 +33,10 @@ function Profile() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
+
   const handleViewFile = (fileId) => {
     setViewingFileId(fileId);
   };
@@ -43,9 +47,9 @@ function Profile() {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       window.localStorage.clear();
-      window.location.replace('/');
+      window.location.replace("/");
     } catch (error) {
       console.error("Chiqishda xatolik yuz berdi:", error);
     }
@@ -106,15 +110,15 @@ function Profile() {
           <h1>{t("kundaliktarixim")}</h1>
         </div>
         <div className="text-end">
-        <Button className="text-end" variant="primary" onClick={handleShow}>
-        <i class="fa-solid fa-user-pen"></i> {t("edit")}
-      </Button>
+          <Button className="text-end" variant="primary" onClick={handleShow2}>
+            <i class="fa-solid fa-user-pen"></i> {t("edit")}
+          </Button>
         </div>
         <h5>{t("umumiyinfo")}</h5>
 
         <div className="profiledatum">
-        <div className="datum align-items-center">
-        <p className="ours">{t("fish")}</p>
+          <div className="datum align-items-center">
+            <p className="ours">{t("fish")}</p>
             <p className="theirs">{myData.name}</p>
           </div>
 
@@ -155,8 +159,8 @@ function Profile() {
             </p>
           </div> */}
 
-<div className="datum align-items-center">
-<p className="ours">{t("complex")}</p>
+          <div className="datum align-items-center">
+            <p className="ours">{t("complex")}</p>
             <p className="theirs">{myData.complex}</p>
           </div>
 
@@ -213,56 +217,64 @@ function Profile() {
           </div>
 
           <div className="datum align-items-center">
-            <p className="ours align-items-center">{t("lavozimyoriqnomasi")}:</p>
+            <p className="ours align-items-center">
+              {t("lavozimyoriqnomasi")}:
+            </p>
             <LavozimYoriqnomasi />
           </div>
 
           <div className="datum align-items-center">
-  <p className="ours">{t("sportnatijam")}</p>
-  <div className="theirs">
-  {myData.sport && myData.sport.length > 0 ? (
-    <>
-      {myData.sport.map((item, index) => (
-        <p key={index} className="theirs warningtext">
-          {item.norm}: {item.ball} ball
-        </p>
-      ))}
-      <hr />
-        <strong>Jami:</strong> {myData.sport.reduce((sum, item) => sum + item.ball, 0)} ball
-    </>
-  ) : (
-    <p className="theirs">Ma'lumot yo'q</p>
-  )}
-  </div>
-</div>
+            <p className="ours">{t("sportnatijam")}</p>
+            <div className="theirs">
+              {myData.sport && myData.sport.length > 0 ? (
+                <>
+                  {myData.sport.map((item, index) => (
+                    <p key={index} className="theirs warningtext">
+                      {item.norm}: {item.ball} ball
+                    </p>
+                  ))}
+                  <hr />
+                  <strong>Jami:</strong>{" "}
+                  {myData.sport.reduce((sum, item) => sum + item.ball, 0)} ball
+                </>
+              ) : (
+                <p className="theirs">Ma'lumot yo'q</p>
+              )}
+            </div>
+          </div>
         </div>
         <Accordion defaultActiveKey="0">
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>{t("updatePass")}</Accordion.Header>
-        <Accordion.Body>
-        <div className="changepass">
-          <input
-            type="password"
-            placeholder={t("oldPass")}
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder={t("newPass")}
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
+          <Accordion.Item eventKey="1">
+            <Accordion.Header>{t("updatePass")}</Accordion.Header>
+            <Accordion.Body>
+              <div className="changepass">
+                <input
+                  type="password"
+                  placeholder={t("oldPass")}
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder={t("newPass")}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
+        <hr />
+        {message && <p>{message}</p>}
+        <div className="d-flex justify-content-between w-100">
+          <Button className="btn-primary" onClick={handlePasswordChange}>
+            {t("updatePass")}
+          </Button>
+          <Button className="btn-danger" onClick={handleShow}>
+            {t("logOut")}{" "}
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
+          </Button>
         </div>
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
-    <hr />
-          {message && <p>{message}</p>}
-    <div className="d-flex justify-content-between w-100">
-            <Button className="btn-primary" onClick={handlePasswordChange}>{t("updatePass")}</Button>
-            <Button className="btn-danger" onClick={handleShow}>{t("logOut")} <i className="fa-solid fa-arrow-right-from-bracket"></i></Button>
-          </div>
       </div>
       <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -271,12 +283,21 @@ function Profile() {
         <Modal.Body>{t("profildanchiqmoqchimisiz")}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-          {t("bekorqilish")}
+            {t("bekorqilish")}
           </Button>
           <Button variant="danger" onClick={logout}>
-          {t("logOut")}
+            {t("logOut")}
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      <Modal centered show={show2} onHide={handleClose2}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("edit")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EditProfile />
+        </Modal.Body>
       </Modal>
     </>
   );

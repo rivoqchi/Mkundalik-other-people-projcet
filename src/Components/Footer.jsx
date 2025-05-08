@@ -63,7 +63,7 @@ function Footer() {
           </ul>
         </div>
 
-        <div className="col-12 col-md-4">
+        <div className="col-12 col-md-4 mb-5">
           <ul className="list-unstyled bbg text-start">
             <li>
               <a href="tel:+998712413140">

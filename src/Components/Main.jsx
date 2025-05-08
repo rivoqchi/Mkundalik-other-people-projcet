@@ -238,7 +238,7 @@ function Main() {
         </div> */}
       </div>
 
-      <footer className="footer row">
+      <footer className="footer row mb-4">
         <div className="col-12 col-md-4 text-start">
           <img src={logo} className="footer-logo" alt="logo" />
           <p>

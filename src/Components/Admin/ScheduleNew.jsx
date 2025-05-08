@@ -527,6 +527,7 @@ function ScheduleNew() {
               >
                 <span>
                   <Button
+                   className="mb-4"
                     variant="success"
                     onClick={handleCreateTask}
                     disabled={!type}
@@ -600,6 +601,7 @@ function ScheduleNew() {
                 <span>
                   <Button
                     variant="success"
+                   className="mb-4"
                     onClick={handleEditTask}
                     disabled={!type}
                   >
