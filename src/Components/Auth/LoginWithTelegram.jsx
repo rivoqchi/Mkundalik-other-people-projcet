@@ -45,8 +45,10 @@ function LoginWithTelegram() {
           complex: '/complex',
           superadmin: '/superadmin',
           commission: '/commission',
-          commission: '/sport',
-          commission: '/at',
+          sport: '/sport',
+          hr: '/hr',
+          lang: '/lang',
+          at: '/at',
           boss: '/boss'
         };
 

@@ -55,40 +55,10 @@ function Aside() {
               <span>Kundalik ish faoliyatim</span>
             </Link>
           </li>
-          <li className={location.pathname === '/hr/rating/ours' ? 'active' : ''}>
-            <Link to="/hr/rating/ours">
-              <i className="fa-solid fa-medal"></i>
-              <span>Mening bo`limim ko`rsatkichlari</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/hr/sections' ? 'active' : ''}>
-            <Link to="/hr/sections">
-              <i className="fa-regular fa-pen-to-square"></i>
-              <span>Bo‘limlarni tahrirlash</span>
-            </Link>
-          </li>
           <li className={location.pathname === '/hr/info/employee' ? 'active' : ''}>
             <Link to="/hr/employees">
               <i className="fa-solid fa-sitemap"></i>
               <span>Xodimlar</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/hr/instructions' ? 'active' : ''}>
-            <Link to="/hr/instructions">
-              <i className="fa-solid fa-book"></i>
-              <span>Yo‘riqnomalar nazorati</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/hr/profile' ? 'active' : ''}>
-            <Link to="/hr/profile">
-              <i className="fa-regular fa-user"></i>
-              <span>Mening ma'lumotlarim</span>
-            </Link>
-          </li>
-          <li>
-            <Link onClick={handleShow}>
-              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-              <span>Chiqish</span>
             </Link>
           </li>
         </ul>

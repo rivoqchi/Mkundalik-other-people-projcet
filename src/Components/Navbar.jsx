@@ -56,6 +56,8 @@ function Navbarr() {
       setRoute("/department");
     } else if (role === "hr") {
       setRoute("/hr");
+    } else if (role === "lang") {
+      setRoute("/lang");
     } else if (role === "boss") {
       setRoute("/boss");
     } else if (role === "commission") {
@@ -95,6 +97,7 @@ function Navbarr() {
       staff: "/staff",
       sport: "/sport",
       hr: "/hr",
+      lang: "/lang",
       new: "/iamnew",
     };
     return rolePaths[role] || "/login";

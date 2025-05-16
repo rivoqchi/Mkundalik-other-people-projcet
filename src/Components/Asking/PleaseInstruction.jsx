@@ -54,6 +54,9 @@ function PleaseInstruction() {
     } else if (data.user.role === "hr") {
       setShow(false);
       navigate(`/hr/profile`);
+    } else if (data.user.role === "lang") {
+      setShow(false);
+      navigate(`/lang/profile`);
     } else if (data.user.role === "commission") {
       setShow(false);
       navigate(`/commission/profile`);

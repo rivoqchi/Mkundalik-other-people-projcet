@@ -152,7 +152,6 @@ function Xodimlar() {
                   <th>{t("fish")}</th>
                   <th>{t("tel")}</th>
                   <th>{t("section")}</th>
-                  <th>{t("degree")}</th>
                   <th>{t("nationality")}</th>
                   <th>{t("dateOfBirth")}</th>
                   <th>{t("placeOfBirth")}</th>
@@ -175,14 +174,13 @@ function Xodimlar() {
                         className="odammm text-decoration-none"
                         to={`/${myRole}/schedule/history/${employee._id}`}
                       >
-                        {employee.name}
+                        {employee.name} - <span className="deg">{employee.degree}</span>
                       </Link>
                     </td>
                     <td title={t("taptoknowphone")}>
                       <a href={`tel:${employee.phone}`}>{employee.phone}</a>
                     </td>
                     <td>{employee.section}</td>
-                    <td>{employee.degree}</td>
                     <td>{employee.nationality}</td>
                     <td>{employee.dateOfBirth}</td>
                     <td>{employee.placeOfBirth}</td>

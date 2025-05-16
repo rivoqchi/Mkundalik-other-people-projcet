@@ -14,6 +14,7 @@ import BossRoute from "./Components/Boss/BossRoute";
 import DepartmentRoute from "./Components/Department/DepartmentRoute";
 import StaffRoute from "./Components/Staff/StaffRoute";
 import HrRoute from "./Components/Hr/HrRoute";
+import LangRoute from "./Components/Lang/LangRoute";
 import LookSchedule from "./Components/Admin/LookSchedule";
 import AllowNotification from "./Components/Additional/AllowNotification";
 import XatolikXabar from "./Components/XatolikXabar";
@@ -58,35 +59,39 @@ function App() {
               <Route path="/staff/*" element={<StaffRoute />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["admin", "superadmin", "department"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["admin", "superadmin"]} />}>
               <Route path="/admin/*" element={<AdminRoute />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["superadmin", "complex", "department", "superadmin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["department"]} />}>
               <Route path="/department/*" element={<DepartmentRoute />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["complex", "hr", "superadmin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["complex"]} />}>
               <Route path="/complex/*" element={<ComplexRoute />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["sport", "superadmin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["sport"]} />}>
               <Route path="/sport/*" element={<SportRoute />} />
             </Route>
+            
+            <Route element={<ProtectedRoute allowedRoles={["lang"]} />}>
+              <Route path="/lang/*" element={<LangRoute />} />
+            </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["at", "superadmin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["at"]} />}>
               <Route path="/at/*" element={<ATRoute />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["commission", "superadmin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["commission"]} />}>
               <Route path="/commission/*" element={<KomissiyaRoute />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["boss", "superadmin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["boss"]} />}>
               <Route path="/boss/*" element={<BossRoute />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={["hr", "superadmin"]} />}>
+            <Route element={<ProtectedRoute allowedRoles={["hr"]} />}>
               <Route path="/hr/*" element={<HrRoute />} />
             </Route>
 

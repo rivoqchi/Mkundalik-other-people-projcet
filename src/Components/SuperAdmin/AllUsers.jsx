@@ -5,7 +5,7 @@ import { Modal, Button, Spinner, Alert, Form } from "react-bootstrap";
 import { API } from "../../config";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-
+import DownloadObject from "./DownloadObject"
 function Xodimlar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [allEmployees, setAllEmployees] = useState([]);
@@ -197,6 +197,7 @@ function Xodimlar() {
             {error}
           </Alert>
         )}
+        <h3 className="text-center m-3">Jami: {filteredEmployees.length} ta xodim</h3>
         <div className="allusers">
           {!loading && !error && (
             <table className="table table-striped mt-3">
@@ -205,6 +206,7 @@ function Xodimlar() {
                   <th>N</th>
                   <th>F.I.Sh</th>
                   <th>Hisobotlari</th>
+                  <th>Yuklab olish</th>
                   <th>Telefon</th>
                   <th>Rol</th>
                   <th>Kompleks</th>
@@ -230,12 +232,17 @@ function Xodimlar() {
                         : employee.name}
                     </td>
                     <td>
-                      <Link to={`/superadmin/schedule/history/${employee._id}`}>
+                      <Link to={`/${window.localStorage.getItem('role')}/schedule/history/${employee._id}`}>
                         <button className="hisobotkorish">
                           Ko`rish{" "}
                           <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </button>
                       </Link>
+                    </td>
+                    <td className="d-flex justify-content-center align-items-center">
+                        <DownloadObject employee={employee} />
+                        <button title="Lavozim yo`riqnomasi"><i class="fa-solid fa-person-chalkboard"></i></button>
+                        <button title="Hisobotlarini yuklab olish"><i class="fa-solid fa-file-pen"></i></button>
                     </td>
                     <td>{employee.phone}</td>
                     <td>{employee.role}</td>

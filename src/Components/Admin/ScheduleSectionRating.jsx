@@ -156,7 +156,7 @@ function RatingMyAdmins() {
         style={{ cursor: "pointer" }}
       >
         <td className="history-name">
-          <i className="fa-solid fa-user"></i> {i.beginnerName}
+          <i className="fa-solid fa-user"></i> {i.beginnerName} - {i?.degree}
         </td>
         <td className="history-date">
           <i className="fa-solid fa-calendar-days"></i> {i.startedAt.slice(0, 10)}

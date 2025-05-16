@@ -261,6 +261,8 @@ function ScheduleNew() {
       navigate("/department/schedule/history");
     } else if (myRole === "hr") {
       navigate("/hr/schedule/history");
+    } else if (myRole === "lang") {
+      navigate("/lang/schedule/history");
     }
   };
 

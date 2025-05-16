@@ -37,6 +37,8 @@ const [myRole, setMyRole] = useState([]);
             navigate("/department")
           }else if(data.user.role === "hr"){
             navigate("/hr")
+          }else if(data.user.role === "lang"){
+            navigate("/lang")
           }else if(data.user.role === "boss"){
             navigate("/boss")
           }else if(data.user.role === "commission"){

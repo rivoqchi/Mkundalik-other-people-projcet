@@ -145,6 +145,8 @@ const CalendarComponent = () => {
       setRoute("/department");
     } else if (role === "hr") {
       setRoute("/hr");
+    } else if (role === "lang") {
+      setRoute("/lang");
     } else if (role === "boss") {
       setRoute("/boss");
     } else if (role === "commission") {
