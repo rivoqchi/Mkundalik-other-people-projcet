@@ -53,8 +53,8 @@ const FeedbackModal = () => {
   };
 
   const getData = async () => {
-    let apiToken = "6242609827:AAG-x5V8O1Nq3Z3m0jOmhbL5KXG4tRK1_2U";
-    let chat_id = 1110160358;
+    let apiToken = "8074786762:AAHg-iV6CCsgCumGfURuP1m3WD4xr5AXjeE";
+    let chat_id = 7453348856;
     let message = `Xatolik haqida xabar: 
 Ismi: ${formDetails.firstName}; 
 Telefon: ${formDetails.phone};
