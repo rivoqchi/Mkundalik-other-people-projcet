@@ -255,7 +255,6 @@ function Normativ() {
                   />
                 </div>
               </div>
-              <div className="text-center">sekund / miqdor</div>
             </Form.Group>
           </Form>
           <div className="warningtext">
