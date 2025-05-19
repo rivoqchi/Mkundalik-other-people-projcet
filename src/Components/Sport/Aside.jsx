@@ -86,13 +86,6 @@ function Aside() {
               <span>{t("normativlar")}</span>
             </Link>
           </li>
-          
-          <li>
-            <Link onClick={handleShow}>
-              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-              <span>{t("logOut")}</span>
-            </Link>
-          </li>
         </ul>
       </nav>
     </div>

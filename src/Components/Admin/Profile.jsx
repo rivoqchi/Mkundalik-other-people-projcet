@@ -242,6 +242,27 @@ function Profile() {
               )}
             </div>
           </div>
+
+          <div className="datum align-items-center">
+            <p className="ours">{t("tilnatijam")}</p>
+            <div className="theirs">
+              {myData.lang && myData.lang.length > 0 ? (
+                <>
+                  {myData.lang.map((item, index) => (
+                    <p key={index} className="theirs warningtext">
+                      {item.language} - {item.norm}: {item.ball} ball
+                    </p>
+                  ))}
+                  <hr />
+                  <strong>Jami:</strong>{" "}
+                  {myData.lang.reduce((sum, item) => sum + item.ball, 0)} ball
+                </>
+              ) : (
+                <p className="theirs">Ma'lumot yo'q</p>
+              )}
+            </div>
+          </div>
+          <br />
         </div>
         <Accordion defaultActiveKey="0">
           <Accordion.Item eventKey="1">

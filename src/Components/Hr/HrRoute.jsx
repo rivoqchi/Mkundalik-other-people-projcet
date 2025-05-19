@@ -21,6 +21,7 @@ import ScheduleRate from '../Admin/ScheduleRate';
 import AllUsers from '../SuperAdmin/AllUsers';
 import PleaseInstruction from '../Asking/PleaseInstruction'
 import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
+import Footer from '../Footer';
 function DepartmentRoute() {
   return (
     <div className="container-fluid">
@@ -58,6 +59,8 @@ function DepartmentRoute() {
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
+            <Footer/>
+
           </div>
         </div>
       </div>

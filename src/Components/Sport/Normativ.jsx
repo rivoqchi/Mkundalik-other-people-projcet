@@ -97,7 +97,7 @@ function Normativ() {
     <>
       {loading && <LoadingScreen loading={true} />}
 
-    <div className="normative-container">
+    <div className="normative-container m100">
       <div className="header">
         <h2>Normativlar</h2>
         <Button

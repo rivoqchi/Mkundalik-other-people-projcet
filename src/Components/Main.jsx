@@ -77,10 +77,7 @@ function Main() {
           </a>
           <LangSelect />
           
-          <Link onClick={() => setIsOpen(false)} to="/login">
-                <button className="login-btn">{t("privatecab")}</button>
-              </Link>
-          {/* {isSignedIn ? (
+          {isSignedIn ? (
             <Link onClick={() => setIsOpen(false)} to={`${route}/dashboard`}>
                 <button className="login-btn">{t("privatecab")}</button>
                 </Link>
@@ -88,7 +85,7 @@ function Main() {
             <Link onClick={() => setIsOpen(false)} to="/login">
               <button className="login-btn">{t("privatecab")}</button>
             </Link>
-          )} */}
+          )}
         </div>
 
         <div className="hamburger" onClick={toggleMenu}>
@@ -101,18 +98,15 @@ function Main() {
             <h1>MKUNDALIK.UZ</h1>
             <p>{t("axtizim")}
             </p>
-              <Link onClick={() => setIsOpen(false)} to="/login">
-                <button className="login-btn">{t("privatecab")}</button>
-              </Link>
-            {/* {isSignedIn ? (
+            {isSignedIn ? (
               <Link onClick={() => setIsOpen(false)} to={`${route}/dashboard`}>
                 <button className="login-btn">{t("privatecab")}</button>
               </Link>
             ) : (
               <Link onClick={() => setIsOpen(false)} to="/login">
-                <button className="login-btn">{t("privatecab")}h</button>
+                <button className="login-btn">{t("privatecab")}</button>
               </Link>
-            )} */}
+            )}
           </header>
         </div>
         <div className="col-12 col-md-6 text-center w100">

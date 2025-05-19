@@ -241,8 +241,8 @@ function Xodimlar() {
                     </td>
                     <td className="d-flex justify-content-center align-items-center">
                         <DownloadObject employee={employee} />
-                        <button title="Lavozim yo`riqnomasi"><i class="fa-solid fa-person-chalkboard"></i></button>
-                        <button title="Hisobotlarini yuklab olish"><i class="fa-solid fa-file-pen"></i></button>
+                        <button className="hisobotkorish2" title="Lavozim yo`riqnomasi"><i class="fa-solid fa-person-chalkboard"></i></button>
+                        <button className="hisobotkorish2" title="Hisobotlarini yuklab olish"><i class="fa-solid fa-file-pen"></i></button>
                     </td>
                     <td>{employee.phone}</td>
                     <td>{employee.role}</td>

@@ -38,7 +38,7 @@ function Xodimlar() {
       setLoading2(false);
 
       // Agar sport.length >= 2 bo‘lsa, setLimitedNorm(true), aks holda false
-      setLimitedNorm(data.user.sport && data.user.sport.length >= 2);
+      setLimitedNorm(data.user.lang && data.user.lang.length >= 2);
     } catch (err) {
       setError("Xodimlarni yuklashda xatolik yuz berdi.");
       setLoading2(false);
@@ -80,9 +80,10 @@ function Xodimlar() {
     setBall(calculatedBall);
 
     try {
-      await axios.put(`${API}/auth/score/sport/${selectedEmployee?._id}`, {
+      await axios.put(`${API}/auth/score/lang/${selectedEmployee?._id}`, {
         ball: calculatedBall,
         norm: selectedNorm.name,
+        language: selectedNorm.language,
       });
       alert("Baholash muvaffaqiyatli amalga oshirildi!");
       handleClose();
@@ -134,14 +135,14 @@ function Xodimlar() {
       console.error("Error fetching complexes:", err);
     }
   };
-  const handleDeleteSport = async (norm) => {
+  const handleDeleteLanguage = async (norm) => {
     try {
       setLoading2(true)
-      await axios.delete(`${API}/auth/score/sport/delete/${selectedEmployee._id}`, {
+      await axios.delete(`${API}/auth/score/lang/delete/${selectedEmployee._id}`, {
         data: { norm },
       });
       const { data } = await axios.get(`${API}/auth/getuser/${selectedEmployee._id}`);
-      setLimitedNorm(data.user.sport && data.user.sport.length >= 2);
+      setLimitedNorm(data.user.lang && data.user.lang.length >= 2);
       setSelectedEmployee(data.user); // Yangilash
       setLoading2(false)
     } catch (error) {
@@ -152,8 +153,8 @@ function Xodimlar() {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get(`${API}/sport/getall`);
-      setAllNormatives(data.normatives);
+      const { data } = await axios.get(`${API}/lang/getall`);
+      setAllNormatives(data.tests);
     } catch (err) {
       setError("Xodimlarni yuklashda xatolik yuz berdi.");
     } finally {
@@ -308,7 +309,7 @@ function Xodimlar() {
                 {selectedEmployee.department}
               </p>
               <hr />
-              {selectedEmployee.sport && selectedEmployee.sport.length > 0 ? (
+              {selectedEmployee.lang && selectedEmployee.lang.length > 0 ? (
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead>
                     <tr style={{ backgroundColor: "#333", color: "white" }}>
@@ -319,7 +320,7 @@ function Xodimlar() {
                     </tr>
                   </thead>
                   <tbody>
-                    {selectedEmployee.sport.map((item, index) => (
+                    {selectedEmployee.lang.map((item, index) => (
                       <tr
                         key={index}
                         style={{
@@ -332,7 +333,7 @@ function Xodimlar() {
                         <td style={tdStyle}>{item.ball}</td>
                         <td style={tdStyle}>
                           <button
-                            onClick={() => handleDeleteSport(item.norm)}
+                            onClick={() => handleDeleteLanguage(item.norm)}
                             style={{
                               background: "red",
                               color: "white",

@@ -4,7 +4,7 @@ import { API } from "../../config";
 import { Modal, Button, Table, Form } from "react-bootstrap";
 import notfound from "../Images/notfound.png";
 import LoadingScreen from "../Additional/LoadingScreen";
-function Normativ() {
+function Test() {
   const [allNormatives, setAllNormatives] = useState([]);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
@@ -99,7 +99,7 @@ function Normativ() {
 
     <div className="normative-container mh100">
       <div className="header">
-        <h2>Normativlar</h2>
+        <h2>Testlar</h2>
         <Button
           variant="success"
           className="defaultbtn"
@@ -298,4 +298,4 @@ function Normativ() {
   );
 }
 
-export default Normativ;
+export default Test;

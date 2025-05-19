@@ -29,6 +29,7 @@ import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import Footer from '../Footer';
+import Test from './Test';
 function LangRoute() {
   return (
     <div className="container-fluid">
@@ -44,7 +45,7 @@ function LangRoute() {
         {/* O'ng taraf: Navbar va asosiy content */}
         <div className="col-10 overflow-y-auto h-100vh navv d-flex flex-column p-0">
           <div className="bg-always pt-5 flex-grow-1">
-          <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
+          <Navbarr />
             <Routes>
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
@@ -65,6 +66,7 @@ function LangRoute() {
               <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
               <Route path="/sections/edit/:id" exact element={<EditSection />} />
               <Route path="/sections/add" exact element={<NewSection />} />
+              <Route path="/test" exact element={<Test />} />
               <Route path="/profile" exact element={<Profile />} />
               <Route path="/employees" exact element={<Xodimlar />} />
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />

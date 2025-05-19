@@ -77,7 +77,7 @@ function Aside() {
           <li className={location.pathname === '/lang/rating/list' ? 'active' : ''}>
             <Link to="/lang/rating/list">
               <i className="fa-solid fa-medal"></i>
-              <span>{t("xodimlarkorsatkichlari")}</span>
+              <span>{t("xodimlartilkorsatkichlari")}</span>
             </Link>
           </li>
           <li className={location.pathname === '/lang/standarts' ? 'active' : ''}>
@@ -86,11 +86,10 @@ function Aside() {
               <span>{t("normativlar")}</span>
             </Link>
           </li>
-          
-          <li>
-            <Link onClick={handleShow}>
-              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-              <span>{t("logOut")}</span>
+          <li className={location.pathname === '/lang/test' ? 'active' : ''}>
+            <Link to="/lang/test">
+            <i class="fa-regular fa-square-check"></i>
+              <span>{t("testyaratish")}</span>
             </Link>
           </li>
         </ul>
