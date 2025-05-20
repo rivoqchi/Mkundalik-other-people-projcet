@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Modal, Button, Spinner, Alert, Form } from "react-bootstrap";
 import { API } from "../../config";
+import { Modal, Button, Spinner, Alert, Form } from "react-bootstrap";
 import loadinggif from "../Images/loading.gif";
 function Xodimlar() {
   const [searchTerm, setSearchTerm] = useState("");

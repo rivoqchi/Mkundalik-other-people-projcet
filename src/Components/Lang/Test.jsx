@@ -4,20 +4,27 @@ import { Modal, Button, Table, Form } from "react-bootstrap";
 import axios from "axios";
 import notfound from "../Images/notfound.png";
 import LoadingScreen from "../Additional/LoadingScreen";
-
+import Send from "./Send";
 import { API } from "../../config";
 function TestCreator() {
   const [loading, setLoading] = useState(false);
   const [selectedNormativeId, setSelectedNormativeId] = useState("");
-    const [language, setLanguage] = useState("");
-    const [allTests, setAllTests] = useState([]);
-      const handleShow = () => setShow2(true);
-      const [show2, setShow2] = useState(false);
-      const handleClose2 = () => setShow2(false);
+  const [language, setLanguage] = useState("");
+  const [allTests, setAllTests] = useState([]);
+  const handleShow = () => setShow2(true);
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => setShow2(false);
+  const [selectedTestId, setSelectedTestId] = useState("");
 
-      const handleShow5 = () => setShow5(true);
-      const [show5, setShow5] = useState(false);
-      const handleClose5 = () => setShowModal5(false);
+  const handleShow5 = (testId) => {
+    setSelectedTestId(testId); // testId ni state ga saqlash
+    setShowModal5(true); // Modalni ochish
+  };
+  const [show5, setShow5] = useState(false);
+
+  const handleClose5 = () => {
+    setShowModal5(false); // Modalni yopish
+  };
   const [showModal, setShowModal] = useState(false);
   const [showModal5, setShowModal5] = useState(false);
   const {
@@ -47,13 +54,13 @@ function TestCreator() {
   const onSubmit = async (data) => {
     const isValid = await trigger();
     if (!isValid) return;
-  
+
     // Language tanlanganligini tekshirish
     if (!language) {
       alert("Iltimos, tilni tanlang!");
       return;
     }
-  
+
     // Validatsiya: Har bir savolda faqat bitta to‘g‘ri javob bo‘lishi kerak
     for (let i = 0; i < data.questions.length; i++) {
       const correctOptions = data.questions[i].options.filter(
@@ -66,7 +73,7 @@ function TestCreator() {
         return;
       }
     }
-  
+
     try {
       // localStorage dan author olib, data ichiga qo‘shamiz
       const author = window.localStorage.getItem("fullName");
@@ -74,9 +81,9 @@ function TestCreator() {
         ...data,
         author,
         language, // Language qiymatini qo'shish
-      };  
+      };
       await axios.post(`${API}/lang/test/add`, finalData);
-  
+
       alert("Test muvaffaqiyatli saqlandi!");
       setShowModal(false);
     } catch (error) {
@@ -87,7 +94,7 @@ function TestCreator() {
     try {
       setLoading(true);
       const { data } = await axios.get(`${API}/lang/test/getall`);
-      
+
       setAllTests(data.allTests || []);
       setLoading(false);
     } catch (err) {
@@ -95,24 +102,24 @@ function TestCreator() {
       setLoading(false);
     }
   };
-    useEffect(() => {
-      getAllTests();
-    }, []);
+  useEffect(() => {
+    getAllTests();
+  }, []);
 
-    const deleteNormative = async (id) => {
-      try {
-        await axios.delete(`${API}/lang/test/delete/${id}`);
-        getAllTests();
-      } catch (err) {
-        console.log("Testni o'chirishda xatolik yuz berdi.");
-        setLoading(false);
-      }
-    };
+  const deleteNormative = async (id) => {
+    try {
+      await axios.delete(`${API}/lang/test/delete/${id}`);
+      getAllTests();
+    } catch (err) {
+      console.log("Testni o'chirishda xatolik yuz berdi.");
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="mh100">
-            {loading && <LoadingScreen loading={true} />}
-      
+      {loading && <LoadingScreen loading={true} />}
+
       <Button variant="primary" onClick={() => setShowModal(true)}>
         + Yangi Test
       </Button>
@@ -135,7 +142,11 @@ function TestCreator() {
                   <td>{index + 1}</td>
                   <td>{norm.author}</td>
                   <td>{norm.language}</td>
-                  <td>{norm.questions && norm.questions.length > 0 ? norm.questions[0].questionText : "-"}</td>
+                  <td>
+                    {norm.questions && norm.questions.length > 0
+                      ? norm.questions[0].questionText
+                      : "-"}
+                  </td>
                   <td>{norm.questions.length}</td>
                   <td>
                     <Button
@@ -143,14 +154,21 @@ function TestCreator() {
                       size="sm"
                       onClick={() => {
                         setSelectedNormativeId(norm._id); // O'chirish uchun ID saqlash
-                        handleShow(); // Modalni ochish
+                        handleShow(); // Modalni ochish;
                       }}
-                    >
+                      >
                       O‘chirish
                     </Button>
-                    <Button size="sm" variant="primary" onClick={() => setShowModal5(true)}>
-        Yuborish
-      </Button>
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      onClick={() => {
+                        setShowModal5(true);
+                        setSelectedTestId(norm._id); // testId ni saqlash
+                      }}
+                    >
+                      Yuborish
+                    </Button>
                   </td>
                 </tr>
               ))
@@ -173,29 +191,27 @@ function TestCreator() {
         <Modal.Body>
           <div className="text-center d-flex align-items-center justify-content-center mb-3">
             <Form.Check
-                              type="radio"
-                              label="Rus"
-                              name="normativeType"
-                              value="Rus"
-                              checked={language === "Rus"}
-                              onChange={(e) => setLanguage(e.target.value)}
-                            />
-                            <Form.Check
-                              type="radio"
-                              label="Ingliz"
-                              name="normativeType"
-                              value="Ingliz"
-                              checked={language === "Ingliz"}
-                              onChange={(e) => setLanguage(e.target.value)}
-                            />
+              type="radio"
+              label="Rus"
+              name="normativeType"
+              value="Rus"
+              checked={language === "Rus"}
+              onChange={(e) => setLanguage(e.target.value)}
+            />
+            <Form.Check
+              type="radio"
+              label="Ingliz"
+              name="normativeType"
+              value="Ingliz"
+              checked={language === "Ingliz"}
+              onChange={(e) => setLanguage(e.target.value)}
+            />
           </div>
           <Form onSubmit={handleSubmit(onSubmit)}>
             {fields.map((question, qIndex) => (
               <div key={question.id} className="mb-4 p-3 border rounded">
                 <Form.Group className="mb-2">
-                  <Form.Label>
-                    Savol {qIndex + 1}
-                  </Form.Label>
+                  <Form.Label>Savol {qIndex + 1}</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Savol matnini kiriting"
@@ -295,14 +311,14 @@ function TestCreator() {
                   }}
                 />
                 <div className="text-end">
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => remove(qIndex)}
-                  className="mt-2"
-                >
-                  Savolni o`chirish <i class="fa-solid fa-trash"></i>
-                </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => remove(qIndex)}
+                    className="mt-2"
+                  >
+                    Savolni o`chirish <i class="fa-solid fa-trash"></i>
+                  </Button>
                 </div>
               </div>
             ))}
@@ -330,48 +346,34 @@ function TestCreator() {
       </Modal>
 
       <Modal centered show={show2} onHide={handleClose2}>
-              <Modal.Header closeButton>
-                <Modal.Title>Testni o‘chirish</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>Ushbu testni o‘chirmoqchimisiz?</Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose2}>
-                  Yopish
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => {
-                    deleteNormative(selectedNormativeId); // O‘chirish
-                    handleClose2(); // Modalni yopish
-                  }}
-                >
-                  O‘chirish
-                </Button>
-              </Modal.Footer>
-            </Modal>
-
-
+        <Modal.Header closeButton>
+          <Modal.Title>Testni o‘chirish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Ushbu testni o‘chirmoqchimisiz?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose2}>
+            Yopish
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              deleteNormative(selectedNormativeId); // O‘chirish
+              handleClose2(); // Modalni yopish
+            }}
+          >
+            O‘chirish
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       <Modal size="lg" centered show={showModal5} onHide={handleClose5}>
-              <Modal.Header closeButton>
-                <Modal.Title>Yuborish</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>Ushbu testni o‘chirmoqchimisiz?</Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose5}>
-                  Yopish
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => {
-                    deleteNormative(selectedNormativeId);
-                    handleClose5();
-                  }}
-                >
-                  O‘chirish
-                </Button>
-              </Modal.Footer>
-            </Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>Yuborish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Send testId={selectedTestId} />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

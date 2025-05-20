@@ -28,6 +28,9 @@ import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import Footer from '../Footer';
+import Languages from './Languages';
+import LangEn from './LangEn';
+import LangRu from './LangRu';
 function AdminRoute() {
   return (
     <div className="container-fluid">
@@ -46,6 +49,10 @@ function AdminRoute() {
           <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
             <Routes>
               <Route path="/about" exact element={<Info />} />
+              <Route path="/languages" exact element={<Languages />} />
+              <Route path="/lang/ru" exact element={<LangRu />} />
+              <Route path="/lang/en" exact element={<LangEn />} />
+              <Route path="/languages" exact element={<Languages />} />
               <Route path="/about/news" exact element={<News />} />
               <Route path="/about/statistics" exact element={<UmumiyStat />} />
               <Route path="/about/application" exact element={<Application />} />

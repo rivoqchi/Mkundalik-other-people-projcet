@@ -242,7 +242,7 @@ function Xodimlar() {
                       </Link>
                     </td>
                     <td className="d-flex justify-content-center align-items-center">
-                        <DownloadObject employee={employee} />
+                        <DownloadObject />
                         <LavozimDownload employeeId={employee._id} />
                         <AllSchedulesDownload employee={employee._id} />
                     </td>

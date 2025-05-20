@@ -17,6 +17,9 @@ import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import Footer from '../Footer';
+import Languages from '../Admin/Languages';
+import LangRu from '../Admin/LangRu';
+import LangEn from '../Admin/LangEn';
 
 function EmployeeRoute() {
   return (
@@ -35,6 +38,11 @@ function EmployeeRoute() {
           <div className="bg-always pt-5 flex-grow-1">
           <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
             <Routes>
+              
+            <Route path="/languages" exact element={<Languages />} />
+              <Route path="/lang/ru" exact element={<LangRu />} />
+              <Route path="/lang/en" exact element={<LangEn />} />
+              
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
               <Route path="/about/statistics" exact element={<UmumiyStat />} />

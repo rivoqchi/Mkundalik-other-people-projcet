@@ -95,6 +95,18 @@ function Aside() {
             </Link>
           </li>
         </ul>
+                    <li
+                      className={
+                        location.pathname === "/complex/languages" ? "active" : ""
+                      }
+                    >
+                      <Link to="/complex/languages">
+                        <i class="fa-solid fa-language"></i>
+                        <span>
+                          Chet tillari <span className="newtop">New</span>
+                        </span>
+                      </Link>
+                    </li>
       </nav>
     </div>
     <Modal centered show={show} onHide={handleClose}>

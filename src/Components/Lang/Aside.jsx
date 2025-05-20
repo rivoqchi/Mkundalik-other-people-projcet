@@ -92,6 +92,18 @@ function Aside() {
               <span>{t("testyaratish")}</span>
             </Link>
           </li>
+                                <li
+                                  className={
+                                    location.pathname === "/lang/languages" ? "active" : ""
+                                  }
+                                >
+                                  <Link to="/lang/languages">
+                                    <i class="fa-solid fa-language"></i>
+                                    <span>
+                                      Chet tillari <span className="newtop">New</span>
+                                    </span>
+                                  </Link>
+                                </li>
         </ul>
       </nav>
     </div>

@@ -61,6 +61,18 @@ function Aside() {
               <span>Xodimlar</span>
             </Link>
           </li>
+                                <li
+                                  className={
+                                    location.pathname === "/hr/languages" ? "active" : ""
+                                  }
+                                >
+                                  <Link to="/hr/languages">
+                                    <i class="fa-solid fa-language"></i>
+                                    <span>
+                                      Chet tillari <span className="newtop">New</span>
+                                    </span>
+                                  </Link>
+                                </li>
         </ul>
       </nav>
     </div>

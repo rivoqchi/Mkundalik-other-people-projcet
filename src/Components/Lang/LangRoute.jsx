@@ -30,6 +30,9 @@ import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import Footer from '../Footer';
 import Test from './Test';
+import Languages from '../Admin/Languages';
+import LangRu from '../Admin/LangRu';
+import LangEn from '../Admin/LangEn';
 function LangRoute() {
   return (
     <div className="container-fluid">
@@ -47,6 +50,11 @@ function LangRoute() {
           <div className="bg-always pt-5 flex-grow-1">
           <Navbarr />
             <Routes>
+              
+            <Route path="/languages" exact element={<Languages />} />
+              <Route path="/lang/ru" exact element={<LangRu />} />
+              <Route path="/lang/en" exact element={<LangEn />} />
+
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
               <Route path="/about/statistics" exact element={<UmumiyStat />} />

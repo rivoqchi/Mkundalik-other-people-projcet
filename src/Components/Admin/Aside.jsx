@@ -114,6 +114,32 @@ function Aside() {
                 <span>{t("xodimlar")}</span>
               </Link>
             </li>
+
+            <li
+              className={
+                location.pathname === "/admin/languages" ? "active" : ""
+              }
+            >
+              <Link to="/admin/languages">
+                <i class="fa-solid fa-language"></i>
+                <span>
+                  Chet tillari <span className="newtop">New</span>
+                </span>
+              </Link>
+            </li>
+
+            {/* <li
+              className={
+                location.pathname === "/admin/ict" ? "active" : ""
+              }
+            >
+              <Link to="/admin/ict">
+              <i class="fa-solid fa-computer"></i>
+                <span>
+                  Improve ICT <span className="newtop">New</span>
+                </span>
+              </Link>
+            </li> */}
           </ul>
         </nav>
       </div>
@@ -124,10 +150,10 @@ function Aside() {
         <Modal.Body>{t("profildanchiqmoqchimisiz")}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-          {t("bekorqilish")}
+            {t("bekorqilish")}
           </Button>
           <Button variant="danger" onClick={logout}>
-          {t("logOut")}
+            {t("logOut")}
           </Button>
         </Modal.Footer>
       </Modal>

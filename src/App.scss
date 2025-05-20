@@ -2993,3 +2993,161 @@ input:checked + .slider:before {
 }
 // 
 
+/* Asosiy konteyner */
+.language-selector-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  background: linear-gradient(135deg, #e0eafc, #cfdef3);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.7s ease;
+}
+
+/* Title */
+.language-selector-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 2px #d4d4d4;
+}
+
+/* Button group */
+.language-button-group {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Tugma */
+.language-button {
+  padding: 1rem 2.5rem;
+  font-size: 1.25rem;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* Rus tili tugmasi */
+.rus-lang-button {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+
+/* Ingliz tili tugmasi */
+.eng-lang-button {
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
+}
+
+/* Hover animatsiya */
+.language-button:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+/* Bosilganda */
+.language-button:active {
+  transform: scale(0.97);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+}
+
+/* Kirish animatsiyasi */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.enpage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 65vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.08);
+  animation: fadeInEn 0.7s ease;
+}
+
+.enpage-title {
+  font-size: 2.4rem;
+  color: #333;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(200, 200, 200, 0.4);
+}
+
+.enpage-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* Umumiy tugma */
+.enpage-button {
+  padding: 1.1rem 2.8rem;
+  font-size: 1.25rem;
+  border: none;
+  border-radius: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Tugmalar ranglari */
+.listening-button {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+}
+
+.reading-button {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+
+.speaking-button {
+  background: linear-gradient(135deg, #43cea2, #185a9d);
+}
+
+.writing-button {
+  background: linear-gradient(135deg, #ff4e50, #f9d423);
+}
+
+/* Hover effekt */
+.enpage-button:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Click effekti */
+.enpage-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* Animatsiya */
+@keyframes fadeInEn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
