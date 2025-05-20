@@ -56,16 +56,16 @@ function SeeSelectedSchedules() {
     <div className="userdata">
       <div className="row">
         <div className="col-12 userdatadiv col-md-6">
-        <p><i class="fa-solid fa-user-tie"></i> {mySectionBeginner.name}</p>
-        <p><i class="fa-solid fa-address-card"></i> {mySectionBeginner.degree}</p>
-        <p><i class="fa-solid fa-phone-volume"></i> {mySectionBeginner.phone?.length > 5 ? "+998*****" +mySectionBeginner.phone.slice(9, 13) : mySectionBeginner.phone}</p>
-        <p><i class="fa-solid fa-briefcase"></i> {mySectionBeginner.speciality}</p>
+        <p><i className="fa-solid fa-user-tie"></i> {mySectionBeginner.name}</p>
+        <p><i className="fa-solid fa-address-card"></i> {mySectionBeginner.degree}</p>
+        <p><i className="fa-solid fa-phone-volume"></i> {mySectionBeginner.phone?.length > 5 ? "+998*****" +mySectionBeginner.phone.slice(9, 13) : mySectionBeginner.phone}</p>
+        <p><i className="fa-solid fa-briefcase"></i> {mySectionBeginner.speciality}</p>
         </div>
         <div className="col-12 userdatadiv col-md-6">
-        <p><i class="fa-solid fa-users-rectangle"></i> {mySectionBeginner.complex}</p>
-        <p><i class="fa-solid fa-users-line"></i> {mySectionBeginner.department}</p>
-        <p><i class="fa-solid fa-layer-group"></i> {mySectionBeginner.section}</p>
-        <p><i class="fa-solid fa-house"></i> {mySectionBeginner.address?.length > 5 ? mySectionBeginner.address.slice(0, 20) + "*****" : mySectionBeginner.address}</p>
+        <p><i className="fa-solid fa-users-rectangle"></i> {mySectionBeginner.complex}</p>
+        <p><i className="fa-solid fa-users-line"></i> {mySectionBeginner.department}</p>
+        <p><i className="fa-solid fa-layer-group"></i> {mySectionBeginner.section}</p>
+        <p><i className="fa-solid fa-house"></i> {mySectionBeginner.address?.length > 5 ? mySectionBeginner.address.slice(0, 20) + "*****" : mySectionBeginner.address}</p>
         </div>
       </div>
     </div>

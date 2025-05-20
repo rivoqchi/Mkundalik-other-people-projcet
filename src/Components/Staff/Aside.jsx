@@ -34,7 +34,7 @@ function Aside() {
     <>
     <div className="aside">
       <div className="aside-logo">
-      <i class="fa-solid fa-user"></i>
+      <i className="fa-solid fa-user"></i>
         <h5>{window.localStorage.getItem("fullName")}</h5>
         <p>{window.localStorage.getItem("degree")}</p>
       </div>

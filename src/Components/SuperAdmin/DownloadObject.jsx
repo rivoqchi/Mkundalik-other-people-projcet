@@ -80,7 +80,7 @@ console.log(employee);
   return (
     <div>
       <button onClick={generateDocx} title="mkundalik data" className="hisobotkorish2">
-      <i class="fa-solid fa-download"></i>
+      <i className="fa-solid fa-download"></i>
       </button>
     </div> 
   );

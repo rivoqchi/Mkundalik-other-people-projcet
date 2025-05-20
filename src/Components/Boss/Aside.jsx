@@ -47,7 +47,7 @@ function Aside() {
         <ul>
         <li className={location.pathname === '/boss/rating/ours' ? 'active' : ''}>
             <Link disabled to="/boss/rating/ours">
-            <i class="fa-solid fa-chart-pie"></i>
+            <i className="fa-solid fa-chart-pie"></i>
             <span>{t("raxbarnazoratidagilar")}</span>
             </Link>
           </li>
@@ -59,7 +59,7 @@ function Aside() {
           </li>
           <li className={location.pathname === '/boss/about/statistics' ? 'active' : ''}>
                       <Link to="/boss/about/statistics">
-                        <i class="fa-solid fa-info"></i>
+                        <i className="fa-solid fa-info"></i>
                         <span>{t("statistika")}</span>
                       </Link>
                     </li>

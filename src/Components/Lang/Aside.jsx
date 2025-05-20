@@ -88,7 +88,7 @@ function Aside() {
           </li>
           <li className={location.pathname === '/lang/test' ? 'active' : ''}>
             <Link to="/lang/test">
-            <i class="fa-regular fa-square-check"></i>
+            <i className="fa-regular fa-square-check"></i>
               <span>{t("testyaratish")}</span>
             </Link>
           </li>

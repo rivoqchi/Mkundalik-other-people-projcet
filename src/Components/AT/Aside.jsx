@@ -48,7 +48,7 @@ function Aside() {
         <ul>
           <li className={location.pathname === '/at/profile' ? 'active' : ''}>
             <Link to="/at/profile">
-            <i class="fa-solid fa-chart-pie"></i>
+            <i className="fa-solid fa-chart-pie"></i>
               <span>{t("yangixodiiim")}</span>
             </Link>
           </li>         

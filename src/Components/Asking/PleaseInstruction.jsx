@@ -74,7 +74,7 @@ function PleaseInstruction() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            <i class="fa-solid fa-triangle-exclamation"></i> Lavozim
+            <i className="fa-solid fa-triangle-exclamation"></i> Lavozim
             yo`riqnomangizni yuklang:
           </Modal.Title>
         </Modal.Header>

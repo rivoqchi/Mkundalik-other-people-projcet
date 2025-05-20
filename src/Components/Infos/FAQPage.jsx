@@ -73,7 +73,7 @@ const FAQPage = () => {
         <Accordion.Item eventKey="9">
           <Accordion.Header>Bahoga nisbatan e'tirozlarni ko`rib chiqish jarayoni qanday?</Accordion.Header>
           <Accordion.Body className='faqbody'>
-          Boshlig`ingiz tomonidan qo`yilgan bahoga nisbatan e'tirozingiz bo`lsa kundalik hisobotning pastki qismida "<i class="fa-solid fa-triangle-exclamation"></i>" belgisi ustiga bosish kerak. E'tirozingizni batafsil bayon qilganingizdan so`ng, murojaatingiz maxsus komissiya tomonidan ko`rib chiqiladi.
+          Boshlig`ingiz tomonidan qo`yilgan bahoga nisbatan e'tirozingiz bo`lsa kundalik hisobotning pastki qismida "<i className="fa-solid fa-triangle-exclamation"></i>" belgisi ustiga bosish kerak. E'tirozingizni batafsil bayon qilganingizdan so`ng, murojaatingiz maxsus komissiya tomonidan ko`rib chiqiladi.
           </Accordion.Body>
         </Accordion.Item>
 

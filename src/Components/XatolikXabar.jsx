@@ -38,7 +38,7 @@ function XatolikXabar() {
               
               <Form.Label><a className='pointer' href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a></Form.Label>
               <br />
-              <Form.Label><i class="fa-solid fa-phone-volume"></i> 53-89</Form.Label>
+              <Form.Label><i className="fa-solid fa-phone-volume"></i> 53-89</Form.Label>
               
             </Form.Group>
           </Form>

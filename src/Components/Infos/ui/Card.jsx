@@ -198,7 +198,7 @@ const Card = () => {
         <div className="col-12 col-md-6">
           <div className="d-flex icondarkblue statcard align-items-center justify-content-evenly">
             <div className="iconimiz">
-            <i class="fa-solid normativicon fa-volleyball"></i>
+            <i className="fa-solid normativicon fa-volleyball"></i>
             </div>
             <div className="card-boddy">
               <h3 className="card-title">

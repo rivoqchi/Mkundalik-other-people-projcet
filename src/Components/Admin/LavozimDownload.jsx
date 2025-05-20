@@ -6,7 +6,7 @@ import Loading from "../Loading";
 import Alert from "../Additional/Alert";
 import { Modal, Button } from "react-bootstrap";
 
-function LavozimYoriqnomasi() {
+function LavozimYoriqnomasi({ employeeId }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [viewingFileId, setViewingFileId] = useState(null);
@@ -15,12 +15,11 @@ function LavozimYoriqnomasi() {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false); // O'chirish uchun modal
     const [fileToDelete, setFileToDelete] = useState(null); // O'chirilishi kerak bo'lgan fayl ID
-    const myId = window.localStorage.getItem("user_id");
-
+    
     useEffect(() => {
         const getMyData = async () => {
             try {
-                const filesResponse = await axios.get(`${API}/cloud/getdocs/${myId}`);
+                const filesResponse = await axios.get(`${API}/cloud/getdocs/${employeeId}`);
                 
                 if (Array.isArray(filesResponse.data) && filesResponse.data.length > 0) {
                     setUploadedFiles(filesResponse.data);
@@ -47,12 +46,12 @@ function LavozimYoriqnomasi() {
         setLoading(true);
         const formData = new FormData();
         formData.append("file", selectedFile);
-        formData.append("myId", myId);
+        formData.append("myId", employeeId);
 
         try {
             const { data } = await axios.post(`${API}/cloud/upload`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
-                myId
+                employeeId
             });
             setUploadedFiles([{ fileUrl: data.fileUrl }]);
             setShowModal(false);
@@ -107,26 +106,20 @@ function LavozimYoriqnomasi() {
             
             {/* Agar fayl bo‘lmasa yuklash tugmasi chiqadi */}
             {uploadedFiles.length === 0 && (
-                <Button variant="primary" onClick={() => setShowModal(true)}>
-                    + Yuklash
+                <Button variant="primary" title="Lavozim yo`riqnomasini yuklash" onClick={() => setShowModal(true)}>
+                    +
                 </Button>
             )}
 
             {uploadedFiles.length > 0 && (
                 <div>
-                    <Button
-                        variant="success"
+                    <button
+                        className="hisobotkorish2"
+                        title="Lavozim yo`riqnomasi"
                         onClick={() => handleDownload(uploadedFiles[0]._id)}
                     >
-                        Yo‘riqnomani yuklab olish
-                    </Button>
-
-                    <Button onClick={() => {
-                        setFileToDelete(uploadedFiles[0]._id); // O'chirish uchun fayl ID ni saqlash
-                        setShowDeleteModal(true); // Modalni ochish
-                    }} className="mx-3" variant="danger">
-                        <i className="fa-solid fa-trash"></i>
-                    </Button>
+                        <i className="fa-solid fa-person-chalkboard"></i>
+                    </button>
                 </div>
             )}
 

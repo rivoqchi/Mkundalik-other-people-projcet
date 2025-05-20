@@ -123,7 +123,7 @@ function Main() {
         <div className="row howdoesitwork align-items-center">
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-1"></i> {t("howdoesitworkdesc2")}
+              <i className="fa-solid fa-1"></i> {t("howdoesitworkdesc2")}
             </h2>
             <p>
             {t("howdoesitworkdesc3")}.
@@ -140,7 +140,7 @@ function Main() {
           </div>
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-2"></i> {t("howdoesitworkdesc4")}
+              <i className="fa-solid fa-2"></i> {t("howdoesitworkdesc4")}
             </h2>
             <p>
             {t("howdoesitworkdesc5")}.
@@ -151,7 +151,7 @@ function Main() {
         <div className="row howdoesitwork align-items-center">
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-3"></i> {t("howdoesitworkdesc6")}
+              <i className="fa-solid fa-3"></i> {t("howdoesitworkdesc6")}
             </h2>
             <p>
             {t("howdoesitworkdesc7")}.
@@ -168,7 +168,7 @@ function Main() {
           </div>
           <div className="col-12 col-md-6 align-items-center">
             <h2 className="how22">
-              <i class="fa-solid fa-4"></i> {t("howdoesitworkdesc8")}
+              <i className="fa-solid fa-4"></i> {t("howdoesitworkdesc8")}
             </h2>
             <p>
             {t("howdoesitworkdesc9")}.
@@ -245,12 +245,12 @@ function Main() {
           <ul className="list-unstyled bbg text-start">
             <li>
               <Link to="/statistika">
-                <i class="fa-solid fa-chart-simple"></i> {t("statistika")}
+                <i className="fa-solid fa-chart-simple"></i> {t("statistika")}
               </Link>
             </li>
             <li>
               <Link to="/templates/instructions.pdf">
-                <i class="fa-solid fa-book"></i> {t("dasfoyyoriq")}
+                <i className="fa-solid fa-book"></i> {t("dasfoyyoriq")}
               </Link>
             </li>
           </ul>
@@ -260,17 +260,17 @@ function Main() {
           <ul className="list-unstyled bbg text-start">
             <li>
               <a href="tel:+998712413140">
-                <i class="fa-solid fa-phone-volume"></i> +998 (71) 241-31-40
+                <i className="fa-solid fa-phone-volume"></i> +998 (71) 241-31-40
               </a>
             </li>
             <li>
               <div className="ctrl-enter">
-                <i class="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 53-89
+                <i className="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 53-89
               </div>
             </li>
             <li>
               <a href="mailto:mkundalik@tashmetro.uz">
-                <i class="fa-solid fa-envelope"></i> mkundalik@tashmetro.uz
+                <i className="fa-solid fa-envelope"></i> mkundalik@tashmetro.uz
               </a>
             </li>
             <br />

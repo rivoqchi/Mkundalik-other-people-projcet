@@ -49,17 +49,17 @@ function Footer() {
           <ul className="list-unstyled bbg text-start">
             <li>
               <Link to={`${route}/about/statistics`}>
-                <i class="fa-solid fa-chart-simple"></i> {t("statistika")}
+                <i className="fa-solid fa-chart-simple"></i> {t("statistika")}
               </Link>
             </li>
             <li>
               <Link to="/templates/instructions.pdf">
-                <i class="fa-solid fa-book"></i> {t("dasfoyyoriq")}
+                <i className="fa-solid fa-book"></i> {t("dasfoyyoriq")}
               </Link>
             </li>
             {/* <li>
               <Link disabled to="/documents/privacy-policy">
-                <i class="fa-solid fa-shield-halved"></i> Maxfiylik siyosati
+                <i className="fa-solid fa-shield-halved"></i> Maxfiylik siyosati
               </Link>
             </li> */}
           </ul>
@@ -69,17 +69,17 @@ function Footer() {
           <ul className="list-unstyled bbg text-start">
             <li>
               <a href="tel:+998712413140">
-                <i class="fa-solid fa-phone-volume"></i> +998 (71) 241-31-40
+                <i className="fa-solid fa-phone-volume"></i> +998 (71) 241-31-40
               </a>
             </li>
             <li>
               <div className="ctrl-enter">
-                <i class="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 53-89
+                <i className="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 53-89
               </div>
             </li>
             <li>
               <a href="mailto:mkundalik@tashmetro.uz">
-                <i class="fa-solid fa-envelope"></i> mkundalik@tashmetro.uz
+                <i className="fa-solid fa-envelope"></i> mkundalik@tashmetro.uz
               </a>
             </li>
             <br />

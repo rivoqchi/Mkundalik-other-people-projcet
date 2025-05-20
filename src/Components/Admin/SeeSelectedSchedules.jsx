@@ -211,7 +211,7 @@ const [route, setRoute] = useState(null);
         <div className="col-12 col-md-6 text-center">
           <div className="calendar-controls">
             <button onClick={handlePrev} className="calendar-btn">
-            <i class="fa-solid fa-arrow-left"></i>
+            <i className="fa-solid fa-arrow-left"></i>
             </button>
 
             <select
@@ -253,7 +253,7 @@ const [route, setRoute] = useState(null);
                   : ""
               }`}
             >
-              <i class="fa-solid fa-arrow-right"></i>
+              <i className="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </div>
@@ -319,7 +319,7 @@ const [route, setRoute] = useState(null);
           className="download-btn"
           onClick={() => console.log(schedule._id)}
         >
-          <i class="fa-solid fa-arrow-down"></i>
+          <i className="fa-solid fa-arrow-down"></i>
         </button>
           </Link>
         </>

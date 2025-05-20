@@ -252,7 +252,7 @@ console.log(schedules);
 
       <div className="text-center d-flex justify-content-between xodimlarbuttons">
               <Button variant="success" className="mt-3" onClick={exportToExcel}>
-                Excel formatida yuklab olish <i class="fa-solid fa-table"></i>
+                Excel formatida yuklab olish <i className="fa-solid fa-table"></i>
               </Button>
               <Form.Control
                 type="text"
@@ -266,14 +266,14 @@ console.log(schedules);
                 className="mt-3"
                 onClick={() => setSearchTerm("")}
               >
-                Reset <i class="fa-solid fa-rotate-right"></i>
+                Reset <i className="fa-solid fa-rotate-right"></i>
               </Button>
               <Button
                 variant="primary"
                 className="mt-3"
                 onClick={() => setShowModal(true)}
               >
-                Filter <i class="fa-solid fa-filter"></i>
+                Filter <i className="fa-solid fa-filter"></i>
               </Button>
             </div>
 
@@ -354,7 +354,7 @@ console.log(schedules);
                                       <Link to={`/superadmin/schedule/history/${emp._id}`}>
                                         <button className="hisobotkorish">
                                           Ko`rish{" "}
-                                          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                          <i className="fa-solid fa-arrow-up-right-from-square"></i>
                                         </button>
                                       </Link>
                                     </td>

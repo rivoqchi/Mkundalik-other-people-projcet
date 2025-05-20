@@ -316,15 +316,15 @@ function ScheduleNew() {
           <h5>{t("ushbustikerlar")}</h5>
           <ul className="list-unstyled">
             <li>
-              <i class="fa-solid sources majburiyat fa-square"></i> -{" "}
+              <i className="fa-solid sources majburiyat fa-square"></i> -{" "}
               {t("lavozimmajburiyati")}
             </li>
             <li>
-              <i class="fa-solid sources qoshimcha fa-square"></i> -{" "}
+              <i className="fa-solid sources qoshimcha fa-square"></i> -{" "}
               {t("rahbartomonidanqoshimcha")}
             </li>
             <li>
-              <i class="fa-solid sources tashabbus fa-square"></i> -{" "}
+              <i className="fa-solid sources tashabbus fa-square"></i> -{" "}
               {t("xodimtashabbusi")}
             </li>
           </ul>
@@ -344,7 +344,7 @@ function ScheduleNew() {
           {date}<br/>
         {!onWork && (
           <button className="start-button" onClick={handleShowStart}>
-            <i class="fa-solid fa-play"></i> {t("ishniboshlash")}
+            <i className="fa-solid fa-play"></i> {t("ishniboshlash")}
           </button>
         )}
 </div>

@@ -46,19 +46,19 @@ function Aside() {
           <ul className='ggfgf'>
           <li className={location.pathname === '/superadmin/complex' ? 'active' : ''}>
             <Link to="/superadmin/complex">
-            <i class="fa-solid fa-code-fork"></i>
+            <i className="fa-solid fa-code-fork"></i>
               <span>Komplekslar</span>
             </Link>
           </li>
           <li className={location.pathname === '/superadmin/departments' ? 'active' : ''}>
             <Link to="/superadmin/departments">
-            <i class="fa-solid fa-building-user"></i>
+            <i className="fa-solid fa-building-user"></i>
               <span>Xizmatlar</span>
             </Link>
           </li>
           <li className={location.pathname === '/superadmin/sections' ? 'active' : ''}>
             <Link to="/superadmin/sections">
-            <i class="fa-solid fa-puzzle-piece"></i>
+            <i className="fa-solid fa-puzzle-piece"></i>
               <span>Bo`limlar</span>
             </Link>
           </li>
@@ -82,7 +82,7 @@ function Aside() {
         <ul>
           <li className={location.pathname === '/superadmin/report' ? 'active' : ''}>
             <Link to="/superadmin/report">
-            <i class="fa-solid fa-receipt"></i>
+            <i className="fa-solid fa-receipt"></i>
               <span>Davriy hisobot</span>
             </Link>
           </li>
@@ -91,7 +91,7 @@ function Aside() {
 
           <li className={location.pathname === '/superadmin/about' ? 'active' : ''}>
             <Link to="/superadmin/about">
-              <i class="fa-solid fa-info"></i>
+              <i className="fa-solid fa-info"></i>
               <span>Dastur haqida</span>
             </Link>
           </li>

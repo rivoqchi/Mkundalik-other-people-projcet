@@ -152,7 +152,7 @@ const Login = () => {
                         onChange={handleChange('password')}
                       />
                       <Button variant="outline-secondary" className='inpgr' onClick={togglePasswordVisibility}>
-                        {showPassword ? <i class="fa-solid fa-eye-slash"></i> : <i class="fa-solid fa-eye"></i>}
+                        {showPassword ? <i className="fa-solid fa-eye-slash"></i> : <i className="fa-solid fa-eye"></i>}
                       </Button>
                     </InputGroup>
                   </Form.Group>

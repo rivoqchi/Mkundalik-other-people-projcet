@@ -126,11 +126,11 @@ function ScheduleRate() {
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-building-ngo"></i> Комплекс:{" "}
+              <i className="fa-solid fa-building-ngo"></i> Комплекс:{" "}
               <span>{thisScheduleHistory.complex}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-users-viewfinder"></i> Ташкилий тузилма:{" "}
+              <i className="fa-solid fa-users-viewfinder"></i> Ташкилий тузилма:{" "}
               <span>{thisScheduleHistory.department}</span>
             </div>
             <div className="schedulebajaruvchilar">
@@ -138,7 +138,7 @@ function ScheduleRate() {
               <span>{thisScheduleHistory.section}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-file-contract"></i> Лавозими:{" "}
+              <i className="fa-solid fa-file-contract"></i> Лавозими:{" "}
               <span>{thisScheduleHistory?.degree || "Ma'lumot topilmadi"}</span>
             </div>
           </div>

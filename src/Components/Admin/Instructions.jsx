@@ -190,8 +190,8 @@ function Instructions() {
                             <li className="d-flex justify-content-between instt" key={index}>
                                     {file.fileName}
                                 <div className="">
-                                <button className="viewins" onClick={() => handleViewFile(file._id)}><i class="fa-solid fa-eye"></i></button>
-                                <button className="deleteins" onClick={() => handleDeleteConfirmation(file._id)}><i class="fa-solid fa-trash"></i></button>
+                                <button className="viewins" onClick={() => handleViewFile(file._id)}><i className="fa-solid fa-eye"></i></button>
+                                <button className="deleteins" onClick={() => handleDeleteConfirmation(file._id)}><i className="fa-solid fa-trash"></i></button>
                                 </div>
                             </li>
                         ))

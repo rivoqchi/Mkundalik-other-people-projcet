@@ -48,7 +48,7 @@ function Aside() {
         <ul>
         <li className={location.pathname === '/commission/objections' ? 'active' : ''}>
             <Link disabled to="/commission/objections">
-            <i class="fa-solid fa-code-branch"></i>
+            <i className="fa-solid fa-code-branch"></i>
               <span>{t("kelibtushganetirozlar")}</span>
             </Link>
           </li>
@@ -60,7 +60,7 @@ function Aside() {
           </li>
           <li className={location.pathname === '/commission/monitoring' ? 'active' : ''}>
             <Link to="/commission/monitoring">
-            <i class="fa-solid fa-chart-pie"></i>
+            <i className="fa-solid fa-chart-pie"></i>
               <span>{t("monitoring")}</span>
             </Link>
           </li>         
@@ -79,7 +79,7 @@ function Aside() {
 
             <li className={location.pathname === '/commission/about/statistics' ? 'active' : ''}>
             <Link to="/commission/about/statistics">
-              <i class="fa-solid fa-info"></i>
+              <i className="fa-solid fa-info"></i>
               <span>Statistika</span><span className="newtop">NEW</span>
             </Link>
           </li>

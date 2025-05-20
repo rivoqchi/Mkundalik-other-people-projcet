@@ -111,7 +111,7 @@ function Profile() {
         </div>
         <div className="text-end">
           <Button className="text-end" variant="primary" onClick={handleShow2}>
-            <i class="fa-solid fa-user-pen"></i> {t("edit")}
+            <i className="fa-solid fa-user-pen"></i> {t("edit")}
           </Button>
         </div>
         <h5>{t("umumiyinfo")}</h5>

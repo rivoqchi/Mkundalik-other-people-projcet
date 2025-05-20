@@ -5,7 +5,9 @@ import { Modal, Button, Spinner, Alert, Form } from "react-bootstrap";
 import { API } from "../../config";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import DownloadObject from "./DownloadObject"
+import DownloadObject from "./DownloadObject";
+import LavozimDownload from '../Admin/LavozimDownload';
+import AllSchedulesDownload from './AllSchedulesDownload';
 function Xodimlar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [allEmployees, setAllEmployees] = useState([]);
@@ -103,7 +105,7 @@ function Xodimlar() {
     <div>
       <div className="text-center d-flex justify-content-between xodimlarbuttons">
         <Button variant="success" className="mt-3" onClick={exportToExcel}>
-          Excel formatida yuklab olish <i class="fa-solid fa-table"></i>
+          Excel formatida yuklab olish <i className="fa-solid fa-table"></i>
         </Button>
         <Form.Control
           type="text"
@@ -117,14 +119,14 @@ function Xodimlar() {
           className="mt-3"
           onClick={() => setSearchTerm("")}
         >
-          Reset <i class="fa-solid fa-rotate-right"></i>
+          Reset <i className="fa-solid fa-rotate-right"></i>
         </Button>
         <Button
           variant="primary"
           className="mt-3"
           onClick={() => setShowModal(true)}
         >
-          Filter <i class="fa-solid fa-filter"></i>
+          Filter <i className="fa-solid fa-filter"></i>
         </Button>
       </div>
 
@@ -235,14 +237,14 @@ function Xodimlar() {
                       <Link to={`/${window.localStorage.getItem('role')}/schedule/history/${employee._id}`}>
                         <button className="hisobotkorish">
                           Ko`rish{" "}
-                          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                          <i className="fa-solid fa-arrow-up-right-from-square"></i>
                         </button>
                       </Link>
                     </td>
                     <td className="d-flex justify-content-center align-items-center">
                         <DownloadObject employee={employee} />
-                        <button className="hisobotkorish2" title="Lavozim yo`riqnomasi"><i class="fa-solid fa-person-chalkboard"></i></button>
-                        <button className="hisobotkorish2" title="Hisobotlarini yuklab olish"><i class="fa-solid fa-file-pen"></i></button>
+                        <LavozimDownload employeeId={employee._id} />
+                        <AllSchedulesDownload employee={employee._id} />
                     </td>
                     <td>{employee.phone}</td>
                     <td>{employee.role}</td>

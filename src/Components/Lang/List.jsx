@@ -203,14 +203,14 @@ function Xodimlar() {
             className="mt-3 mx-2"
             onClick={() => setSearchTerm("")}
           >
-            Reset <i class="fa-solid fa-rotate-right"></i>
+            Reset <i className="fa-solid fa-rotate-right"></i>
           </Button>
           <Button
             variant="primary"
             className="mt-3 mx-1"
             onClick={() => setShowModal(true)}
           >
-            Filter <i class="fa-solid fa-filter"></i>
+            Filter <i className="fa-solid fa-filter"></i>
           </Button>
         </div>
 

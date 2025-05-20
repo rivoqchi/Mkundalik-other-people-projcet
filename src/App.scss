@@ -9,6 +9,10 @@
 .oqrang, .white{
   color: #f3f4f6;
 }
+.bg-success {
+  background-color: #28a745 !important;
+  color: white;
+}
 .logoutbtn{
   border-radius: 20px;
   color: #fff;
@@ -2987,3 +2991,5 @@ input:checked + .slider:before {
   display: block;
   margin: 0 auto;
 }
+// 
+

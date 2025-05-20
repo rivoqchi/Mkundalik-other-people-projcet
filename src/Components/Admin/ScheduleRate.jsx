@@ -192,11 +192,11 @@ function ScheduleRate() {
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-building-ngo"></i> {t("complex")}:{" "}
+              <i className="fa-solid fa-building-ngo"></i> {t("complex")}:{" "}
               <span>{thisScheduleHistory.complex}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-users-viewfinder"></i> {t("tashtuzilma")}:{" "}
+              <i className="fa-solid fa-users-viewfinder"></i> {t("tashtuzilma")}:{" "}
               <span>{thisScheduleHistory.department}</span>
             </div>
             <div className="schedulebajaruvchilar">
@@ -204,7 +204,7 @@ function ScheduleRate() {
               <span>{thisScheduleHistory.section}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i class="fa-solid fa-file-contract"></i> {t("degree")}:{" "}
+              <i className="fa-solid fa-file-contract"></i> {t("degree")}:{" "}
               <span>{thisScheduleHistory.degree || t("infonotfound")}</span>
             </div>
           </div>
@@ -247,9 +247,9 @@ function ScheduleRate() {
             <div className="warningtext">
 {t("ushbustikerlar")}
   <ul className="list-unstyled">
-    <li><i class="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
-    <li><i class="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
-    <li><i class="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
+    <li><i className="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i className="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i className="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
   </ul>
 </div>
             <div className="schedulerated">
@@ -259,7 +259,7 @@ function ScheduleRate() {
                   variant="primary"
                   onClick={() => setShowModal(true)}
                 >
-                  Баҳолаш <i class="fa-solid fa-star"></i>
+                  Баҳолаш <i className="fa-solid fa-star"></i>
                 </Button>
               </div>
               <div className="schedulerated">
@@ -298,7 +298,7 @@ function ScheduleRate() {
                 </div>
                 <i
                   disabled={thisScheduleHistory.reported}
-                  class="fa-solid excla fa-triangle-exclamation"
+                  className="fa-solid excla fa-triangle-exclamation"
                 ></i>
               </div>
             )}
@@ -366,7 +366,7 @@ function ScheduleRate() {
           </div>
           <div className="bahoinput text-center">
             {/* <div className="">
-            <i class="fa-solid ourai fa-robot"></i>
+            <i className="fa-solid ourai fa-robot"></i>
     {setAI && (
       <Spinner animation="border" size="sm" className="input-spinner" />
     )}
