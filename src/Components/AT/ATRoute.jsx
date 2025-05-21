@@ -15,8 +15,10 @@ import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
+import { useLocation } from "react-router-dom";
 
 function ATRoute() {
+  const location = useLocation();
   return (
     <div className="container-fluid">
       <div className="row">
@@ -29,8 +31,8 @@ function ATRoute() {
         {/* O‘ng taraf: Navbar va asosiy content */}
         <div className="col-10 d-flex flex-column p-0">
           <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
-          <div className="p-3 bg-always flex-grow-1">
-            <Routes>
+          <div className={`bg-always flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
+          <Routes>
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
               <Route path="/about/statistics" exact element={<UmumiyStat />} />

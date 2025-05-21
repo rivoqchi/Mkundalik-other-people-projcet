@@ -83,9 +83,9 @@ const Card = () => {
               <i className="fa-solid fa-users"></i>
             </div>
             <div className="card-boddy">
-              <h3 className="card-title">
+              <h1 className="card-title">
                 <AnimatedNumber value={stats.employeesCount} />
-              </h3>
+              </h1>
               <p className="card-text">Xodim tizimda</p>
             </div>
           </div>
@@ -97,9 +97,9 @@ const Card = () => {
               <i className="fa-solid fa-chart-pie"></i>
             </div>
             <div className="card-boddy">
-              <h3 className="card-title">
+              <h1 className="card-title">
                 <AnimatedNumber value={stats.todaySchedulesCount} />
-              </h3>
+              </h1>
               <p className="card-text">Bugun yozilgan hisobotlar</p>
             </div>
           </div>
@@ -111,9 +111,9 @@ const Card = () => {
               <i className="fa-solid fa-chart-simple"></i>
             </div>
             <div className="card-boddy">
-              <h3 className="card-title">
+              <h1 className="card-title">
                 <AnimatedNumber value={stats.schedulesCount} />
-              </h3>
+              </h1>
               <p className="card-text">Umumiy hisobotlar</p>
             </div>
           </div>
@@ -145,9 +145,9 @@ const Card = () => {
               <i className="fa-solid fa-cogs"></i>
             </div>
             <div className="card-boddy">
-              <h3 className="card-title">
+              <h1 className="card-title">
                 <AnimatedNumber value={stats.complexesCount} />
-              </h3>
+              </h1>
               <p className="card-text">Komplekslar soni</p>
             </div>
           </div>
@@ -158,9 +158,9 @@ const Card = () => {
               <i className="fa-solid fa-layer-group"></i>
             </div>
             <div className="card-boddy">
-              <h3 className="card-title">
+              <h1 className="card-title">
                 <AnimatedNumber value={stats.sectorsCount} />
-              </h3>
+              </h1>
               <p className="card-text">Xizmatlar soni</p>
             </div>
           </div>
@@ -171,9 +171,9 @@ const Card = () => {
               <i className="fa-solid fa-building"></i>
             </div>
             <div className="card-boddy">
-              <h3 className="card-title">
+              <h1 className="card-title">
                 <AnimatedNumber value={stats.sectionsCount} />
-              </h3>
+              </h1>
               <p className="card-text">Bo`limlar soni</p>
             </div>
           </div>
@@ -187,9 +187,9 @@ const Card = () => {
               <i className="fa-solid redicon fa-file-alt"></i>
             </div>
             <div className="card-boddy">
-              <h3 className="card-title">
+              <h1 className="card-title">
                 <AnimatedNumber value={stats.reportsCount} />
-              </h3>
+              </h1>
               <p className="card-text">Rahbar bahosiga bo’lgan shikoyatlar</p>
             </div>
           </div>
@@ -201,9 +201,9 @@ const Card = () => {
             <i className="fa-solid normativicon fa-volleyball"></i>
             </div>
             <div className="card-boddy">
-              <h3 className="card-title">
+              <h1 className="card-title">
                 <AnimatedNumber value={stats.normativCount} />
-              </h3>
+              </h1>
               <p className="card-text">Sport normativlari soni</p>
             </div>
           </div>

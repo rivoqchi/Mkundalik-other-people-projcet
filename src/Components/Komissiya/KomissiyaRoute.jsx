@@ -16,7 +16,9 @@ import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import Footer from '../Footer';
+import { useLocation } from "react-router-dom";
 function KomissiyaRoute() {
+  const location = useLocation();
   return (
     <div className="container-fluid">
       <div className="row">
@@ -30,8 +32,8 @@ function KomissiyaRoute() {
 
         {/* O'ng taraf: Navbar va asosiy content */}
         <div className="col-10 overflow-y-auto h-100vh navv d-flex flex-column p-0">
-          <div className="bg-always pt-5 flex-grow-1">
-          <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
+        <div className={`bg-always flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
+        <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
             <Routes>
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />

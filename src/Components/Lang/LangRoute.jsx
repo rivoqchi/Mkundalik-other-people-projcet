@@ -33,7 +33,9 @@ import Test from './Test';
 import Languages from '../Admin/Languages';
 import LangRu from '../Admin/LangRu';
 import LangEn from '../Admin/LangEn';
+import { useLocation } from "react-router-dom";
 function LangRoute() {
+  const location = useLocation();
   return (
     <div className="container-fluid">
       <div className="row">
@@ -47,8 +49,8 @@ function LangRoute() {
 
         {/* O'ng taraf: Navbar va asosiy content */}
         <div className="col-10 overflow-y-auto h-100vh navv d-flex flex-column p-0">
-          <div className="bg-always pt-5 flex-grow-1">
-          <Navbarr />
+        <div className={`bg-always flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
+        <Navbarr />
             <Routes>
               
             <Route path="/languages" exact element={<Languages />} />

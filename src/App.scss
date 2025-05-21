@@ -1833,9 +1833,9 @@ marquee{
   height: 4rem;
 }
 .statcard{
+  background: linear-gradient(to bottom, #494a5c, #23232e);
   padding: 20px;
-  border-radius: 20px !important;
-  box-shadow: 0px 0px 20px 5px rgb(180, 180, 180);
+  border-radius: 10px !important;
   animation: opacity0to1 2s;
   border: none !important;
   justify-content: center !important;
@@ -1845,18 +1845,21 @@ marquee{
   opacity: 0.9;
   &:hover{
     opacity: 1;
-    box-shadow: 0px 0px 50px 2px rgb(180, 180, 180);
+    box-shadow: 0px 0px 50px 2px #404053;
     transform: scale(0.95);
   }
 }
 .iconimiz i{
+  background-color: #e2eeff;
   display: flex;
+  padding: 45px !important;
+  border-radius: 20px;
   align-items: center;
   justify-content: center;
   text-align: center;
   font-size: 4rem !important;
-  min-width: 2.5rem;  /* Biroz kattaroq qildim, ko‘rinishi yaxshiroq bo‘ladi */
-  min-height: 2.5rem;
+  width: 2.5rem;  /* Biroz kattaroq qildim, ko‘rinishi yaxshiroq bo‘ladi */
+  height: 2.5rem;
   transition: .2s ease-out;
   &:hover{
     transform: scale(1.05);
@@ -1887,21 +1890,20 @@ marquee{
   width: 10rem;
 }
 .stath1{
-  background-color: rgba(0, 128, 0, 0.678);
+  background-color: orange;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   color: #fff;
 }
 .statdiv{
-  background-color: #ffeacf;
+  background: linear-gradient(to bottom, rgb(235, 250, 255), #aacdd1);
   padding: 10px;
-  border-radius: 20px;
-  box-shadow: 0px 0px 30px 3px rgb(180, 180, 180);
-  color: #fff;
+  border-radius: 10px;
+  color: #fff !important;
   transition: .2s ease-out;
   cursor: pointer;
   &:hover{
-    box-shadow: none;
+    box-shadow: 0px 0px 50px 2px #404053;
     transform: scale(0.99);
   }
 }
@@ -3150,4 +3152,10 @@ input:checked + .slider:before {
     opacity: 1;
     transform: translateY(0);
   }
+}
+.stat-page{
+  background-color: #252531;
+  color: #fff;
+  padding: 0;
+  margin: 0;
 }
