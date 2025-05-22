@@ -154,7 +154,6 @@ const [route, setRoute] = useState(null);
   }, []);
   return (
     <div className="calendar-container">
-      <p className="redword">Eslatma: Ushbu sahifadagi kalendardagi kunlar ranglar orqali belgilangan. Xodim mazkur kunda kundalik hisobot yozgan bo‘lsa — ko‘k rang, baholangan bo‘lsa — yashil rang, hisobot yozilmagan bo‘lsa — qizil rang bilan ajratib ko‘rsatiladi. Xaftaning dam olish kunlari ajratib ko`rsatilgan, (agar) shu kunlarda hisobot yozilsa ham ma'lumotlar saqlanadi.</p>
       <div className="row w-100 align-items-center justify-content-center">
         <div className="col-12 col-md-6 text-center">
 

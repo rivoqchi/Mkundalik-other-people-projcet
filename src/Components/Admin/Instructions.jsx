@@ -6,7 +6,9 @@ import Loading from "../Loading";
 import Alert from "../Additional/Alert";
 import { Modal, Button } from "react-bootstrap"; // Importing react-bootstrap components
 
+import { useTranslation } from "react-i18next";
 function Instructions() {
+    const { t } = useTranslation();
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadedFiles, setUploadedFiles] = useState([]); // List of uploaded files
     const [viewingFileId, setViewingFileId] = useState(null); // File ID for viewing
@@ -146,23 +148,23 @@ function Instructions() {
 
             <div className="instructions-container">
             <div className="d-flex justify-content-between mb-3">
-            <h2>Lavozim yo`riqnomasi</h2>
+            <h2>{t("lavozimyoriqnomasi")}</h2>
 
 <Button variant="primary" disabled={uploadedFiles.length>0} onClick={() => setShowModal(true)}>
-    + Yuklash
+    + {t("upload")}
 </Button>
             </div>
 
                 {/* Modal for file upload */}
                 <Modal show={showModal} onHide={() => setShowModal(false)}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Yuklash</Modal.Title>
+                        <Modal.Title>{t("upload")}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <input type="file" onChange={handleFileChange} accept=".pdf,.doc,.docx" />
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowModal(false)}>Yopish</Button>
+                        <Button variant="secondary" onClick={() => setShowModal(false)}>{t("close")}</Button>
                         <Button variant="primary" onClick={handleFileUpload}>
                             {loading ? "Yuklanmoqda..." : "Yuklash"}
                         </Button>
@@ -172,18 +174,18 @@ function Instructions() {
                 {/* Modal for delete confirmation */}
                 <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Tasdiqlang</Modal.Title>
+                        <Modal.Title>{t("confirm")}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        Ushbu faylni o`chirmoqchimisiz?
+                    {t("deletethisfile")}?
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
-                        <Button variant="danger" onClick={handleDeleteFile}>Delete</Button>
+                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>{t("cancel")}</Button>
+                        <Button variant="danger" onClick={handleDeleteFile}>{t("delete")}</Button>
                     </Modal.Footer>
                 </Modal>
 
-                <h3>Yuklangan lavozim yo`riqnomalari:</h3>
+                <h3>{t("uploadedinstructions")}:</h3>
                 <ul>
                     {uploadedFiles.length > 0 ? (
                         uploadedFiles.map((file, index) => (
@@ -196,7 +198,7 @@ function Instructions() {
                             </li>
                         ))
                     ) : (
-                        <p>Hali hech nima yuklanmadi.</p>
+                        <p>{t("yuklanmadihali")}.</p>
                     )}
                 </ul>
 

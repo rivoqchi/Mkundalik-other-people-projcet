@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { API } from "../../config";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 function RatingMyAdmins() {
+  const { t } = useTranslation();
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [myData, setMyData] = useState([]);
@@ -42,10 +44,10 @@ function RatingMyAdmins() {
   }, [])
   return (
     <>
-      <h1 className="text-center">Mening bo`limlarim ko`rsatkichlari</h1>
+      <h1 className="text-center">{t("menbolimkor")}</h1>
       <div className="ratedschedulescount d-flex mx-3 justify-content-between">
-        <p>Jami: {mySectionSchedules.length}</p>
-        <span>Baholadingiz: {mySectionSchedules.filter((item) => item.rated).length}</span>
+        <p>{t("all")}: {mySectionSchedules.length}</p>
+        <span>{t("baholangan")}: {mySectionSchedules.filter((item) => item.rated).length}</span>
       </div>
 
       <div className="scheduleshistory">
@@ -61,7 +63,7 @@ function RatingMyAdmins() {
                   !i.rated ? "unrated" : "rated"
                 }`}
               >
-                <span className="bold">{i.beginnerName}</span>ning {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
+                <span className="bold">{i.beginnerName}</span>ning {i.startedAt.slice(0, 10)} {t("dabajarilgan")}
                 {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}
               </button>
             </Link>

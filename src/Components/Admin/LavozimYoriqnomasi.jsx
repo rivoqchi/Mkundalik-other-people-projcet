@@ -6,7 +6,9 @@ import Loading from "../Loading";
 import Alert from "../Additional/Alert";
 import { Modal, Button } from "react-bootstrap";
 
+import { useTranslation } from "react-i18next";
 function LavozimYoriqnomasi() {
+    const { t } = useTranslation();
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [viewingFileId, setViewingFileId] = useState(null);
@@ -108,7 +110,7 @@ function LavozimYoriqnomasi() {
             {/* Agar fayl bo‘lmasa yuklash tugmasi chiqadi */}
             {uploadedFiles.length === 0 && (
                 <Button variant="primary" onClick={() => setShowModal(true)}>
-                    + Yuklash
+                    + {t("upload")}
                 </Button>
             )}
 
@@ -118,7 +120,7 @@ function LavozimYoriqnomasi() {
                         variant="success"
                         onClick={() => handleDownload(uploadedFiles[0]._id)}
                     >
-                        Yo‘riqnomani yuklab olish
+                        {t("download")}
                     </Button>
 
                     <Button onClick={() => {
@@ -133,7 +135,7 @@ function LavozimYoriqnomasi() {
             {/* Yuklash modal oynasi */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Faylni yuklash</Modal.Title>
+                    <Modal.Title>{t("uploadfile")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <input type="file" onChange={handleFileChange} accept=".pdf,.doc,.docx,.png,.jpg,.xlsx,.xls,.txt" />                </Modal.Body>
@@ -148,14 +150,14 @@ function LavozimYoriqnomasi() {
             {/* O'chirish modal oynasi */}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>O‘chirmoqchimisiz?</Modal.Title>
+                    <Modal.Title>{t("doyouwanttodelete")}?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Faylni o‘chirishni tasdiqlaysizmi?</p>
+                    <p>{t("doyouwanttodelete")}?</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                        Yopish
+                    {t("close")}
                     </Button>
                     <Button
                         variant="danger"

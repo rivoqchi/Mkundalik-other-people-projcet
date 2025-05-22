@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Langages() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [route, setRoute] = useState("");
 
@@ -45,7 +47,7 @@ function Langages() {
 
   return (
     <div className="language-selector-container">
-      <h2 className="language-selector-title">Tilni tanlang</h2>
+      <h2 className="language-selector-title">{t("chooselang")}</h2>
       <div className="language-button-group">
         <button
           className="language-button rus-lang-button"
@@ -57,7 +59,7 @@ function Langages() {
           className="language-button eng-lang-button"
           onClick={() => handleSelect("Ingliz")}
         >
-          🇬🇧 Ingliz tili
+          🇬🇧 English
         </button>
       </div>
     </div>

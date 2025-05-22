@@ -5,7 +5,9 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { API } from "../../config";
 import lavozimyoriqnomasi from "../Images/Temp/lavozimyoriqnomasi.png";
+import { useTranslation } from "react-i18next";
 function PleaseInstruction() {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const [myRole, setMyRole] = useState([]);
@@ -74,12 +76,11 @@ function PleaseInstruction() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            <i className="fa-solid fa-triangle-exclamation"></i> Lavozim
-            yo`riqnomangizni yuklang:
+            <i className="fa-solid fa-triangle-exclamation"></i> {t("upload")}:
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Endilikda o`z lavozim yo`riqnomangizni yuklashingiz mumkin.
+        {t("upload")}
           <br />
           <div className="text-center">
             <img
@@ -91,10 +92,10 @@ function PleaseInstruction() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Yopish
+          {t("close")}
           </Button>
           <Button variant="success" onClick={goTo}>
-            Yuklash
+          {t("upload")}
           </Button>
         </Modal.Footer>
       </Modal>

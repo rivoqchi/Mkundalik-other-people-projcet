@@ -7,6 +7,7 @@ import LoadingScreen from '../Additional/LoadingScreen';
 import Alert from '../Additional/Alert';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
+import { useTranslation } from "react-i18next";
 import {
   Modal,
   Button,
@@ -16,6 +17,7 @@ import {
 } from "react-bootstrap";
 
 const Login = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [values, setValues] = useState({ phone: '+998', password: '' });
@@ -103,11 +105,11 @@ const Login = () => {
         <MDBRow>
           <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
             <h1 className="my-5 display-3 fw-bold ls-tight px-3 text-white">
-              Tizimga <br />
-              <span style={{ color: 'hsl(218, 81%, 75%)' }}>Kirish</span>
+            {t("tizimga")} <br />
+              <span style={{ color: 'hsl(218, 81%, 75%)' }}>{t("login")}</span>
             </h1>
             <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
-              Xizmatdan foydalanish uchun tizimga kiring<br />
+            {t("xizfoytizkir")}<br />
             </p>
           </MDBCol>
 
@@ -141,7 +143,7 @@ const Login = () => {
 
                 <div className="new-input-group mb-4">
                   <Form.Group controlId="formPassword">
-                    <Form.Label>Parol</Form.Label>
+                    <Form.Label>{t("parol")}</Form.Label>
                     <InputGroup>
                       <Form.Control
                       className='inpgr shadow-none'
@@ -158,10 +160,10 @@ const Login = () => {
                   </Form.Group>
                 </div>
 
-                <button className='w-100 login-btn mb-4' size='md' onClick={clickSubmit}>Kirish</button>
+                <button className='w-100 login-btn mb-4' size='md' onClick={clickSubmit}>{t("login")}</button>
 
                 <p className="text-center mt-3">
-                  Parolni unutdingizmi? <Link to='/signup'>Tiklash</Link>
+                {t("parolunut")}? <Link to='/signup'>{t("tiklash")}</Link>
                 </p>
 
               </MDBCardBody>

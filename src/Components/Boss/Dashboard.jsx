@@ -3,7 +3,8 @@ function Dashboard() {
     return ( 
         <>
             <h1 className="text-center">
-                Boshliq profili
+            {t("boshliqprofili")}
+
             </h1>
         </>
      );

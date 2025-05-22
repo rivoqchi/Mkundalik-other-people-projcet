@@ -8,7 +8,6 @@ function Xodimlar() {
             <Link to="/complex/employees/allusers"><button className="xodimlarbtn"><i className="fa-solid fa-user-group"></i> Menga biriktirilgan xodimlar</button></Link><br />
         </div>
 
-
         </>
      );
 }

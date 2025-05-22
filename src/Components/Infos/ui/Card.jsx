@@ -123,14 +123,14 @@ const Card = () => {
     <div className="row">
       <div className="col-6">
         <div className="p-3 statdiv">
-          <h5 className="stath1 text-center">Top 10 eng ko`p kundalik hisobotlarni qayd etgan tarkibiy tuzilmalar</h5>
+          <h5 className="stath1 text-center">Top 10 eng ko`p kundalik <br /> hisobotlarni qayd etgan tarkibiy tuzilmalar</h5>
           <BarChart dataset={stats.lengthData} xAxis={[{ scaleType: "band", dataKey: "name", tickPlacement: "middle" }]} yAxis={[{ label: "Jami hisobotlar soni:" }]} series={[{ dataKey: "miqdor", label: "Jami hisobotlar soni:" }]} height={300} sx={{ [`& .${axisClasses.directionY} .${axisClasses.label}`]: { transform: "translateX(-10px)" } }} />
         </div>
       </div>
 
       <div className="col-6">
       <div className="p-3 statdiv statdiv2">
-        <h5 className="stath1 text-center">Kundalik hisobotlarning o`rtacha bahosi bo`yicha top 10 tarkibiy tuzilmalar</h5>
+        <h5 className="stath1 text-center">Kundalik hisobotlarning o`rtacha <br /> bahosi bo`yicha top 10 tarkibiy tuzilmalar</h5>
         <BarChart dataset={stats.ratedData} xAxis={[{ scaleType: "band", dataKey: "name", tickPlacement: "middle" }]} yAxis={[{ label: "O`rtacha ball:" }]} series={[{ dataKey: "miqdor", label: "O`rtacha ball:" }]} height={300} sx={{ [`& .${axisClasses.directionY} .${axisClasses.label}`]: { transform: "translateX(-10px)" } }} />
       </div>
       </div>

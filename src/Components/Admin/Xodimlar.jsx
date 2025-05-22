@@ -133,7 +133,7 @@ function Xodimlar() {
     </div> */}
           <div className="justify-content-between">
             <div className="azolar defaultbox">
-              <h3>{dataa} a'zolari</h3>
+              <h3>{dataa}</h3>
               <div>
                 {employees.length > 0
                   ? `${employees.length} ${t("taxodimroyxatgaolingan")}`

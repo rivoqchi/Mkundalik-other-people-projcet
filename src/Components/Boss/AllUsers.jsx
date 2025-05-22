@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import { API } from '../../config';
+import { useTranslation } from "react-i18next";
 
 function Xodimlar() {
+    const { t } = useTranslation();
     const [allEmployees, setAllEmployees] = useState([]);
     const [filteredEmployees, setFilteredEmployees] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -33,23 +35,25 @@ function Xodimlar() {
         <div>
             <div className="text-center xodimlarbuttons">
                 <Button variant="primary" className="mt-3" onClick={() => setShowModal(true)}>
-                    Filter
+                {t("filter")}
                 </Button>
             </div>
 
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Xodimlarni filtrlash</Modal.Title>
+                    <Modal.Title>{t("xodimfilter")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Button variant="primary" onClick={() => handleFilter("admin")}>
-                        Adminlar
+                    {t("admins")}
                     </Button>
                     <Button variant="secondary" className="mx-2" onClick={() => handleFilter("employee")}>
-                        Userlar
+                    {t("users")}
+
                     </Button>
                     <Button variant="success" onClick={() => handleFilter("")}>
-                        Hammasi
+                    {t("hammasi")}
+
                     </Button>
                 </Modal.Body>
             </Modal>

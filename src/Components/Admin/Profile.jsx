@@ -230,15 +230,15 @@ function Profile() {
                 <>
                   {myData.sport.map((item, index) => (
                     <p key={index} className="theirs warningtext">
-                      {item.norm}: {item.ball} ball
+                      {item.norm}: {item.ball} {t("ball")}
                     </p>
                   ))}
                   <hr />
-                  <strong>Jami:</strong>{" "}
+                  <strong>{t("jami")}:</strong>{" "}
                   {myData.sport.reduce((sum, item) => sum + item.ball, 0)} ball
                 </>
               ) : (
-                <p className="theirs">Ma'lumot yo'q</p>
+                <p className="theirs">{t("malumotyoq")}</p>
               )}
             </div>
           </div>
@@ -250,15 +250,15 @@ function Profile() {
                 <>
                   {myData.lang.map((item, index) => (
                     <p key={index} className="theirs warningtext">
-                      {item.language} - {item.norm}: {item.ball} ball
+                      {item.language} - {item.norm}: {item.ball} {t("ball")}
                     </p>
                   ))}
                   <hr />
-                  <strong>Jami:</strong>{" "}
-                  {myData.lang.reduce((sum, item) => sum + item.ball, 0)} ball
+                  <strong>{t("jami")}:</strong>{" "}
+                  {myData.lang.reduce((sum, item) => sum + item.ball, 0)} {t("ball")}
                 </>
               ) : (
-                <p className="theirs">Ma'lumot yo'q</p>
+                <p className="theirs">{t("malumotyoq")}</p>
               )}
             </div>
           </div>

@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import LoadingScreen from "../Additional/LoadingScreen";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function RatingMyAdmins() {
+  const { t } = useTranslation();
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [myData, setMyData] = useState([]);
@@ -105,18 +107,18 @@ function RatingMyAdmins() {
   return (
     <div className="mh100">
       {loading && <LoadingScreen loading={true} />}
-      <h1 className="text-center">Xodimlarim ko`rsatkichlari</h1>
+      <h1 className="text-center">{t("xodimlarimkorsatkichlari")}</h1>
       <div className="stataboutrating">
         <h3 className="text-center blueword">
-          Barchasi: <b>{mySectionSchedules.length}</b> ta
+        {t("all")}: <b>{mySectionSchedules.length}</b>
         </h3>
         <div className="d-flex justify-content-between">
           <h5 className="successword">
-            Baholangan:{" "}
+          {t("baholangan")}:{" "}
             {mySectionSchedules?.filter((item) => item.rated)?.length || 0}
           </h5>
           <h5 className="redword">
-            Baholash kerak:{" "}
+          {t("baholashkk")}:{" "}
             {mySectionSchedules?.filter((item) => !item.rated)?.length || 0}
           </h5>
         </div>
@@ -142,9 +144,9 @@ function RatingMyAdmins() {
       <table className="schedule-history-table">
   <thead>
     <tr>
-      <th>F.I.Sh.</th>
-      <th>Bajargan sanasi</th>
-      <th>Baholangan</th>
+      <th>{t("fish")}</th>
+      <th>{t("bajargansana")}</th>
+      <th>{t("baholangan")}</th>
     </tr>
   </thead>
   <tbody>

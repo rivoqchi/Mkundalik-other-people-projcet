@@ -3,7 +3,9 @@ import axios from 'axios';
 import { Modal, Button, Spinner, Alert } from 'react-bootstrap';
 import { API } from '../../config';
 import {Link} from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 function Tuzilma() {
+    const { t } = useTranslation();
     const [allEmployees, setAllEmployees] = useState([]);
     const [allComplexes, setAllComplexes] = useState([]);
     const [filteredEmployees, setFilteredEmployees] = useState([]);
@@ -101,35 +103,35 @@ function Tuzilma() {
             <div className="text-center d-flex justify-content-between xodimlarbuttons">
 
                 <Button variant="primary" className="mt-3" onClick={() => setShowModal(true)}>
-                    Filter
+                {t("filter")}
                 </Button>
             </div>
 
             <Modal size="lg" show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Xodimlarni filtrlash</Modal.Title>
+                    <Modal.Title>{t("xodimfilter")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h5>Rol bo‘yicha filtr</h5>
+                    <h5>{t("rolfilter")}</h5>
                     <Button className='m-1' variant="success" onClick={() => handleFilter("role", "complex")}>
-                        Metropoliten o`rinbosarlari
+                    {t("metrozams")}
                     </Button>
                     <Button className='m-1' variant="success" onClick={() => handleFilter("role", "department")}>
-                        Xizmat boshliqlari
+                    {t("departments")}
                     </Button>
                     <Button className='m-1' variant="success" onClick={() => handleFilter("role", "admin")}>
-                        Bo`lim boshliqlari
+                    {t("admins")}
                     </Button>
                     <Button className='m-1' variant="success" onClick={() => handleFilter("role", "employee")}>
-                        Oddiy xodimlar
+                    {t("users")}
                     </Button>
                     <Button className='m-1' variant="primary" onClick={() => handleFilter("role", "")}>
-                        Hammasi
+                    {t("all")}
                     </Button>
                 </Modal.Body>
 
                 <Modal.Body>
-                    <h5>Kompleks bo‘yicha filtr</h5>
+                    <h5>{t("komplexfilter")}</h5>
                     {allComplexes.length > 0 ? (
                         allComplexes.map((complex) => (
                             <Button key={complex._id} variant="info" className="m-1" onClick={() => handleFilter("complex", complex.name)}>
