@@ -8,14 +8,14 @@ import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
 import { format } from "date-fns";
 import { Modal, Button, Form } from "react-bootstrap";
-import DownloadDocx from "./DownloadDocx"; 
+import DownloadDocx from "./DownloadDocx";
 import { useTranslation } from "react-i18next";
 import logomk from "../Images/logo-png.png";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import { Spinner } from 'react-bootstrap';
+import { Spinner } from "react-bootstrap";
 function ScheduleRate() {
-    const { t } = useTranslation();
-  
+  const { t } = useTranslation();
+
   const myId = window.localStorage.getItem("user_id");
   const fullName = window.localStorage.getItem("fullName");
   const [myData, setMyData] = useState([]);
@@ -56,26 +56,26 @@ function ScheduleRate() {
     if (showModal) {
       setSetAi(false);
 
-  let summarizedBall = 0;
-  let tasks = thisScheduleHistory.tasks || [];
-  tasks.forEach(task => {
-  if (task.source === 'majburiyat') {
-    summarizedBall += 5; // majburiyat uchun 5ga ko'paytirish
-  } else if (task.source === 'qoshimcha') {
-    summarizedBall += 7; // qoshimcha uchun 7ga ko'paytirish
-  } else if (task.source === 'tashabbus') {
-    summarizedBall += 10; // tashabbus uchun 10ga ko'paytirish
-  }
-  if(summarizedBall > 100) {
-    summarizedBall = 100; // maksimal ball 100 ga teng
-  }
-  setManualRating(summarizedBall)
-});
+      let summarizedBall = 0;
+      let tasks = thisScheduleHistory.tasks || [];
+      tasks.forEach((task) => {
+        if (task.source === "majburiyat") {
+          summarizedBall += 5; // majburiyat uchun 5ga ko'paytirish
+        } else if (task.source === "qoshimcha") {
+          summarizedBall += 7; // qoshimcha uchun 7ga ko'paytirish
+        } else if (task.source === "tashabbus") {
+          summarizedBall += 10; // tashabbus uchun 10ga ko'paytirish
+        }
+        if (summarizedBall > 100) {
+          summarizedBall = 100; // maksimal ball 100 ga teng
+        }
+        setManualRating(summarizedBall);
+      });
     } else {
       setSetAi(false);
     }
   }, [showModal]);
-  
+
   const { id } = useParams();
   const componentRef = useRef();
   const navigate = useNavigate();
@@ -176,14 +176,19 @@ function ScheduleRate() {
         <div className="scheduleshistory">
           <div className="scheduletepa">
             <div className="row">
-              <div className="col-4 fw-bold text-center">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК
-              Кундалик ҳисоботларни шакллантириш электрон платформаси</div>
+              <div className="col-4 fw-bold text-center">
+                "ТОШКEНТ МEТРОПОЛИТEНИ" ДУК Кундалик ҳисоботларни шакллантириш
+                электрон платформаси
+              </div>
               <div className="col-4 text-center">
-                <img className="schedulelogo" src={logo} alt="logo" /><br />
+                <img className="schedulelogo" src={logo} alt="logo" />
+                <br />
                 <img className="schedulelogo2 p-3" src={logomk} alt="logo" />
               </div>
-              <div className="col-4 fw-bold text-center">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК
-              Создание ежедневных отчетов электронная платформа</div>
+              <div className="col-4 fw-bold text-center">
+                "ТОШКEНТ МEТРОПОЛИТEНИ" ДУК Создание ежедневных отчетов
+                электронная платформа
+              </div>
             </div>
           </div>
           <div className="scheduleinfo">
@@ -196,8 +201,8 @@ function ScheduleRate() {
               <span>{thisScheduleHistory.complex}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users-viewfinder"></i> {t("tashtuzilma")}:{" "}
-              <span>{thisScheduleHistory.department}</span>
+              <i className="fa-solid fa-users-viewfinder"></i>{" "}
+              {t("tashtuzilma")}: <span>{thisScheduleHistory.department}</span>
             </div>
             <div className="schedulebajaruvchilar">
               <i className="fa-solid fa-users"></i> {t("section")}:{" "}
@@ -217,22 +222,49 @@ function ScheduleRate() {
             {thisScheduleHistory.tasks?.map((task, index) => (
               <div key={index} className="task-item">
                 <div className="">
-                {task.source === "majburiyat" && (
-  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("lavozimmajburiyati"))}>
-    <i title={t("lavozimmajburiyati")} className="fa-solid sources majburiyat fa-square"></i>
-  </OverlayTrigger>
-)}
-{task.source === "qoshimcha" && (
-  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("rahbartomonidanqoshimcha"))}>
-    <i title={t("rahbartomonidanqoshimcha")} className="fa-solid sources qoshimcha fa-square"></i>
-  </OverlayTrigger>
-)}
-{task.source === "tashabbus" && (
-  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("xodimtashabbusi"))}>
-    <i title={t("xodimtashabbusi")} className="fa-solid sources tashabbus fa-square"></i>
-  </OverlayTrigger>
-)}
-<b>{index + 1}.</b> <span>{task.title}</span>
+                  {task.source === "majburiyat" && (
+                    <OverlayTrigger
+                      placement="top"
+                      delay={{ show: 0, hide: 0 }}
+                      overlay={(props) =>
+                        renderTooltip(props, t("lavozimmajburiyati"))
+                      }
+                    >
+                      <i
+                        title={t("lavozimmajburiyati")}
+                        className="fa-solid sources majburiyat fa-square"
+                      ></i>
+                    </OverlayTrigger>
+                  )}
+                  {task.source === "qoshimcha" && (
+                    <OverlayTrigger
+                      placement="top"
+                      delay={{ show: 0, hide: 0 }}
+                      overlay={(props) =>
+                        renderTooltip(props, t("rahbartomonidanqoshimcha"))
+                      }
+                    >
+                      <i
+                        title={t("rahbartomonidanqoshimcha")}
+                        className="fa-solid sources qoshimcha fa-square"
+                      ></i>
+                    </OverlayTrigger>
+                  )}
+                  {task.source === "tashabbus" && (
+                    <OverlayTrigger
+                      placement="top"
+                      delay={{ show: 0, hide: 0 }}
+                      overlay={(props) =>
+                        renderTooltip(props, t("xodimtashabbusi"))
+                      }
+                    >
+                      <i
+                        title={t("xodimtashabbusi")}
+                        className="fa-solid sources tashabbus fa-square"
+                      ></i>
+                    </OverlayTrigger>
+                  )}
+                  <b>{index + 1}.</b> <span>{task.title}</span>
                 </div>
                 <hr />
               </div>
@@ -241,96 +273,105 @@ function ScheduleRate() {
           <br />
           <div>
             <div className="scheduleconfirms text-end mb-1">
-            {t("infotasdiqlaydi")}:{" "}
+              {t("infotasdiqlaydi")}:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
             </div>
             <div className="warningtext">
-{t("ushbustikerlar")}
-  <ul className="list-unstyled">
-    <li><i className="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
-    <li><i className="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
-    <li><i className="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
-  </ul>
-</div>
+              {t("ushbustikerlar")}
+              <ul className="list-unstyled">
+                <li>
+                  <i className="fa-solid sources majburiyat fa-square"></i> -{" "}
+                  {t("lavozimmajburiyati")}
+                </li>
+                <li>
+                  <i className="fa-solid sources qoshimcha fa-square"></i> -{" "}
+                  {t("rahbartomonidanqoshimcha")}
+                </li>
+                <li>
+                  <i className="fa-solid sources tashabbus fa-square"></i> -{" "}
+                  {t("xodimtashabbusi")}
+                </li>
+              </ul>
+            </div>
             <div className="schedulerated">
               <div className="text-center">
                 <Button
-                  className="baholashbbb"
+                  className="baholash-wave-btn"
                   variant="primary"
                   onClick={() => setShowModal(true)}
                 >
-                  Баҳолаш <i className="fa-solid fa-star"></i>
+                  {t("baholash")} <i className="fa-solid fa-star"></i>
                 </Button>
               </div>
               <div className="schedulerated">
-              <div className="justify-content-between d-flex">
-                <h5>
-                  {thisScheduleHistory?.rated ? (
-                    thisScheduleHistory.ratedName ? (
-                      <>
-                        <b>{thisScheduleHistory.ratedName}</b> {t("ratedBy")}:
-                      </>
+                <div className="justify-content-between d-flex">
+                  <h5>
+                    {thisScheduleHistory?.rated ? (
+                      thisScheduleHistory.ratedName ? (
+                        <>
+                          <b>{thisScheduleHistory.ratedName}</b> {t("ratedBy")}:
+                        </>
+                      ) : (
+                        t("rated")
+                      )
                     ) : (
-                      t("rated")
-                    )
-                  ) : (
-                    t("nonrated")
-                  )}
-                </h5>
-                <span className="rateschhh">
-                  {thisScheduleHistory.rated ? (
-                    <div className="align-items-center justify-content-center">
-                      <i className="fa-regular fa-star"></i>
-                      {thisScheduleHistory.rated}
-                      {"/100"}
-                    </div>
-                  ) : (
-                    t("infonotfound")
-                  )}
-                </span>
-              </div>
-            </div>
-
-            {thisScheduleHistory.comment && (
-              <div className="commentsch align-items-center justify-content-between d-flex">
-                <div className="">
-                  <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                      t("nonrated")
+                    )}
+                  </h5>
+                  <span className="rateschhh">
+                    {thisScheduleHistory.rated ? (
+                      <div className="align-items-center justify-content-center">
+                        <i className="fa-regular fa-star"></i>
+                        {thisScheduleHistory.rated}
+                        {"/100"}
+                      </div>
+                    ) : (
+                      t("infonotfound")
+                    )}
+                  </span>
                 </div>
-                <i
-                  disabled={thisScheduleHistory.reported}
-                  className="fa-solid excla fa-triangle-exclamation"
-                ></i>
               </div>
-            )}
+
+              {thisScheduleHistory.comment && (
+                <div className="commentsch align-items-center justify-content-between d-flex">
+                  <div className="">
+                    <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                  </div>
+                  <i
+                    disabled={thisScheduleHistory.reported}
+                    className="fa-solid excla fa-triangle-exclamation"
+                  ></i>
+                </div>
+              )}
             </div>
           </div>
           <div className="d-flex align-items-center justify-content-between">
-                      <div className="pdfqr">
-                        <div className="exclamationqr">
-                          {t("checkwithqr")}. <br />
-                          {t("doconly")}{" "}
-                          <a
-                            href="http://mkundalik.uz"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            mkundalik.uz
-                          </a>{" "}
-                          {t("onsite")}
-                          <br />
-                          {t("egasijavobgar")}.
-                          <div className="current-datetime text-end mx-5">
-                            {currentDateTime}
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="qr-container text-center"
-                        style={{ marginLeft: "20px" }}
-                      >
-                        <QRCodeSVG value={currentUrl} size={80} />
-                      </div>
-                    </div>
+            <div className="pdfqr">
+              <div className="exclamationqr">
+                {t("checkwithqr")}. <br />
+                {t("doconly")}{" "}
+                <a
+                  href="http://mkundalik.uz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  mkundalik.uz
+                </a>{" "}
+                {t("onsite")}
+                <br />
+                {t("egasijavobgar")}.
+                <div className="current-datetime text-end mx-5">
+                  {currentDateTime}
+                </div>
+              </div>
+            </div>
+            <div
+              className="qr-container text-center"
+              style={{ marginLeft: "20px" }}
+            >
+              <QRCodeSVG value={currentUrl} size={80} />
+            </div>
+          </div>
         </div>
       </div>
       <div className="d-flex justify-content-evenly align-items-center">
@@ -371,17 +412,18 @@ function ScheduleRate() {
       <Spinner animation="border" size="sm" className="input-spinner" />
     )}
             </div> */}
-  <div className="redword">Tizim taklif qilayotgan ball:</div> <div className="">* o`zgartirish mumkin.</div>
-  <input
-    type="number"
-    value={manualRating}
-    onChange={handleInputChange}
-    min="1"
-    max="100"
-    // className={setAI ? '' : 'no-ai'}
-    // disabled={setAI}
-    />
-</div>
+            <div className="redword">Tizim taklif qilayotgan ball:</div>{" "}
+            <div className="">* o`zgartirish mumkin.</div>
+            <input
+              type="number"
+              value={manualRating}
+              onChange={handleInputChange}
+              min="1"
+              max="100"
+              // className={setAI ? '' : 'no-ai'}
+              // disabled={setAI}
+            />
+          </div>
           <textarea
             className={`kghgv ${isCommentEmpty ? "commentquacke" : ""}`}
             value={comment}

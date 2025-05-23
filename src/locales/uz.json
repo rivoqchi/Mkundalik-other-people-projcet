@@ -20,7 +20,6 @@
     "monitoring": "Monitoring",
     "yakunlash": "Yakunlash",
     "profildanchiqmoqchimisiz": "Profildan chiqmoqchimisiz?",
-    "xodimlarimkorsatkichlari": "Xodimlarim ko`rsatkichlari",
     "vazifaniozgartirish": "Vazifani o'zgartirish",
     "saqlash": "Saqlash",
     "xodimlar": "Xodimlar",
@@ -29,13 +28,10 @@
     "yangivazifaqoshish": "Yangi vazifa qo`shish",
     "sekunddansongavtomatikyangilanadi": "sekunddan so`ng avtomatik yangilanadi",
     "versiya": "Versiya",
-    "jami": "Jami",
-    "baholangan": "Baholangan",
     "kundaliktarixim": "Kundalik ish faoliyatlarim tarixi",
     "areyousuretodelete": "Ushbu vazifani o'chirishga ishonchingiz komilmi?",
     "areyousuretoend": "Ishni tugatishga aminmisiz?",
     "areyousuretostart": "Ishni boshlaysizmi?",
-    "dabajarilgan": "da bajarilgan ishlar hisoboti",
     "auto_terminated": "Yangi kuningiz bilan! Sizning yakunlanmagan hisobotingiz muvaffaqiyatli saqlandi.",
     "auto_deleted": "Oldingi kunlarda boshlagan ammo hech qanday vazifa kiritilmagan hisobotingiz avtomatik o‘chirib yuborildi. Eslatib o‘tamiz, har kuni soat 23:59 dan so‘ng barcha ochiq hisobotlar yopiladi va yangi kun uchun alohida hisobot yaratishingiz kerak.",
     "session_terminated": "Sizning sessiyangiz yakunlandi.",
@@ -87,7 +83,6 @@
     "one_second": "Bir soniya...",
     "etiroz": "Baholash natijalariga e'tiroz bildirish",
     "batafsilbayonforcommission": "tomonidan qo`yilgan bahoga e'tiroz bildiryapsiz. Ushbu masala tegishli komissiya a'zolariga yetkazilishi uchun holatni batafsil bayon qiling",
-    "close": "Yopish",
     "report": "E’tiroz Bildirish",
     "dasfoyyoriq": "Dasturdan foydalanish yo`riqnomasi",
     "faq": "FAQ",
@@ -169,5 +164,10 @@
     "komplexfilter": "Kompleks bo`yicha filtrlash",
     "testyaratish": "Test yaratish",
     "tilnatijam": "Mening chet tili ko`rsatkichlarim",
+
+    "boshliqprof": "Boshliq profili",
+    "download": "Yuklab olish",
+    "baholash": "Baholash",
+
     "xodimlartilkorsatkichlari": "Xodimlarning til ko`rsatkichlari"
 }

@@ -103,7 +103,7 @@ function Aside() {
                       <Link to="/complex/languages">
                         <i class="fa-solid fa-language"></i>
                         <span>
-                          Chet tillari <span className="newtop">New</span>
+                        {t("foreign")} <span className="newtop">New</span>
                         </span>
                       </Link>
                     </li>

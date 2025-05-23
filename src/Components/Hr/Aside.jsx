@@ -7,7 +7,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
+import { useTranslation } from "react-i18next";
 function Aside() {  
+  const { t } = useTranslation();
     const [show, setShow] = useState(false);
   
     const handleClose = () => setShow(false);
@@ -46,19 +48,19 @@ function Aside() {
           <li className={location.pathname === '/hr/schedule/new' ? 'active' : ''}>
             <Link to="/hr/schedule/new">
               <i className="fa-solid fa-list-check"></i>
-              <span>Kundalik ishlarni qayd etish</span>
+              <span>{t("qaydEtish")}</span>
             </Link>
           </li>
           <li className={location.pathname === '/hr/schedule/history' ? 'active' : ''}>
             <Link to="/hr/schedule/history">
               <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>Kundalik ish faoliyatim</span>
+              <span>{t("faoliyatim")}</span>
             </Link>
           </li>
           <li className={location.pathname === '/hr/info/employee' ? 'active' : ''}>
             <Link to="/hr/employees">
               <i className="fa-solid fa-sitemap"></i>
-              <span>Xodimlar</span>
+              <span>{t("xodimlar")}</span>
             </Link>
           </li>
                                 <li
@@ -69,27 +71,27 @@ function Aside() {
                                   <Link to="/hr/languages">
                                     <i class="fa-solid fa-language"></i>
                                     <span>
-                                      Chet tillari <span className="newtop">New</span>
+                                    {t("foreign")} <span className="newtop">New</span>
                                     </span>
                                   </Link>
                                 </li>
         </ul>
       </nav>
     </div>
-            <Modal centered show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Chiqish</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Profildan chiqmoqchimisiz?</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Bekor qilish
-              </Button>
-              <Button variant="danger" onClick={logout}>
-                Chiqish
-              </Button>
-            </Modal.Footer>
-          </Modal>
+    <Modal centered show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("logOut")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{t("profildanchiqmoqchimisiz")}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+          {t("bekorqilish")}
+          </Button>
+          <Button variant="danger" onClick={logout}>
+          {t("logOut")}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
