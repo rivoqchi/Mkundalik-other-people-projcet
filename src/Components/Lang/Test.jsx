@@ -11,11 +11,13 @@ function TestCreator() {
   const [selectedNormativeId, setSelectedNormativeId] = useState("");
   const [language, setLanguage] = useState("");
   const [allTests, setAllTests] = useState([]);
+  const [selected, setSelected] = useState([]);
+  const [passed, setPassed] = useState([]);
   const handleShow = () => setShow2(true);
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const [selectedTestId, setSelectedTestId] = useState("");
-
+  
   const handleShow5 = (testId) => {
     setSelectedTestId(testId); // testId ni state ga saqlash
     setShowModal5(true); // Modalni ochish
@@ -94,7 +96,6 @@ function TestCreator() {
     try {
       setLoading(true);
       const { data } = await axios.get(`${API}/lang/test/getall`);
-
       setAllTests(data.allTests || []);
       setLoading(false);
     } catch (err) {
@@ -102,6 +103,7 @@ function TestCreator() {
       setLoading(false);
     }
   };
+  
   useEffect(() => {
     getAllTests();
   }, []);
@@ -120,9 +122,11 @@ function TestCreator() {
     <div className="mh100">
       {loading && <LoadingScreen loading={true} />}
 
-      <Button variant="primary" onClick={() => setShowModal(true)}>
+      <div className="text-end">
+      <Button className="m-5" variant="primary" onClick={() => setShowModal(true)}>
         + Yangi Test
       </Button>
+      </div>
       <div className="table-responsive">
         <Table striped bordered hover className="custom-table">
           <thead>
@@ -153,8 +157,8 @@ function TestCreator() {
                       variant="danger"
                       size="sm"
                       onClick={() => {
-                        setSelectedNormativeId(norm._id); // O'chirish uchun ID saqlash
-                        handleShow(); // Modalni ochish;
+                        setSelectedNormativeId(norm._id);
+                        handleShow();
                       }}
                       >
                       O‘chirish
@@ -164,8 +168,11 @@ function TestCreator() {
                       variant="primary"
                       onClick={() => {
                         setShowModal5(true);
-                        setSelectedTestId(norm._id); // testId ni saqlash
+                        setSelectedTestId(norm._id);
+                        setSelected(norm.sent.map((item) => item));
+                        setPassed(norm.pass.map((item) => item));
                       }}
+                      
                     >
                       Yuborish
                     </Button>
@@ -371,7 +378,7 @@ function TestCreator() {
           <Modal.Title>Yuborish</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Send testId={selectedTestId} />
+        <Send testId={selectedTestId} passed={passed} selected={selected} setSelected={setSelected} handleClose5={handleClose5}/>
         </Modal.Body>
       </Modal>
     </div>

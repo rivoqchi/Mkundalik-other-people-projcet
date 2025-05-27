@@ -123,7 +123,7 @@ function Aside() {
               <Link to="/admin/languages">
                 <i class="fa-solid fa-language"></i>
                 <span>
-                {t("foreign")} <span className="newtop">New</span>
+                {t("foreign")}
                 </span>
               </Link>
             </li>
@@ -136,7 +136,7 @@ function Aside() {
               <Link to="/admin/ict">
               <i class="fa-solid fa-computer"></i>
                 <span>
-                  Improve ICT <span className="newtop">New</span>
+                  Improve ICT 
                 </span>
               </Link>
             </li> */}

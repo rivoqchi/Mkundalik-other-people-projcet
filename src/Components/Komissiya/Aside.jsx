@@ -80,7 +80,7 @@ function Aside() {
             <li className={location.pathname === '/commission/about/statistics' ? 'active' : ''}>
             <Link to="/commission/about/statistics">
               <i className="fa-solid fa-info"></i>
-              <span>Statistika</span><span className="newtop">NEW</span>
+              <span>Statistika</span>
             </Link>
           </li>
 

@@ -6,10 +6,11 @@ import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import DownloadDocx from "./DownloadDocx";
 
+import AllSchedulesDownload from "../SuperAdmin/AllSchedulesDownload";
+
 const getDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
 };
-
 
 const getStartDayOfWeek = (month, year) => {
   const day = new Date(year, month, 1).getDay();
@@ -34,8 +35,8 @@ const monthsList = [
 const weekDays = ["Du", "Se", "Chor", "Pay", "Ju", "Sh", "Ya"];
 
 const CalendarComponent = () => {
-const [route, setRoute] = useState(null);
-
+  const [route, setRoute] = useState(null);
+  
   const myId = window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [mySectionBeginner, setMySectionBeginner] = useState([]);
@@ -44,11 +45,11 @@ const [route, setRoute] = useState(null);
   const id = window.localStorage.getItem("user_id");
   const thescheduleid = useParams();
   const [showTooltip, setShowTooltip] = useState(false);
-
+  
   const currentDate = new Date();
   const [month, setMonth] = useState(currentDate.getMonth());
   const [year, setYear] = useState(currentDate.getFullYear());
-
+  
   const getMySectionSchedules = async () => {
     try {
       const { data } = await axios.get(
@@ -62,21 +63,22 @@ const [route, setRoute] = useState(null);
       console.error("Error fetching data:", error);
     }
   };
-
+  
   useEffect(() => {
     getMySectionSchedules();
   }, [month, year]);
-
+  
   const getMyData = async () => {
     const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
     setMyData(data.user);
     setMyRole(data.user.role);
   };
-
+  
   useEffect(() => {
     getMyData();
   }, []);
-
+  
+  
   const maxYear = currentDate.getFullYear();
   const maxMonth = currentDate.getMonth();
   const maxDay = currentDate.getDate();
@@ -254,10 +256,12 @@ const [route, setRoute] = useState(null);
             >
               <i className="fa-solid fa-arrow-right"></i>
             </button>
+            <AllSchedulesDownload employee={thescheduleid.id} />
           </div>
         </div>
       </div>
-
+              {console.log(thescheduleid)
+              }
       <div className="calendar-grid calendar-weekdays">
         {weekDays.map((day, index) => (
           <div key={index} className="calendar-weekday-label">

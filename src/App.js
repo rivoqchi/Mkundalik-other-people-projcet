@@ -33,12 +33,14 @@ import "./i18n";
 import { useTranslation } from "react-i18next";
 import CtrlEnter from './Components/CtrlEnter';
 import UmumiyStat from "./Components/Infos/UmumiyStat";
+import CheckIsTest from "./Components/CheckIsTest";
 function App() {
   return (
     <>
       <div>
         {/* <LangSelect /> */}
         <Router>
+        <CheckIsTest />
           <CtrlEnter/>
           <XatolikXabar/>
           {/* <Sorry/> */}

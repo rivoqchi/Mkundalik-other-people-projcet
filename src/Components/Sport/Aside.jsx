@@ -94,7 +94,7 @@ function Aside() {
                         <Link to="/sport/languages">
                           <i class="fa-solid fa-language"></i>
                           <span>
-                            Chet tillari <span className="newtop">New</span>
+                            Chet tillari 
                           </span>
                         </Link>
                       </li>
