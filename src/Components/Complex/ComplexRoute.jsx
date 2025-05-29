@@ -31,6 +31,7 @@ import Languages from '../Admin/Languages';
 import LangRu from '../Admin/LangRu';
 import LangEn from '../Admin/LangEn';
 import { useLocation } from "react-router-dom";
+import TestPage from '../Lang/TestPage';
 function ComplexRoute() {
   const location = useLocation();
   return (
@@ -77,6 +78,7 @@ function ComplexRoute() {
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
               <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
+              <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
             <Footer/>

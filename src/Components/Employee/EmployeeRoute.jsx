@@ -21,7 +21,7 @@ import Languages from '../Admin/Languages';
 import LangRu from '../Admin/LangRu';
 import LangEn from '../Admin/LangEn';
 import { useLocation } from "react-router-dom";
-
+import TestPage from '../Lang/TestPage';
 function EmployeeRoute() {
   const location = useLocation();
   return (
@@ -58,6 +58,7 @@ function EmployeeRoute() {
               <Route path="/schedule/history" exact element={<ScheduleHistory />} />
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
               <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
+              <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
             <Footer/>

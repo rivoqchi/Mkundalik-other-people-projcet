@@ -86,6 +86,12 @@ function Aside() {
               <span>Davriy hisobot</span>
             </Link>
           </li>
+          <li className={location.pathname === '/superadmin/report/global' ? 'active' : ''}>
+            <Link to="/superadmin/report/global">
+            <i className="fa-solid fa-receipt"></i>
+              <span>Ma'lumotnoma</span>
+            </Link>
+          </li>
 
 
 

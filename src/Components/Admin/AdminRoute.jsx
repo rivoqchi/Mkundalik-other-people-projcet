@@ -32,6 +32,7 @@ import Languages from './Languages';
 import LangEn from './LangEn';
 import LangRu from './LangRu';
 import { useLocation } from "react-router-dom";
+import TestPage from '../Lang/TestPage';
 
 function AdminRoute() {
   const location = useLocation();
@@ -51,6 +52,7 @@ function AdminRoute() {
         <div className={`bg-always flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
         <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
             <Routes>
+              <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/about" exact element={<Info />} />
               <Route path="/languages" exact element={<Languages />} />
               <Route path="/lang/ru" exact element={<LangRu />} />

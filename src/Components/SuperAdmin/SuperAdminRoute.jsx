@@ -32,10 +32,12 @@ import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import Report from './Report';
+import ReportGl from './ReportGl';
 import FAQPage from '../Infos/FAQPage';
 import SwitchUser from './SwitchUser';
 import Footer from '../Footer';
 import { useLocation } from "react-router-dom";
+import TestPage from '../Lang/TestPage';
 function SuperAdminRoute() {
   const location = useLocation();
   return (
@@ -75,6 +77,7 @@ function SuperAdminRoute() {
               <Route path="/departments/edit/:id" exact element={<EditDepartment />} />
               <Route path="/complex" exact element={<Complexes />} />
               <Route path="/report" exact element={<Report />} />
+              <Route path="/report/global" exact element={<ReportGl />} />
               <Route path="/complex/add" exact element={<NewComplex />} />
               <Route path="/complex/edit/:id" exact element={<EditComplex />} />
               <Route path="/profile" exact element={<Profile />} />
@@ -85,6 +88,8 @@ function SuperAdminRoute() {
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
               <Route path="/*" exact element={<NotFound404 />} />
+              <Route path="/test/:id" exact element={<TestPage />} />
+
             </Routes>
             <Footer/>
           </div>

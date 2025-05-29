@@ -39,7 +39,7 @@ function Report() {
 
     try {
       // const { data } = await axios.post(`${API}/auth/getschedulesbydayandemployees`, {
-      const { data } = await axios.post(`${API}/auth/getallemployeestoreportsecond`, {
+      const { data } = await axios.post(`${API}/auth/reportglobal`, {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         complex: filterByComplex.name,

@@ -10,6 +10,8 @@ import img4 from "./Images/Pinterest/image4.png";
 import LangSelect from "./LangSelect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import ReactPlayer from "react-player";
+import rolik from "./Images/mkundalik.mp4";
 import "./Main.scss";
 import Navbarr from "./Navbar";
 import { useTranslation } from "react-i18next";
@@ -177,15 +179,25 @@ function Main() {
         </div>
       </div>
 
+      <div className="video-player-container">
+  <ReactPlayer 
+    url={rolik} 
+    controls={true} 
+    width="100%" 
+    height="500px"
+    playing={false}
+    volume={0.8}
+  />
+</div>
       <div id="statistika" className="statistics hero">
         <h1>{t("statistika")}</h1>
         <p>{t("tashmetroduk")}</p>
         <div className="statistics-main text-center">
           <div className="statistics-main2">
-            <h1 className="son">650+</h1> <p>{t("xodimlar")}</p>
+            <h1 className="son">600+</h1> <p>{t("xodimlar")}</p>
           </div>
           <div className="statistics-main2">
-            <h1 className="son">22000+</h1> <p>{t("wroten")}</p>
+            <h1 className="son">30000+</h1> <p>{t("wroten")}</p>
           </div>
         </div>
         {/* <div className="row">

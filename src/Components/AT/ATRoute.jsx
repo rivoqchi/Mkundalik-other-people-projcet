@@ -16,6 +16,7 @@ import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import { useLocation } from "react-router-dom";
+import TestPage from '../Lang/TestPage';
 
 function ATRoute() {
   const location = useLocation();
@@ -44,6 +45,7 @@ function ATRoute() {
               <Route path="/profile" exact element={<Profile />} />
               <Route path="/objections" exact element={<Etirozlar />} />
               <Route path="/objection/:id" exact element={<EtirozLook />} />
+              <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
           </div>

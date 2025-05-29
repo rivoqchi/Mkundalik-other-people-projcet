@@ -28,6 +28,7 @@ import Languages from '../Admin/Languages';
 import LangRu from '../Admin/LangRu';
 import LangEn from '../Admin/LangEn';
 import { useLocation } from "react-router-dom";
+import TestPage from '../Lang/TestPage';
 function DepartmentRoute() {
   const location = useLocation();
   return (
@@ -69,6 +70,7 @@ function DepartmentRoute() {
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
+              <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
             <Footer/>

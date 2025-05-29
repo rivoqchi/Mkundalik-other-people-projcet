@@ -20,6 +20,7 @@ import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import { useLocation } from "react-router-dom";
+import TestPage from '../Lang/TestPage';
 
 function BossRoute() {
   const location = useLocation();
@@ -52,6 +53,7 @@ function BossRoute() {
               <Route path="/schedule/history/:id" exact element={<SeeSelectedSchedules />} />
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
               <Route path="/*" exact element={<NotFound404 />} />
+              <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
             </Routes>
           </div>

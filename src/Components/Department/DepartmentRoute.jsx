@@ -28,6 +28,7 @@ import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import Footer from '../Footer';
+import TestPage from '../Lang/TestPage';
 
 
 
@@ -63,6 +64,7 @@ function DepartmentRoute() {
               <Route path="/about/news" exact element={<News />} />
               <Route path="/about/statistics" exact element={<UmumiyStat />} />
               <Route path="/about/application" exact element={<Application />} />
+              <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/about/faq" exact element={<FAQPage />} />
               
               <Route path="/" exact element={<Department />} />
