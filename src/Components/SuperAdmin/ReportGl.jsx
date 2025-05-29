@@ -30,6 +30,7 @@ function Report() {
     ]);
     excelData.push([`Boshlanish sanasi: ${reportData.startDate}`]);
     excelData.push([`Tugash sanasi: ${reportData.endDate}`]);
+    excelData.push([`Xizmat bo'yicha o'rtacha ball: ${reportData.overallAverageRated}`]);
     excelData.push([]);
     excelData.push(["Xodim ismi", "Hisobotlar soni", "O'rtacha baho"]);
     reportData.employeeReports.forEach((emp) => {
