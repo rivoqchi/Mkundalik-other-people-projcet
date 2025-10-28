@@ -312,7 +312,7 @@ function ScheduleNew() {
       {loading && <LoadingScreen loading={true} />}
 
       {alert.show && <Alert type={alert.type} message={alert.message} />}
-      <div className="oqrang text-center m-3 ushbustikerlar mb-4">
+      {/* <div className="oqrang text-center m-3 ushbustikerlar mb-4">
           <h5>{t("ushbustikerlar")}</h5>
           <ul className="list-unstyled">
             <li>
@@ -328,26 +328,42 @@ function ScheduleNew() {
               {t("xodimtashabbusi")}
             </li>
           </ul>
-          {/* <p className="redword container">{t("dastlabkibaholashmezoni2")} <br />
-  {t("dastlabkibaholashmezoni3")}
-  </p> */}
-        </div>
+        </div> */}
       <div className="schedule-container align-items-center m-0 justify-content-center row">
-        {/* Sana */}
-        
-
-        
         <div className="date col-12 col-md-6 text-center">
           <img className="startcal" src={calendar} alt="" />
-</div>
-<div className="date col-12 col-md-6 text-center">
-          {date}<br/>
-        {!onWork && (
-          <button className="start-button" onClick={handleShowStart}>
-            <i className="fa-solid fa-play"></i> {t("ishniboshlash")}
-          </button>
-        )}
-</div>
+        </div>
+        <div
+          className="date col-12 col-md-6 text-center"
+          style={{ position: "relative" }}
+        >
+          {date}
+          <br />
+          {!onWork && (
+            <div className="text-center cen">
+              <button
+                className="cssbuttons-io-button"
+                onClick={handleShowStart}
+              >
+                {t("ishniboshlash")}
+                <div className="icon">
+                  <svg
+                    height="24"
+                    width="24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
+            </div>
+          )}
+        </div>
         {terminate && (
           <div className="terminate-container">
             <p className="terminate-message">
@@ -370,7 +386,7 @@ function ScheduleNew() {
         <div>
           {onWork && (
             <>
-              <span className="timer">
+              <span className="u-box">
                 {Math.floor(timer / 3600)
                   .toString()
                   .padStart(2, "0")}
@@ -451,12 +467,107 @@ function ScheduleNew() {
             <>
               <div className="mb-5">
                 <div className="button-container mt-5">
-                  <button onClick={handleShowCreate} className="taskin">
-                    <i className="fa-solid fa-plus"></i> {t("qoshish")}
+                  <button
+                    onClick={handleShowCreate}
+                    class="continue-application"
+                  >
+                    <div>
+                      <div class="pencil"></div>
+                      <div class="folder">
+                        <div class="top">
+                          <svg viewBox="0 0 24 27">
+                            <path d="M1,0 L23,0 C23.5522847,-1.01453063e-16 24,0.44771525 24,1 L24,8.17157288 C24,8.70200585 23.7892863,9.21071368 23.4142136,9.58578644 L20.5857864,12.4142136 C20.2107137,12.7892863 20,13.2979941 20,13.8284271 L20,26 C20,26.5522847 19.5522847,27 19,27 L1,27 C0.44771525,27 6.76353751e-17,26.5522847 0,26 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z"></path>
+                          </svg>
+                        </div>
+                        <div class="paper"></div>
+                      </div>
+                    </div>
+                    {t("qoshish")}
                   </button>
-                  <button onClick={handleShowEnd} className="taskin2">
-                    <i className="fa-regular fa-circle-stop"></i>{" "}
-                    {t("yakunlash")}
+                  <button onClick={handleShowEnd} class="Documents-btn align-items-center">
+                    <span class="folderContainer">
+                      <svg
+                        class="fileBack"
+                        width="146"
+                        height="113"
+                        viewBox="0 0 146 113"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M0 4C0 1.79086 1.79086 0 4 0H50.3802C51.8285 0 53.2056 0.627965 54.1553 1.72142L64.3303 13.4371C65.2799 14.5306 66.657 15.1585 68.1053 15.1585H141.509C143.718 15.1585 145.509 16.9494 145.509 19.1585V109C145.509 111.209 143.718 113 141.509 113H3.99999C1.79085 113 0 111.209 0 109V4Z"
+                          fill="url(#paint0_linear_117_4)"
+                        ></path>
+                        <defs>
+                          <linearGradient
+                            id="paint0_linear_117_4"
+                            x1="0"
+                            y1="0"
+                            x2="72.93"
+                            y2="95.4804"
+                            gradientUnits="userSpaceOnUse"
+                          >
+                            <stop stop-color="#8F88C2"></stop>
+                            <stop offset="1" stop-color="#5C52A2"></stop>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      <svg
+                        class="filePage"
+                        width="88"
+                        height="99"
+                        viewBox="0 0 88 99"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          width="88"
+                          height="99"
+                          fill="url(#paint0_linear_117_6)"
+                        ></rect>
+                        <defs>
+                          <linearGradient
+                            id="paint0_linear_117_6"
+                            x1="0"
+                            y1="0"
+                            x2="81"
+                            y2="160.5"
+                            gradientUnits="userSpaceOnUse"
+                          >
+                            <stop stop-color="white"></stop>
+                            <stop offset="1" stop-color="#686868"></stop>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+
+                      <svg
+                        class="fileFront"
+                        width="160"
+                        height="79"
+                        viewBox="0 0 160 79"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M0.29306 12.2478C0.133905 9.38186 2.41499 6.97059 5.28537 6.97059H30.419H58.1902C59.5751 6.97059 60.9288 6.55982 62.0802 5.79025L68.977 1.18034C70.1283 0.410771 71.482 0 72.8669 0H77H155.462C157.87 0 159.733 2.1129 159.43 4.50232L150.443 75.5023C150.19 77.5013 148.489 79 146.474 79H7.78403C5.66106 79 3.9079 77.3415 3.79019 75.2218L0.29306 12.2478Z"
+                          fill="url(#paint0_linear_117_5)"
+                        ></path>
+                        <defs>
+                          <linearGradient
+                            id="paint0_linear_117_5"
+                            x1="38.7619"
+                            y1="8.71323"
+                            x2="66.9106"
+                            y2="82.8317"
+                            gradientUnits="userSpaceOnUse"
+                          >
+                            <stop stop-color="#C3BBFF"></stop>
+                            <stop offset="1" stop-color="#51469A"></stop>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </span>
+                    <p class="text">{t("yakunlash")}</p>
                   </button>
                 </div>
               </div>
@@ -470,19 +581,15 @@ function ScheduleNew() {
               <i className="fa-solid fa-plus"></i> {t("yangivazifaqoshish")}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body className="forbeg">
-            <textarea
-              className="kghgv"
-              value={taskData}
-              onChange={(e) => setTaskData(e.target.value)}
-              rows="6"
-            />
-            {/* <div className="uploadif">
-            <h5>Xujjatni yuklang (agar bo`lsa)</h5>
-            (hozir ishlamayapti)
-              <i className="fa-solid fa-paperclip"></i>
-            </div> */}
-          </Modal.Body>
+          <Modal.Body className="task-modal-body">
+  <textarea
+    className="task-textarea"
+    value={taskData}
+    onChange={(e) => setTaskData(e.target.value)}
+    rows="6"
+    placeholder={t("tafsilotlarnikiriting")}
+  />
+</Modal.Body>
           <div>
             <div className="tanlovv row">
               <label>
@@ -496,27 +603,33 @@ function ScheduleNew() {
                 {t("lavozimmajburiyati")}
               </label>
 
-              <label>
-                <input
-                  type="radio"
-                  name="taskType"
-                  value="qoshimcha"
-                  checked={type === "qoshimcha"}
-                  onChange={(e) => setType(e.target.value)}
-                />
-                {t("rahbartomonidanqoshimcha")}
-              </label>
+              <div className="radio-wrapper">
+  <label className="radio-option">
+    <input
+      type="radio"
+      name="taskType"
+      value="qoshimcha"
+      checked={type === "qoshimcha"}
+      onChange={(e) => setType(e.target.value)}
+      className="radio-input"
+    />
+    <span className="radio-custom"></span>
+    {t("rahbartomonidanqoshimcha")}
+  </label>
 
-              <label>
-                <input
-                  type="radio"
-                  name="taskType"
-                  value="tashabbus"
-                  checked={type === "tashabbus"}
-                  onChange={(e) => setType(e.target.value)}
-                />
-                {t("xodimtashabbusi")}
-              </label>
+  <label className="radio-option">
+    <input
+      type="radio"
+      name="taskType"
+      value="tashabbus"
+      checked={type === "tashabbus"}
+      onChange={(e) => setType(e.target.value)}
+      className="radio-input"
+    />
+    <span className="radio-custom"></span>
+    {t("xodimtashabbusi")}
+  </label>
+</div>
             </div>
 
             <Modal.Footer>
@@ -529,7 +642,7 @@ function ScheduleNew() {
               >
                 <span>
                   <Button
-                   className="mb-4"
+                    className="mb-4"
                     variant="success"
                     onClick={handleCreateTask}
                     disabled={!type}
@@ -603,7 +716,7 @@ function ScheduleNew() {
                 <span>
                   <Button
                     variant="success"
-                   className="mb-4"
+                    className="mb-4"
                     onClick={handleEditTask}
                     disabled={!type}
                   >

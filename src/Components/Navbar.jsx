@@ -129,11 +129,9 @@ function Navbarr() {
             </a>
             <LangSelect />
             {isSignedIn ? (
-              <Link onClick={() => setIsOpen(false)} to={`${route}/profile`}>
-                <button className="login-btn">
-                  {window.localStorage.getItem("fullName")}
-                </button>
-              </Link>
+              <a className="signedin">
+                {window.localStorage.getItem("fullName")}
+              </a>
             ) : (
               <Link onClick={() => setIsOpen(false)} to="/login">
                 <button className="login-btn">{t("entertocabinet")}</button>

@@ -18,7 +18,7 @@ import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import { useLocation } from "react-router-dom"; // URL parametrlarini olish uchun
 
 function ScheduleRate() {
-  const location = useLocation(); // URL ma'lumotlarini olish
+  const location = useLocation();
   const { t } = useTranslation();
   const myId = window.localStorage.getItem("user_id");
   const myFullName = window.localStorage.getItem("fullName");

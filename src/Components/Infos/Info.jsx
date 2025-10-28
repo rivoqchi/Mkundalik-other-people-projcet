@@ -3,6 +3,10 @@ import {Link} from 'react-router-dom';
 import axios from "axios";
 import { API } from "../../config";
 import { useTranslation } from "react-i18next";
+import Behruz from '../Images/Behruz.jpg';
+import Feruz from '../Images/Feruz.jpg';
+import Usmonov from '../Images/Usmonov.png';
+
 const Info = () => {
 
   const { t } = useTranslation();
@@ -41,19 +45,65 @@ const Info = () => {
       }, [myId]);
     return (
         <div className="tap-page">
-            <h3 className='abouth1'>{t("dasturhaqida")}</h3>
-            <div className="version">{t("versiya")}: <b>0.7.8</b></div>
-            <p className='aboutp'>
-            <a href="http://mkundalik.uz" target="_blank" rel="noopener noreferrer">mkundalik.uz</a> - bu <b>“TOSHKENT METROPOLITENI” DUK</b> tarkibiy tuzilmasida faoliyat yurituvchi xodimlarning ish jarayonlarini yanada samarali boshqarish, ularning kundalik faoliyati bo`yicha hisobotlarni elektron shaklda shakllantirish, ularni tizimli ravishda baholash hamda monitoring qilish imkonini beruvchi zamonaviy axborot tizimidir. <br/><br/>Mazkur dastur xodimlar tomonidan kiritiladigan ma'lumotlarni avtomatlashtirilgan holda qayta ishlash, ularning natijalarini tahlil qilish va rahbariyatga operativ tarzda yetkazish uchun mo`ljallangan bo`lib, ish samaradorligini oshirish va jarayonlarni shaffoflashtirishga xizmat qiladi.
-            </p>
-                <h4>Foydali havolalar:
-                   </h4>
-            <div className="aboutmenu">
-            <Link to={`/${myRole}/about/statistics`} className='abouttap'><div><i className="fa-solid fa-chart-simple"></i> Umumiy statistika</div></Link>
-                 <Link to={`/${myRole}/about/news`} className='abouttap'><div><i className="fa-solid fa-envelope"></i> Yangiliklar</div></Link>
-                 <Link to={`/${myRole}/about/faq`} className='abouttap'><div><i className="fa-solid fa-question"></i> FAQ</div></Link>
-                 <Link to={`/${myRole}/about/application`} className='abouttap'><div><i className="fa-solid fa-blender-phone"></i> Taklif va shikoyatlar</div></Link>
-            </div>
+            <section className="info-header">
+                <h5 className="tit">{t("dasturhaqida")}</h5>
+                <p className='aboutp'>
+                mkundalik.uz {t("dasyarat")}<br/><br/>
+                {t("dasyarat2")}
+                </p>
+            </section>
+            <section className="info-links">
+                <Link to={`/${myRole}/about/statistics`} className='abouttap'><div><i className="fa-solid fa-chart-simple"></i> {t("umstat")}</div></Link>
+                <Link to={`/${myRole}/about/faq`} className='abouttap'><div><i className="fa-solid fa-question"></i> FAQ</div></Link>
+                <Link to={`/${myRole}/about/application`} className='abouttap'><div><i className="fa-solid fa-blender-phone"></i> {t("takshik")}</div></Link>
+            </section><br /><br />
+                <h5 className="tit">{t("zamtex")}:</h5>
+            <section className="info-techs" aria-label="Texnologiyalar karuseli">
+  <div className="tech-scroll" aria-hidden="true">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="ExpressJS" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="NodeJS" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg" alt="Vite" />
+  </div>
+  <div className="tech-scroll" aria-hidden="true">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="ExpressJS" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="NodeJS" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" />
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg" alt="Vite" />
+  </div>
+</section>
+            <section className="info-creators" aria-label="Dastur yaratuvchilari">
+                <h5 className="tit">{t("dasyaratuvchi")}</h5>
+                <div className="creator-list">
+                    <div className="creator-card">
+                        <img src={Usmonov} alt="Usmonov R. J." />
+                        <h5>Usmonov R. J.</h5>
+                        <span>{t("jahlav")}</span>
+                    </div>
+                    <div className="creator-card">
+                        <img src={Feruz} alt="Toshpo`latov F. G`." />
+                        <h5>Toshpo`latov F. G`.</h5>
+                        <span>{t("ferlav")}</span>
+                    </div>
+                    <div className="creator-card">
+                        <img src={Behruz} alt="Abdurakhimov B. G`." />
+                        <h5>Abdurakhimov B. G`.</h5>
+                        <span>{t("behlav")}</span>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 };

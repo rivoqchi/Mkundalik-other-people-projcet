@@ -21,56 +21,79 @@ function Report() {
     return `${day}.${month}.${year}`;
   };
 
-  const exportToExcel = (reportData) => {
-    if (!reportData) return;
+const exportToExcel = (reportData) => {
+  if (!reportData) return;
 
-    const excelData = [];
-    excelData.push([
-      "Metropoliten xizmat va elektrodepolari xodimlarining elektron kundalik yuritish va baholash to`g`risida MA'LUMOTNOMA (mkundalik.uz)",
-    ]);
-    excelData.push([`Boshlanish sanasi: ${reportData.startDate}`]);
-    excelData.push([`Tugash sanasi: ${reportData.endDate}`]);
-    excelData.push([`Xizmat bo'yicha o'rtacha ball: ${reportData.overallAverageRated}`]);
-    excelData.push([]);
+  const excelData = [];
+  excelData.push([
+    "Metropoliten xizmat va elektrodepolari xodimlarining elektron kundalik yuritish va baholash to`g`risida MA'LUMOTNOMA (mkundalik.uz)",
+  ]);
+  excelData.push([`Boshlanish sanasi: ${reportData.startDate}`]);
+  excelData.push([`Tugash sanasi: ${reportData.endDate}`]);
+  excelData.push([`Umumiy o'rtacha ball: ${reportData.overallAverageRated}`]);
+  excelData.push([]);
+
+  // Xodimlarni department bo‘yicha guruhlash
+  const groupedByDepartment = {};
+  reportData.employeeReports.forEach((emp) => {
+    const dep = emp.department || reportData.department || "Boshqa xizmat";
+    if (!groupedByDepartment[dep]) groupedByDepartment[dep] = [];
+    groupedByDepartment[dep].push(emp);
+  });
+
+  // Har bir department uchun alohida bo‘lim yaratish
+  Object.keys(groupedByDepartment).forEach((depName) => {
+    excelData.push([`${depName.toUpperCase()}`]);
     excelData.push(["Xodim ismi", "Hisobotlar soni", "O'rtacha baho"]);
-    reportData.employeeReports.forEach((emp) => {
+    groupedByDepartment[depName].forEach((emp) => {
       excelData.push([emp.employeeName, emp.reportCount, emp.averageRated]);
     });
     excelData.push([]);
-    excelData.push(["O'zlashtirishi past bo'lgan xodimlar"]);
-    excelData.push(["Xodim ismi", "Hisobotlar soni", "O'rtacha baho"]);
-    reportData.lowPerformers.forEach((emp) => {
-      excelData.push([emp.employeeName, emp.reportCount, emp.averageRated]);
-    });
+  });
 
-    const ws = XLSX.utils.aoa_to_sheet(excelData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Hisobot");
-    XLSX.writeFile(wb, `${reportData.startDate}_${reportData.endDate}_hisobot.xlsx`);
-  };
+  // Past o‘zlashtiruvchilar bo‘limi
+  excelData.push(["O'zlashtirishi past bo'lgan xodimlar"]);
+  excelData.push(["Xodim ismi", "Hisobotlar soni", "O'rtacha baho"]);
+  reportData.lowPerformers.forEach((emp) => {
+    excelData.push([emp.employeeName, emp.reportCount, emp.averageRated]);
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(excelData);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Hisobot");
+  XLSX.writeFile(wb, `${reportData.startDate}_${reportData.endDate}_hisobot.xlsx`);
+};
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!startDate || !endDate) {
-      alert("Boshlanish va tugash sanasini kiriting!");
-      return;
-    }
+  e.preventDefault();
+  if (!startDate || !endDate) {
+    alert("Boshlanish va tugash sanasini kiriting!");
+    return;
+  }
 
-    setLoading(true);
-    try {
-      const res = await axios.post(`${API}/auth/reportglobal`, {
-        startDate: formatDate(startDate),
-        endDate: formatDate(endDate),
-        department: filterByDepartment.name,
-      });
-      setData(res.data.data);
-      exportToExcel(res.data.data);
-    } catch (error) {
-      console.error("Xatolik:", error);
-    } finally {
-      setLoading(false);
+  setLoading(true);
+  try {
+    const payload = {
+      startDate: formatDate(startDate),
+      endDate: formatDate(endDate),
+    };
+    // Faqat xizmat tanlangan bo'lsa, payloadga qo'shamiz
+    if (filterByDepartment.name) {
+      payload.department = filterByDepartment.name;
+    }else{
+      payload.department = "all";
     }
-  };
+    const res = await axios.post(`${API}/auth/reportglobal`, payload);
+    console.log(res.data);
+
+    setData(res.data.data);
+    exportToExcel(res.data.data);
+  } catch (error) {
+    console.error("Xatolik:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const getAllDepartments = async () => {
     try {

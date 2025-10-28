@@ -5,7 +5,9 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import DownloadDocx from "./DownloadDocx";
-
+import { useTranslation } from "react-i18next";
+import { Modal, Button } from "react-bootstrap";
+import AllSchedulesDownload from "../SuperAdmin/AllSchedulesDownload";
 const getDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
 };
@@ -33,9 +35,13 @@ const monthsList = [
 const weekDays = ["Du", "Se", "Chor", "Pay", "Ju", "Sh", "Ya"];
 
 const CalendarComponent = () => {
-  const [route, setRoute] = useState(null);
+const { t } = useTranslation();
 
-  const myId = window.localStorage.getItem("user_id");
+  const [route, setRoute] = useState(null);
+  const [holidays, setHolidays] = useState([]);
+  console.log(useParams());
+  
+  const myId = useParams().id || window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [mySectionBeginner, setMySectionBeginner] = useState([]);
   const [myData, setMyData] = useState([]);
@@ -43,10 +49,61 @@ const CalendarComponent = () => {
   const id = window.localStorage.getItem("user_id");
   const thescheduleid = useParams();
   const [showTooltip, setShowTooltip] = useState(false);
+  const [bsDates, setBsDates] = useState([]);
+
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [modalSabab, setModalSabab] = useState("");
 
   const currentDate = new Date();
   const [month, setMonth] = useState(currentDate.getMonth());
   const [year, setYear] = useState(currentDate.getFullYear());
+
+const checkBs = async () => {
+    try {
+      const { data } = await axios.get(`${API}/auth/bs/check/${myId}`);
+      console.log("✅ checkBs response:", data);
+
+      if (data.message === "Found") {
+        setBsDates(data.bsList);
+      } else {
+        setBsDates([]);
+      }
+
+    } catch (error) {
+      console.error("❌ Error fetching data:", error);
+    }
+  };
+
+  const getHolidays = async () => {
+    try {
+      const { data } = await axios.get(`${API}/auth/holiday/get`);
+      if (data.message === "Found") {
+        setHolidays(data.holidays);
+      } else {
+        setHolidays([]);
+      }
+    } catch (error) {
+      console.error("Error fetching holidays:", error);
+    }
+  };
+
+  // ✅ useEffect ichida muntazam chaqirish
+  useEffect(() => {
+    if (!myId) return;
+
+    // Dastlab sahifa ochilganda bir marta chaqiriladi
+    checkBs();
+    getHolidays();
+
+    // So‘ng 30 soniyada bir marta qayta chaqiriladi
+    const interval = setInterval(() => {
+      checkBs();
+      getHolidays();
+    }, 30000);
+
+    // Komponent unmount bo‘lganda intervalni to‘xtatamiz
+    return () => clearInterval(interval);
+  }, [myId]);
 
   const getMySectionSchedules = async () => {
     // try {
@@ -131,6 +188,21 @@ const CalendarComponent = () => {
     );
   };
 
+  const isBsDay = (day) => {
+    const currentDateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return bsDates.some(bs => {
+      const start = new Date(bs.startDate);
+      const end = new Date(bs.endDate);
+      const current = new Date(currentDateStr);
+      return current >= start && current <= end;
+    });
+  };
+
+  const isHolidayDay = (day) => {
+    const currentDateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return holidays.some(hol => hol.holiday === currentDateStr);
+  };
+
   useEffect(() => {
     const role = window.localStorage.getItem("role");
     if (role === "admin") {
@@ -161,8 +233,32 @@ const CalendarComponent = () => {
       setRoute("/null");
     }
   }, []);
+
+  const handleDayClick = (day) => {
+    const currentDateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    // Check if BS kuni
+    const bsMatch = bsDates.find(bs => {
+      const start = new Date(bs.startDate);
+      const end = new Date(bs.endDate);
+      const current = new Date(currentDateStr);
+      return current >= start && current <= end;
+    });
+
+    // Check if Holiday kuni
+    const holidayMatch = holidays.find(hol => hol.holiday === currentDateStr);
+
+    if (bsMatch) {
+      setModalSabab(`🕒 ${bsMatch.sabab} (${bsMatch.startDate} — ${bsMatch.endDate})`);
+      setShowInfoModal(true);
+    } else if (holidayMatch) {
+      setModalSabab(`🎉 ${holidayMatch.sabab} (${holidayMatch.holiday})`);
+      setShowInfoModal(true);
+    }
+  };
+
   return (
-    <div className="calendar-container">
+    <div className="calendar-container def-page">
       <div className="row w-100 align-items-center justify-content-center">
         <div className="col-12 col-md-6 text-center">
 
@@ -263,6 +359,7 @@ const CalendarComponent = () => {
             >
               <i className="fa-solid fa-arrow-right"></i>
             </button>
+            <AllSchedulesDownload employee={myId} />
           </div>
         </div>
       </div>
@@ -286,7 +383,11 @@ const CalendarComponent = () => {
   let statusColor = "";
   let showDownloadButton = false;
 
-  if (!schedule) {
+  if (isBsDay(day)) {
+    statusColor = "calendar-black"; // BS oralig‘idagi kunlar uchun qora status
+  } else if (isHolidayDay(day)) {
+    statusColor = "calendar-black"; // holiday kunlar uchun qora status
+  } else if (!schedule) {
     statusColor = "calendar-red"; // schedule yo‘q
   } else if (schedule.rated) {
     statusColor = "calendar-green"; // rated bor
@@ -299,23 +400,82 @@ const CalendarComponent = () => {
   const isWeekend =
     (index + startDay) % 7 === 5 || (index + startDay) % 7 === 6;
 
+  const currentBs = bsDates.find(bs => {
+    const start = new Date(bs.startDate);
+    const end = new Date(bs.endDate);
+    const current = new Date(`${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`);
+    return current >= start && current <= end;
+  });
+
+  const sababMap = {
+    "У": t("oquvtatilida"),
+    "БС": t("administrativruxsat"),
+    "БЛ": t("mehnatgalayoqatsiz"),
+    "ОТ": t("mehnattatilida"),
+    "УВ": t("mehnatyakunlangan"),
+    "К": t("ishsafarida")
+  };
+
   const cellContent = (
     <motion.div
-      whileHover={!isDisabled ? { scale: 1.1, rotate: 1 } : {}}
-      className={`calendar-day ${
-        isDisabled ? "calendar-day-disabled" : ""
-      } ${isWeekend ? "weekend-background" : ""}`}
+      whileHover={(isBsDay(day) || isHolidayDay(day)) ? { scale: 1.1, rotate: 1 } : {}}
+      onClick={() => {
+        if (isBsDay(day) || isHolidayDay(day)) handleDayClick(day);
+      }}
+      title={
+        isBsDay(day) && currentBs
+          ? `${sababMap[currentBs.sabab] || currentBs.sabab} (${currentBs.startDate} — ${currentBs.endDate})`
+          : ""
+      }
+      className={`calendar-day 
+    ${(!isBsDay(day) && !isHolidayDay(day) && isDisabled) ? "calendar-day-disabled" : ""} 
+    ${(isWeekend || isHolidayDay(day)) ? "weekend-background" : ""} 
+    ${isBsDay(day) ? "calendar-gray" : ""}`}
     >
       {day}
 
       {!isDisabled && <div className={statusColor}></div>}
 
-      {schedule?.ratedName && (
+{/* 
+                  <option value="У">{t("oquvtatilida")}</option>
+                  <option value="БС">{t("administrativruxsat")}</option>
+                  <option value="БЛ">{t("mehnatgalayoqatsiz")}</option>
+                  <option value="ОТ">{t("mehnattatilida")}</option>
+                  <option value="УВ">{t("mehnatyakunlangan")}</option>
+                  <option value="К">{t("ishsafarida")}</option>
+                   */}
+      {isBsDay(day) ? (
+        <div className="calendar-bs">
+          <span>{bsDates.find(bs => {
+            const start = new Date(bs.startDate);
+            const end = new Date(bs.endDate);
+            const current = new Date(`${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`);
+            return current >= start && current <= end;
+          })?.sabab || ""}</span>
+        </div>
+      ) : (
+        schedule?.ratedName && (
+          <div
+            className="calendar-rated"
+            title={`${schedule.ratedName} tomonidan ${schedule.rated} ball bilan baholangan`}
+          >
+            <span>{schedule.rated}</span>
+          </div>
+        )
+      )}
+
+      {isHolidayDay(day) && (
         <div
-          className="calendar-rated"
-          title={`${schedule.ratedName} tomonidan ${schedule.rated} ball bilan baholangan`}
+          className="calendar-holiday"
+          title={
+            holidays.find(
+              hol =>
+                hol.holiday ===
+                `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
+            )?.sabab || ""
+          }
         >
-          <span>{schedule.rated}</span>
+          <span>🎉</span>
         </div>
       )}
 
@@ -348,6 +508,20 @@ const CalendarComponent = () => {
   );
 })}
       </motion.div>
+
+      <Modal show={showInfoModal} onHide={() => setShowInfoModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("malumot")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p style={{ fontSize: "16px", color: "#333", textAlign: "center" }}>{modalSabab}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowInfoModal(false)}>
+            Yopish
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

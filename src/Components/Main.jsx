@@ -200,50 +200,7 @@ function Main() {
             <h1 className="son">30000+</h1> <p>{t("wroten")}</p>
           </div>
         </div>
-        {/* <div className="row">
-          <div className="eng-faollar col-12 col-md-4 text-start justify-content-center align-items-center">
-            <div className="eng-faol d-flex justify-content-center align-items-center">
-              <img src={avatar} className="avatar" alt="avatar" />
-              <div className="infooo">
-                <span>Behruz Abdurakhimov</span>
-                <br />
-                <span>
-                  <i>Tizim administratori</i>
-                </span>
-                <br />
-                <span className="yellowword">45 ta hisobot</span>
-              </div>
-            </div>
-          </div>
-          <div className="eng-faollar col-12 col-md-4 text-start justify-content-center align-items-center">
-            <div className="eng-faol d-flex justify-content-center align-items-center">
-              <img src={avatar} className="avatar" alt="avatar" />
-              <div className="infooo">
-                <span>Feruz Topshpo`latov</span>
-                <br />
-                <span>
-                  <i>Xizmat boshlig`i</i>
-                </span>
-                <br />
-                <span className="yellowword">40 ta hisobot</span>
-              </div>
-            </div>
-          </div>
-          <div className="eng-faollar col-12 col-md-4 text-start justify-content-center align-items-center">
-            <div className="eng-faol d-flex justify-content-center align-items-center">
-              <img src={avatar} className="avatar" alt="avatar" />
-              <div className="infooo">
-                <span>John Doe</span>
-                <br />
-                <span>
-                  <i>Muhandis</i>
-                </span>
-                <br />
-                <span className="yellowword">39 ta hisobot</span>
-              </div>
-            </div>
-          </div>
-        </div> */}
+        
       </div>
 
       <footer className="footer row mb-4">
@@ -263,6 +220,11 @@ function Main() {
             <li>
               <Link to="/templates/instructions.pdf">
                 <i className="fa-solid fa-book"></i> {t("dasfoyyoriq")}
+              </Link>
+            </li>
+            <li>
+              <Link to="/about">
+                <i className="fa-solid fa-circle-info"></i> {t("dasturhaqida")}
               </Link>
             </li>
           </ul>

@@ -98,6 +98,19 @@ function Aside() {
                           </span>
                         </Link>
                       </li>
+
+                                                                  <li
+                                              className={
+                                                location.pathname === "/sport/profile" ? "active" : ""
+                                              }
+                                            >
+                                              <Link to="/sport/profile">
+                                                <i class="fa-solid fa-user"></i>
+                                                <span>
+                                                {t("myInfo")}
+                                                </span>
+                                              </Link>
+                                            </li>
         </ul>
       </nav>
     </div>

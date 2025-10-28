@@ -1,7 +1,8 @@
 import axios from "axios";
 import { API } from "../../config";
 import React, { useState, useEffect } from "react";
-import logo from "../Images/logo2.png";
+import logo from "../Images/logo-png.png";
+import banner from "../Images/banner.png";
 import Button from "react-bootstrap/Button";
 import LoadingScreen from "../Additional/LoadingScreen";
 import Modal from "react-bootstrap/Modal";
@@ -32,10 +33,21 @@ function Profile() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleBS = () => setBS(true);
 
   const [show2, setShow2] = useState(false);
+  const [BS, setBS] = useState(false);
   const handleClose2 = () => setShow2(false);
+  const handleCloseBS = () => setBS(false);
   const handleShow2 = () => setShow2(true);
+
+  const [bsStartDate, setBsStartDate] = useState("");
+  const [bsEndDate, setBsEndDate] = useState("");
+  const [sabab, setSabab] = useState("");
+  const [ogoh, setOgoh] = useState(false);
+  const [ogoh2, setOgoh2] = useState(false);
+
+  const [activeKey, setActiveKey] = useState("0");
 
   const handleViewFile = (fileId) => {
     setViewingFileId(fileId);
@@ -100,203 +112,256 @@ function Profile() {
       setMessage(error.response?.data?.message || "Xatolik yuz berdi");
     }
   };
+
+  const sendBS = async () => {
+    if (!sabab || !bsStartDate || !bsEndDate || !ogoh || !ogoh2) {
+      alert("Iltimos, barcha maydonlarni to‘ldiring va kadrlar bo‘limini ogohlantiring.");
+      return;
+    }
+    try {
+      await axios.post(`${API}/auth/bs`, {
+        userId: myData._id,
+        sabab,
+        startDate: bsStartDate,
+        endDate: bsEndDate,
+      });
+      alert("Ma’lumot muvaffaqiyatli yuborildi!");
+      setBS(false);
+      setBsStartDate("");
+      setBsEndDate("");
+      setSabab("");
+      setOgoh(false);
+      setOgoh2(false);
+    } catch (error) {
+      alert("Xatolik yuz berdi");
+      console.error(error);
+    }
+  };
+
   return (
     <>
       {loading && <LoadingScreen loading={true} />}
+      <div className="profile-container">
+        <div className="profile-left">
+    <h5 className="tit">{t("myInfo")}</h5>
+          <Accordion onSelect={(k) => setActiveKey(k)} flush>
+            <Accordion.Item eventKey="0">
+              <Accordion.Header><i class="fa-solid fa-user passs"></i> {t("personalInfo")}</Accordion.Header>
+              <Accordion.Body>
+                <div className="datum">
+                  <p className="ours">{t("fish")}</p>
+                  <p className="theirs">{myData.name}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("tel")}</p>
+                  <p className="theirs">{myData.phone}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("dateOfBirth")}</p>
+                  <p className="theirs">{myData.dateOfBirth}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("address")}</p>
+                  <p className="theirs">{myData.address}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("complex")}</p>
+                  <p className="theirs">{myData.complex}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("department")}</p>
+                  <p className="theirs">{myData.department}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("section")}</p>
+                  <p className="theirs">{myData.section}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("degree")}</p>
+                  <p className="theirs">{myData.degree}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("nationality")}</p>
+                  <p className="theirs">{myData.nationality}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("education")}</p>
+                  <p className="theirs">{myData.education}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("speciality")}</p>
+                  <p className="theirs">{myData.speciality}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("placeOfBirth")}</p>
+                  <p className="theirs">{myData.placeOfBirth}</p>
+                </div>
+                <div className="datum">
+                  <p className="ours">{t("firstAct")}</p>
+                  <p className="theirs">{myData.firstAct}</p>
+                </div>
+              </Accordion.Body>
+            </Accordion.Item>
 
-      <div className="profil">
-        <div className="d-flex justify-content-center align-items-center">
-          <img className="profiledagilogo" src={logo} alt="logo" />
-          <h1>{t("kundaliktarixim")}</h1>
-        </div>
-        <div className="text-end">
-          <Button className="text-end" variant="primary" onClick={handleShow2}>
-            <i className="fa-solid fa-user-pen"></i> {t("edit")}
-          </Button>
-        </div>
-        <h5>{t("umumiyinfo")}</h5>
-
-        <div className="profiledatum">
-          <div className="datum align-items-center">
-            <p className="ours">{t("fish")}</p>
-            <p className="theirs">{myData.name}</p>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("tel")}</p>
-            <p className="theirs">{myData.phone}</p>
-          </div>
-
-          {/* <div className="datum">
-            <p className="ours">Telegram</p>
-            <p className="theirs">
-              {myData.TelegramAuth ? (
-                <div className="d-flex align-items-center">
-                  <img
-                    className="tgprofile me-2"
-                    src={myData.TelegramAuth.profile_url}
-                    alt="profile photo"
-                  />
-
-                  <div className="d-flex flex-column">
-                    <p className="mb-0">{myData.TelegramAuth.full_name}</p>
-                    <a
-                      href={`http://t.me/${myData.TelegramAuth.username}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-decoration-none text-primary"
-                    >
-                      @{myData.TelegramAuth.username}
-                    </a>
+            <Accordion.Item eventKey="1">
+              <Accordion.Header><i class="fa-solid fa-trophy passs"></i> {t("korsatkichlarim")}</Accordion.Header>
+              <Accordion.Body>
+                <div className="datum">
+                  <p className="ours">{t("sportnatijam")}</p>
+                  <div className="theirs" style={{width: "70%"}}>
+                    {myData.sport && myData.sport.length > 0 ? (
+                      <>
+                        {myData.sport.map((item, index) => (
+                          <p key={index} className="theirs warningtext">
+                            {item.norm}: {item.ball} {t("ball")}
+                          </p>
+                        ))}
+                        <hr />
+                        <strong>{t("jami")}:</strong>{" "}
+                        {myData.sport.reduce((sum, item) => sum + item.ball, 0)} ball
+                      </>
+                    ) : (
+                      <p className="theirs">{t("malumotyoq")}</p>
+                    )}
                   </div>
                 </div>
-              ) : (
-                <>
-                  <span className="redword">Telegram ulanmagan</span>
-                  <LinkTelegram />
-                </>
-              )}
-            </p>
-          </div> */}
 
-          <div className="datum align-items-center">
-            <p className="ours">{t("complex")}</p>
-            <p className="theirs">{myData.complex}</p>
-          </div>
+                <div className="datum">
+                  <p className="ours">{t("tilnatijam")}</p>
+                  <div className="theirs" style={{width: "70%"}}>
+                    {myData.lang && myData.lang.length > 0 ? (
+                      <>
+                        {myData.lang.map((item, index) => (
+                          <p key={index} className="theirs warningtext">
+                            {item.language} - {item.norm}: {item.ball} {t("ball")}
+                          </p>
+                        ))}
+                        <hr />
+                        <strong>{t("jami")}:</strong>{" "}
+                        {myData.lang.reduce((sum, item) => sum + item.ball, 0)} {t("ball")}
+                      </>
+                    ) : (
+                      <p className="theirs">{t("malumotyoq")}</p>
+                    )}
+                  </div>
+                </div>
+              </Accordion.Body>
+            </Accordion.Item>
 
-          <div className="datum align-items-center">
-            <p className="ours">{t("department")}</p>
-            <p className="theirs">{myData.department}</p>
-          </div>
+            <Accordion.Item eventKey="2">
+              <Accordion.Header><i class="fa-solid fa-file passs"></i> {t("hujjatlarim")}</Accordion.Header>
+              <Accordion.Body>
+                <div className="datum align-items-center">
+                  <p className="ours align-items-center">
+                    {t("lavozimyoriqnomasi")}:
+                  </p>
+                  <LavozimYoriqnomasi />
+                </div>
+              </Accordion.Body>
+            </Accordion.Item>
 
-          <div className="datum align-items-center">
-            <p className="ours">{t("section")}</p>
-            <p className="theirs">{myData.section}</p>
-          </div>
+            <Accordion.Item eventKey="3">
+              <Accordion.Header><i class="fa-solid fa-person-circle-check passs"></i> {t("ishdabolmagankun")}</Accordion.Header>
+              <Accordion.Body>
+                <select name="sabab" id="sabab" value={sabab} onChange={(e) => setSabab(e.target.value)}>
+                  <option value="" disabled>{t("sababnitanlang")}</option>
+                  <option value="У">{t("oquvtatilida")}</option>
+                  <option value="БС">{t("administrativruxsat")}</option>
+                  <option value="БЛ">{t("mehnatgalayoqatsiz")}</option>
+                  <option value="ОТ">{t("mehnattatilida")}</option>
+                  <option value="УВ">{t("mehnatyakunlangan")}</option>
+                  <option value="К">{t("ishsafarida")}</option>
+                </select>
+                <div className="d-flex flex-column gap-2 mb-3">
+                  <input
+                    type="date"
+                    value={bsStartDate}
+                    onChange={(e) => setBsStartDate(e.target.value)}
+                  />
+                  <input
+                    type="date"
+                    value={bsEndDate}
+                    onChange={(e) => setBsEndDate(e.target.value)}
+                  />
+                <p className="danger">{t("tatildavrida")}</p>
+                <div className="d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    className="mx-2"
+                    name="ogoh"
+                    id="ogoh"
+                    checked={ogoh}
+                    onChange={(e) => setOgoh(e.target.checked)}
+                  />
+                  {t("kadrlarboliminiogoh")}
+                </div>
+                <div className="d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    className="mx-2"
+                    name="ogoh"
+                    id="ogoh2"
+                    checked={ogoh2}
+                    onChange={(e) => setOgoh2(e.target.checked)}
+                  />
+                  {t("asoskadrda")}
+                </div>
+                <p className="redword">⚠️ {t("diqqatqilingg")}</p>
+                  <Button variant="primary" onClick={sendBS}>{t("send")}</Button>
+                </div>
+              </Accordion.Body>
+            </Accordion.Item>
 
-          <div className="datum align-items-center">
-            <p className="ours">{t("degree")}</p>
-            <p className="theirs">{myData.degree}</p>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("firstAct")}</p>
-            <p className="theirs">{myData.firstAct}</p>
-          </div>
-
-          <h5>{t("shaxsiymalumotlar")}</h5>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("nationality")}</p>
-            <p className="theirs">{myData.nationality}</p>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("education")}</p>
-            <p className="theirs">{myData.education}</p>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("speciality")}</p>
-            <p className="theirs">{myData.speciality}</p>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("dateOfBirth")}</p>
-            <p className="theirs">{myData.dateOfBirth}</p>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("placeOfBirth")}</p>
-            <p className="theirs">{myData.placeOfBirth}</p>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("address")}</p>
-            <p className="theirs">{myData.address}</p>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours align-items-center">
-              {t("lavozimyoriqnomasi")}:
-            </p>
-            <LavozimYoriqnomasi />
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("sportnatijam")}</p>
-            <div className="theirs">
-              {myData.sport && myData.sport.length > 0 ? (
-                <>
-                  {myData.sport.map((item, index) => (
-                    <p key={index} className="theirs warningtext">
-                      {item.norm}: {item.ball} {t("ball")}
-                    </p>
-                  ))}
-                  <hr />
-                  <strong>{t("jami")}:</strong>{" "}
-                  {myData.sport.reduce((sum, item) => sum + item.ball, 0)} ball
-                </>
-              ) : (
-                <p className="theirs">{t("malumotyoq")}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="datum align-items-center">
-            <p className="ours">{t("tilnatijam")}</p>
-            <div className="theirs">
-              {myData.lang && myData.lang.length > 0 ? (
-                <>
-                  {myData.lang.map((item, index) => (
-                    <p key={index} className="theirs warningtext">
-                      {item.language} - {item.norm}: {item.ball} {t("ball")}
-                    </p>
-                  ))}
-                  <hr />
-                  <strong>{t("jami")}:</strong>{" "}
-                  {myData.lang.reduce((sum, item) => sum + item.ball, 0)} {t("ball")}
-                </>
-              ) : (
-                <p className="theirs">{t("malumotyoq")}</p>
-              )}
-            </div>
-          </div>
-          <br />
-        </div>
-        <Accordion defaultActiveKey="0">
-          <Accordion.Item eventKey="1">
-            <Accordion.Header>{t("updatePass")}</Accordion.Header>
-            <Accordion.Body>
-              <div className="changepass">
-                <input
-                  type="password"
-                  placeholder={t("oldPass")}
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                />
-                <input
-                  type="password"
-                  placeholder={t("newPass")}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-              </div>
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
-        <hr />
-        {message && <p>{message}</p>}
-        <div className="d-flex justify-content-between w-100">
-          <Button className="btn-primary" onClick={handlePasswordChange}>
-            {t("updatePass")}
-          </Button>
+            <Accordion.Item eventKey="4">
+              <Accordion.Header><i class="fa-solid fa-lock passs"></i> {t("updatePass")}</Accordion.Header>
+              <Accordion.Body>
+                <div className="changepass d-flex flex-column gap-3">
+                  <input
+                    type="password"
+                    placeholder={t("oldPass")}
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                  />
+                  <input
+                    type="password"
+                    placeholder={t("newPass")}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  {message && <p>{message}</p>}
+                  <div className="d-flex justify-content-start gap-3">
+                    <Button className="btn-primary" onClick={handlePasswordChange}>
+                      {t("updatePass")}
+                    </Button>
+                  </div>
+                </div>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        <div className="justify-content-between d-flex align-items-center mt-4">
+{myData.telegramChatId ? (
+  <h5 className="text-success">Telegram bildirishnomasi: ulangan ✅</h5>
+) : (
+  <h5 className="text-danger">{t("Telegram bildirishnomasi: ulanmagan❌")}</h5>
+)}
           <Button className="btn-danger" onClick={handleShow}>
-            {t("logOut")}{" "}
-            <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                      {t("logOut")}{" "}
+                      <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </Button>
         </div>
+        </div>
+        <div className="profile-right">
+          <a href="https://t.me/mkundalik_hisobot" target="_blank" rel="noopener noreferrer">
+            <Button className="m-5 defaultbutton"><i class="fa-brands fa-telegram"></i> Telegram orqali bildirishnomalarni qabul qilish</Button>
+          </a>
+          <img src={banner} alt="banner" />
+        </div>
+                {/* <div className="profile-right2">
+          <button>sad</button>
+          <img src={banner} alt="banner" />
+        </div> */}
       </div>
+
       <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{t("logOut")}</Modal.Title>

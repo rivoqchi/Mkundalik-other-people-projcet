@@ -35,6 +35,7 @@ import Report from './Report';
 import ReportGl from './ReportGl';
 import FAQPage from '../Infos/FAQPage';
 import SwitchUser from './SwitchUser';
+import Bayram from './Bayram';
 import Footer from '../Footer';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
@@ -78,6 +79,7 @@ function SuperAdminRoute() {
               <Route path="/complex" exact element={<Complexes />} />
               <Route path="/report" exact element={<Report />} />
               <Route path="/report/global" exact element={<ReportGl />} />
+              <Route path="/report/holidays" exact element={<Bayram />} />
               <Route path="/complex/add" exact element={<NewComplex />} />
               <Route path="/complex/edit/:id" exact element={<EditComplex />} />
               <Route path="/profile" exact element={<Profile />} />

@@ -105,9 +105,10 @@ function RatingMyAdmins() {
   }, [mySectionSchedules]);
 
   return (
-    <div className="mh100">
+      <>
       {loading && <LoadingScreen loading={true} />}
-      <h1 className="text-center">{t("xodimlarimkorsatkichlari")}</h1>
+    <div className="mh100 def-page">
+      <h5 className="tit m-3">{t("xodimlarimkorsatkichlari")}</h5>
       <div className="stataboutrating">
         <h3 className="text-center blueword">
         {t("all")}: <b>{mySectionSchedules.length}</b>
@@ -158,7 +159,7 @@ function RatingMyAdmins() {
         style={{ cursor: "pointer" }}
       >
         <td className="history-name">
-          <i className="fa-solid fa-user"></i> {i.beginnerName} - {i?.degree}
+          <i className="fa-solid fa-user"></i> {i.beginnerName}
         </td>
         <td className="history-date">
           <i className="fa-solid fa-calendar-days"></i> {i.startedAt.slice(0, 10)}
@@ -178,6 +179,7 @@ function RatingMyAdmins() {
 </table>
 
     </div>
+      </>
   );
 }
 

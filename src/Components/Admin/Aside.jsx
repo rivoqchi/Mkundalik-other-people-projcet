@@ -112,6 +112,7 @@ function Aside() {
               <Link to="/admin/employees">
                 <i className="fa-solid fa-sitemap"></i>
                 <span>{t("xodimlar")}</span>
+                <span className="newtop">NEW</span>
               </Link>
             </li>
 
@@ -122,11 +123,24 @@ function Aside() {
             >
               <Link to="/admin/languages">
                 <i class="fa-solid fa-language"></i>
-                <span>
-                {t("foreign")}
-                </span>
+                <span>{t("foreign")}</span>
               </Link>
             </li>
+
+            <li
+              className={location.pathname === "/admin/profile" ? "active" : ""}
+            >
+              <Link to="/admin/profile">
+                <i class="fa-solid fa-user"></i>
+                <span>{t("myInfo")}</span>
+              </Link>
+            </li>
+                        <li className={location.pathname === "/admin/about" ? "active" : ""}>
+                          <Link to="/admin/about">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span>{t("dasturhaqida")}</span>
+                          </Link>
+                        </li>
 
             {/* <li
               className={

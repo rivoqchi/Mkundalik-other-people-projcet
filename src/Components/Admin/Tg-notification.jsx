@@ -5,7 +5,7 @@ import { API } from "../../config";
 import LoadingScreen from "../Additional/LoadingScreen";
 import { useTranslation } from "react-i18next";
 
-function Xodimlar() {
+function TgNotification() {
   const { t } = useTranslation();
   const [employees, setEmployees] = useState([]); // Xodimlar ro‘yxati
   const [myData, setMyData] = useState(null);
@@ -68,7 +68,6 @@ function Xodimlar() {
       const { data } = await axios.get(`${API}/auth/getmyemployees`, {
         params,
       });
-      
 
       // Mana shu yerda sort qilamiz:
       const roleOrder = ["complex", "department", "admin", "employee"];
@@ -125,21 +124,17 @@ function Xodimlar() {
   return (
     <>
       {loading && <LoadingScreen loading={true} />}
-      <a href="https://t.me/mkundalik_hisobot" target="_blank" rel="noreferrer">
-        <div className="tg-notification">
-        Xodimlarning hisobot yozmaganliklari haqida <br /> ma'lumotlarni telegramda qabul qilish<i class="fa-brands fa-telegram"></i>
-      </div>
-      </a>
-      <div className="mh100 def-page">
+
+      <div className="mh100">
         <div>
           {/* <div className="newcitata">
       Endilikda xodimlarning barcha kundaliklarini ko`rish uchun xodimning
       ismi ustiga bosing.
     </div> */}
           <div className="justify-content-between">
-            <div className="azolar ">
-              <h5 className="tit m-3">{dataa}</h5>
-              <div className="u-box">
+            <div className="azolar defaultbox">
+              <h3>{dataa}</h3>
+              <div>
                 {employees.length > 0
                   ? `${employees.length} ${t("taxodimroyxatgaolingan")}`
                   : t("connectednotfound")}
@@ -205,4 +200,4 @@ function Xodimlar() {
   );
 }
 
-export default Xodimlar;
+export default TgNotification;

@@ -43,7 +43,6 @@ function Footer() {
           <img src={logo} className="footer-logo" alt="logo" />
           <p>{t("aboutfooter")}
           </p>
-          <p>v1.0.0</p>
         </div>
         <div className="col-12 col-md-4">
           <ul className="list-unstyled bbg text-start">
@@ -55,6 +54,11 @@ function Footer() {
             <li>
               <Link to="/templates/instructions.pdf">
                 <i className="fa-solid fa-book"></i> {t("dasfoyyoriq")}
+              </Link>
+            </li>
+            <li>
+              <Link to={`${route}/about`}>
+                <i className="fa-solid fa-circle-info"></i> {t("aboutus")}
               </Link>
             </li>
             {/* <li>

@@ -69,6 +69,12 @@ function Aside() {
               <span>{t("myInfo")}</span>
             </Link>
           </li>
+                      <li className={location.pathname === "/boss/about" ? "active" : ""}>
+                        <Link to="/boss/about">
+                          <i class="fa-solid fa-circle-info"></i>
+                          <span>{t("dasturhaqida")}</span>
+                        </Link>
+                      </li>
                               
                     <li>
                       <Link onClick={handleShow}>

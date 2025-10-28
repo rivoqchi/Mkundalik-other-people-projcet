@@ -13,7 +13,7 @@ function Aside() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
   const navigate = useNavigate();
-  const location = useLocation(); // Hozirgi yo'lni olish
+  const location = useLocation();
   let token = window.localStorage.getItem("token");
 
   const logout = async () => {
@@ -63,7 +63,6 @@ function Aside() {
             </Link>
           </li>
           </ul>
-<hr />
           <ul className='ggfgf'>
           <li className={location.pathname === '/superadmin/employees/adduser' ? 'active' : ''}>
             <Link to="/superadmin/employees/adduser">
@@ -78,7 +77,6 @@ function Aside() {
             </Link>
           </li>
           </ul>
-          <hr />
         <ul>
           <li className={location.pathname === '/superadmin/report' ? 'active' : ''}>
             <Link to="/superadmin/report">
@@ -92,6 +90,12 @@ function Aside() {
               <span>Ma'lumotnoma</span>
             </Link>
           </li>
+          <li className={location.pathname === '/superadmin/report/holidays' ? 'active' : ''}>
+            <Link to="/superadmin/report/holidays">
+            <i className="fa-solid fa-receipt"></i>
+              <span>Bayram kunlari</span>
+            </Link>
+          </li>
 
 
 
@@ -101,6 +105,19 @@ function Aside() {
               <span>Dastur haqida</span>
             </Link>
           </li>
+
+                                                      <li
+                                  className={
+                                    location.pathname === "/superadmin/profile" ? "active" : ""
+                                  }
+                                >
+                                  <Link to="/superadmin/profile">
+                                    <i class="fa-solid fa-user"></i>
+                                    <span>
+                                    Mening ma'lumotlarim
+                                    </span>
+                                  </Link>
+                                </li>
         </ul>
       </nav>
     </div>
