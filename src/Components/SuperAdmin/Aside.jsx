@@ -92,7 +92,7 @@ function Aside() {
           </li>
           <li className={location.pathname === '/superadmin/report/holidays' ? 'active' : ''}>
             <Link to="/superadmin/report/holidays">
-            <i className="fa-solid fa-receipt"></i>
+            <i className="fa-solid fa-gift"></i>
               <span>Bayram kunlari</span>
             </Link>
           </li>

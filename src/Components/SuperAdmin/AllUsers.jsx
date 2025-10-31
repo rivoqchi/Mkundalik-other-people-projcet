@@ -44,6 +44,8 @@ function Xodimlar() {
           params: { role },
         }
       );
+      // console.log(data);
+      
       setAllEmployees(data.employees);
       setFilteredEmployees(data.employees);
     } catch (err) {
@@ -211,7 +213,7 @@ function Xodimlar() {
                   <th>Yuklab olish</th>
                   <th>Telefon</th>
                   <th>Rol</th>
-                  <th>Kompleks</th>
+                  {/* <th>Kompleks</th>
                   <th>Department</th>
                   <th>Bo'lim</th>
                   <th>Lavozim</th>
@@ -221,7 +223,7 @@ function Xodimlar() {
                   <th>Yashash manzili</th>
                   <th>Ma'lumoti</th>
                   <th>Mutaxassisligi</th>
-                  <th>Tizimga qo‘shildi</th>
+                  <th>Tizimga qo‘shildi</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -248,7 +250,7 @@ function Xodimlar() {
                     </td>
                     <td>{employee.phone}</td>
                     <td>{employee.role}</td>
-                    <td title={employee.complex}>
+                    {/* <td title={employee.complex}>
                       {employee.complex?.length > 20
                         ? employee.complex.slice(0, 20) + "..."
                         : employee.complex}
@@ -290,7 +292,7 @@ function Xodimlar() {
                         ? employee.speciality.slice(0, 20) + "..."
                         : employee.speciality}
                     </td>
-                    <td>{employee.firstAct}</td>
+                    <td>{employee.firstAct}</td> */}
                   </tr>
                 ))}
               </tbody>

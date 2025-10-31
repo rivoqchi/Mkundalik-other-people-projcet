@@ -5,16 +5,16 @@ import LoadingScreen from "../../Additional/LoadingScreen";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";
 
-const AnimatedNumber = ({ value, duration = 1000 }) => {
+const AnimatedNumber = ({ value, duration = 3000 }) => {
   const [count, setCount] = useState(0);
-
   useEffect(() => {
     let startTimestamp = null;
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = (timestamp - startTimestamp) / duration;
+      const easedProgress = 1 - Math.pow(1 - Math.min(progress, 1), 3); // ease-out
       if (progress < 1) {
-        setCount(Math.floor(value * Math.pow(progress, 0.8)));
+        setCount(Math.floor(value * easedProgress));
         requestAnimationFrame(step);
       } else {
         setCount(value);
@@ -22,7 +22,6 @@ const AnimatedNumber = ({ value, duration = 1000 }) => {
     };
     requestAnimationFrame(step);
   }, [value, duration]);
-
   return <span>{count}</span>;
 };
 
@@ -73,143 +72,95 @@ const Card = () => {
     getAllStatistics();
   }, []);
 
+  const statCards = [
+    // bu yerda "Jonli statistika" degan h1 ochiladi
+    { title: "Xodim tizimda", value: stats.employeesCount, icon: "fa-users", color: "#007bff" },
+    { title: "Hisobotlar", value: stats.schedulesCount, icon: "fa-chart-simple", color: "#4caf50" },
+    { title: "Bugungi hisobotlar", value: stats.todaySchedulesCount, icon: "fa-chart-pie", color: "#ff9800" },
+    // bu yerda bo`linib, tashkiliy tuzilmalar degan h1 ochiladi
+    { title: "Komplekslar soni", value: stats.complexesCount, icon: "fa-cogs", color: "#fbc02d" },
+    { title: "Xizmatlar soni", value: stats.sectorsCount, icon: "fa-layer-group", color: "#e53935" },
+    { title: "Bo`limlar soni", value: stats.sectionsCount, icon: "fa-building", color: "#9c27b0" }
+  ];
+
   return (
     <>
       {loading && <LoadingScreen loading={true} />}
-      <div className="row mb-3">
-        <div className="col-12 col-md-4">
-          <div className="d-flex iconblue statcard align-items-center justify-content-evenly">
-            <div className="iconimiz">
-              <i className="fa-solid fa-users"></i>
+      <div className="modern-stats-container">
+        <h1 className="modern-stats-title">Jonli statistika</h1>
+        <div className="modern-stats-grid">
+          {statCards.slice(0,3).map((item, index) => (
+            <div
+              key={index}
+              className="modern-stats-card"
+              style={{ background: `linear-gradient(135deg, ${item.color}90, ${item.color})` }}
+            >
+              <div className="modern-stats-icon">
+                <i className={`fa-solid ${item.icon}`}></i>
+              </div>
+              <div className="modern-stats-info">
+                <h1><AnimatedNumber value={item.value} /></h1>
+                <p>{item.title}</p>
+              </div>
             </div>
-            <div className="card-boddy">
-              <h1 className="card-title">
-                <AnimatedNumber value={stats.employeesCount} />
-              </h1>
-              <p className="card-text">Xodim tizimda</p>
+          ))}
+        </div>
+
+        <h1 className="modern-stats-title">Tashkiliy tuzilmalar</h1>
+        <div className="modern-stats-grid">
+          {statCards.slice(3).map((item, index) => (
+            <div
+              key={index}
+              className="modern-stats-card"
+              style={{ background: `linear-gradient(135deg, ${item.color}90, ${item.color})` }}
+            >
+              <div className="modern-stats-icon">
+                <i className={`fa-solid ${item.icon}`}></i>
+              </div>
+              <div className="modern-stats-info">
+                <h1><AnimatedNumber value={item.value} /></h1>
+                <p>{item.title}</p>
+              </div>
             </div>
+          ))}
+        </div>
+
+        <div className="modern-stats-charts">
+          <div className="modern-stats-chart">
+            <h4>Top 10 eng ko`p hisobot qayd etgan tarkiblar</h4>
+            <BarChart
+              dataset={stats.lengthData}
+              xAxis={[{ scaleType: "band", dataKey: "name" }]}
+              yAxis={[{ label: "Jami hisobotlar" }]}
+              series={[{ dataKey: "miqdor", label: "Hisobotlar" }]}
+              height={320}
+              sx={{
+                [`& .${axisClasses.root}`]: { color: "#fff" },
+                background: "rgba(255,255,255,0.05)",
+                borderRadius: "10px",
+                p: 2,
+              }}
+            />
           </div>
-        </div>
 
-        <div className="col-12 col-md-4">
-          <div className="d-flex iconorange statcard align-items-center justify-content-evenly">
-            <div className="iconimiz">
-              <i className="fa-solid fa-chart-pie"></i>
-            </div>
-            <div className="card-boddy">
-              <h1 className="card-title">
-                <AnimatedNumber value={stats.todaySchedulesCount} />
-              </h1>
-              <p className="card-text">Bugun yozilgan hisobotlar</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <div className="icongreen statcard d-flex align-items-center justify-content-evenly">
-            <div className="iconimiz">
-              <i className="fa-solid fa-chart-simple"></i>
-            </div>
-            <div className="card-boddy">
-              <h1 className="card-title">
-                <AnimatedNumber value={stats.schedulesCount} />
-              </h1>
-              <p className="card-text">Umumiy hisobotlar</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    <div className="row">
-      <div className="col-6">
-        <div className="p-3 statdiv">
-          <h5 className="stath1 text-center">Top 10 eng ko`p kundalik <br /> hisobotlarni qayd etgan tarkibiy tuzilmalar</h5>
-          <BarChart dataset={stats.lengthData} xAxis={[{ scaleType: "band", dataKey: "name", tickPlacement: "middle" }]} yAxis={[{ label: "Jami hisobotlar soni:" }]} series={[{ dataKey: "miqdor", label: "Jami hisobotlar soni:" }]} height={300} sx={{ [`& .${axisClasses.directionY} .${axisClasses.label}`]: { transform: "translateX(-10px)" } }} />
-        </div>
-      </div>
-
-      <div className="col-6">
-      <div className="p-3 statdiv statdiv2">
-        <h5 className="stath1 text-center">Kundalik hisobotlarning o`rtacha <br /> bahosi bo`yicha top 10 tarkibiy tuzilmalar</h5>
-        <BarChart dataset={stats.ratedData} xAxis={[{ scaleType: "band", dataKey: "name", tickPlacement: "middle" }]} yAxis={[{ label: "O`rtacha ball:" }]} series={[{ dataKey: "miqdor", label: "O`rtacha ball:" }]} height={300} sx={{ [`& .${axisClasses.directionY} .${axisClasses.label}`]: { transform: "translateX(-10px)" } }} />
-      </div>
-      </div>
-    </div>
-
-    <div className="row mb-3 mt-3">
-
-
-        <div className="col-12 col-md-4">
-          <div className="d-flex iconyellow statcard align-items-center justify-content-evenly">
-            <div className="iconimiz">
-              <i className="fa-solid fa-cogs"></i>
-            </div>
-            <div className="card-boddy">
-              <h1 className="card-title">
-                <AnimatedNumber value={stats.complexesCount} />
-              </h1>
-              <p className="card-text">Komplekslar soni</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-12 col-md-4">
-          <div className="d-flex iconred statcard align-items-center justify-content-evenly">
-            <div className="iconimiz">
-              <i className="fa-solid fa-layer-group"></i>
-            </div>
-            <div className="card-boddy">
-              <h1 className="card-title">
-                <AnimatedNumber value={stats.sectorsCount} />
-              </h1>
-              <p className="card-text">Xizmatlar soni</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-12 col-md-4">
-          <div className="d-flex iconpurple statcard align-items-center justify-content-evenly">
-            <div className="iconimiz">
-              <i className="fa-solid fa-building"></i>
-            </div>
-            <div className="card-boddy">
-              <h1 className="card-title">
-                <AnimatedNumber value={stats.sectionsCount} />
-              </h1>
-              <p className="card-text">Bo`limlar soni</p>
-            </div>
+          <div className="modern-stats-chart">
+            <h4>O`rtacha bahosi bo`yicha top 10 tarkiblar</h4>
+            <BarChart
+              dataset={stats.ratedData}
+              xAxis={[{ scaleType: "band", dataKey: "name" }]}
+              yAxis={[{ label: "O`rtacha ball" }]}
+              series={[{ dataKey: "miqdor", label: "Ball" }]}
+              height={320}
+              sx={{
+                [`& .${axisClasses.root}`]: { color: "#fff" },
+                background: "rgba(255,255,255,0.05)",
+                borderRadius: "10px",
+                p: 2,
+              }}
+            />
           </div>
         </div>
       </div>
-
-      <div className="row mb-3">
-        <div className="col-12 col-md-6">
-          <div className="d-flex iconlightblue statcard align-items-center justify-content-evenly">
-            <div className="iconimiz">
-              <i className="fa-solid redicon fa-file-alt"></i>
-            </div>
-            <div className="card-boddy">
-              <h1 className="card-title">
-                <AnimatedNumber value={stats.reportsCount} />
-              </h1>
-              <p className="card-text">Rahbar bahosiga bo’lgan shikoyatlar</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-12 col-md-6">
-          <div className="d-flex icondarkblue statcard align-items-center justify-content-evenly">
-            <div className="iconimiz">
-            <i className="fa-solid normativicon fa-volleyball"></i>
-            </div>
-            <div className="card-boddy">
-              <h1 className="card-title">
-                <AnimatedNumber value={stats.normativCount} />
-              </h1>
-              <p className="card-text">Sport normativlari soni</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </>
   );
 };

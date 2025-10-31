@@ -56,6 +56,26 @@ const Info = () => {
                 <Link to={`/${myRole}/about/statistics`} className='abouttap'><div><i className="fa-solid fa-chart-simple"></i> {t("umstat")}</div></Link>
                 <Link to={`/${myRole}/about/faq`} className='abouttap'><div><i className="fa-solid fa-question"></i> FAQ</div></Link>
                 <Link to={`/${myRole}/about/application`} className='abouttap'><div><i className="fa-solid fa-blender-phone"></i> {t("takshik")}</div></Link>
+            </section>
+            <section className="info-creators" aria-label="Dastur yaratuvchilari">
+                <h5 className="tit">{t("dasyaratuvchi")}</h5>
+                <div className="creator-list">
+                    <div className="creator-card">
+                        <img src={Usmonov} alt="Usmonov R. J." />
+                        <h5>Usmanov R. J.</h5>
+                        <span>{t("jahlav")}</span>
+                    </div>
+                    <div className="creator-card">
+                        <img src={Feruz} alt="Toshpo`latov F. G`." />
+                        <h5>Toshpo`latov F. G`.</h5>
+                        <span>{t("ferlav")}</span>
+                    </div>
+                    <div className="creator-card">
+                        <img src={Behruz} alt="Abdurakhimov B. G`." />
+                        <h5>Abdurakhimov B. G`.</h5>
+                        <span>{t("behlav")}</span>
+                    </div>
+                </div>
             </section><br /><br />
                 <h5 className="tit">{t("zamtex")}:</h5>
             <section className="info-techs" aria-label="Texnologiyalar karuseli">
@@ -84,26 +104,6 @@ const Info = () => {
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg" alt="Vite" />
   </div>
 </section>
-            <section className="info-creators" aria-label="Dastur yaratuvchilari">
-                <h5 className="tit">{t("dasyaratuvchi")}</h5>
-                <div className="creator-list">
-                    <div className="creator-card">
-                        <img src={Usmonov} alt="Usmonov R. J." />
-                        <h5>Usmonov R. J.</h5>
-                        <span>{t("jahlav")}</span>
-                    </div>
-                    <div className="creator-card">
-                        <img src={Feruz} alt="Toshpo`latov F. G`." />
-                        <h5>Toshpo`latov F. G`.</h5>
-                        <span>{t("ferlav")}</span>
-                    </div>
-                    <div className="creator-card">
-                        <img src={Behruz} alt="Abdurakhimov B. G`." />
-                        <h5>Abdurakhimov B. G`.</h5>
-                        <span>{t("behlav")}</span>
-                    </div>
-                </div>
-            </section>
         </div>
     );
 };

@@ -19,6 +19,8 @@ import Navbarr from '../Navbar';
 import LookSchedule from '../Admin/LookSchedule';
 import ScheduleRate from '../Admin/ScheduleRate';
 import AllUsers from '../SuperAdmin/AllUsers';
+import ReportGl from '../SuperAdmin/ReportGl';
+import Bayram from '../SuperAdmin/Bayram';
 import PleaseInstruction from '../Asking/PleaseInstruction'
 import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
 import Footer from '../Footer';
@@ -54,6 +56,8 @@ function DepartmentRoute() {
 
               <Route path="/" exact element={<Hr />} />
               <Route path="/dashboard" exact element={<Dashboard />} />
+              <Route path="/report/global" exact element={<ReportGl />} />
+              <Route path="/report/holidays" exact element={<Bayram />} />
               <Route path="/schedule/new" exact element={<ScheduleNew />} />
               <Route path="/schedule/history" exact element={<ScheduleHistory />} />
               <Route path="/schedule/history/:id" exact element={<SeeSelectedSchedules />} />

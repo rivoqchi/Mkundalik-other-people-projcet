@@ -112,7 +112,7 @@ function Aside() {
               <Link to="/admin/employees">
                 <i className="fa-solid fa-sitemap"></i>
                 <span>{t("xodimlar")}</span>
-                <span className="newtop">NEW</span>
+                {/* <span className="newtop">NEW</span> */}
               </Link>
             </li>
 
