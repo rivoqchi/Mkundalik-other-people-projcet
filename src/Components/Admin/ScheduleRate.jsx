@@ -191,26 +191,28 @@ function ScheduleRate() {
               </div>
             </div>
           </div>
-          <div className="scheduleinfo">
-            <div className="schedulebajaruvchilar">
-              <i className="fa-regular fa-user"></i> {t("didone")}:{" "}
+          <hr />
+          <div className="scheduleinfo text-center">
+            {/* <div className="schedulebajaruvchilar">
+              {t("didone")}:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
-            </div>
+            </div> */}
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-building-ngo"></i> {t("complex")}:{" "}
+               {/* {t("complex")}:{" "} */}
               <span>{thisScheduleHistory.complex}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users-viewfinder"></i>{" "}
-              {t("tashtuzilma")}: <span>{thisScheduleHistory.department}</span>
+             
+              {/* {t("tashtuzilma")}:  */}
+              <span>{thisScheduleHistory.department}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users"></i> {t("section")}:{" "}
+               {/* {t("section")}:{" "} */}
               <span>{thisScheduleHistory.section}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-file-contract"></i> {t("degree")}:{" "}
-              <span>{thisScheduleHistory.degree || t("infonotfound")}</span>
+              {t("didone")}:
+              <span> {thisScheduleHistory.degree || t("infonotfound")} - <b>{thisScheduleHistory.beginnerName}</b></span>
             </div>
           </div>
           <br />
@@ -271,39 +273,7 @@ function ScheduleRate() {
             ))}
           </div>
           <br />
-          <div>
-            <div className="scheduleconfirms text-end mb-1">
-              {t("infotasdiqlaydi")}:{" "}
-              <span>{thisScheduleHistory.beginnerName}</span>
-            </div>
-            <div className="warningtext">
-              {t("ushbustikerlar")}
-              <ul className="list-unstyled">
-                <li>
-                  <i className="fa-solid sources majburiyat fa-square"></i> -{" "}
-                  {t("lavozimmajburiyati")}
-                </li>
-                <li>
-                  <i className="fa-solid sources qoshimcha fa-square"></i> -{" "}
-                  {t("rahbartomonidanqoshimcha")}
-                </li>
-                <li>
-                  <i className="fa-solid sources tashabbus fa-square"></i> -{" "}
-                  {t("xodimtashabbusi")}
-                </li>
-              </ul>
-            </div>
-            <div className="schedulerated">
-              <div className="text-center">
-                <Button
-                  className="baholash-wave-btn"
-                  variant="primary"
-                  onClick={() => setShowModal(true)}
-                >
-                  {t("baholash")} <i className="fa-solid fa-star"></i>
-                </Button>
-              </div>
-              <div className="schedulerated">
+          <div className="schedulerated">
                 <div className="justify-content-between d-flex">
                   <h5>
                     {thisScheduleHistory?.rated ? (
@@ -331,7 +301,39 @@ function ScheduleRate() {
                   </span>
                 </div>
               </div>
-
+          <div>
+            {/* <div className="scheduleconfirms text-end mb-1">
+              {t("infotasdiqlaydi")}:{" "}
+              <span>{thisScheduleHistory.beginnerName}</span>
+            </div> */}
+            <div className="warningtext">
+              {t("ushbustikerlar")}
+              <ul className="list-unstyled">
+                <li>
+                  <i className="fa-solid sources majburiyat fa-square"></i> -{" "}
+                  {t("lavozimmajburiyati")}
+                </li>
+                <li>
+                  <i className="fa-solid sources qoshimcha fa-square"></i> -{" "}
+                  {t("rahbartomonidanqoshimcha")}
+                </li>
+                <li>
+                  <i className="fa-solid sources tashabbus fa-square"></i> -{" "}
+                  {t("xodimtashabbusi")}
+                </li>
+              </ul>
+            </div>
+            <div className="schedulerated">
+              <div className="text-center">
+                <Button
+                  className="baholash-wave-btn"
+                  variant="primary"
+                  onClick={() => setShowModal(true)}
+                >
+                  {t("baholash")} <i className="fa-solid fa-star"></i>
+                </Button>
+              </div>
+              
               {thisScheduleHistory.comment && (
                 <div className="commentsch align-items-center justify-content-between d-flex">
                   <div className="">
@@ -340,10 +342,11 @@ function ScheduleRate() {
                   <i
                     disabled={thisScheduleHistory.reported}
                     className="fa-solid excla fa-triangle-exclamation"
-                  ></i>
+                    ></i>
                 </div>
               )}
             </div>
+              <hr/>
           </div>
           <div className="d-flex align-items-center justify-content-between">
             <div className="pdfqr">

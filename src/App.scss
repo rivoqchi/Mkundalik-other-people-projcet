@@ -1057,7 +1057,7 @@ button:focus {
   width: 10rem;
 }
 .scheduleshistory{
-  background-color: rgba(0, 132, 255, 0.102);
+  // background-color: rgba(0, 132, 255, 0.102);
   // background-color: lemonchiffon;
   border-radius: 20px;
   // background: rgb(35, 64, 255);
@@ -1066,10 +1066,10 @@ button:focus {
 }
 .schedulerated{
   border-left: 3px solid green;
-  padding: 3px;
-  background-color: rgba(0, 128, 0, 0.582);
-  border-radius: 10px;
-  color: #fff;
+  // padding: 3px;
+  // background-color: rgba(0, 128, 0, 0.582);
+  // border-radius: 10px;
+  // color: #fff;
 }
 .schedulehistorybtn{
   display: block;
@@ -1111,7 +1111,7 @@ button:focus {
   color: #111;
 }
 .scheduleinfo{
-  border-left: 3px solid rgb(0, 166, 255);
+  // border-left: 3px solid rgb(0, 166, 255);
   background-color: #fff !important;
   border-radius: 5px;
 }
@@ -1122,8 +1122,7 @@ button:focus {
 .schedulebajaruvchilar{
   background-color: #ffffff;
   font-size: 0.8rem !important;
-  padding: 5px;
-  border-bottom: 1px solid rgb(219, 219, 219);
+  // border-bottom: 1px solid rgb(219, 219, 219);
   // margin-bottom: 5px;
 }
 .schedulebajaruvchilar i{
@@ -1141,10 +1140,10 @@ button:focus {
 .scheduletasks{
   font-size: 0.9rem;
   // font-size: 1.1rem;
-  border-left: 3px solid rgb(0, 166, 255);
-  padding: 5px;
-  background-color: lemonchiffon;
-  border-radius: 5px;
+  // border-left: 3px solid rgb(0, 166, 255);
+  // padding: 5px;
+  // background-color: lemonchiffon;
+  // border-radius: 5px;
 }
 .schedulelogo{
   width: 5rem;
@@ -1210,19 +1209,18 @@ button:focus {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: linear-gradient(45deg, #449624, #2ad308);
+  background: linear-gradient(45deg, #053786 , #2563eb);
   color: #fff;
   border: none !important;
-  padding: 14px 24px;
+  padding: 10px 14px !important;
   border-radius: 50px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
   font-size: 20px !important;
   font-weight: bold;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.3s ease;
-  z-index: 9999;
-  animation: up-down 1s infinite reverse ease-out;
+  transition: all 1s ease-out;
+  z-index: 9997;
+  animation: up-down 2s infinite reverse ease-out;
 }
 @keyframes up-down {
   0% {
@@ -1230,7 +1228,7 @@ button:focus {
   }
   50% {
     transform: translateY(-10px);
-    box-shadow: 0px 0px 3px 3px green;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
   }
   100% {
     transform: translateY(0);
@@ -1245,7 +1243,7 @@ button:focus {
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.4);
+  background: #05368684;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.5s ease, height 0.5s ease;
@@ -1273,7 +1271,8 @@ button:focus {
 .baholash-wave-btn:hover {
   transform: scale(1.08);
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  background: linear-gradient(45deg, #f59e0b, #facc15);
+  animation-play-state: paused;
+  background: #053786;
 }
 
 .baholash-wave-btn i {
@@ -1299,7 +1298,7 @@ button:focus {
   break-inside: avoid;
 }
 .scheduletepa{
-  margin: 10px;
+  // margin: 10px;
 }
 .pdf-download-btn {
   background-color: #4CAF50;
@@ -4487,3 +4486,9 @@ input:checked + .slider:before {
           letter-spacing: 1px;
           animation: fadeIn 1s ease-in-out;
         }
+
+.rrr{
+  background-color: silver;
+  color: #111;
+  border-radius: 10px;
+}

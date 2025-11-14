@@ -44,6 +44,8 @@ const Card = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(`${API}/statistics`);
+      console.log(data);
+      
       setStats({
         employeesCount: data.employeesCount,
         schedulesCount: data.schedulesCount,

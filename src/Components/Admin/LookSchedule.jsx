@@ -212,26 +212,19 @@ function ScheduleRate() {
               </div>
             </div>
           </div>
-          <div className="scheduleinfo">
+          <hr />
+          <div className="scheduleinfo text-center">
             <div className="schedulebajaruvchilar">
-              <i className="fa-regular fa-user"></i> {t("didone")}:{" "}
-              <span>{thisScheduleHistory.beginnerName}</span>
-            </div>
-            <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-building-ngo"></i> {t("complex")}:{" "}
               <span>{thisScheduleHistory.complex}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users-viewfinder"></i> {t("tashtuzilma")}:{" "}
               <span>{thisScheduleHistory.department}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users"></i> {t("section")}:{" "}
               <span>{thisScheduleHistory.section}</span>
             </div>
-            <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-file-contract"></i> {t("degree")}:{" "}
-              <span>{thisScheduleHistory.degree || t("infonotfound")}</span>
+            <div className="schedulebajaruvchilar">{t("didone")}:{" "}
+              <span>{thisScheduleHistory.degree || t("infonotfound")} - {thisScheduleHistory.beginnerName}</span>
             </div>
           </div>
           <br />
@@ -265,21 +258,7 @@ function ScheduleRate() {
             ))}
           </div>
           <br />
-          <div>
-            <div className="scheduleconfirms text-end mb-1">
-              {t("infotasdiqlaydi")}:{" "}
-              <span>{thisScheduleHistory.beginnerName}</span>
-            </div>
-            <div className="warningtext">
-{t("ushbustikerlar")}
-  <ul className="list-unstyled">
-    <li><i className="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
-    <li><i className="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
-    <li><i className="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
-  </ul>
-</div>
-            {/* checkpoint */}
-            <div className="schedulerated">
+          <div className="schedulerated">
               <div className="justify-content-between d-flex">
                 <h5>
                   {thisScheduleHistory?.rated ? (
@@ -307,6 +286,21 @@ function ScheduleRate() {
                 </span>
               </div>
             </div>
+          <div>
+            {/* <div className="scheduleconfirms text-end mb-1">
+              {t("infotasdiqlaydi")}:{" "}
+              <span>{thisScheduleHistory.beginnerName}</span>
+            </div> */}
+            <div className="warningtext">
+{t("ushbustikerlar")}
+  <ul className="list-unstyled">
+    <li><i className="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i className="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i className="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
+  </ul>
+</div>
+            {/* checkpoint */}
+            
 
             {/* checkpoint */}
             {thisScheduleHistory.comment && (

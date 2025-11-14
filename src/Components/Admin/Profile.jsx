@@ -263,7 +263,7 @@ function Profile() {
             <Accordion.Item eventKey="3">
               <Accordion.Header><i class="fa-solid fa-person-circle-check passs"></i> {t("ishdabolmagankun")}</Accordion.Header>
               <Accordion.Body>
-                <select name="sabab" id="sabab" value={sabab} onChange={(e) => setSabab(e.target.value)}>
+                <select name="sabab" className="rrr" id="sabab" value={sabab} onChange={(e) => setSabab(e.target.value)}>
                   <option value="" disabled>{t("sababnitanlang")}</option>
                   <option value="У">{t("oquvtatilida")}</option>
                   <option value="БС">{t("administrativruxsat")}</option>
@@ -272,13 +272,15 @@ function Profile() {
                   <option value="УВ">{t("mehnatyakunlangan")}</option>
                   <option value="К">{t("ishsafarida")}</option>
                 </select>
-                <div className="d-flex flex-column gap-2 mb-3">
+                <div className="d-flex row flex-column gap-2 mb-3">
                   <input
                     type="date"
+                    className="rrr col-6"
                     value={bsStartDate}
                     onChange={(e) => setBsStartDate(e.target.value)}
                   />
                   <input
+                  className="rrr col-6"
                     type="date"
                     value={bsEndDate}
                     onChange={(e) => setBsEndDate(e.target.value)}
@@ -385,6 +387,13 @@ function Profile() {
           <EditProfile />
         </Modal.Body>
       </Modal>
+      {/* <div style={{ width: "100%", height: "100%", border: "1px solid #ddd" }}>
+        <iframe
+          src="https://mkundalik.uz/about"
+          style={{ width: "100%", height: "100%", border: 0 }}
+          title="Tashmetro Schedule"
+        ></iframe>
+      </div> */}
     </>
   );
 }
