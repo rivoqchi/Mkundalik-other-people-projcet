@@ -55,6 +55,10 @@ const Login = () => {
         window.localStorage.setItem("phone", data.employee.phone);
         window.localStorage.setItem("role", data.employee.role);
         window.localStorage.setItem("user_id", data.employee._id);
+window.localStorage.setItem(
+  "bd",
+  data.employee.dateOfBirth.slice(-5)
+);
         setValues({ phone: '', password: '' });
         if (data.employee.employee) {
           if (data.employee.role) {

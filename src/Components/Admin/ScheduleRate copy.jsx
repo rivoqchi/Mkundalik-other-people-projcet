@@ -6,46 +6,24 @@ import { QRCodeSVG } from "qrcode.react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
-import logomk from "../Images/logo-png.png";
-import smalllogo from "../Images/metroblanklogo.png";
-import flag from "../Images/half-flag.JPG";
 import { format } from "date-fns";
-import LoadingScreen from "../Additional/LoadingScreen";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Alert from "../Additional/Alert";
+import { Modal, Button, Form } from "react-bootstrap";
 import DownloadDocx from "./DownloadDocx";
 import { useTranslation } from "react-i18next";
+import logomk from "../Images/logo-png.png";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import { useLocation } from "react-router-dom"; // URL parametrlarini olish uchun
-
+import { Spinner } from "react-bootstrap";
+import flag from "../Images/half-flag.JPG";
+import smalllogo from "../Images/metroblanklogo.png";
 function ScheduleRate() {
-  const location = useLocation();
   const { t } = useTranslation();
-  const myId = window.localStorage.getItem("user_id");
-  const myFullName = window.localStorage.getItem("fullName");
-  const [myData, setMyData] = useState([]);
-  const [myRole, setMyRole] = useState([]);
+
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [show, setShow] = useState(false);
-  const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
-  const [checking, setChecking] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => {
-    if (thisScheduleHistory.reported) {
-      setAlert({
-        show: true,
-        type: "error",
-        message: "Siz e'tiroz bildirib bo`lgansiz!",
-      });
-    } else {
-      setShow(true);
-    }
-  };
-  const [reportData, setReportData] = useState("");
-
+  const myId = window.localStorage.getItem("user_id");
+  const fullName = window.localStorage.getItem("fullName");
+  const [myData, setMyData] = useState([]);
+  const [myRole, setMyRole] = useState([]);
   const getMyData = async () => {
     const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
     setMyData(data.user);
@@ -59,18 +37,59 @@ function ScheduleRate() {
       setMyRole("complex");
     } else if (data.user.role === "department") {
       setMyRole("department");
-    } else if (data.user.role === "hr") {
-      setMyRole("hr");
     } else if (data.user.role === "boss") {
       setMyRole("boss");
+    } else if (data.user.role === "hr") {
+      setMyRole("hr");
     } else if (data.user.role === "commission") {
       setMyRole("commission");
     }
   };
-
   useEffect(() => {
     getMyData();
   }, []);
+    const handleShow = () => {
+    if (thisScheduleHistory.reported) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Siz e'tiroz bildirib bo`lgansiz!",
+      });
+    } else {
+      setShow(true);
+    }
+  };
+  const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
+  const [comment, setComment] = useState(thisScheduleHistory.comment || "");
+  const [isCommentEmpty, setIsCommentEmpty] = useState(false);
+  const [checking, setChecking] = useState([]);
+  const [manualRating, setManualRating] = useState("");
+  const [tasdiq, setTasdiq] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [setAI, setSetAi] = useState(false);
+  useEffect(() => {
+    if (showModal) {
+      setSetAi(false);
+
+      let summarizedBall = 0;
+      let tasks = thisScheduleHistory.tasks || [];
+      tasks.forEach((task) => {
+        if (task.source === "majburiyat") {
+          summarizedBall += 5; // majburiyat uchun 5ga ko'paytirish
+        } else if (task.source === "qoshimcha") {
+          summarizedBall += 7; // qoshimcha uchun 7ga ko'paytirish
+        } else if (task.source === "tashabbus") {
+          summarizedBall += 10; // tashabbus uchun 10ga ko'paytirish
+        }
+        if (summarizedBall > 100) {
+          summarizedBall = 100; // maksimal ball 100 ga teng
+        }
+        setManualRating(summarizedBall);
+      });
+    } else {
+      setSetAi(false);
+    }
+  }, [showModal]);
 
   const { id } = useParams();
   const componentRef = useRef();
@@ -81,6 +100,8 @@ function ScheduleRate() {
         `${API}/schedules/getschedulebyid/${id}`
       );
       setThisScheduleHistory(data.thehistory);
+      setChecking(data.thehistory.beginnerId);
+      // setManualRating(data.thehistory.rated || 0);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -90,42 +111,30 @@ function ScheduleRate() {
     getThisScheduleHistory();
   }, []);
 
+  useEffect(() => {
+    const check = async () => {
+      if (checking === myId) {
+        navigate("/");
+      }
+    };
+    check(); // Asinxron funksiyani shu yerda chaqiramiz.
+  }, [checking, myId, navigate]);
+
   // PDF yaratish funksiyasi
   const generatePDF = async () => {
     const input = componentRef.current;
-    input.style.padding = "20px"; // Padding qo'shish
-
-    const canvas = await html2canvas(input, {
-      scale: 10,
-      useCORS: true,
-      backgroundColor: null,
-    });
-
-    const imgData = canvas.toDataURL("image/jpeg", 0.8); // 0.8 = sifatni pasaytirib hajmni kamaytirish
+    const canvas = await html2canvas(input, { scale: 10 }); // Kattaroq ko‘rinish uchun ko‘lam
+    const imgData = canvas.toDataURL("image/jpeg", 1); // Buni 0.8 qilsa ham bo`ladi
 
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = canvas.width / 2; // Tasvirni siqish
+    const imgHeight = canvas.height / 2;
+    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
 
-    let imgHeight = (canvas.height * pdfWidth) / canvas.width; // Rasm o'lchovini muvofiqlashtirish
-    let heightLeft = imgHeight;
-    let position = 0;
-
-    pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, imgHeight);
-    heightLeft -= pdfHeight;
-
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, imgHeight);
-      heightLeft -= pdfHeight;
-    }
-
-    pdf.save(
-      `${
-        thisScheduleHistory.beginnerName
-      }_${thisScheduleHistory.startedAt.slice(0, 10)}_mkundalik.uz.pdf`
-    );
+    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth * ratio, imgHeight * ratio);
+    pdf.save("hisobot.pdf");
   };
 
   const currentUrl = `https://mkundalik.uz/documents/archive/schedule/${thisScheduleHistory._id}`;
@@ -135,69 +144,49 @@ function ScheduleRate() {
   const [isFinalized, setIsFinalized] = useState(false); // Hover ni bloklash uchun
 
   const handleStarClick = (index) => {
+    const rating = (index + 1) * 10;
     setSelectedStars(index + 1);
-    setIsFinalized(true); // Hoverni bloklash
+    setManualRating(rating);
+  };
+
+  const handleInputChange = (event) => {
+    const value = Number(event.target.value);
+    if (value < 1) {
+      alert("Eng kamida 1 ball qo`ya olasiz");
+      setManualRating(1);
+    } else if (value > 100) {
+      setManualRating(100);
+    } else {
+      setManualRating(value);
+    }
   };
 
   const handleSubmit = async () => {
-    const rated = selectedStars * 10; // Bahoni hisoblash
+    if (!manualRating || !comment.trim()) {
+      alert("Barcha maydonlarni to‘ldiring");
+      setIsCommentEmpty(true); // commentquacke klassini qo‘shish uchun
+      return;
+    }
+
     try {
-      await axios.put(`${API}/schedules/ratebyid/${id}`, { rated });
+      await axios.put(`${API}/schedules/ratebyid/${id}`, {
+        rated: manualRating,
+        ratedId: myId,
+        ratedName: fullName,
+        comment: comment,
+      });
       navigate(`/${myRole}/rating/ours`);
     } catch (error) {
       console.error("Error submitting rating:", error);
     }
   };
-
-  const handleReport = async (e) => {
-    e.preventDefault();
-    if (reportData.length === 0) {
-      setAlert({
-        show: true,
-        type: "error",
-        message: "Iltimos, murojaat matnini kiriting!",
-      });
-    } else {
-      try {
-        await axios.post(`${API}/reports/new`, {
-          message: reportData,
-          reporterName: myFullName,
-          reporterId: myId,
-          schedule: thisScheduleHistory,
-        });
-        setAlert({
-          show: true,
-          type: "success",
-          message: "Muvaffaqiyatli yuborildi!",
-        });
-        thisScheduleHistory.reported = true;
-        handleClose();
-      } catch (error) {
-        setAlert({ show: true, type: "error", message: "Xatolik yuz berdi!" });
-      }
-    }
-    setTimeout(() => setAlert({ show: false, type: "", message: "" }), 5000);
-  };
-
-  let lavozimegasi = thisScheduleHistory.beginnerId;
   const renderTooltip = (props, source) => (
     <Tooltip id="button-tooltip" {...props}>
       {source}
     </Tooltip>
   );
-  // URL parametrlarini tekshirish va generatePDF funksiyasini chaqirish
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    if (searchParams.get("download") === "true" && thisScheduleHistory._id) {
-      generatePDF(); // PDF-ni avtomatik yuklab olish
-    }
-  }, [location.search, thisScheduleHistory]); // `thisScheduleHistory` o'zgarganda qayta ishlaydi
-
   return (
     <>
-      {alert.show && <Alert type={alert.type} message={alert.message} />}
-      {loading && <LoadingScreen loading={true} />}
-
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">
           <div className="scheduletepa">
@@ -209,7 +198,7 @@ function ScheduleRate() {
                 </div>
                 <img className="schedulelogo3" src={flag} alt="logo" />
               </div>
-              <div className="col-9 bolddd fw-bold text-center">
+              <div className="col-9 fw-bold text-center">
                 "Toshkent metropoliteni" DUK kundalik hisobotlarni elektron shakllantirish platformasi
                 <hr className="bolded" />
                 ГУП "Тошкент метрополитени" создание ежедневных отчетов
@@ -422,31 +411,89 @@ function ScheduleRate() {
         />
       </div>
 
-      <Modal size="lg" centered show={show} onHide={handleClose}>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>{t("etiroz")}</Modal.Title>
+          <Modal.Title>Баҳолаш</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <b>{thisScheduleHistory.ratedName}</b>{" "}
-          {t("batafsilbayonforcommission")}:
-        </Modal.Body>
-        <div className="text-center">
+          <div className="stars">
+            {[...Array(10)].map((_, index) => (
+              <i
+                key={index}
+                className={`fastar ${index < selectedStars ? "selected" : ""}`}
+                onClick={() => handleStarClick(index)}
+              >
+                ★
+              </i>
+            ))}
+          </div>
+          <div className="bahoinput text-center">
+            {/* <div className="">
+            <i className="fa-solid ourai fa-robot"></i>
+    {setAI && (
+      <Spinner animation="border" size="sm" className="input-spinner" />
+    )}
+            </div> */}
+            <div className="redword">Tizim taklif qilayotgan ball:</div>{" "}
+            <div className="">* o`zgartirish mumkin.</div>
+            <input
+              type="number"
+              value={manualRating}
+              onChange={handleInputChange}
+              min="1"
+              max="100"
+              // className={setAI ? '' : 'no-ai'}
+              // disabled={setAI}
+            />
+          </div>
           <textarea
-            className="kghgva"
-            value={reportData}
-            onChange={(e) => setReportData(e.target.value)}
-            rows="5"
+            className={`kghgv ${isCommentEmpty ? "commentquacke" : ""}`}
+            value={comment}
+            placeholder="Баҳолаш бўйича изоҳ қолдириш зарур:"
+            onChange={(e) => {
+              setComment(e.target.value);
+              setIsCommentEmpty(false); // Foydalanuvchi yozishni boshlasa, class o‘chadi
+            }}
+            rows="3"
           />
-        </div>
+          {/* <div className="row">
+            <div className="col-6 text-center">
+              <button className="w-100"onClick={() => setTasdiq(true)}>Bahoni tasdiqlash</button>
+            </div>
+          </div> */}
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            {t("close")}
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Бекор қилиш
           </Button>
-          <Button variant="danger" onClick={(e) => handleReport(e)}>
-            {t("report")}
+          <Button variant="primary" onClick={handleSubmit}>
+            Юбориш
           </Button>
         </Modal.Footer>
       </Modal>
+      <div className="schedulerated">
+                    <div className="text-center">
+                      <Button
+                        className="baholash-wave-btn"
+                        variant="primary"
+                        onClick={() => setShowModal(true)}
+                      >
+                        {t("baholash")} <i className="fa-solid fa-star"></i>
+                      </Button>
+                    </div>
+                    
+                    {thisScheduleHistory.comment && (
+                      <div className="commentsch align-items-center justify-content-between d-flex">
+                        <div className="">
+                          <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                        </div>
+                        <i
+                          disabled={thisScheduleHistory.reported}
+                          className="fa-solid excla fa-triangle-exclamation"
+                          ></i>
+                      </div>
+                    )}
+                  </div>
     </>
   );
 }

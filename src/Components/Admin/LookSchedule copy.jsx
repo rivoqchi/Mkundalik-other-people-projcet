@@ -6,12 +6,44 @@ import { QRCodeSVG } from "qrcode.react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
+import logomk from "../Images/logo-png.png";
 import { format } from "date-fns";
+import LoadingScreen from "../Additional/LoadingScreen";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Alert from "../Additional/Alert";
+import DownloadDocx from "./DownloadDocx";
+import { useTranslation } from "react-i18next";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { useLocation } from "react-router-dom"; // URL parametrlarini olish uchun
 
 function ScheduleRate() {
+  const location = useLocation();
+  const { t } = useTranslation();
   const myId = window.localStorage.getItem("user_id");
+  const myFullName = window.localStorage.getItem("fullName");
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+  const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
+  const [checking, setChecking] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    if (thisScheduleHistory.reported) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Siz e'tiroz bildirib bo`lgansiz!",
+      });
+    } else {
+      setShow(true);
+    }
+  };
+  const [reportData, setReportData] = useState("");
+
   const getMyData = async () => {
     const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
     setMyData(data.user);
@@ -33,12 +65,10 @@ function ScheduleRate() {
       setMyRole("commission");
     }
   };
+
   useEffect(() => {
     getMyData();
   }, []);
-
-  const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
-  const [checking, setChecking] = useState([]);
 
   const { id } = useParams();
   const componentRef = useRef();
@@ -57,13 +87,16 @@ function ScheduleRate() {
   useEffect(() => {
     getThisScheduleHistory();
   }, []);
-
+  
   // PDF yaratish funksiyasi
   const generatePDF = async () => {
     const input = componentRef.current;
+    input.style.padding = "20px"; // Padding qo'shish
+
     const canvas = await html2canvas(input, {
-      scale: 3, // Kattaroq aniqlik uchun
+      scale: 10,
       useCORS: true,
+      backgroundColor: null,
     });
 
     const imgData = canvas.toDataURL("image/jpeg", 0.8); // 0.8 = sifatni pasaytirib hajmni kamaytirish
@@ -86,7 +119,7 @@ function ScheduleRate() {
       heightLeft -= pdfHeight;
     }
 
-    pdf.save("hisobot.pdf");
+    pdf.save(`${thisScheduleHistory.beginnerName}_${thisScheduleHistory.startedAt.slice(0, 10)}_mkundalik.uz.pdf`);
   };
 
   const currentUrl = `https://mkundalik.uz/documents/archive/schedule/${thisScheduleHistory._id}`;
@@ -110,70 +143,137 @@ function ScheduleRate() {
     }
   };
 
+  const handleReport = async (e) => {
+    e.preventDefault();
+    if (reportData.length === 0) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Iltimos, murojaat matnini kiriting!",
+      });
+    } else {
+      try {
+        await axios.post(`${API}/reports/new`, {
+          message: reportData,
+          reporterName: myFullName,
+          reporterId: myId,
+          schedule: thisScheduleHistory,
+        });
+        setAlert({
+          show: true,
+          type: "success",
+          message: "Muvaffaqiyatli yuborildi!",
+        });
+        thisScheduleHistory.reported = true;
+        handleClose();
+      } catch (error) {
+        setAlert({ show: true, type: "error", message: "Xatolik yuz berdi!" });
+      }
+    }
+    setTimeout(() => setAlert({ show: false, type: "", message: "" }), 5000);
+  };
+
+  let lavozimegasi = thisScheduleHistory.beginnerId;
+  const renderTooltip = (props, source) => (
+    <Tooltip id="button-tooltip" {...props}>
+      {source}
+    </Tooltip>
+  );
+    // URL parametrlarini tekshirish va generatePDF funksiyasini chaqirish
+    useEffect(() => {
+      const searchParams = new URLSearchParams(location.search);
+      if (searchParams.get("download") === "true" && thisScheduleHistory._id) {
+        generatePDF(); // PDF-ni avtomatik yuklab olish
+      }
+    }, [location.search, thisScheduleHistory]); // `thisScheduleHistory` o'zgarganda qayta ishlaydi
+
+    
   return (
     <>
-      <div ref={componentRef} className="p-3 hisobot">
+      {alert.show && <Alert type={alert.type} message={alert.message} />}
+      {loading && <LoadingScreen loading={true} />}
+
+      <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">
           <div className="scheduletepa">
-            <div className="align-items-center justify-content-between d-flex">
-              <img className="schedulelogo" src={logo} alt="logo" />
-              <h3 className="px-2">"ТОШКEНТ МEТРОПОЛИТEНИ" ДУК</h3>
+            <div className="row">
+              <div className="col-4 fw-bold text-center">
+                "ТОШКEНТ МEТРОПОЛИТEНИ" ДУК Кундалик ҳисоботларни шакллантириш
+                электрон платформаси
+              </div>
+              <div className="col-4 text-center">
+                <img className="schedulelogo" src={logo} alt="logo" />
+                <br />
+                <img className="schedulelogo2 p-3" src={logomk} alt="logo" />
+              </div>
+              <div className="col-4 fw-bold text-center">
+                "ТОШКEНТ МEТРОПОЛИТEНИ" ДУК Создание ежедневных отчетов
+                электронная платформа
+              </div>
             </div>
           </div>
-          <div className="scheduleinfo">
+          <div className="blank text-center">Quyidagi elektron hisobot mazmuni uchun uni tuzgan xodim shaxsan javobgar hisoblanadi. <br /> mkundalik.uz tizimi bo‘yicha savol va takliflar uchun aloqa: +998 71 227 44 13, elektron pochta: nib@tashmetro.uz.</div>
+          <hr className="hrnone"/>
+          <div className="scheduleinfo text-center">
             <div className="schedulebajaruvchilar">
-              <i className="fa-regular fa-user"></i> Ҳисоботни бажарган ходим:{" "}
-              <span>{thisScheduleHistory.beginnerName}</span>
-            </div>
-            <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-building-ngo"></i> Комплекс:{" "}
               <span>{thisScheduleHistory.complex}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users-viewfinder"></i> Ташкилий тузилма:{" "}
               <span>{thisScheduleHistory.department}</span>
             </div>
             <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-users"></i> Бўлим:{" "}
               <span>{thisScheduleHistory.section}</span>
             </div>
-            <div className="schedulebajaruvchilar">
-              <i className="fa-solid fa-file-contract"></i> Лавозими:{" "}
-              <span>{thisScheduleHistory?.degree || "Ma'lumot topilmadi"}</span>
+            <div className="schedulebajaruvchilar">{t("didone")}:{" "}
+              <span>{thisScheduleHistory.degree || t("infonotfound")} - {thisScheduleHistory.beginnerName}</span>
             </div>
           </div>
           <br />
           <p className="ochilgan text-center">
             <b>{thisScheduleHistory?.startedAt?.slice(0, 10) || "N/A"}</b>
           </p>
-          <h5 className="text-center">Кундалик бажарилган ишлар ҲИСОБОТИ:</h5>
+          <h5 className="text-center">{t("kunhisoboti")}:</h5>
           <div className="scheduletasks">
             {thisScheduleHistory.tasks?.map((task, index) => (
               <div key={index} className="task-item">
                 <div className="">
-                  {index + 1}. <span>{task.title}</span>
-                </div>
-                <div className="">
-                  <Link>
-                    <span>{task.source}</span>
-                  </Link>
+                {task.source === "majburiyat" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("lavozimmajburiyati"))}>
+    <i title={t("lavozimmajburiyati")} className="fa-solid sources majburiyat fa-square"></i>
+  </OverlayTrigger>
+)}
+{task.source === "qoshimcha" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("rahbartomonidanqoshimcha"))}>
+    <i title={t("rahbartomonidanqoshimcha")} className="fa-solid sources qoshimcha fa-square"></i>
+  </OverlayTrigger>
+)}
+{task.source === "tashabbus" && (
+  <OverlayTrigger placement="top" delay={{ show: 0, hide: 0 }} overlay={(props) => renderTooltip(props, t("xodimtashabbusi"))}>
+    <i title={t("xodimtashabbusi")} className="fa-solid sources tashabbus fa-square"></i>
+  </OverlayTrigger>
+)}
+<b>{index + 1}.</b> <span>{task.title}</span>
                 </div>
                 <hr />
-                {/* checkpoint (bunda misol uchun 3-hisobot chegarada turgan bo`lsa dastlabki sahifada 2-hisobot oxirgisi bo`ladi, 3 va undan keyingilari next page ga o`tishi kerak) */}
               </div>
             ))}
           </div>
           <br />
-          <div>
-            <div className="scheduleconfirms text-end mb-1">
-              Маълумотлар тўғрилигини тасдиқлайди:{" "}
-              <span>{thisScheduleHistory.beginnerName}</span>
-            </div>
-
-                {/* checkpoint */}
-            <div className="schedulerated">
+          <div className="schedulerated">
               <div className="justify-content-between d-flex">
-                <h5>Баҳоланган: </h5>
+                <h5>
+                  {thisScheduleHistory?.rated ? (
+                    thisScheduleHistory.ratedName ? (
+                      <>
+                        <b>{thisScheduleHistory.ratedName}</b> {t("ratedBy")}:
+                      </>
+                    ) : (
+                      t("rated")
+                    )
+                  ) : (
+                    t("nonrated")
+                  )}
+                </h5>
                 <span className="rateschhh">
                   {thisScheduleHistory.rated ? (
                     <div className="align-items-center justify-content-center">
@@ -182,24 +282,49 @@ function ScheduleRate() {
                       {"/100"}
                     </div>
                   ) : (
-                    "Yo'q"
+                    t("infonotfound")
                   )}
                 </span>
               </div>
             </div>
+          <div>
+            {/* <div className="scheduleconfirms text-end mb-1">
+              {t("infotasdiqlaydi")}:{" "}
+              <span>{thisScheduleHistory.beginnerName}</span>
+            </div> */}
+            <div className="warningtext">
+{t("ushbustikerlar")}
+  <ul className="list-unstyled">
+    <li><i className="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i className="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i className="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
+  </ul>
+</div>
+            {/* checkpoint */}
+            
 
-                {/* checkpoint */}
-                <h5 className="text-center commentsch">{thisScheduleHistory.comment}</h5>
+            {/* checkpoint */}
+            {thisScheduleHistory.comment && (
+              <div className="commentsch align-items-center justify-content-between d-flex">
+                <div className="">
+                  <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                </div>
+                <i
+                  disabled={thisScheduleHistory.reported}
+                  onClick={handleShow}
+                  className="fa-solid excla fa-triangle-exclamation"
+                ></i>
+              </div>
+            )}
           </div>
 
-                {/* checkpoint */}
+          {/* checkpoint */}
           <hr />
           <div className="d-flex align-items-center justify-content-between">
             <div className="pdfqr">
               <div className="exclamationqr">
-                Ҳужжатнининг ҳақиқийлигини текшириш учун ушбу QR кодни
-                сканерланг. <br />
-                Ҳужжат фақатгина{" "}
+                {t("checkwithqr")}. <br />
+                {t("doconly")}{" "}
                 <a
                   href="http://mkundalik.uz"
                   target="_blank"
@@ -207,10 +332,9 @@ function ScheduleRate() {
                 >
                   mkundalik.uz
                 </a>{" "}
-                сайтида тақдим этилади.
+                {t("onsite")}
                 <br />
-                Ушбу ҳисоботда келтирилган барча ишлар мазмунига ҳисоботни
-                шакллантирган ходим масъул ҳисобланади.
+                {t("egasijavobgar")}.
                 <div className="current-datetime text-end mx-5">
                   {currentDateTime}
                 </div>
@@ -225,13 +349,46 @@ function ScheduleRate() {
           </div>
         </div>
       </div>
-      <button
-        onClick={generatePDF}
-        className="pdf-download-btn"
-        style={{ margin: "20px 0" }}
-      >
-        <i className="fa-solid fa-download"></i> PDF юклаб олиш
-      </button>
+      <div className="d-flex justify-content-evenly align-items-center">
+        <button
+          onClick={generatePDF}
+          className="pdf-download-btn"
+          style={{ margin: "20px 0" }}
+        >
+          <i className="fa-solid fa-download"></i> {t("pdf")}
+        </button>
+        <DownloadDocx
+          thisScheduleHistory={thisScheduleHistory}
+          currentDateTime={currentDateTime}
+          degree={thisScheduleHistory.degree}
+        />
+      </div>
+
+      <Modal size="lg" centered show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("etiroz")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <b>{thisScheduleHistory.ratedName}</b>{" "}
+          {t("batafsilbayonforcommission")}:
+        </Modal.Body>
+        <div className="text-center">
+          <textarea
+            className="kghgva"
+            value={reportData}
+            onChange={(e) => setReportData(e.target.value)}
+            rows="5"
+          />
+        </div>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            {t("close")}
+          </Button>
+          <Button variant="danger" onClick={(e) => handleReport(e)}>
+            {t("report")}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

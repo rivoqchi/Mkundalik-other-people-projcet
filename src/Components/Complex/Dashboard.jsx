@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../Images/logo2.png';
+import CheckBD from '../CheckBD';
+
 function Dashboard() {
     return ( 
         <>
@@ -9,6 +11,7 @@ function Dashboard() {
              Dashboard <br /><br />
              <Link to="/complex/schedule/new"><button className='defaultbtn'><h5>Yangi hisobotga o`tish</h5></button></Link>
          </h1>
+            <CheckBD />
         </>
      );
 }

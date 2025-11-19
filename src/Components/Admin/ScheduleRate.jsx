@@ -13,9 +13,13 @@ import { useTranslation } from "react-i18next";
 import logomk from "../Images/logo-png.png";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
+import flag from "../Images/half-flag.JPG";
+import smalllogo from "../Images/metroblanklogo.png";
 function ScheduleRate() {
   const { t } = useTranslation();
 
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+  const [show, setShow] = useState(false);
   const myId = window.localStorage.getItem("user_id");
   const fullName = window.localStorage.getItem("fullName");
   const [myData, setMyData] = useState([]);
@@ -44,6 +48,17 @@ function ScheduleRate() {
   useEffect(() => {
     getMyData();
   }, []);
+    const handleShow = () => {
+    if (thisScheduleHistory.reported) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Siz e'tiroz bildirib bo`lgansiz!",
+      });
+    } else {
+      setShow(true);
+    }
+  };
   const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
   const [comment, setComment] = useState(thisScheduleHistory.comment || "");
   const [isCommentEmpty, setIsCommentEmpty] = useState(false);
@@ -175,56 +190,69 @@ function ScheduleRate() {
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">
           <div className="scheduletepa">
-            <div className="row">
-              <div className="col-4 fw-bold text-center">
-                "ТОШКEНТ МEТРОПОЛИТEНИ" ДУК Кундалик ҳисоботларни шакллантириш
-                электрон платформаси
+            <div className="row align-items-center">
+              <div className="col-3 d-flex text-center">
+                <div className="d-block">
+                  <img className="schedulelogo" src={logo} alt="logo" />
+                  <img className="schedulelogo2" src={logomk} alt="logo" />
+                </div>
+                <img className="schedulelogo3" src={flag} alt="logo" />
               </div>
-              <div className="col-4 text-center">
-                <img className="schedulelogo" src={logo} alt="logo" />
-                <br />
-                <img className="schedulelogo2 p-3" src={logomk} alt="logo" />
-              </div>
-              <div className="col-4 fw-bold text-center">
-                "ТОШКEНТ МEТРОПОЛИТEНИ" ДУК Создание ежедневных отчетов
+              <div className="col-9 bolddd fw-bold text-center">
+                "Toshkent metropoliteni" DUK kundalik hisobotlarni elektron shakllantirish platformasi
+                <hr className="bolded" />
+                ГУП "Тошкент метрополитени" создание ежедневных отчетов
                 электронная платформа
               </div>
+              {/* <div className="col-4 fw-bold text-center">
+              </div> */}
             </div>
           </div>
-          <hr />
-          <div className="scheduleinfo text-center">
-            {/* <div className="schedulebajaruvchilar">
-              {t("didone")}:{" "}
-              <span>{thisScheduleHistory.beginnerName}</span>
-            </div> */}
-            <div className="schedulebajaruvchilar">
-               {/* {t("complex")}:{" "} */}
-              <span>{thisScheduleHistory.complex}</span>
+          <br />
+          <hr className="hrnone" />
+          <div className="justify-content-between d-flex">
+            <img src={smalllogo} className="smalllogo" alt="logo" />
+            <div className="blankedd text-center">
+              <a href="https://mkundalik.uz">mkundalik.uz</a> tizimi bo‘yicha
+              taklif va murojaatlar uchun pochta manzili:{" "}
+              <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a>{" "}
+              | telefon: (71) 227-44-13. <br />
+
+              Quyida shakllantirilgan elektron hisobot mazmuniga hisobot egasi
+              mas'ul hisoblanadi.
             </div>
+          </div>
+          <hr className="hrnone mb-2" />
+          <div className="scheduleinfo">
             <div className="schedulebajaruvchilar">
-             
-              {/* {t("tashtuzilma")}:  */}
-              <span>{thisScheduleHistory.department}</span>
-            </div>
-            <div className="schedulebajaruvchilar">
-               {/* {t("section")}:{" "} */}
-              <span>{thisScheduleHistory.section}</span>
-            </div>
-            <div className="schedulebajaruvchilar">
-              {t("didone")}:
-              <span> {thisScheduleHistory.degree || t("infonotfound")} - <b>{thisScheduleHistory.beginnerName}</b></span>
+<table className=" text-start">
+  <tbody>
+    <tr>
+      <td className="fw-bold"><i class="fa-solid fa-users-between-lines"></i> Kompleks:</td>
+      <td className="border-none">{thisScheduleHistory.complex}</td>
+    </tr>
+    <tr>
+      <td className="fw-bold"><i class="fa-solid fa-people-line"></i> Xizmat:</td>
+      <td>{thisScheduleHistory.department}</td>
+    </tr>
+    <tr>
+      <td className="fw-bold"><i class="fa-solid fa-users"></i> Bo`lim:</td>
+      <td>{thisScheduleHistory.section}</td>
+    </tr>
+  </tbody>
+</table>
             </div>
           </div>
           <br />
           <p className="ochilgan text-center">
             <b>{thisScheduleHistory?.startedAt?.slice(0, 10) || "N/A"}</b>
           </p>
-          <h5 className="text-center">{t("kunhisoboti")}:</h5>
+          <h5 className="text-center">{t("kunhisoboti")}</h5>
           <div className="scheduletasks">
             {thisScheduleHistory.tasks?.map((task, index) => (
               <div key={index} className="task-item">
                 <div className="">
-                  {task.source === "majburiyat" && (
+                  {/* {task.source === "majburiyat" && (
                     <OverlayTrigger
                       placement="top"
                       delay={{ show: 0, hide: 0 }}
@@ -237,8 +265,8 @@ function ScheduleRate() {
                         className="fa-solid sources majburiyat fa-square"
                       ></i>
                     </OverlayTrigger>
-                  )}
-                  {task.source === "qoshimcha" && (
+                  )} */}
+                  {/* {task.source === "qoshimcha" && (
                     <OverlayTrigger
                       placement="top"
                       delay={{ show: 0, hide: 0 }}
@@ -251,8 +279,8 @@ function ScheduleRate() {
                         className="fa-solid sources qoshimcha fa-square"
                       ></i>
                     </OverlayTrigger>
-                  )}
-                  {task.source === "tashabbus" && (
+                  )} */}
+                  {/* {task.source === "tashabbus" && (
                     <OverlayTrigger
                       placement="top"
                       delay={{ show: 0, hide: 0 }}
@@ -265,90 +293,87 @@ function ScheduleRate() {
                         className="fa-solid sources tashabbus fa-square"
                       ></i>
                     </OverlayTrigger>
-                  )}
+                  )} */}
                   <b>{index + 1}.</b> <span>{task.title}</span>
                 </div>
-                <hr />
+                <hr className="hrnone2" />
               </div>
             ))}
-          </div>
-          <br />
-          <div className="schedulerated">
-                <div className="justify-content-between d-flex">
-                  <h5>
-                    {thisScheduleHistory?.rated ? (
-                      thisScheduleHistory.ratedName ? (
-                        <>
-                          <b>{thisScheduleHistory.ratedName}</b> {t("ratedBy")}:
-                        </>
-                      ) : (
-                        t("rated")
-                      )
+            <div className="schedulerated">
+              <div className="justify-content-between d-flex">
+                <p>
+                  {thisScheduleHistory?.rated ? (
+                    thisScheduleHistory.ratedName ? (
+                      <>
+                        <b>{thisScheduleHistory.ratedName}</b> {t("ratedBy")}:
+                      </>
                     ) : (
-                      t("nonrated")
-                    )}
-                  </h5>
-                  <span className="rateschhh">
-                    {thisScheduleHistory.rated ? (
-                      <div className="align-items-center justify-content-center">
-                        <i className="fa-regular fa-star"></i>
-                        {thisScheduleHistory.rated}
-                        {"/100"}
-                      </div>
-                    ) : (
-                      t("infonotfound")
-                    )}
-                  </span>
-                </div>
+                      t("rated")
+                    )
+                  ) : (
+                    t("nonrated")
+                  )}
+                </p>
+                <span className="rateschhh">
+                  {thisScheduleHistory.rated ? (
+                    <div className="align-items-center justify-content-center">
+                      <i className="fa-regular fa-star"></i>
+                      {thisScheduleHistory.rated}
+                      {"/100"}
+                    </div>
+                  ) : (
+                    t("-")
+                  )}
+                </span>
               </div>
+            </div>
+            {thisScheduleHistory.comment && (
+              <div className="commentsch align-items-center justify-content-between d-flex">
+                <div className="">
+                  <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                </div>
+                <i
+                  disabled={thisScheduleHistory.reported}
+                  onClick={handleShow}
+                  className="fa-solid excla fa-triangle-exclamation"
+                ></i>
+              </div>
+            )}
+            <div className="schedulebajaruvchilar mt-3 d-flex justify-content-between align-items-center">
+              <span>{thisScheduleHistory.degree || t("infonotfound")}</span>
+              <div
+                className="qr-container text-center"
+                // style={{ marginLeft: "20px" }}
+              >
+                <QRCodeSVG value={currentUrl} size={80} />
+              </div>
+              <span>{thisScheduleHistory.beginnerName}</span>
+            </div>
+          </div>
           <div>
             {/* <div className="scheduleconfirms text-end mb-1">
               {t("infotasdiqlaydi")}:{" "}
               <span>{thisScheduleHistory.beginnerName}</span>
             </div> */}
-            <div className="warningtext">
-              {t("ushbustikerlar")}
-              <ul className="list-unstyled">
-                <li>
-                  <i className="fa-solid sources majburiyat fa-square"></i> -{" "}
-                  {t("lavozimmajburiyati")}
-                </li>
-                <li>
-                  <i className="fa-solid sources qoshimcha fa-square"></i> -{" "}
-                  {t("rahbartomonidanqoshimcha")}
-                </li>
-                <li>
-                  <i className="fa-solid sources tashabbus fa-square"></i> -{" "}
-                  {t("xodimtashabbusi")}
-                </li>
-              </ul>
-            </div>
-            <div className="schedulerated">
-              <div className="text-center">
-                <Button
-                  className="baholash-wave-btn"
-                  variant="primary"
-                  onClick={() => setShowModal(true)}
-                >
-                  {t("baholash")} <i className="fa-solid fa-star"></i>
-                </Button>
-              </div>
-              
-              {thisScheduleHistory.comment && (
-                <div className="commentsch align-items-center justify-content-between d-flex">
-                  <div className="">
-                    <b>{t("comment")}:</b> {thisScheduleHistory.comment}
-                  </div>
-                  <i
-                    disabled={thisScheduleHistory.reported}
-                    className="fa-solid excla fa-triangle-exclamation"
-                    ></i>
-                </div>
-              )}
-            </div>
-              <hr/>
+            {/* <div className="warningtext">
+{t("ushbustikerlar")}
+  <ul className="list-unstyled">
+    <li><i className="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
+    <li><i className="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
+    <li><i className="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
+  </ul>
+</div> */}
+            {/* checkpoint */}
+
+            {/* checkpoint */}
+
+            {/* <div className="current-datetime text-end mx-5">
+              {currentDateTime}
+            </div> */}
           </div>
-          <div className="d-flex align-items-center justify-content-between">
+
+          {/* checkpoint */}
+          {/* <div className="d-flex align-items-center justify-content-between">
             <div className="pdfqr">
               <div className="exclamationqr">
                 {t("checkwithqr")}. <br />
@@ -368,19 +393,13 @@ function ScheduleRate() {
                 </div>
               </div>
             </div>
-            <div
-              className="qr-container text-center"
-              style={{ marginLeft: "20px" }}
-            >
-              <QRCodeSVG value={currentUrl} size={80} />
-            </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="d-flex justify-content-evenly align-items-center">
         <button
           onClick={generatePDF}
-          className="pdf-download-btn"
+          className="defaultbtn"
           style={{ margin: "20px 0" }}
         >
           <i className="fa-solid fa-download"></i> {t("pdf")}
@@ -452,6 +471,29 @@ function ScheduleRate() {
           </Button>
         </Modal.Footer>
       </Modal>
+      <div className="schedulerated">
+                    <div className="text-center">
+                      <Button
+                        className="baholash-wave-btn"
+                        variant="primary"
+                        onClick={() => setShowModal(true)}
+                      >
+                        {t("baholash")} <i className="fa-solid fa-star"></i>
+                      </Button>
+                    </div>
+                    
+                    {thisScheduleHistory.comment && (
+                      <div className="commentsch align-items-center justify-content-between d-flex">
+                        <div className="">
+                          <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                        </div>
+                        <i
+                          disabled={thisScheduleHistory.reported}
+                          className="fa-solid excla fa-triangle-exclamation"
+                          ></i>
+                      </div>
+                    )}
+                  </div>
     </>
   );
 }

@@ -78,7 +78,7 @@ const DownloadDocx = ({ thisScheduleHistory, degree, currentDateTime }) => {
   };
   return (
     <div>
-      <button onClick={generateDocx} className="pdf-download-btn">
+      <button onClick={generateDocx} className="defaultbtn">
       <i className="fa-solid fa-download"></i> {t("docx")}
       </button>
     </div> 

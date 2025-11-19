@@ -35,11 +35,13 @@ import CtrlEnter from './Components/CtrlEnter';
 import UmumiyStat from "./Components/Infos/UmumiyStat";
 import CheckIsTest from "./Components/CheckIsTest";
 import Info from "./Components/Infos/Info";
+import CheckBD from "./Components/CheckBD";
 function App() {
   return (
     <>
       <div>
         {/* <LangSelect /> */}
+        <CheckBD />
         <Router>
         <CheckIsTest />
           <CtrlEnter/>

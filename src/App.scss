@@ -1062,14 +1062,10 @@ button:focus {
   border-radius: 20px;
   // background: rgb(35, 64, 255);
   margin: 10px;
-  padding: 20px;
+  padding: 0px 20px;
 }
 .schedulerated{
-  border-left: 3px solid green;
-  // padding: 3px;
-  // background-color: rgba(0, 128, 0, 0.582);
-  // border-radius: 10px;
-  // color: #fff;
+  background-color: rgba(196, 196, 196, 0.58);
 }
 .schedulehistorybtn{
   display: block;
@@ -1097,12 +1093,15 @@ button:focus {
     color: rgb(0, 0, 136);
   }
 }
-
+.bolddd{
+  color: rgb(0, 0, 136);
+  font-weight: bold;
+}
 .excla{
-  color: gold;
+  color: #fff;
   background-color: red;
   cursor: pointer;
-  padding: 7px;
+  padding: 5px;
   font-size: 1.5rem;
   border-radius: 3px;
 }
@@ -1132,24 +1131,47 @@ button:focus {
   color: rgb(0, 0, 123);
   font-weight: bold;
 }
+.schedulebajaruvchilar table tbody tr td{
+  padding: 5px;
+  text-align: left;
+}
 .ochilgan{
   font-size: 1.1rem;
+  color: red;
   margin: 0 !important;
   padding: 0 !important;
 }
 .scheduletasks{
   font-size: 0.9rem;
-  // font-size: 1.1rem;
-  // border-left: 3px solid rgb(0, 166, 255);
-  // padding: 5px;
-  // background-color: lemonchiffon;
-  // border-radius: 5px;
 }
 .schedulelogo{
-  width: 5rem;
+  width: 4.7rem;
 }
 .schedulelogo2{
-  width: 10rem;
+  width: 8rem;
+}
+.bd-logo{
+  width: 8rem;
+}
+.smalllogo{
+  width: 2rem !important;
+}
+.blankedd{
+  font-size: .70rem;
+}
+.cb-burst{
+  z-index: 99999 !important;
+}
+.schedulelogo3{
+  width: .5rem;
+  border: 1px solid #a6a6a698;
+  border-radius: 8px;
+  height: 6rem;
+}
+.bolded{
+  border: none;
+  border-bottom: 3px solid #111;
+  border-color: #001b89ff;
 }
 .pdfqr{
   justify-content: space-evenly;
@@ -1192,18 +1214,6 @@ button:focus {
   100% {
     background-position: 0% 50%;
   }
-}
-.rateschhh{
-  font-size: 1.4rem;
-}
-.commentsch{
-  background-color: lemonchiffon;
-  padding: 10px;
-  border-radius: 3px;
-  border-left: 3px solid rgb(0, 166, 255);
-  color: #111;
-  font-size: 1rem;
-  margin: 10px;
 }
 .baholash-wave-btn {
   position: fixed;
@@ -1286,8 +1296,6 @@ button:focus {
 .qr-container {
   page-break-inside: avoid;
   text-align: center;
-  margin-top: 20px;
-  border-top: 1px solid #eee;
 }
 .task-item,
 .schedulerated,
@@ -4491,4 +4499,11 @@ input:checked + .slider:before {
   background-color: silver;
   color: #111;
   border-radius: 10px;
+}
+.hrnone{
+  padding: 0;
+  margin: 0;
+}
+.hrnone2{
+  margin: 3px;
 }

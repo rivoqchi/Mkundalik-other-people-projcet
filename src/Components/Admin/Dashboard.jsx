@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { API } from '../../config';
 import logo from '../Images/logo2.png';
-
+import CheckBD from '../CheckBD';
 function Dashboard() {
   const [reportCount, setReportCount] = useState(0);
   const user_id = localStorage.getItem('user_id');
@@ -28,6 +28,7 @@ function Dashboard() {
   }, [user_id]);
 
   return (
+    
     <div className="dashboard-container">
       <div className="dashboard-header">
         <img src={logo} alt="Logo" />
@@ -43,6 +44,7 @@ function Dashboard() {
         <p>Ajoyib ish, shunday davom eting! <i class="fa-solid fa-rocket"></i></p>
         <p>Sizning faoliyatingiz boshqalarga ilhom bag‘ishlaydi <i class="fa-solid fa-tower-broadcast"></i></p>
       </div>
+      <CheckBD />
     </div>
   );
 }
