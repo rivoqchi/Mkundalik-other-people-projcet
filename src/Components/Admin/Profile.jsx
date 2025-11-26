@@ -346,6 +346,9 @@ function Profile() {
 ) : (
   <h5 className="text-danger">{t("Telegram bildirishnomasi: ulanmagan❌")}</h5>
 )}
+          <Button className="btn-primary" onClick={handleShow2}>
+                     {t("edit")}{" "} <i className="fa-solid fa-pen"></i>
+          </Button>
           <Button className="btn-danger" onClick={handleShow}>
                       {t("logOut")}{" "}
                       <i className="fa-solid fa-arrow-right-from-bracket"></i>

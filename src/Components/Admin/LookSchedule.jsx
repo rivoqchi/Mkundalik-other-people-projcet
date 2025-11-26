@@ -246,10 +246,14 @@ function ScheduleRate() {
       <td className="fw-bold"><i class="fa-solid fa-people-line"></i> Xizmat:</td>
       <td>{thisScheduleHistory.department}</td>
     </tr>
+    {thisScheduleHistory.section !== "Yuqori turuvchi" && (
     <tr>
       <td className="fw-bold"><i class="fa-solid fa-users"></i> Bo`lim:</td>
       <td>{thisScheduleHistory.section}</td>
     </tr>
+    
+    )
+    }
   </tbody>
 </table>
             </div>
