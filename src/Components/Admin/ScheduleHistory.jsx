@@ -429,7 +429,8 @@ const checkBs = async () => {
       }
       className={`calendar-day 
     ${(!isBsDay(day) && !isHolidayDay(day) && isDisabled) ? "calendar-day-disabled" : ""} 
-    ${(isWeekend || isHolidayDay(day)) ? "weekend-background" : ""} 
+    ${(isWeekend) ? "weekend-background" : ""}
+    ${(isHolidayDay(day)) ? "holiday-background" : ""}
     ${isBsDay(day) ? "calendar-gray" : ""}`}
     >
       {day}

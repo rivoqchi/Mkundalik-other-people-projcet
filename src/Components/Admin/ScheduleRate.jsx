@@ -404,11 +404,11 @@ function ScheduleRate() {
         >
           <i className="fa-solid fa-download"></i> {t("pdf")}
         </button>
-        <DownloadDocx
+        {/* <DownloadDocx
           thisScheduleHistory={thisScheduleHistory}
           currentDateTime={currentDateTime}
           degree={thisScheduleHistory.degree}
-        />
+        /> */}
       </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>

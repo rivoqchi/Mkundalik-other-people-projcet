@@ -9,7 +9,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
   React.useEffect(() => {
     const fetchUserRole = async () => {
       const userRole = await fetchRole();
-      setRole(userRole);      
+      setRole(userRole);
       
     };
     fetchUserRole();

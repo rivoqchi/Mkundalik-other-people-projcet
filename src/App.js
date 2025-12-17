@@ -36,6 +36,7 @@ import UmumiyStat from "./Components/Infos/UmumiyStat";
 import CheckIsTest from "./Components/CheckIsTest";
 import Info from "./Components/Infos/Info";
 import CheckBD from "./Components/CheckBD";
+import Snowing from "./Components/Snowing";
 function App() {
   return (
     <>
@@ -46,6 +47,7 @@ function App() {
         <CheckIsTest />
           <CtrlEnter/>
           <XatolikXabar/>
+          <Snowing />
           {/* <Sorry/> */}
           {/* <AllowNotification/> */}
           <Routes>

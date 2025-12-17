@@ -11,6 +11,9 @@ import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import calendar from "../Images/calendar.png";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import dayjs from "dayjs";
 function ScheduleNew() {
   const { t } = useTranslation();
 
@@ -23,7 +26,24 @@ function ScheduleNew() {
   const [myPosition, setMyPosition] = useState([]);
   const [myDegree, setMyDegree] = useState([]);
   const [myRole, setMyRole] = useState([]);
+const [selectedDate, setSelectedDate] = useState(null);
 
+const [showPicker, setShowPicker] = useState(false);
+useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === "D") {
+      e.preventDefault();
+      setShowPicker(true);
+    }
+
+    if (e.key === "Escape") {
+      setShowPicker(false);
+    }
+  };
+
+  window.addEventListener("keydown", handleKeyDown);
+  return () => window.removeEventListener("keydown", handleKeyDown);
+}, []);
   const getMyData = async () => {
     setLoading(true);
 
@@ -53,6 +73,7 @@ function ScheduleNew() {
   const [timer, setTimer] = useState(0);
   const [tasks, setTasks] = useState([]);
   const [startedAt, setStartedAt] = useState("");
+  const [madeEasier, setMadeEasier] = useState("");
 
   const [countdown, setCountdown] = useState(5);
 
@@ -105,7 +126,6 @@ function ScheduleNew() {
       .toLocaleDateString("en-GB")
       .replace(/[/]/g, ".");
     setDate(currentDate);
-    console.log(currentDate);
 
     axios
       .get(`${API}/schedules/checktoday/${myId}`)
@@ -122,13 +142,11 @@ function ScheduleNew() {
 
           if (startedDate !== today) {
             if (fetchedWorkingOn.tasks && fetchedWorkingOn.tasks.length > 0) {
-              console.log(`Avto yakunlash, ${myId}, ${fetchedWorkingOn._id}`);
               axios
                 .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {
                   myId,
                 })
                 .then(
-                  (response) => console.log("Avto yakunlandi:", response.data),
                   setTerminate("Auto terminated"),
                   setOnWork(false),
                   setTasks([])
@@ -142,7 +160,6 @@ function ScheduleNew() {
                   `${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`
                 )
                 .then(
-                  (response) => console.log("O'chirildi:", response.data),
                   setTerminate("Auto deleted"),
                   setOnWork(false),
                   setTasks([])
@@ -164,6 +181,7 @@ function ScheduleNew() {
                 "$3-$2-$1T$4:$5"
               )
             ).getTime();
+            
             setStartedAt(fetchedWorkingOn.startedAt); // Global qiymatga saqlash
             setTimer(Math.floor((Date.now() - start) / 1000));
           }
@@ -285,15 +303,16 @@ function ScheduleNew() {
     if (handleShowStart) {
       handleCloseStart();
     }
-    const payload = {
-      beginnerName: myName,
-      beginnerId: window.localStorage.getItem("user_id"),
-      section: mySection,
-      department: myDepartment,
-      complex: myComplex,
-      role: myRole,
-      degree: myDegree,
-    };
+const payload = {
+  beginnerName: myName,
+  beginnerId: window.localStorage.getItem("user_id"),
+  section: mySection,
+  department: myDepartment,
+  complex: myComplex,
+  role: myRole,
+  degree: myDegree,
+  ...(madeEasier && { madeEasier: madeEasier }),
+};
 
     axios.post(`${API}/schedules/create`, payload).then((res) => {
       setOnWork(true);
@@ -578,7 +597,9 @@ function ScheduleNew() {
         <Modal size="lg" centered show={showCreate} onHide={handleCloseCreate}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <i className="fa-solid fa-plus"></i> {t("yangivazifaqoshish")}
+              <div className="boshlovchi">
+                <i class="fa-solid newuser fa-user-check"></i> {window.localStorage.getItem("fullName")}
+              </div>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="task-modal-body">
@@ -760,7 +781,26 @@ function ScheduleNew() {
           <Modal.Header closeButton>
             <Modal.Title>{t("boshlash")}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{t("areyousuretostart")}</Modal.Body>
+          <Modal.Body>
+  {t("areyousuretostart")}
+
+  {showPicker && (
+    <div className="mt-3">
+      <DatePicker
+        selected={selectedDate}
+        onChange={(date) => {
+          setSelectedDate(date);
+          setMadeEasier(dayjs(date).format("DD/MM/YYYY HH:mm"));
+          // setShowPicker(false); // tanlangach yopiladi
+        }}
+        showTimeSelect
+        dateFormat="dd/MM/yyyy HH:mm"
+        className="form-control"
+        autoFocus
+      />
+    </div>
+  )}
+</Modal.Body>
           <Modal.Footer>
             <Button variant="success" onClick={handleStartWork}>
               {t("boshlash")}

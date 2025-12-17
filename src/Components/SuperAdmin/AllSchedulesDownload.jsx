@@ -1,5 +1,6 @@
 import React from "react";
 import { saveAs } from "file-saver";
+import { Document, Packer, Paragraph, TextRun } from "docx";
 import { API } from "../../config";
 
 const DownloadObject = ({ employee }) => {
@@ -14,30 +15,8 @@ const DownloadObject = ({ employee }) => {
     return data.schedules;
   };
 
-  // Ma'lumotni odamlar uchun o'qiladigan formatga aylantirish
-  const convertToReadableText = (schedules) => {
-    return schedules.map((item, index) => {
-      let text = `📋 Hisobot #${index + 1}\n`;
-      text += `Boshlanish vaqti: ${item.startedAt}\n`;
-      text += `Yakunlanish vaqti: ${item.closed}\n`;
-      text += `Boshlovchi nomi: ${item.beginnerName}\n`;
-      text += `Bo'lim: ${item.section}\n`;
-      text += `Kompleks: ${item.complex}\n`;
-      text += `Lavozimi: ${item.degree}\n`;
-      text += `Bahosi: ${item.rated !== undefined ? item.rated : "Yo'q"}\n`;
-      text += `Vazifalar:\n`;
-
-      item.tasks.forEach((task, i) => {
-        text += `   ${i + 1}. ${task.title}\n`;
-      });
-
-      text += `----------------------------------------\n`;
-      return text;
-    }).join("\n");
-  };
-
-  // Ma'lumotni txt faylga saqlash
-  const saveSchedulesAsTxt = async () => {
+  // Ma'lumotni Word faylga saqlash
+  const saveSchedulesAsWord = async () => {
     try {
       const schedules = await getSchedules();
 
@@ -46,26 +25,54 @@ const DownloadObject = ({ employee }) => {
         return;
       }
 
-      // Foydalanuvchiga qulay ko'rinishga keltiramiz
-      const textContent = convertToReadableText(schedules);
+      const sections = schedules.map((item, index) => {
+        const paragraphs = [];
 
-      // Fayl nomi uchun oxirgi hisobotning boshlovchi nomini olamiz
+        paragraphs.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: `Hisobot #${index + 1}`, bold: true, size: 28 })
+            ]
+          })
+        );
+
+        paragraphs.push(new Paragraph(`Boshlanish vaqti: ${item.startedAt}`));
+        paragraphs.push(
+          new Paragraph(`Bahosi: ${item.rated !== undefined ? item.rated : "Yo'q"}`)
+        );
+
+        paragraphs.push(new Paragraph("Vazifalar:"));
+
+        item.tasks.forEach((task, i) => {
+          paragraphs.push(new Paragraph(`${i + 1}. ${task.title}`));
+        });
+
+        paragraphs.push(new Paragraph(" "));
+        paragraphs.push(new Paragraph("------------------------------------"));
+
+        return paragraphs;
+      }).flat();
+
+      const doc = new Document({
+        sections: [
+          {
+            children: sections
+          }
+        ]
+      });
+
+      const blob = await Packer.toBlob(doc);
+
       const beginnerName = schedules[schedules.length - 1].beginnerName.replace(/ /g, "_");
-
-      // Blob yaratamiz
-      const blob = new Blob([textContent], { type: "text/plain;charset=utf-8" });
-
-      // Faylni yuklab olish
-      saveAs(blob, `Hisobotlar_${beginnerName}.txt`);
-
+      saveAs(blob, `Hisobotlar_${beginnerName}.docx`);
     } catch (error) {
-      console.error("Faylni yaratishda xatolik:", error);
+      console.error("Word fayl yaratishda xatolik:", error);
     }
   };
 
   return (
     <div>
-      <button onClick={saveSchedulesAsTxt} title="Hisobotlarni yuklab olish" className="hisobotkorish2">
+      <button onClick={saveSchedulesAsWord} title="Hisobotlarni yuklab olish" className="hisobotkorish2">
         <i className="fa-solid fa-file-lines"></i>
       </button>
     </div>

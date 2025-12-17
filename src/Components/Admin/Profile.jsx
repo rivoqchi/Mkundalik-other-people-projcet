@@ -29,6 +29,22 @@ function Profile() {
   const [uploadedFiles, setUploadedFiles] = useState([]); // List of uploaded files
   const [viewingFileId, setViewingFileId] = useState(null); // File ID for viewing
   let myId = window.localStorage.getItem("user_id");
+  const [isOn, setIsOn] = useState(false);
+  useEffect(() => {
+    const stopSnow = localStorage.getItem("stop-snow") === "true";
+    setIsOn(stopSnow);
+  }, []);
+
+  const handleChange = () => {
+    const newValue = !isOn;
+    setIsOn(newValue);
+
+    // true bo‘lsa qor o‘chadi, false bo‘lsa yoqiladi
+    localStorage.setItem("stop-snow", newValue.toString());
+
+    // agar xohlasangiz darhol effekt ko‘rish uchun
+    window.location.reload();
+  };
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -115,7 +131,9 @@ function Profile() {
 
   const sendBS = async () => {
     if (!sabab || !bsStartDate || !bsEndDate || !ogoh || !ogoh2) {
-      alert("Iltimos, barcha maydonlarni to‘ldiring va kadrlar bo‘limini ogohlantiring.");
+      alert(
+        "Iltimos, barcha maydonlarni to‘ldiring va kadrlar bo‘limini ogohlantiring."
+      );
       return;
     }
     try {
@@ -143,10 +161,12 @@ function Profile() {
       {loading && <LoadingScreen loading={true} />}
       <div className="profile-container">
         <div className="profile-left">
-    <h5 className="tit">{t("myInfo")}</h5>
+          <h5 className="tit">{t("myInfo")}</h5>
           <Accordion onSelect={(k) => setActiveKey(k)} flush>
             <Accordion.Item eventKey="0">
-              <Accordion.Header><i class="fa-solid fa-user passs"></i> {t("personalInfo")}</Accordion.Header>
+              <Accordion.Header>
+                <i class="fa-solid fa-user passs"></i> {t("personalInfo")}
+              </Accordion.Header>
               <Accordion.Body>
                 <div className="datum">
                   <p className="ours">{t("fish")}</p>
@@ -204,11 +224,13 @@ function Profile() {
             </Accordion.Item>
 
             <Accordion.Item eventKey="1">
-              <Accordion.Header><i class="fa-solid fa-trophy passs"></i> {t("korsatkichlarim")}</Accordion.Header>
+              <Accordion.Header>
+                <i class="fa-solid fa-trophy passs"></i> {t("korsatkichlarim")}
+              </Accordion.Header>
               <Accordion.Body>
                 <div className="datum">
                   <p className="ours">{t("sportnatijam")}</p>
-                  <div className="theirs" style={{width: "70%"}}>
+                  <div className="theirs" style={{ width: "70%" }}>
                     {myData.sport && myData.sport.length > 0 ? (
                       <>
                         {myData.sport.map((item, index) => (
@@ -218,7 +240,8 @@ function Profile() {
                         ))}
                         <hr />
                         <strong>{t("jami")}:</strong>{" "}
-                        {myData.sport.reduce((sum, item) => sum + item.ball, 0)} ball
+                        {myData.sport.reduce((sum, item) => sum + item.ball, 0)}{" "}
+                        ball
                       </>
                     ) : (
                       <p className="theirs">{t("malumotyoq")}</p>
@@ -228,17 +251,19 @@ function Profile() {
 
                 <div className="datum">
                   <p className="ours">{t("tilnatijam")}</p>
-                  <div className="theirs" style={{width: "70%"}}>
+                  <div className="theirs" style={{ width: "70%" }}>
                     {myData.lang && myData.lang.length > 0 ? (
                       <>
                         {myData.lang.map((item, index) => (
                           <p key={index} className="theirs warningtext">
-                            {item.language} - {item.norm}: {item.ball} {t("ball")}
+                            {item.language} - {item.norm}: {item.ball}{" "}
+                            {t("ball")}
                           </p>
                         ))}
                         <hr />
                         <strong>{t("jami")}:</strong>{" "}
-                        {myData.lang.reduce((sum, item) => sum + item.ball, 0)} {t("ball")}
+                        {myData.lang.reduce((sum, item) => sum + item.ball, 0)}{" "}
+                        {t("ball")}
                       </>
                     ) : (
                       <p className="theirs">{t("malumotyoq")}</p>
@@ -249,7 +274,9 @@ function Profile() {
             </Accordion.Item>
 
             <Accordion.Item eventKey="2">
-              <Accordion.Header><i class="fa-solid fa-file passs"></i> {t("hujjatlarim")}</Accordion.Header>
+              <Accordion.Header>
+                <i class="fa-solid fa-file passs"></i> {t("hujjatlarim")}
+              </Accordion.Header>
               <Accordion.Body>
                 <div className="datum align-items-center">
                   <p className="ours align-items-center">
@@ -261,10 +288,21 @@ function Profile() {
             </Accordion.Item>
 
             <Accordion.Item eventKey="3">
-              <Accordion.Header><i class="fa-solid fa-person-circle-check passs"></i> {t("ishdabolmagankun")}</Accordion.Header>
+              <Accordion.Header>
+                <i class="fa-solid fa-person-circle-check passs"></i>{" "}
+                {t("ishdabolmagankun")}
+              </Accordion.Header>
               <Accordion.Body>
-                <select name="sabab" className="rrr" id="sabab" value={sabab} onChange={(e) => setSabab(e.target.value)}>
-                  <option value="" disabled>{t("sababnitanlang")}</option>
+                <select
+                  name="sabab"
+                  className="rrr"
+                  id="sabab"
+                  value={sabab}
+                  onChange={(e) => setSabab(e.target.value)}
+                >
+                  <option value="" disabled>
+                    {t("sababnitanlang")}
+                  </option>
                   <option value="У">{t("oquvtatilida")}</option>
                   <option value="БС">{t("administrativruxsat")}</option>
                   <option value="БЛ">{t("mehnatgalayoqatsiz")}</option>
@@ -280,42 +318,46 @@ function Profile() {
                     onChange={(e) => setBsStartDate(e.target.value)}
                   />
                   <input
-                  className="rrr col-6"
+                    className="rrr col-6"
                     type="date"
                     value={bsEndDate}
                     onChange={(e) => setBsEndDate(e.target.value)}
                   />
-                <p className="danger">{t("tatildavrida")}</p>
-                <div className="d-flex align-items-center">
-                  <input
-                    type="checkbox"
-                    className="mx-2"
-                    name="ogoh"
-                    id="ogoh"
-                    checked={ogoh}
-                    onChange={(e) => setOgoh(e.target.checked)}
-                  />
-                  {t("kadrlarboliminiogoh")}
-                </div>
-                <div className="d-flex align-items-center">
-                  <input
-                    type="checkbox"
-                    className="mx-2"
-                    name="ogoh"
-                    id="ogoh2"
-                    checked={ogoh2}
-                    onChange={(e) => setOgoh2(e.target.checked)}
-                  />
-                  {t("asoskadrda")}
-                </div>
-                <p className="redword">⚠️ {t("diqqatqilingg")}</p>
-                  <Button variant="primary" onClick={sendBS}>{t("send")}</Button>
+                  <p className="danger">{t("tatildavrida")}</p>
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="checkbox"
+                      className="mx-2"
+                      name="ogoh"
+                      id="ogoh"
+                      checked={ogoh}
+                      onChange={(e) => setOgoh(e.target.checked)}
+                    />
+                    {t("kadrlarboliminiogoh")}
+                  </div>
+                  <div className="d-flex align-items-center">
+                    <input
+                      type="checkbox"
+                      className="mx-2"
+                      name="ogoh"
+                      id="ogoh2"
+                      checked={ogoh2}
+                      onChange={(e) => setOgoh2(e.target.checked)}
+                    />
+                    {t("asoskadrda")}
+                  </div>
+                  <p className="redword">⚠️ {t("diqqatqilingg")}</p>
+                  <Button variant="primary" onClick={sendBS}>
+                    {t("send")}
+                  </Button>
                 </div>
               </Accordion.Body>
             </Accordion.Item>
 
             <Accordion.Item eventKey="4">
-              <Accordion.Header><i class="fa-solid fa-lock passs"></i> {t("updatePass")}</Accordion.Header>
+              <Accordion.Header>
+                <i class="fa-solid fa-lock passs"></i> {t("updatePass")}
+              </Accordion.Header>
               <Accordion.Body>
                 <div className="changepass d-flex flex-column gap-3">
                   <input
@@ -332,7 +374,10 @@ function Profile() {
                   />
                   {message && <p>{message}</p>}
                   <div className="d-flex justify-content-start gap-3">
-                    <Button className="btn-primary" onClick={handlePasswordChange}>
+                    <Button
+                      className="btn-primary"
+                      onClick={handlePasswordChange}
+                    >
                       {t("updatePass")}
                     </Button>
                   </div>
@@ -340,28 +385,59 @@ function Profile() {
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>
-        <div className="justify-content-between d-flex align-items-center mt-4">
-{myData.telegramChatId ? (
-  <h5 className="text-success">Telegram bildirishnomasi: ulangan ✅</h5>
-) : (
-  <h5 className="text-danger">{t("Telegram bildirishnomasi: ulanmagan❌")}</h5>
-)}
-          <Button className="btn-primary" onClick={handleShow2}>
-                     {t("edit")}{" "} <i className="fa-solid fa-pen"></i>
-          </Button>
-          <Button className="btn-danger" onClick={handleShow}>
-                      {t("logOut")}{" "}
-                      <i className="fa-solid fa-arrow-right-from-bracket"></i>
-          </Button>
-        </div>
+          <div className="justify-content-between d-flex align-items-center mt-4">
+            {myData.telegramChatId ? (
+              <h5 className="text-success">
+                Telegram bildirishnomasi: ulangan ✅
+              </h5>
+            ) : (
+              <h5 className="text-danger">
+                {t("Telegram bildirishnomasi: ulanmagan❌")}
+              </h5>
+            )}
+            <Button className="btn-primary" onClick={handleShow2}>
+              {t("edit")} <i className="fa-solid fa-pen"></i>
+            </Button>
+            <Button className="btn-danger" onClick={handleShow}>
+              {t("logOut")}{" "}
+              <i className="fa-solid fa-arrow-right-from-bracket"></i>
+            </Button>
+          </div>
+          <div className="qor">
+  <label style={{ cursor: "pointer" }}>
+    <input
+      type="checkbox"
+      checked={!isOn} // isOn = stop-snow
+      onChange={(e) => {
+        const checked = e.target.checked;
+
+        // agar switch ON bo‘lsa → qor yoqilgan → stop-snow = false
+        const stopSnow = !checked;
+
+        setIsOn(stopSnow);
+        localStorage.setItem("stop-snow", stopSnow.toString());
+        window.location.reload();
+      }}
+    />
+    {" "}
+    Qor animatsiyasi
+  </label>
+</div>
         </div>
         <div className="profile-right">
-          <a href="https://t.me/mkundalik_hisobot" target="_blank" rel="noopener noreferrer">
-            <Button className="m-5 defaultbutton"><i class="fa-brands fa-telegram"></i> Telegram orqali bildirishnomalarni qabul qilish</Button>
+          <a
+            href="https://t.me/mkundalik_hisobot"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button className="m-5 defaultbutton">
+              <i class="fa-brands fa-telegram"></i> Telegram orqali
+              bildirishnomalarni qabul qilish
+            </Button>
           </a>
           <img src={banner} alt="banner" />
         </div>
-                {/* <div className="profile-right2">
+        {/* <div className="profile-right2">
           <button>sad</button>
           <img src={banner} alt="banner" />
         </div> */}

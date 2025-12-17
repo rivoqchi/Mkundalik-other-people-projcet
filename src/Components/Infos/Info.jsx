@@ -6,12 +6,14 @@ import { useTranslation } from "react-i18next";
 import Behruz from '../Images/Behruz.jpg';
 import Feruz from '../Images/Feruz.jpg';
 import Usmonov from '../Images/Usmonov.png';
-
+import ReactPlayer from "react-player";
+import rolik from "../Images/mkundalik.mp4";
 const Info = () => {
 
   const { t } = useTranslation();
   const [myData, setMyData] = useState(null);
   const [myRole, setMyRole] = useState(null);
+  const hasToken = Boolean(window.localStorage.getItem("token"));
     const myId = window.localStorage.getItem("user_id");
     useEffect(() => {
         const getMyData = async () => {
@@ -104,6 +106,18 @@ const Info = () => {
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg" alt="Vite" />
   </div>
 </section>
+{hasToken && (
+  <div className="video-player-container">
+    <ReactPlayer 
+      url={rolik} 
+      controls={true} 
+      width="100%" 
+      height="500px"
+      playing={false}
+      volume={0.8}
+    />
+  </div>
+)}
         </div>
     );
 };

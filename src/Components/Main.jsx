@@ -10,8 +10,6 @@ import img4 from "./Images/Pinterest/image4.png";
 import LangSelect from "./LangSelect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import ReactPlayer from "react-player";
-import rolik from "./Images/mkundalik.mp4";
 import "./Main.scss";
 import Navbarr from "./Navbar";
 import { useTranslation } from "react-i18next";
@@ -179,16 +177,7 @@ function Main() {
         </div>
       </div>
 
-      <div className="video-player-container">
-  <ReactPlayer 
-    url={rolik} 
-    controls={true} 
-    width="100%" 
-    height="500px"
-    playing={false}
-    volume={0.8}
-  />
-</div>
+
       <div id="statistika" className="statistics hero">
         <h1>{t("statistika")}</h1>
         <p>{t("tashmetroduk")}</p>
@@ -197,7 +186,7 @@ function Main() {
             <h1 className="son">600+</h1> <p>{t("xodimlar")}</p>
           </div>
           <div className="statistics-main2">
-            <h1 className="son">80000+</h1> <p>{t("wroten")}</p>
+            <h1 className="son">90000+</h1> <p>{t("wroten")}</p>
           </div>
         </div>
         
@@ -218,9 +207,9 @@ function Main() {
               </Link>
             </li>
             <li>
-              <Link to="/templates/instructions.pdf">
+              <a href="/templates/instructions.pdf">
                 <i className="fa-solid fa-book"></i> {t("dasfoyyoriq")}
-              </Link>
+              </a>
             </li>
             <li>
               <Link to="/about">
