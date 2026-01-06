@@ -50,6 +50,7 @@ const Login = () => {
         setAlert({ show: true, type: "error", message: data.error });
       } else if (data.employee.role !== "new") {
         window.localStorage.setItem("token", data.token);
+        window.localStorage.setItem("jwt", JSON.stringify({ token: data.token }));
         window.localStorage.setItem("fullName", data.employee.name);
         window.localStorage.setItem("degree", data.employee.degree);
         window.localStorage.setItem("phone", data.employee.phone);

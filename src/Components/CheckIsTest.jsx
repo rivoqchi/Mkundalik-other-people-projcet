@@ -8,17 +8,27 @@ function Xodimlar() {
   const [link, setLink] = useState(null);
   const [route, setRoute] = useState("");
 
-  let id = window.localStorage.getItem("user_id");
-
   const getTest = async () => {
+    const id = window.localStorage.getItem("user_id");
+
+    // 🔴 MUHIM HIMOYA
+    if (!id || id === "null" || id === "undefined") {
+      console.warn("user_id yo‘q, test tekshirilmaydi");
+      return;
+    }
+
     try {
-      const { data } = await axios.get(`${API}/auth/test/check/${id}`);
-      if (data.exists) {
+      const { data } = await axios.get(
+        `${API}/auth/test/check/${id}`,
+        { withCredentials: true } // cookie bo‘lsa kerak
+      );
+
+      if (data?.exists) {
         setExists(true);
         setLink(data.link);
       }
     } catch (err) {
-      console.error("Testni tekshirishda xatolik yuz berdi.");
+      console.error("Testni tekshirishda xatolik:", err?.response?.data || err);
     }
   };
 
@@ -27,42 +37,32 @@ function Xodimlar() {
   }, []);
 
   useEffect(() => {
-        const role = window.localStorage.getItem("role");
-        if (role === "admin") {
-          setRoute("/admin");
-        } else if (role === "employee") {
-          setRoute("/user");
-        } else if (role === "superadmin") {
-          setRoute("/superadmin");
-        } else if (role === "complex") {
-          setRoute("/complex");
-        } else if (role === "department") {
-          setRoute("/department");
-        } else if (role === "hr") {
-          setRoute("/hr");
-        } else if (role === "lang") {
-          setRoute("/lang");
-        } else if (role === "boss") {
-          setRoute("/boss");
-        } else if (role === "commission") {
-          setRoute("/commission");
-        } else if (role === "staff") {
-          setRoute("/staff");
-        } else if (role === "at") {
-          setRoute("/at");
-        } else if (role === "sport") {
-          setRoute("/sport");
-        } else{
-          setRoute("/null");
-        }
-      }, []);
+    const role = window.localStorage.getItem("role");
+
+    const routes = {
+      admin: "/admin",
+      employee: "/user",
+      superadmin: "/superadmin",
+      complex: "/complex",
+      department: "/department",
+      hr: "/hr",
+      lang: "/lang",
+      boss: "/boss",
+      commission: "/commission",
+      staff: "/staff",
+      at: "/at",
+      sport: "/sport",
+    };
+
+    setRoute(routes[role] || "/login"); // ❌ /null emas
+  }, []);
 
   return (
     <div className="test-check-container">
-      {exists && (
-        <Link to={`${route}/test/${link}`}><button className="testbor">
-            Test mavjud
-            </button></Link>
+      {exists && link && route && (
+        <Link to={`${route}/test/${link}`}>
+          <button className="testbor">Test mavjud</button>
+        </Link>
       )}
     </div>
   );

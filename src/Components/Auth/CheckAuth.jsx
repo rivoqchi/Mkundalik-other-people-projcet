@@ -1,105 +1,87 @@
 import { API } from '../../config';
 
-export const signup = (user) => {
-    return fetch(`${API}/auth/signup`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-    })
-    .then(response => response.json())
-    .catch(err => console.log(err));
-};
-export const signIn = (user) => {
-    return fetch(`${API}/auth/login`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-    })
-    .then(response => response.json())
-    .catch(err => console.log(err));
-};
-export const createEmployee = (employee) => {
-    return fetch(`${API}/auth/create/newemployee`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(employee)
-    })
-    .then(response => response.json())    
-    .catch(err => console.log(err));
-};
-export const signout = (next) => {
-    if (typeof window !== 'undefined') {
-        localStorage.removeItem('jwt');
-        next();
-        return fetch(`${API}/auth/signout`, {
-            method: 'GET'
-        })
-        .then(response => {
-            console.log('signout', response);
-        })
-        .catch(err => console.log(err));
-    }
-};
-export const isAuthenticated = () => {
-    if (typeof window === 'undefined') {
-      return false;
-    }
-    if (localStorage.getItem('jwt')) {
-      return JSON.parse(localStorage.getItem('jwt'));
-    }
-    return false;
-  };
-  
-  export const fetchRole = async () => {
-    try {
-      const response = await fetch(`${API}/auth`, {
-        method: "GET",
-        headers: {
-          authorization: window.localStorage.getItem("token"),
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        
+// POST requests
+const postRequest = async (url, body) => {
+  try {
+    const response = await fetch(`${API}${url}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+      credentials: "include" // cookie bilan ishlash uchun
     });
-      const data = await response.json();
-      return data.message;
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
-  };
-export const auth = (user) => {
-    return fetch(`${API}/auth`, {
-        method: "GET",
-        headers: {
-            authorization: window.localStorage.getItem("token"),
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-    })
-    .then(response => response.json())
-    .catch(err => console.log(err));
+    return await response.json();
+  } catch (err) {
+    console.error(`POST ${url} xatolik:`, err);
+    return null;
+  }
 };
 
-export const newAdmin = (user) => {
-    return fetch(`${API}/auth/addnewadmin`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-    })
-    .then(response => response.json())
-    .catch(err => console.log(err));
+// GET requests
+const getRequest = async (url) => {
+  try {
+    const token = localStorage.getItem("token"); // string token
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+    if (token) headers.Authorization = `Bearer ${token}`; // faqat string
+    const response = await fetch(`${API}${url}`, {
+      method: "GET",
+      headers,
+      credentials: "include"
+    });
+    return await response.json();
+  } catch (err) {
+    console.error(`GET ${url} xatolik:`, err);
+    return null;
+  }
 };
+
+
+// ❌ Signup
+export const signup = (user) => postRequest("/auth/signup", user);
+
+// ❌ SignIn
+export const signIn = (user) => postRequest("/auth/login", user);
+
+// ❌ Create Employee
+export const createEmployee = (employee) => postRequest("/auth/create/newemployee", employee);
+
+// ❌ New Admin
+export const newAdmin = (user) => postRequest("/auth/addnewadmin", user);
+
+// ❌ Signout
+export const signout = (next) => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("token");
+    next?.();
+    return getRequest("/auth/signout");
+  }
+};
+
+// ❌ isAuthenticated
+export const isAuthenticated = () => {
+  if (typeof window === "undefined") return false;
+  const jwt = localStorage.getItem("token");
+  return jwt ? JSON.parse(jwt) : false;
+};
+
+// ❌ fetchRole
+    export const fetchRole = async () => {
+      const token = localStorage.getItem("jwt"); // <--- Haqiqiy kalit nomini ishlatib ko'ring
+      if (!token) return null;
+      const data = await getRequest("/auth", token);
+      return data?.message || null;
+    };
+    
+
+// ❌ auth (GET request, body yo‘q)
+    export const auth = async () => {
+      const jwt = localStorage.getItem("jwt"); // <--- jwt kalitidan oling
+      const token = jwt ? JSON.parse(jwt).token : null; // Agar JWT obyekti ichida token bo'lsa
+      if (!token) return null; // Token topilmasa, so'rov yubormang
+      return await getRequest("/auth", token);
+    };
