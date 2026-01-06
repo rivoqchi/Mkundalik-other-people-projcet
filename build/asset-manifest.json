@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.407be107.css",
-    "main.js": "/static/js/main.b2a1efb8.js",
+    "main.js": "/static/js/main.0e79c2a8.js",
     "static/js/977.0a69a40a.chunk.js": "/static/js/977.0a69a40a.chunk.js",
     "static/js/455.93e4cfa8.chunk.js": "/static/js/455.93e4cfa8.chunk.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.29aedc26.chunk.js",
@@ -42,7 +42,7 @@
     "static/media/half-flag.JPG": "/static/media/half-flag.5a34fa8fc878d7087d04.JPG",
     "index.html": "/index.html",
     "main.407be107.css.map": "/static/css/main.407be107.css.map",
-    "main.b2a1efb8.js.map": "/static/js/main.b2a1efb8.js.map",
+    "main.0e79c2a8.js.map": "/static/js/main.0e79c2a8.js.map",
     "977.0a69a40a.chunk.js.map": "/static/js/977.0a69a40a.chunk.js.map",
     "455.93e4cfa8.chunk.js.map": "/static/js/455.93e4cfa8.chunk.js.map",
     "reactPlayerYouTube.29aedc26.chunk.js.map": "/static/js/reactPlayerYouTube.29aedc26.chunk.js.map",
@@ -63,6 +63,6 @@
   },
   "entrypoints": [
     "static/css/main.407be107.css",
-    "static/js/main.b2a1efb8.js"
+    "static/js/main.0e79c2a8.js"
   ]
 }
