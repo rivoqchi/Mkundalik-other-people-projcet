@@ -84,7 +84,6 @@ const exportToExcel = (reportData) => {
       payload.department = "all";
     }
     const res = await axios.post(`${API}/auth/reportglobal`, payload);
-    console.log(res.data);
 
     setData(res.data.data);
     exportToExcel(res.data.data);

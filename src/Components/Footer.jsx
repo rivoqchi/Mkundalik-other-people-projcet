@@ -78,7 +78,7 @@ function Footer() {
             </li>
             <li>
               <div className="ctrl-enter">
-                <i className="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 53-89
+                <i className="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 50-55
               </div>
             </li>
             <li>

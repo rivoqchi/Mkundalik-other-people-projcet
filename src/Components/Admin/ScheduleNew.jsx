@@ -6,11 +6,12 @@ import Spinner from "react-bootstrap/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../config";
 import Alert from "../Additional/Alert";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import calendar from "../Images/calendar.png";
+import logo from "../Images/logo-png.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
@@ -21,7 +22,7 @@ function ScheduleNew() {
   const [myName, setMyName] = useState([]);
   const [mySection, setMySection] = useState([]);
   const [myDepartment, setMyDepartment] = useState([]);
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
   const [myComplex, setMyComplex] = useState([]);
   const [myPosition, setMyPosition] = useState([]);
   const [myDegree, setMyDegree] = useState([]);
@@ -65,7 +66,12 @@ useEffect(() => {
   }, []);
 
   const navigate = useNavigate();
-  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+const [alert, setAlert] = useState({
+  show: false,
+  type: "",
+  message: "",
+  trigger: 0
+});
 
   const [date, setDate] = useState("");
   const [onWork, setOnWork] = useState(false);
@@ -209,14 +215,22 @@ useEffect(() => {
       );
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseCreate();
-      setAlert({ show: true, type: "success", message: "Qo‘shildi!" });
-      setLoading(false);
+setAlert(prev => ({
+  show: true,
+  type: "success",
+  message: "Qo‘shildi!",
+  trigger: prev.trigger + 1
+}));      setLoading(false);
       resetType();
     } catch (error) {
       setLoading(false);
       console.error("Taskni qo‘shishda xatolik:", error);
-      setAlert({ show: true, type: "error", message: "Xatolik!" });
-    }
+setAlert(prev => ({
+  show: true,
+  type: "error",
+  message: "Xatolik!",
+  trigger: prev.trigger + 1
+}));    }
   };
   const resetType = () => setType("");
 
@@ -234,11 +248,21 @@ useEffect(() => {
       );
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseEdit();
-      setAlert({ show: true, type: "success", message: "Yangilandi!" });
+      setAlert(prev => ({
+        show: true,
+        type: "success",
+        message: "Yangilandi!",
+        trigger: prev.trigger + 1
+      }));
       setLoading(false);
     } catch (error) {
       console.error("Taskni o'zgartirishda xatolik:", error);
-      setAlert({ show: true, type: "error", message: "Xatolik!" });
+      setAlert(prev => ({
+  show: true,
+  type: "error",
+  message: "Xatolik!",
+  trigger: prev.trigger + 1
+}));
       setLoading(false);
     }
   };
@@ -251,12 +275,22 @@ useEffect(() => {
         `${API}/schedules/deletetask/${workingOn._id}/${currentTaskIndex}`
       );
       setTasks(response.data.updatedSchedule.tasks);
-      setAlert({ show: true, type: "success", message: "O`chirildi!" });
+      setAlert(prev => ({
+        show: true,
+        type: "success",
+        message: "O`chirildi!",
+        trigger: prev.trigger + 1
+      }));
       handleCloseDelete();
       setLoading(false);
     } catch (error) {
       console.error("Taskni o'chirishda xatolik:", error);
-      setAlert({ show: true, type: "error", message: "Xatolik!" });
+      setAlert(prev => ({
+        show: true,
+        type: "error",
+        message: "Xatolik!",
+        trigger: prev.trigger + 1
+      }));
       setLoading(false);
     }
   };
@@ -318,7 +352,12 @@ const payload = {
       setOnWork(true);
       setWorkingOn(res.data.newSchedule);
       setLoading(false);
-      setAlert({ show: true, type: "success", message: "Boshlandi!" });
+      setAlert(prev => ({
+        show: true,
+        type: "success",
+        message: "Boshlandi!",
+        trigger: prev.trigger + 1
+      }));
     });
   };
   const renderTooltip = (props, source) => (
@@ -328,10 +367,14 @@ const payload = {
   );
   return (
     <>
-      {loading && <LoadingScreen loading={true} />}
 
-      {alert.show && <Alert type={alert.type} message={alert.message} />}
-      {/* <div className="oqrang text-center m-3 ushbustikerlar mb-4">
+{alert.show && (
+  <Alert
+    type={alert.type}
+    message={alert.message}
+    trigger={alert.trigger}
+  />
+)}      {/* <div className="oqrang text-center m-3 ushbustikerlar mb-4">
           <h5>{t("ushbustikerlar")}</h5>
           <ul className="list-unstyled">
             <li>
@@ -348,8 +391,11 @@ const payload = {
             </li>
           </ul>
         </div> */}
-      <div className="schedule-container align-items-center m-0 justify-content-center row">
+      <div className="schedule-container align-items-center mh100 m-0 justify-content-center row">
         <div className="date col-12 col-md-6 text-center">
+          <div className="mb-2">
+          <img className="startlogo mb-2" src={logo} alt="" />
+          </div>
           <img className="startcal" src={calendar} alt="" />
         </div>
         <div
@@ -663,8 +709,7 @@ const payload = {
               >
                 <span>
                   <Button
-                    className="mb-4"
-                    variant="success"
+                    className="mb-4 defaultbtn"
                     onClick={handleCreateTask}
                     disabled={!type}
                   >
@@ -802,7 +847,7 @@ const payload = {
   )}
 </Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={handleStartWork}>
+            <Button className="defaultbtn" onClick={handleStartWork}>
               {t("boshlash")}
             </Button>
           </Modal.Footer>

@@ -8,6 +8,8 @@ import DownloadDocx from "./DownloadDocx";
 import { useTranslation } from "react-i18next";
 import { Modal, Button } from "react-bootstrap";
 import AllSchedulesDownload from "../SuperAdmin/AllSchedulesDownload";
+import { useLoading } from "../Additional/LoadingScreen";
+
 const getDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
 };
@@ -36,10 +38,9 @@ const weekDays = ["Du", "Se", "Chor", "Pay", "Ju", "Sh", "Ya"];
 
 const CalendarComponent = () => {
 const { t } = useTranslation();
-
+const { setLoading } = useLoading();
   const [route, setRoute] = useState(null);
   const [holidays, setHolidays] = useState([]);
-  console.log(useParams());
   
   const myId = useParams().id || window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
@@ -61,7 +62,6 @@ const { t } = useTranslation();
 const checkBs = async () => {
     try {
       const { data } = await axios.get(`${API}/auth/bs/check/${myId}`);
-      console.log("✅ checkBs response:", data);
 
       if (data.message === "Found") {
         setBsDates(data.bsList);
@@ -116,17 +116,18 @@ const checkBs = async () => {
     //   console.error("Error fetching data:", error);
     // }
 
-    try {
-      const { data } = await axios.get(
-        `${API}/schedules/getallbyuserid/${myId}?month=${
-          month + 1
-        }&year=${year}`
-      );
-      setMySectionBeginner(data.beginner);
-      setMySectionSchedules(data.history);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  try {
+    setLoading(true); // loaderni yoqamiz
+    const { data } = await axios.get(
+      `${API}/schedules/getallbyuserid/${myId}?month=${month + 1}&year=${year}`
+    );
+    setMySectionBeginner(data.beginner);
+    setMySectionSchedules(data.history);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    setLoading(false); // 0.2s fade-out bilan loader yo‘qoladi
+  }
   };
 
   useEffect(() => {
@@ -515,7 +516,7 @@ const checkBs = async () => {
           <Modal.Title>{t("malumot")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p style={{ fontSize: "16px", color: "#333", textAlign: "center" }}>{modalSabab}</p>
+          <p style={{ fontSize: "16px", textAlign: "center" }}>{modalSabab}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowInfoModal(false)}>

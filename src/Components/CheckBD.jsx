@@ -1,145 +1,230 @@
-import React, { useEffect, useState } from "react";
-import logo from "./Images/logo-png.png"
+import React, { useEffect, useState, useRef } from "react";
+import html2canvas from "html2canvas";
+import logo from "./Images/logo-png.png";
+
+const monthNamesUz = [
+  "Yanvar","Fevral","Mart","Aprel","May","Iyun",
+  "Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"
+];
+
+const weekDays = ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"];
+
 function CheckBD() {
+  // ✅ HOOKLAR HAR DOIM ENG TEPADA
   const [show, setShow] = useState(false);
+  const modalRef = useRef(null);
 
+  const bd = localStorage.getItem("bd");
+
+  // 🎂 Tug‘ilgan kunni tekshirish
   useEffect(() => {
-    if (!document.getElementById("checkbd-styles")) {
-      const style = document.createElement("style");
-      style.id = "checkbd-styles";
-      style.innerHTML = `
-.cb-overlay{
-  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(rgba(0,0,0,0.28),rgba(0,0,0,0.6));
-  z-index:1100;
-}
-.cb-modal{z-index:1100;
-  width:min(760px,92%);background:#fff;border-radius:18px;padding:26px 20px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.45);position:relative;overflow:hidden;
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
-  transform: scale(0.8);
-  opacity: 0;
-  animation: cb-fade-in 0.4s forwards;
-}
-.cb-header{display:flex;align-items:center;gap:14px;}
-.cb-greetings{font-size:14px;margin-bottom:6px;opacity:0.9;}
-.cb-title{font-size:26px;font-weight:700;margin:0 0 6px;}
-.cb-sub{font-size:15px;margin:0;color:#333;line-height:1.3;}
-.cb-confetti-piece{z-index:1110;
-  position:absolute;width:10px;height:16px;border-radius:2px;opacity:0.95;
-  top:-10%;animation:cb-fall linear forwards;
-}
-@keyframes cb-fall{
-  0%{transform:translateY(-20vh) rotate(0)}
-  100%{transform:translateY(120vh) rotate(720deg)}
-}
-.cb-burst{
-  position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;
-  background:conic-gradient(rgba(255,200,50,0.12), rgba(60, 122, 255, 0.08), rgba(120,200,255,0.06));
-  animation:cb-rotate 12s linear infinite;filter:blur(10px);
-}
-@keyframes cb-rotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-.cb-actions{display:flex;gap:10px;margin-top:18px;}
-.cb-btn{padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
-.cb-btn--close{background:#f3f4f6;color:#111}
-.cb-btn--share{background:#0b79f7;color:white}
-.cb-card{display:flex;gap:12px;align-items:center;margin-top:12px}
-.cb-avatar{
-  width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#ffd27a,#ff8ba7);
-  display:flex;align-items:center;justify-content:center;font-weight:700;color:#3a1f00
-}
-.cb-msg{font-size:14px;color:#222}
-@media (max-width:520px){ .cb-title{font-size:20px} .cb-sub{font-size:13px} }
-
-@keyframes cb-fade-in {
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-      `;
-      document.head.appendChild(style);
-    }
-
-    const bd = window.localStorage.getItem("bd");
     if (!bd) return;
 
     const now = new Date();
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const dd = String(now.getDate()).padStart(2, "0");
-    const today = `${mm}-${dd}`;
+    const today =
+      String(now.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(now.getDate()).padStart(2, "0");
 
     if (bd === today) {
-      setTimeout(() => setShow(true), 400);
-      createConfetti();
+      setShow(true);
     }
+  }, [bd]);
+
+  // 🎉 Confetti faqat modal ochilganda
+  useEffect(() => {
+    if (!show) return;
+
+const colors = [
+    "linear-gradient(135deg,#ff7a7a,#ffd36e)",
+    "linear-gradient(135deg,#7afcff,#4cc9f0)",
+    "linear-gradient(135deg,#c77dff,#5e60ce)",
+    "linear-gradient(135deg,#80ffdb,#48bfe3)",
+    "linear-gradient(135deg,#ffd166,#ef476f)"
+  ];
+
+  setInterval(() => {
+    for (let i = 0; i < 4; i++) { // 🔹 siyrak (har safar 4 ta)
+      const el = document.createElement("div");
+      el.className = "cb-confetti";
+      el.style.left = Math.random() * 100 + "%";
+      el.style.animationDuration = 6 + Math.random() * 6 + "s"; // 🔹 sekinroq
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      document.body.appendChild(el);
+
+      setTimeout(() => el.remove(), 15000); // DOM tozalash
+    }
+  }, 1200); // 🔹 har 1.2 soniyada
+  }, [show]);
+
+  // 🎨 Style inject (1 marta)
+  useEffect(() => {
+    if (document.getElementById("checkbd-liquid")) return;
+
+    const style = document.createElement("style");
+    style.id = "checkbd-liquid";
+    style.innerHTML = `
+.cb-overlay{
+  position:fixed;inset:0;
+  backdrop-filter: blur(18px);
+  background:rgba(0,0,0,.35);
+  display:flex;align-items:center;justify-content:center;
+  z-index:9999999;
+}
+.cb-week{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+  margin-bottom:6px;
+}
+.cb-week-day{
+  text-align:center;
+  font-size:11px;
+  opacity:.6;
+  font-weight:600;
+}
+.cb-confetti{
+  position:fixed;
+  top:-30px;
+  width:8px;
+  height:14px;
+  border-radius:6px;
+  z-index:9999999;
+  opacity:.85;
+  animation:confetti-fall linear infinite;
+}
+
+@keyframes confetti-fall{
+  from{
+    transform:translateY(-30px) rotate(0deg);
+  }
+  to{
+    transform:translateY(110vh) rotate(540deg);
+  }
+}
+
+.cb-modal{
+  width:min(860px,94%);
+  display:grid;
+  grid-template-columns:280px 1fr;
+  background:rgba(255,255,255,.65);
+  backdrop-filter: blur(30px) saturate(180%);
+  border-radius:26px;
+  box-shadow:0 40px 120px rgba(0,0,0,.45);
+  overflow:hidden;
+}
+.cb-calendar{
+  background:rgba(255,255,255,.45);
+  backdrop-filter: blur(18px);
+  padding:20px;
+}
+.cb-cal-title{font-weight:700;font-size:16px;margin-bottom:12px}
+.cb-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cb-day{
+  background:#fff;
+  height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+}
+.cb-today{background:#0b79f7;color:#fff;font-weight:700}
+.cb-content{padding:26px}
+.cb-big-date{font-size:72px;font-weight:800}
+.cb-month{font-size:20px;opacity:.8;margin-bottom:12px}
+.cb-text{font-size:15px;line-height:1.5}
+.cb-actions{display:flex;gap:12px;margin-top:20px}
+.cb-btn{padding:12px 18px;border-radius:14px;border:0;font-weight:600;cursor:pointer}
+.cb-share{background:#0b79f7;color:#fff}
+.cb-close{background:#e5e7eb}
+@media(max-width:720px){
+  .cb-modal{grid-template-columns:1fr}
+  .cb-calendar{display:none}
+  .cb-big-date{font-size:56px}
+}
+    `;
+    document.head.appendChild(style);
   }, []);
 
-  function createConfetti() {
-    if (document.querySelectorAll(".cb-confetti-piece").length > 0) return;
-    const colors = ["#FF5C7C", "#FFD166", "#06D6A0", "#4CC9F0", "#5e60c2ff", "#FF9F1C"];
-    for (let i = 0; i < 36; i++) {
-      const el = document.createElement("div");
-      el.className = "cb-confetti-piece";
-      el.style.left = Math.random() * 100 + "%";
-      el.style.background = colors[Math.floor(Math.random() * colors.length)];
-      el.style.animationDuration = 3 + Math.random() * 4 + "s";
-      el.style.width = 6 + Math.random() * 12 + "px";
-      el.style.height = 14 + Math.random() * 10 + "px";
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 9000);
-    }
-  }
+  // ❗ Hooklardan keyin return qilish mumkin
+  if (!show || !bd) return null;
 
-  function closeAndRemoveBD() {
-    window.localStorage.removeItem("bd");
-    setShow(false);
-  }
+  const month = Number(bd.split("-")[0]) - 1;
+  const day = Number(bd.split("-")[1]);
+  const year = new Date().getFullYear();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  if (!show) return null;
+  const firstDayJS = new Date(year, month, 1).getDay();
+  const firstDayMonday = (firstDayJS + 6) % 7;
+
+  async function shareImage() {
+    const canvas = await html2canvas(modalRef.current);
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      const file = new File([blob], "birthday.png", { type: "image/png" });
+      if (navigator.share) {
+        await navigator.share({ files: [file], title: "Tug‘ilgan kunim 🎉" });
+      }
+    });
+  }
 
   return (
     <div className="cb-overlay">
-      <div className="cb-modal">
-        <div className="cb-burst"></div>
+      <div className="cb-modal" ref={modalRef}>
 
-        <div className="cb-header">
-          <div style={{flex:1}}>
-            <h2 className="cb-title">Tug'ilgan kuningiz muborak! 🎉</h2>
-            <p className="cb-sub">
-              Hurmatli <b>{window.localStorage.getItem("fullName")}</b>, <i><b>mkundalik.uz</b></i> jamoasi sizni bugungi bayramingiz bilan tabriklaydi!
-              Sizga sog‘lik, baxt va omad tilaymiz.
-            </p>
+        {/* LEFT CALENDAR */}
+        <div className="cb-calendar">
+          <div className="cb-cal-title">{monthNamesUz[month]}</div>
+
+          <div className="cb-week">
+            {weekDays.map(d => (
+              <div key={d} className="cb-week-day">{d}</div>
+            ))}
           </div>
-          {/* <button className="cb-btn cb-btn--close" onClick={() => setShow(false)}>✕</button> */}
-        </div>
 
-        <div className="cb-card">
-          <div className="cb-avatar">M</div>
-          <div className="cb-msg">
-                <img className="bd-logo" src={logo} alt="" />
-            <div style={{marginTop:6,fontSize:13,color:"#555"}}>
-              Sizga yangi marralar tilaymiz! 🚆💻
-            </div>
+          <div className="cb-days">
+            {[...Array(firstDayMonday)].map((_, i) => (
+              <div key={"e"+i}></div>
+            ))}
+
+            {[...Array(daysInMonth)].map((_, i) => (
+              <div
+                key={i}
+                className={`cb-day ${i + 1 === day ? "cb-today" : ""}`}
+              >
+                {i + 1}
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="cb-actions">
-          <button
-            className="cb-btn cb-btn--share"
-            onClick={() => {
-              try {
-                navigator.share({ title: "Tug'ilgan kunim!", text: "Bugun mening tug'ilgan kunim! 🎉" });
-              } catch {
-                navigator.clipboard.writeText("Bugun mening tug'ilgan kunim! 🎉");
-                alert("Matn nusxalandi!");
-              }
-            }}
-          >
-            Bo‘lishish
-          </button>
-          <button className="cb-btn cb-btn--close" onClick={closeAndRemoveBD}>Yopish</button>
+        {/* RIGHT CONTENT */}
+        <div className="cb-content">
+          <div className="cb-big-date">{day}</div>
+          <div className="cb-month">{monthNamesUz[month]}</div>
+
+          <p className="cb-text">
+            Hurmatli <b>{localStorage.getItem("fullName")}</b>,  
+            <b> mkundalik.uz</b> jamoasi sizni tug‘ilgan kuningiz bilan samimiy tabriklaydi!  
+            Sizga sog‘lik, omad va katta yutuqlar tilaymiz <i class="fa-solid fa-ribbon"></i>
+          </p>
+
+          <img src={logo} alt="" style={{ width:220, marginTop:10 }} />
+
+          <div className="cb-actions">
+            <button className="cb-btn cb-share" onClick={shareImage}>
+              Bo‘lishish
+            </button>
+            <button
+              className="cb-btn cb-close"
+              onClick={() => {
+                setShow(false);
+                setTimeout(() => localStorage.removeItem("bd"), 200);
+              }}
+            >
+              Yopish
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   );

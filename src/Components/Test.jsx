@@ -35,7 +35,6 @@ const Test = () => {
                 setAlert({ show: true, type: "error", message: data.error });
             } else {
                 setAlert({ show: true, type: "success", message: data.token });
-                console.log('Foydalanuvchi ma’lumotlari:', data);
             }
         }).catch(() => {
             setAlert({ show: true, type: "error", message: "Serverda xatolik yuz berdi!" });

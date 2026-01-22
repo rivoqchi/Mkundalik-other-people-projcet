@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { API } from "../../config";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 import { useTranslation } from "react-i18next";
 
 function TgNotification() {
@@ -14,7 +14,7 @@ function TgNotification() {
   const [myComplex, setMyComplex] = useState(null);
   const [myRole, setMyRole] = useState(null);
   const myId = window.localStorage.getItem("user_id");
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
 
   // Foydalanuvchi ma'lumotlarini olish
   const getMyData = async () => {
@@ -123,7 +123,6 @@ function TgNotification() {
 
   return (
     <>
-      {loading && <LoadingScreen loading={true} />}
 
       <div className="mh100">
         <div>

@@ -8,7 +8,7 @@ import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
 import logomk from "../Images/logo-png.png";
 import { format } from "date-fns";
-import LoadingScreen from "../Additional/LoadingScreen";
+import LoadingScreen from "../Additional/LoadingAnim";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Alert from "../Additional/Alert";

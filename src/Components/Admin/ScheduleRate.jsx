@@ -15,9 +15,11 @@ import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import flag from "../Images/half-flag.JPG";
 import smalllogo from "../Images/metroblanklogo.png";
+import { useLoading } from "../Additional/LoadingScreen";
+
 function ScheduleRate() {
   const { t } = useTranslation();
-
+  const { setLoading } = useLoading();
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [show, setShow] = useState(false);
   const myId = window.localStorage.getItem("user_id");
@@ -96,12 +98,14 @@ function ScheduleRate() {
   const navigate = useNavigate();
   const getThisScheduleHistory = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
         `${API}/schedules/getschedulebyid/${id}`
       );
       setThisScheduleHistory(data.thehistory);
       setChecking(data.thehistory.beginnerId);
-      // setManualRating(data.thehistory.rated || 0);
+      setLoading(false);
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }

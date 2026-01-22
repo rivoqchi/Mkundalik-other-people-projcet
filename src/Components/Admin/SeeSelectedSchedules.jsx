@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 import { API } from "../../config";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import DownloadDocx from "./DownloadDocx";
 import { useTranslation } from "react-i18next";
 import { Modal, Button } from "react-bootstrap";
 import AllSchedulesDownload from "../SuperAdmin/AllSchedulesDownload";
+import { useLoading } from "../Additional/LoadingScreen";
+
 const getDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
 };
@@ -36,10 +38,10 @@ const weekDays = ["Du", "Se", "Chor", "Pay", "Ju", "Sh", "Ya"];
 
 const CalendarComponent = () => {
 const { t } = useTranslation();
+const { setLoading } = useLoading();
 
   const [route, setRoute] = useState(null);
   const [holidays, setHolidays] = useState([]);
-  console.log(useParams());
   
   const myId = useParams().id;
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
@@ -117,6 +119,7 @@ const checkBs = async () => {
     // }
 
     try {
+      setLoading(true);
       const { data } = await axios.get(
         `${API}/schedules/getallbyuserid/${myId}?month=${
           month + 1
@@ -124,6 +127,7 @@ const checkBs = async () => {
       );
       setMySectionBeginner(data.beginner);
       setMySectionSchedules(data.history);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

@@ -6,7 +6,7 @@ import Alert from '../Additional/Alert';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import LoginWithTelegram from './LoginWithTelegram';
-import LoadingScreen from '../Additional/LoadingScreen';
+import LoadingScreen from '../Additional/LoadingAnim';
 import logomk from '../Images/logo-png.png';
 import logomet from '../Images/logo2.png';
 const Login = () => {

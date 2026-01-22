@@ -10,7 +10,7 @@ import logomk from "../Images/logo-png.png";
 import smalllogo from "../Images/metroblanklogo.png";
 import flag from "../Images/half-flag.JPG";
 import { format } from "date-fns";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Alert from "../Additional/Alert";
@@ -30,7 +30,7 @@ function ScheduleRate() {
   const [show, setShow] = useState(false);
   const [thisScheduleHistory, setThisScheduleHistory] = useState([]);
   const [checking, setChecking] = useState([]);
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -77,10 +77,12 @@ function ScheduleRate() {
   const navigate = useNavigate();
   const getThisScheduleHistory = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
         `${API}/schedules/getschedulebyid/${id}`
       );
       setThisScheduleHistory(data.thehistory);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -196,7 +198,6 @@ function ScheduleRate() {
   return (
     <>
       {alert.show && <Alert type={alert.type} message={alert.message} />}
-      {loading && <LoadingScreen loading={true} />}
 
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">

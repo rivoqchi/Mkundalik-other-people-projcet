@@ -3,10 +3,10 @@ import axios from "axios";
 import { API } from "../../config";
 import { Modal, Button, Table, Form } from "react-bootstrap";
 import notfound from "../Images/notfound.png";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 function Normativ() {
   const [allNormatives, setAllNormatives] = useState([]);
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [limit, setLimit] = useState("");
@@ -95,7 +95,6 @@ function Normativ() {
 
   return (
     <>
-      {loading && <LoadingScreen loading={true} />}
 
     <div className="normative-container m100">
       <div className="header">

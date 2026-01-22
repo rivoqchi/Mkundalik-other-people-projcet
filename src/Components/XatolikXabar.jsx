@@ -38,30 +38,13 @@ function XatolikXabar() {
               
               <Form.Label><a className='pointer' href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a></Form.Label>
               <br />
-              <Form.Label><i className="fa-solid fa-phone-volume"></i> 53-89</Form.Label>
+              <Form.Label><i className="fa-solid fa-phone-volume"></i> 50-55</Form.Label>
               
             </Form.Group>
           </Form>
         </Modal.Body>
       </Modal>
 
-      <style jsx>{`
-        .xatolikicon {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          font-size: 1.5rem;
-          background-color: rgba(0, 0, 0, 0.7);
-          color: white;
-          padding: 5px 12px;
-          border-radius: 20px;
-          cursor: pointer;
-          transition: background 0.3s;
-        }
-        .xatolikicon:hover {
-          background-color: red;
-        }
-      `}</style>
     </>
   );
 }

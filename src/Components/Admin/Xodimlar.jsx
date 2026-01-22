@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { API } from "../../config";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 import { useTranslation } from "react-i18next";
 
 function Xodimlar() {
@@ -14,7 +14,7 @@ function Xodimlar() {
   const [myComplex, setMyComplex] = useState(null);
   const [myRole, setMyRole] = useState(null);
   const myId = window.localStorage.getItem("user_id");
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
 
   // Foydalanuvchi ma'lumotlarini olish
   const getMyData = async () => {
@@ -124,7 +124,6 @@ function Xodimlar() {
 
   return (
     <>
-      {loading && <LoadingScreen loading={true} />}
       <a href="https://t.me/mkundalik_hisobot" target="_blank" rel="noreferrer">
         <div className="tg-notification">
         Xodimlarning hisobot yozmaganliklari haqida <br /> ma'lumotlarni telegramda qabul qilish<i class="fa-brands fa-telegram"></i>

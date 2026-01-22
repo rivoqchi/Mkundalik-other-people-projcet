@@ -1,5 +1,6 @@
 import "./App.scss";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useState } from "react";
 import Main from "./Components/Main";
 import Login from "./Components/Auth/Login";
 import SignUp from "./Components/Auth/SignUp";
@@ -37,13 +38,21 @@ import CheckIsTest from "./Components/CheckIsTest";
 import Info from "./Components/Infos/Info";
 import CheckBD from "./Components/CheckBD";
 import Snowing from "./Components/Snowing";
+import CelebrationModal from "./Components/Celebration";
+import { LoadingProvider } from "./Components/Additional/LoadingScreen";
+import { Toaster } from "sonner";
 function App() {
+    const [show, setShow] = useState(false);
+
   return (
     <>
+        <LoadingProvider>
       <div>
         {/* <LangSelect /> */}
+        <Toaster position="bottom-right" richColors closeButton />
         <CheckBD />
         <Router>
+      <CelebrationModal show={show} setShow={setShow} />
         <CheckIsTest />
           <CtrlEnter/>
           <XatolikXabar/>
@@ -122,6 +131,8 @@ function App() {
           </Routes>
         </Router>
       </div>
+      
+    </LoadingProvider>
     </>
   );
 }

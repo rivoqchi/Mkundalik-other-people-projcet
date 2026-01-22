@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { API } from "../../config";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ function RatingMyAdmins() {
   const [isNZS, setIsNZS] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const id = window.localStorage.getItem("user_id");
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
   const navigate = useNavigate();
 
   const getMySectionSchedules = async () => {
@@ -106,7 +106,6 @@ function RatingMyAdmins() {
 
   return (
       <>
-      {loading && <LoadingScreen loading={true} />}
     <div className="mh100 def-page">
       <h5 className="tit m-3">{t("xodimlarimkorsatkichlari")}</h5>
       <div className="stataboutrating">

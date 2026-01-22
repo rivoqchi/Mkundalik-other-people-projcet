@@ -1,35 +1,30 @@
-import { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
-import logo from "../Images/logo2.png";
-import { useTranslation } from "react-i18next";
+import { createContext, useContext, useState, useEffect } from "react";
+import LoadingScreen from "./LoadingAnim";
 
-const LoadingScreen = ({ loading }) => {
-  const { t } = useTranslation();
-  const messages = [t("please_wait"), t("loading"), t("one_second")];
-  const [currentMessage, setCurrentMessage] = useState(messages[0]);
+const LoadingContext = createContext();
 
+export const useLoading = () => useContext(LoadingContext);
+
+export const LoadingProvider = ({ children }) => {
+  const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  // 🎬 Fade in / fade out MARKAZDAN boshqariladi
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentMessage((prev) => {
-        const nextIndex = (messages.indexOf(prev) + 1) % messages.length;
-        return messages[nextIndex];
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [messages]);
+    if (loading) {
+      setVisible(true);
+    } else {
+      const t = setTimeout(() => setVisible(false), 200);
+      return () => clearTimeout(t);
+    }
+  }, [loading]);
 
   return (
-    loading && (
-      <div className="spinner-container">
-        <div className="content">
-          <img src={logo} alt="Logo" className="logo" />
-          <Spinner animation="border" variant="primary" className="spinner" />
-          <p className="loading-text">{currentMessage}</p>
-        </div>
-      </div>
-    )
+    <LoadingContext.Provider value={{ loading, setLoading }}>
+      {children}
+
+      {/* 🔥 BARCHA SAHIFALAR UCHUN YAGONA LOADER */}
+      {visible && <LoadingScreen loading={loading} />}
+    </LoadingContext.Provider>
   );
 };
-
-export default LoadingScreen;

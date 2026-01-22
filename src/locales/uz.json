@@ -199,10 +199,9 @@
     "dasyarat": "- bu “TOSHKENT METROPOLITENI” DUK tarkibiy tuzilmasida faoliyat yurituvchi xodimlarning ish jarayonlarini yanada samarali boshqarish, ularning kundalik faoliyati bo`yicha hisobotlarni elektron tarzda shakllantirish, ularni tizimli ravishda baholash hamda monitoring qilish imkonini beruvchi zamonaviy axborot tizimidir.",
     "dasyarat2": "Mazkur dastur xodimlar tomonidan kiritiladigan ma'lumotlarni avtomatlashtirilgan holda qayta ishlash, ularning natijalarini tahlil qilish va rahbariyatga operativ tarzda yetkazish uchun mo`ljallangan bo`lib, ish samaradorligini oshirish va jarayonlarni shaffoflashtirishga xizmat qiladi.",
     
-    "personalInfoo": "Shaxsiy",
-    "personalInfoo": "Shaxsiy",
-    "personalInfoo": "Shaxsiy",
+    "waiting_time_expired": "Kutish vaqti tugadi...",
+    "go_home": "Bosh sahifaga qaytish",
+    "statistics": "Statistika",
     "personalInfoo": "Shaxsiy",
     "personalInfoo": "Shaxsiy"
-
 }

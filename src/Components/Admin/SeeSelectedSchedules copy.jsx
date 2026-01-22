@@ -15,7 +15,6 @@ function SeeSelectedSchedules() {
   const getMySectionSchedules = async () => {
     try {
       const { data } = await axios.get(`${API}/schedules/getallbyuserid/${thescheduleid.id}`);
-      console.log(data);
       setMySectionBeginner(data.beginner);
       setMySectionSchedules(data.history);
       

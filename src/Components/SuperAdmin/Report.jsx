@@ -45,7 +45,6 @@ function Report() {
         complex: filterByComplex.name,
         department: filterByDepartment.name,
       });
-      console.log(data.data);
       setData(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);

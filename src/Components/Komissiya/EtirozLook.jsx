@@ -7,7 +7,7 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import logo from "../Images/logo2.png";
 import { format } from "date-fns";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Alert from "../Additional/Alert";
@@ -20,7 +20,7 @@ function ScheduleRate() {
   const [thisScheduleHistory, setReportSchedule] = useState([]);
   const [report, setReport] = useState([]);
   const [checking, setChecking] = useState([]);
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
   const [degree, setMyDegree] = useState([]);
 
   const [show, setShow] = useState(false);
@@ -186,7 +186,6 @@ function ScheduleRate() {
   return (
     <>
       {alert.show && <Alert type={alert.type} message={alert.message} />}
-      {loading && <LoadingScreen loading={true} />}
 
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">

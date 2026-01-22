@@ -17,11 +17,10 @@ import { FaPen } from "react-icons/fa";
 import Alert2 from "../Additional/Alert";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 function Xodimlar() {
   const [newPassword, setNewPassword] = useState("");
   const [schedules, setSchedules] = useState(false);
-console.log(schedules);
 
   const [show3, setShow3] = useState(false);
   const [show4, setShow4] = useState(false);
@@ -53,7 +52,7 @@ console.log(schedules);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
   const [error, setError] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [editing, setEditing] = useState(true);
@@ -248,7 +247,6 @@ console.log(schedules);
   return (
     <div>
       {alert.show && <Alert2 type={alert.type} message={alert.message} />}
-      {loading && <LoadingScreen loading={true} />}
 
       <div className="text-center d-flex justify-content-between xodimlarbuttons">
               <Button variant="success" className="mt-3" onClick={exportToExcel}>
@@ -318,7 +316,6 @@ console.log(schedules);
         </Modal.Body>
       </Modal>
 
-      {loading && <Spinner animation="border" className="mt-3" />}
       {error && <Alert variant="danger">{error}</Alert>}
 
       <div className="table-responsive tretre mt-3">

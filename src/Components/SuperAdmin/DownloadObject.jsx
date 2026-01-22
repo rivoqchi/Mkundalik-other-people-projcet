@@ -43,7 +43,6 @@ const DownloadObject = ({ employee }) => {
       });
 
       const doc = new Docxtemplater(zip, { modules: [imageModule] });
-console.log(employee);
 
       doc.setData({
         name: employee.name,

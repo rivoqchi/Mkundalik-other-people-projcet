@@ -186,7 +186,7 @@ function Main() {
             <h1 className="son">600+</h1> <p>{t("xodimlar")}</p>
           </div>
           <div className="statistics-main2">
-            <h1 className="son">90000+</h1> <p>{t("wroten")}</p>
+            <h1 className="son">100 000+</h1> <p>{t("wroten")}</p>
           </div>
         </div>
         
@@ -228,7 +228,7 @@ function Main() {
             </li>
             <li>
               <div className="ctrl-enter">
-                <i className="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 53-89
+                <i className="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 50-55
               </div>
             </li>
             <li>

@@ -2,9 +2,11 @@ import axios from "axios";
 import { API } from "../../config";
 import React, { useState, useEffect } from "react";
 import logo from "../Images/logo-png.png";
+import year1 from "../Images/1year.png";
+import yosh1 from "../Images/1yosh.jpg";
 import banner from "../Images/banner.png";
 import Button from "react-bootstrap/Button";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 import Modal from "react-bootstrap/Modal";
 import FileView from "../FileView";
 import LinkTelegram from "../Auth/LinkTelegram";
@@ -12,15 +14,17 @@ import LavozimYoriqnomasi from "./LavozimYoriqnomasi";
 import EditProfile from "../EditProfile";
 import { useTranslation } from "react-i18next";
 import Accordion from "react-bootstrap/Accordion";
+import CelebrationModal from "../Celebration";
 
 function Profile() {
+    const [showCelebration, setShowCelebration] = useState(false);
   let token = window.localStorage.getItem("token");
   const { t } = useTranslation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
   const id = window.localStorage.getItem("user_id");
-  const [loading, setLoading] = useState(false);
+  const { setLoading } = useLoading();
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState(null);
   const [mySection, setMySection] = useState(null);
@@ -34,6 +38,29 @@ function Profile() {
     const stopSnow = localStorage.getItem("stop-snow") === "true";
     setIsOn(stopSnow);
   }, []);
+
+  const [reportCount, setReportCount] = useState(0);
+  const user_id = localStorage.getItem("user_id");
+  const fullName = localStorage.getItem("fullName") || "";
+
+  useEffect(() => {
+    async function fetchReportCount() {
+      try {
+        const res = await fetch(`${API}/auth/counthisobot?_id=${user_id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setReportCount(data.count || 0);
+        } else {
+          setReportCount(0);
+        }
+      } catch (error) {
+        setReportCount(0);
+      }
+    }
+    if (user_id) {
+      fetchReportCount();
+    }
+  }, [user_id]);
 
   const handleChange = () => {
     const newValue = !isOn;
@@ -63,7 +90,23 @@ function Profile() {
   const [ogoh, setOgoh] = useState(false);
   const [ogoh2, setOgoh2] = useState(false);
 
-  const [activeKey, setActiveKey] = useState("0");
+  const [activeKey, setActiveKey] = useState("1");
+
+  // Achievement Modal states
+  const [showAchievementModal, setShowAchievementModal] = useState(false);
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+
+  // Handle achievement box click
+  const handleAchievementClick = (num) => {
+    setSelectedAchievement(num);
+    setShowAchievementModal(true);
+  };
+
+  // Handle anniversary achievement click
+  const handleAnniversaryClick = () => {
+    setSelectedAchievement("anniversary");
+    setShowAchievementModal(true);
+  };
 
   const handleViewFile = (fileId) => {
     setViewingFileId(fileId);
@@ -158,20 +201,15 @@ function Profile() {
 
   return (
     <>
-      {loading && <LoadingScreen loading={true} />}
       <div className="profile-container">
         <div className="profile-left">
-          <h5 className="tit">{t("myInfo")}</h5>
-          <Accordion onSelect={(k) => setActiveKey(k)} flush>
+          <h5 className="tit d-flex">{myData.name} - <div className="tangacha"><i class="fa-solid fa-coins"></i> {reportCount}</div></h5>
+          <Accordion defaultActiveKey="1" onSelect={(k) => setActiveKey(k)} flush>
             <Accordion.Item eventKey="0">
               <Accordion.Header>
                 <i class="fa-solid fa-user passs"></i> {t("personalInfo")}
               </Accordion.Header>
               <Accordion.Body>
-                <div className="datum">
-                  <p className="ours">{t("fish")}</p>
-                  <p className="theirs">{myData.name}</p>
-                </div>
                 <div className="datum">
                   <p className="ours">{t("tel")}</p>
                   <p className="theirs">{myData.phone}</p>
@@ -229,46 +267,64 @@ function Profile() {
               </Accordion.Header>
               <Accordion.Body>
                 <div className="datum">
-                  <p className="ours">{t("sportnatijam")}</p>
-                  <div className="theirs" style={{ width: "70%" }}>
-                    {myData.sport && myData.sport.length > 0 ? (
-                      <>
-                        {myData.sport.map((item, index) => (
-                          <p key={index} className="theirs warningtext">
-                            {item.norm}: {item.ball} {t("ball")}
-                          </p>
-                        ))}
-                        <hr />
-                        <strong>{t("jami")}:</strong>{" "}
-                        {myData.sport.reduce((sum, item) => sum + item.ball, 0)}{" "}
-                        ball
-                      </>
-                    ) : (
-                      <p className="theirs">{t("malumotyoq")}</p>
+                  {/* Yuqori qatordagi active boxlar */}
+                  <div className="achi-boxes">
+                    {[500, 400, 300, 200, 150, 100, 75, 50, 10, 3, 1].map(
+                      (num, idx) =>
+                        num <= reportCount ? (
+                          <div
+                            key={idx}
+                            className="achi-box active"
+                            onClick={() => handleAchievementClick(num)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) =>
+                              e.key === "Enter" && handleAchievementClick(num)
+                            }
+                          >
+                            {num}
+                          </div>
+                        ) : null
                     )}
+                    <div
+                      className="achi-box active anniversary-badge"
+                      onClick={handleAnniversaryClick}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleAnniversaryClick()
+                      }
+                    >
+                      <img
+                        src={year1}
+                        alt="1 year anniversary"
+                        className="anniversary-image"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="datum">
-                  <p className="ours">{t("tilnatijam")}</p>
-                  <div className="theirs" style={{ width: "70%" }}>
-                    {myData.lang && myData.lang.length > 0 ? (
-                      <>
-                        {myData.lang.map((item, index) => (
-                          <p key={index} className="theirs warningtext">
-                            {item.language} - {item.norm}: {item.ball}{" "}
-                            {t("ball")}
-                          </p>
-                        ))}
-                        <hr />
-                        <strong>{t("jami")}:</strong>{" "}
-                        {myData.lang.reduce((sum, item) => sum + item.ball, 0)}{" "}
-                        {t("ball")}
-                      </>
-                    ) : (
-                      <p className="theirs">{t("malumotyoq")}</p>
-                    )}
-                  </div>
+                  {/* Jarayonda qismi */}
+                  {reportCount < 1000 && (
+                    <div className="in-progress-section">
+                      <p className="in-progress-title">Jarayonda</p>
+                      <div className="achi-boxes">
+                        {[1, 3, 10, 50, 75, 100, 150, 200, 300, 400, 500]
+                          .filter((num) => num > reportCount)
+                          .map((num, idx) => {
+                            const percent = Math.min(
+                              (reportCount / num) * 100,
+                              100
+                            ).toFixed(0);
+                            return (
+                              <div key={idx} className="achi-box inactive">
+                                {num}
+                                <span className="percent">{percent}%</span>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Accordion.Body>
             </Accordion.Item>
@@ -404,27 +460,38 @@ function Profile() {
             </Button>
           </div>
           <div className="qor">
-  <label style={{ cursor: "pointer" }}>
-    <input
-      type="checkbox"
-      checked={!isOn} // isOn = stop-snow
-      onChange={(e) => {
-        const checked = e.target.checked;
+            <label style={{ cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={!isOn} // isOn = stop-snow
+                onChange={(e) => {
+                  const checked = e.target.checked;
 
-        // agar switch ON bo‘lsa → qor yoqilgan → stop-snow = false
-        const stopSnow = !checked;
+                  // agar switch ON bo‘lsa → qor yoqilgan → stop-snow = false
+                  const stopSnow = !checked;
 
-        setIsOn(stopSnow);
-        localStorage.setItem("stop-snow", stopSnow.toString());
-        window.location.reload();
-      }}
-    />
-    {" "}
-    Qor animatsiyasi
-  </label>
-</div>
+                  setIsOn(stopSnow);
+                  localStorage.setItem("stop-snow", stopSnow.toString());
+                  window.location.reload();
+                }}
+              />{" "}
+              Qor animatsiyasi
+            </label>
+          </div>
         </div>
         <div className="profile-right">
+          <img
+        className="mt-5"
+        src={yosh1}
+        alt=""
+        style={{ cursor: "pointer" }}
+        onClick={() => setShowCelebration(true)}
+      />
+
+      <CelebrationModal
+        show={showCelebration}
+        setShow={setShowCelebration}
+      />
           <a
             href="https://t.me/mkundalik_hisobot"
             target="_blank"
@@ -466,6 +533,99 @@ function Profile() {
           <EditProfile />
         </Modal.Body>
       </Modal>
+
+      {/* Achievement Congratulations Modal */}
+      <Modal
+        centered
+        show={showAchievementModal}
+        onHide={() => setShowAchievementModal(false)}
+      >
+        <Modal.Header closeButton style={{ borderBottom: "2px solid #ffc107" }}>
+          <Modal.Title>
+            <i
+              className="fa-solid fa-star"
+              style={{ color: "#ffc107", marginRight: "8px" }}
+            ></i>
+            Tabriklaymiz!
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ textAlign: "center", padding: "30px 20px" }}>
+          {selectedAchievement === "anniversary" ? (
+            <>
+              <div style={{ marginBottom: "20px" }}>
+                <img
+                  src={yosh1}
+                  alt="1 year anniversary"
+                  style={{
+                    maxHeight: "120px",
+                    height: "auto",
+                    borderRadius: "20px",
+                    marginBottom: "15px",
+                  }}
+                />
+              </div>
+              <h5
+                style={{
+                  fontSize: "20px",
+                  marginBottom: "15px",
+                  fontWeight: "600",
+                }}
+              >
+                Hurmatli {fullName}!
+              </h5>
+              <p style={{ fontSize: "16px", lineHeight: "1.6" }}>
+                Siz <strong>mkundalik</strong> platformasida{" "}
+                <strong>1 yil</strong> davomida faoliyat ko'rsatayotganingizdan
+                xursandmiz! 🎉
+              </p>
+              <p style={{ fontSize: "14px", fontStyle: "italic" }}>
+                Sizning mehnatingu va dedikatsiyangiz uchun rahmat. Keling,
+                yangi maqsadlarga erishib, birga rivojlanib boramiz!
+              </p>
+            </>
+          ) : (
+            <>
+              <h3
+                style={{
+                  fontSize: "48px",
+                  color: "#ffc107",
+                  marginBottom: "15px",
+                  fontWeight: "700",
+                }}
+              >
+                {selectedAchievement}
+              </h3>
+              <h5
+                style={{
+                  fontSize: "18px",
+                  marginBottom: "15px",
+                  fontWeight: "600",
+                }}
+              >
+                Hurmatli {fullName}!
+              </h5>
+              <p style={{ fontSize: "16px", lineHeight: "1.6" }}>
+                Siz bugun qadar{" "}
+                <strong>{selectedAchievement} ta hisobot</strong> yozgansiz! 📊
+              </p>
+              <p style={{ fontSize: "14px", fontStyle: "italic" }}>
+                Bunday yuqori samaradorlik va mehnatni davom ettiring! Sizning
+                kotribusiyangiz juda muhim! 💪
+              </p>
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: "2px solid #ffc107" }}>
+          <Button
+            variant="warning"
+            onClick={() => setShowAchievementModal(false)}
+            style={{ fontWeight: "600" }}
+          >
+            Yopish
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* <div style={{ width: "100%", height: "100%", border: "1px solid #ddd" }}>
         <iframe
           src="https://mkundalik.uz/about"

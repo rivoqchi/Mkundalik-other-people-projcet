@@ -3,11 +3,11 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Modal, Button, Table, Form } from "react-bootstrap";
 import axios from "axios";
 import notfound from "../Images/notfound.png";
-import LoadingScreen from "../Additional/LoadingScreen";
+import { useLoading } from "../Additional/LoadingScreen";
 import Send from "./Send";
 import { API } from "../../config";
 function TestCreator() {
-  const [loading, setLoading] = useState(false);
+const { setLoading } = useLoading();
   const [selectedNormativeId, setSelectedNormativeId] = useState("");
   const [language, setLanguage] = useState("");
   const [allTests, setAllTests] = useState([]);
@@ -120,7 +120,6 @@ function TestCreator() {
 
   return (
     <div className="mh100">
-      {loading && <LoadingScreen loading={true} />}
 
       <div className="text-end">
       <Button className="m-5" variant="primary" onClick={() => setShowModal(true)}>

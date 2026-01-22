@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { API } from "../../config";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import LoadingScreen from "../Additional/LoadingScreen";
+import LoadingScreen from "../Additional/LoadingAnim";
 import { useTranslation } from "react-i18next";
 
 
