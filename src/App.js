@@ -41,6 +41,7 @@ import Snowing from "./Components/Snowing";
 import CelebrationModal from "./Components/Celebration";
 import { LoadingProvider } from "./Components/Additional/LoadingScreen";
 import { Toaster } from "sonner";
+import Inactive from "./Components/Auth/Inactive";
 function App() {
     const [show, setShow] = useState(false);
 
@@ -52,7 +53,7 @@ function App() {
         <Toaster position="bottom-right" richColors closeButton />
         <CheckBD />
         <Router>
-      <CelebrationModal show={show} setShow={setShow} />
+      {/* <CelebrationModal show={show} setShow={setShow} /> */}
         <CheckIsTest />
           <CtrlEnter/>
           <XatolikXabar/>
@@ -64,6 +65,7 @@ function App() {
             <Route path="/fill" exact element={<Fill />} />
             <Route path="/statistika" exact element={<UmumiyStat />} />
             <Route path="/about" exact element={<Info />} />
+            <Route path="/inactive" exact element={<Inactive />} />
 
             <Route path="/login" exact element={<Login />} />
             <Route path="/signup" exact element={<SignUp />} />

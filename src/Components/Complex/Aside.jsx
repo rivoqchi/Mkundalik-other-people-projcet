@@ -133,7 +133,7 @@ function Aside() {
           >
             <Link to="/complex/profile">
               <i class="fa-solid fa-user"></i>
-              <span>{t("myInfo")}</span><span className="newtop">NEW</span>
+              <span>{t("myInfo")}</span>
             </Link>
           </li>
           <li

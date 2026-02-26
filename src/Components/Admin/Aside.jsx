@@ -132,7 +132,7 @@ function Aside() {
             >
               <Link to="/admin/profile">
                 <i class="fa-solid fa-user"></i>
-                <span className="">{t("myInfo")}</span><span className="newtop">NEW</span>
+                <span className="">{t("myInfo")}</span>
               </Link>
             </li>
                         <li className={location.pathname === "/admin/about" ? "active" : ""}>

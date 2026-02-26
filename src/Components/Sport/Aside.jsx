@@ -123,7 +123,7 @@ function Aside() {
                 <i class="fa-solid fa-user"></i>
                 <span>
                   {t("myInfo")}
-                  <span className="newtop">NEW</span>
+                  {/* <span className="newtop">NEW</span> */}
                 </span>
               </Link>
             </li>

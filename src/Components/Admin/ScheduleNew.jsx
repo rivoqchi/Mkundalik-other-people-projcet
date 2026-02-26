@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -9,7 +9,7 @@ import Alert from "../Additional/Alert";
 import { useLoading } from "../Additional/LoadingScreen";
 import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Tooltip, OverlayTrigger, Dropdown } from "react-bootstrap";
 import calendar from "../Images/calendar.png";
 import logo from "../Images/logo-png.png";
 import DatePicker from "react-datepicker";
@@ -22,29 +22,29 @@ function ScheduleNew() {
   const [myName, setMyName] = useState([]);
   const [mySection, setMySection] = useState([]);
   const [myDepartment, setMyDepartment] = useState([]);
-const { setLoading } = useLoading();
+  const { setLoading } = useLoading();
   const [myComplex, setMyComplex] = useState([]);
   const [myPosition, setMyPosition] = useState([]);
   const [myDegree, setMyDegree] = useState([]);
   const [myRole, setMyRole] = useState([]);
-const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
-const [showPicker, setShowPicker] = useState(false);
-useEffect(() => {
-  const handleKeyDown = (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === "D") {
-      e.preventDefault();
-      setShowPicker(true);
-    }
+  const [shart, setShart] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === "D") {
+        e.preventDefault();
+        setShowPicker(true);
+      }
 
-    if (e.key === "Escape") {
-      setShowPicker(false);
-    }
-  };
-
-  window.addEventListener("keydown", handleKeyDown);
-  return () => window.removeEventListener("keydown", handleKeyDown);
-}, []);
+      if (e.key === "Escape") {
+        setShowPicker(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
   const getMyData = async () => {
     setLoading(true);
 
@@ -66,13 +66,47 @@ useEffect(() => {
   }, []);
 
   const navigate = useNavigate();
-const [alert, setAlert] = useState({
-  show: false,
-  type: "",
-  message: "",
-  trigger: 0
-});
+  const [alert, setAlert] = useState({
+    show: false,
+    type: "",
+    message: "",
+    trigger: 0
+  });
 
+  const handleAi = async () => {
+    if (!taskData.trim()) return;
+
+    setAiMode("thinking");
+    backupTextRef.current = taskData;
+    setDisplayContent(generateSkeleton(taskData));
+
+    try {
+      const response = await axios.post(`${API}/ai/imloviy-ishlov`, {
+        message: `Imloviy xatolarni to'g'irlab rasmiy uslubda faqat matnni qaytar: "${taskData}"`,
+      });
+
+      const newText = response.data.response || taskData;
+
+      // Start reveal animation
+      revealTextAnimation(newText);
+
+    } catch (error) {
+      console.error("Error fetching AI response:", error);
+      setAiMode("error");
+      setAlert({
+        show: true,
+        type: "error",
+        message: "AI xizmati vaqtincha ishlamayapti",
+        trigger: Date.now()
+      });
+
+      // Revert after animation
+      setTimeout(() => {
+        setAiMode("idle");
+        setTaskData(backupTextRef.current);
+      }, 2000);
+    }
+  };
   const [date, setDate] = useState("");
   const [onWork, setOnWork] = useState(false);
   const [workingOn, setWorkingOn] = useState(null);
@@ -92,7 +126,51 @@ const [alert, setAlert] = useState({
   const [terminate, setTerminate] = useState("");
   const [type, setType] = useState("");
   const [currentTaskIndex, setCurrentTaskIndex] = useState(null); // Edit va Delete uchun
-  const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun  const [taskData, setTaskData] = useState(""); // Yangi yoki o'zgartirilgan vazifa uchun
+  const [taskData, setTaskData] = useState("");
+
+  // AI Animation States
+  const [aiMode, setAiMode] = useState("idle"); // idle, thinking, writing, error
+  const [displayContent, setDisplayContent] = useState("");
+  const backupTextRef = useRef("");
+
+  // Helper to generate skeleton blocks from text
+  const generateSkeleton = (text) => {
+    if (!text) return "";
+    return text.split(" ").map(word => {
+      const width = Math.max(30, word.length * 10);
+      return `<span class="ai-word skeleton" style="width: ${width}px; display: inline-block;"></span>`;
+    }).join(" ");
+  };
+
+  // Helper to reveal text
+  const revealTextAnimation = (text) => {
+    const words = text.split(" ");
+    let currentWords = [];
+
+    // Initial display is empty or partial
+    // We will use a recursive timeout loop or interval
+    let index = 0;
+
+    // Clear skeleton first? Or morph?
+    // Let's just start showing words
+    setAiMode("writing");
+
+    const interval = setInterval(() => {
+      if (index >= words.length) {
+        clearInterval(interval);
+        setTimeout(() => {
+          setAiMode("idle");
+          setTaskData(text); // Ensure final text is set and textarea provided
+        }, 500);
+        return;
+      }
+
+      const word = words[index];
+      currentWords.push(`<span class="ai-word reveal">${word}</span>`);
+      setDisplayContent(currentWords.join(" "));
+      index++;
+    }, 50); // Speed of typing
+  };
   // Modalni yopish funksiyalari
   const handleCloseEdit = () => setShowEdit(false);
   const handleCloseDelete = () => setShowDelete(false);
@@ -187,7 +265,7 @@ const [alert, setAlert] = useState({
                 "$3-$2-$1T$4:$5"
               )
             ).getTime();
-            
+
             setStartedAt(fetchedWorkingOn.startedAt); // Global qiymatga saqlash
             setTimer(Math.floor((Date.now() - start) / 1000));
           }
@@ -211,26 +289,29 @@ const [alert, setAlert] = useState({
       setLoading(true);
       const response = await axios.put(
         `${API}/schedules/addtask/${workingOn._id}`,
-        { title: taskData, source: type }
+        { title: taskData, source: shart ? type : "null" }
       );
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseCreate();
-setAlert(prev => ({
-  show: true,
-  type: "success",
-  message: "Qo‘shildi!",
-  trigger: prev.trigger + 1
-}));      setLoading(false);
+      setAlert(prev => ({
+        show: true,
+        type: "success",
+        message: "Qo‘shildi!",
+        trigger: prev.trigger + 1
+      }));
+      setLoading(false);
       resetType();
+      setTaskData("");
     } catch (error) {
       setLoading(false);
       console.error("Taskni qo‘shishda xatolik:", error);
-setAlert(prev => ({
-  show: true,
-  type: "error",
-  message: "Xatolik!",
-  trigger: prev.trigger + 1
-}));    }
+      setAlert(prev => ({
+        show: true,
+        type: "error",
+        message: "Xatolik!",
+        trigger: prev.trigger + 1
+      }));
+    }
   };
   const resetType = () => setType("");
 
@@ -243,7 +324,7 @@ setAlert(prev => ({
         {
           index: currentTaskIndex,
           title: taskData,
-          source: type,
+          source: shart ? type : "null",
         }
       );
       setTasks(response.data.updatedSchedule.tasks);
@@ -258,11 +339,11 @@ setAlert(prev => ({
     } catch (error) {
       console.error("Taskni o'zgartirishda xatolik:", error);
       setAlert(prev => ({
-  show: true,
-  type: "error",
-  message: "Xatolik!",
-  trigger: prev.trigger + 1
-}));
+        show: true,
+        type: "error",
+        message: "Xatolik!",
+        trigger: prev.trigger + 1
+      }));
       setLoading(false);
     }
   };
@@ -337,16 +418,16 @@ setAlert(prev => ({
     if (handleShowStart) {
       handleCloseStart();
     }
-const payload = {
-  beginnerName: myName,
-  beginnerId: window.localStorage.getItem("user_id"),
-  section: mySection,
-  department: myDepartment,
-  complex: myComplex,
-  role: myRole,
-  degree: myDegree,
-  ...(madeEasier && { madeEasier: madeEasier }),
-};
+    const payload = {
+      beginnerName: myName,
+      beginnerId: window.localStorage.getItem("user_id"),
+      section: mySection,
+      department: myDepartment,
+      complex: myComplex,
+      role: myRole,
+      degree: myDegree,
+      ...(madeEasier && { madeEasier: madeEasier }),
+    };
 
     axios.post(`${API}/schedules/create`, payload).then((res) => {
       setOnWork(true);
@@ -368,13 +449,13 @@ const payload = {
   return (
     <>
 
-{alert.show && (
-  <Alert
-    type={alert.type}
-    message={alert.message}
-    trigger={alert.trigger}
-  />
-)}      {/* <div className="oqrang text-center m-3 ushbustikerlar mb-4">
+      {alert.show && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          trigger={alert.trigger}
+        />
+      )}      {/* <div className="oqrang text-center m-3 ushbustikerlar mb-4">
           <h5>{t("ushbustikerlar")}</h5>
           <ul className="list-unstyled">
             <li>
@@ -391,351 +472,245 @@ const payload = {
             </li>
           </ul>
         </div> */}
-      <div className="schedule-container align-items-center mh100 m-0 justify-content-center row">
-        <div className="date col-12 col-md-6 text-center">
-          <div className="mb-2">
-          <img className="startlogo mb-2" src={logo} alt="" />
-          </div>
-          <img className="startcal" src={calendar} alt="" />
-        </div>
-        <div
-          className="date col-12 col-md-6 text-center"
-          style={{ position: "relative" }}
-        >
-          {date}
-          <br />
-          {!onWork && (
-            <div className="text-center cen">
-              <button
-                className="cssbuttons-io-button"
-                onClick={handleShowStart}
-              >
-                {t("ishniboshlash")}
-                <div className="icon">
-                  <svg
-                    height="24"
-                    width="24"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path
-                      d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
+      <div className="hgfd">
+        <div className="container sch-container">
+          <div className="schedule-container">
+            {/* Header Section */}
+            <div className="schedule-header">
+              <div className="header-title-section">
+                <img className="startlogo" src={logo} alt="Logo" />
+              </div>
+              <div className="header-right-section">
+                <div className={`dynamic-status-badge ${onWork ? 'status-jarayonda' : 'status-boshlanmagan'}`}>
+                  <i className={`fa-solid ${onWork ? 'fa-spinner fa-spin' : 'fa-clock'}`}></i>
+                  {onWork ? "Jarayonda" : "Boshlanmagan"}
                 </div>
-              </button>
+                <div className="calendar-box-creative">
+                  <i className="fa-solid fa-calendar-days"></i>
+                  <span>{date}</span>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-        {terminate && (
-          <div className="terminate-container">
-            <p className="terminate-message">
-              {terminate === "Auto terminated"
-                ? t("auto_terminated")
-                : terminate === "Auto deleted"
-                ? t("auto_deleted")
-                : t("session_terminated")}
-            </p>
-            <div className="countdown">
-              <span className="countdown-number">{countdown}</span>
-              <p className="countdown-text">
-                {t("sekunddansongavtomatikyangilanadi")}
-              </p>
-            </div>
-          </div>
-        )}
 
-        {/* Tasks */}
-        <div>
-          {onWork && (
-            <>
-              <span className="u-box">
-                {Math.floor(timer / 3600)
-                  .toString()
-                  .padStart(2, "0")}
-                :{(Math.floor(timer / 60) % 60).toString().padStart(2, "0")}:
-                {(timer % 60).toString().padStart(2, "0")} {t("ishdasiz")}
-              </span>
-            </>
-          )}
-          {tasks.map((task, index) => (
-            <div key={index} className="taskk">
-              <div className="task">
-                {task.source === "majburiyat" && (
-                  <OverlayTrigger
-                    placement="top"
-                    delay={{ show: 0, hide: 0 }}
-                    overlay={(props) =>
-                      renderTooltip(props, t("lavozimmajburiyati"))
-                    }
-                  >
-                    <i
-                      title={t("lavozimmajburiyati")}
-                      className="fa-solid sources majburiyat fa-square"
-                    ></i>
-                  </OverlayTrigger>
-                )}
-                {task.source === "qoshimcha" && (
-                  <OverlayTrigger
-                    placement="top"
-                    delay={{ show: 0, hide: 0 }}
-                    overlay={(props) =>
-                      renderTooltip(props, t("rahbartomonidanqoshimcha"))
-                    }
-                  >
-                    <i
-                      title={t("rahbartomonidanqoshimcha")}
-                      className="fa-solid sources qoshimcha fa-square"
-                    ></i>
-                  </OverlayTrigger>
-                )}
-                {task.source === "tashabbus" && (
-                  <OverlayTrigger
-                    placement="top"
-                    delay={{ show: 0, hide: 0 }}
-                    overlay={(props) =>
-                      renderTooltip(props, t("xodimtashabbusi"))
-                    }
-                  >
-                    <i
-                      title={t("xodimtashabbusi")}
-                      className="fa-solid sources tashabbus fa-square"
-                    ></i>
-                  </OverlayTrigger>
-                )}
-                <b>{index + 1}. </b>
-                <span className="asdqweh">{task.title}</span>
-              </div>
-              <div className="task-btns d-flex justify-content-between">
-                <div className="task-actions">
+            {/* Pre-start Layout */}
+            {!onWork && !terminate && (
+              <div className="prestart-glass-panel">
+                <div className="dynamic-status-badge status-boshlanmagan">
+                  {t("boshlanmagan")}
+                </div>
+                <h2 className="mb-4">Salom, {myName}!</h2>
+                <p className="text-sub mb-4">Bugungi ish kuningizni boshlashga tayyormisiz?</p>
+                <div className="calendar-box-creative mb-5">
+                  <i className="fa-solid fa-calendar-check"></i>
+                  <span>Bugun: {date}</span>
+                </div>
+                <div className="text-center">
                   <button
-                    onClick={() =>
-                      handleShowEdit(index, task.title, task.source)
-                    }
-                    className="text-end editbtn"
+                    className="cssbuttons-io-button"
+                    onClick={handleShowStart}
                   >
-                    <i className="fa-solid fa-pen"></i>
-                  </button>
-                  <button
-                    onClick={() => handleShowDelete(index)}
-                    className="text-end deletebtn"
-                  >
-                    <i className="fa-solid fa-trash"></i>
+                    {t("ishniboshlash")}
+                    <div className="icon">
+                      <svg
+                        height="24"
+                        width="24"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        <path
+                          d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                          fill="currentColor"
+                        ></path>
+                      </svg>
+                    </div>
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
-          {onWork && (
-            <>
-              <div className="mb-5">
-                <div className="button-container mt-5">
-                  <button
-                    onClick={handleShowCreate}
-                    class="continue-application"
-                  >
-                    <div>
-                      <div class="pencil"></div>
-                      <div class="folder">
-                        <div class="top">
-                          <svg viewBox="0 0 24 27">
-                            <path d="M1,0 L23,0 C23.5522847,-1.01453063e-16 24,0.44771525 24,1 L24,8.17157288 C24,8.70200585 23.7892863,9.21071368 23.4142136,9.58578644 L20.5857864,12.4142136 C20.2107137,12.7892863 20,13.2979941 20,13.8284271 L20,26 C20,26.5522847 19.5522847,27 19,27 L1,27 C0.44771525,27 6.76353751e-17,26.5522847 0,26 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z"></path>
-                          </svg>
+            )}
+            {terminate && (
+              <div className="terminate-container">
+                <p className="terminate-message">
+                  {terminate === "Auto terminated"
+                    ? t("auto_terminated")
+                    : terminate === "Auto deleted"
+                      ? t("auto_deleted")
+                      : t("session_terminated")}
+                </p>
+                <div className="countdown">
+                  <span className="countdown-number">{countdown}</span>
+                  <p className="countdown-text">
+                    {t("sekunddansongavtomatikyangilanadi")}
+                  </p>
+                </div>
+              </div>
+            )}
+            {/* Tasks List */}
+            {onWork && (
+              <div className="tasks-list-wrapper">
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <span className="u-box">
+                    <i className="fa-solid fa-stopwatch me-2"></i>
+                    {Math.floor(timer / 3600).toString().padStart(2, "0")}
+                    :{(Math.floor(timer / 60) % 60).toString().padStart(2, "0")}:
+                    {(timer % 60).toString().padStart(2, "0")} {t("ishdasiz")}
+                  </span>
+                </div>
+                {/* Scrollable list content */}
+                <div className="tasks-scroll-area">
+                  {tasks.map((task, index) => (
+                    <div key={index} className="taskk">
+                      <div className="justify-content-between pb-2 d-flex">
+                        <div className="task-number-badge ">{index + 1} </div>
+                        <div className="task-actions align-items-center">
+                          <div className="d-none d-md-flex gap-2">
+                            <button onClick={() => handleShowEdit(index, task.title, task.source)} className="editbtn" title="Tahrirlash">
+                              <i className="fa-solid fa-pen"></i>
+                            </button>
+                            <button onClick={() => handleShowDelete(index)} className="deletebtn" title="O'chirish">
+                              <i className="fa-solid fa-trash"></i>
+                            </button>
+                          </div>
+
+                          {/* Mobile Dropdown */}
+                          <div className="d-md-none mobile-task-dropdown">
+                            <Dropdown>
+                              <Dropdown.Toggle id={`dropdown-task-${index}`} className="dropdown-dots">
+                                <i className="fa-solid fa-ellipsis-vertical"></i>
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu align="end">
+                                <Dropdown.Item onClick={() => handleShowEdit(index, task.title, task.source)}>
+                                  <i className="fa-solid fa-pen me-2"></i> Tahrirlash
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => handleShowDelete(index)} className="text-danger">
+                                  <i className="fa-solid fa-trash me-2"></i> O'chirish
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </div>
                         </div>
-                        <div class="paper"></div>
+                      </div>
+                      <div className="task-bottom-info">
+                        <div className="task-content-top">
+                          <div className="task-info">
+                            <div className="asdqweh">{task.title}</div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    {t("qoshish")}
-                  </button>
-                  <button onClick={handleShowEnd} class="Documents-btn align-items-center">
-                    <span class="folderContainer">
-                      <svg
-                        class="fileBack"
-                        width="146"
-                        height="113"
-                        viewBox="0 0 146 113"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M0 4C0 1.79086 1.79086 0 4 0H50.3802C51.8285 0 53.2056 0.627965 54.1553 1.72142L64.3303 13.4371C65.2799 14.5306 66.657 15.1585 68.1053 15.1585H141.509C143.718 15.1585 145.509 16.9494 145.509 19.1585V109C145.509 111.209 143.718 113 141.509 113H3.99999C1.79085 113 0 111.209 0 109V4Z"
-                          fill="url(#paint0_linear_117_4)"
-                        ></path>
-                        <defs>
-                          <linearGradient
-                            id="paint0_linear_117_4"
-                            x1="0"
-                            y1="0"
-                            x2="72.93"
-                            y2="95.4804"
-                            gradientUnits="userSpaceOnUse"
-                          >
-                            <stop stop-color="#8F88C2"></stop>
-                            <stop offset="1" stop-color="#5C52A2"></stop>
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                      <svg
-                        class="filePage"
-                        width="88"
-                        height="99"
-                        viewBox="0 0 88 99"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <rect
-                          width="88"
-                          height="99"
-                          fill="url(#paint0_linear_117_6)"
-                        ></rect>
-                        <defs>
-                          <linearGradient
-                            id="paint0_linear_117_6"
-                            x1="0"
-                            y1="0"
-                            x2="81"
-                            y2="160.5"
-                            gradientUnits="userSpaceOnUse"
-                          >
-                            <stop stop-color="white"></stop>
-                            <stop offset="1" stop-color="#686868"></stop>
-                          </linearGradient>
-                        </defs>
-                      </svg>
-
-                      <svg
-                        class="fileFront"
-                        width="160"
-                        height="79"
-                        viewBox="0 0 160 79"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M0.29306 12.2478C0.133905 9.38186 2.41499 6.97059 5.28537 6.97059H30.419H58.1902C59.5751 6.97059 60.9288 6.55982 62.0802 5.79025L68.977 1.18034C70.1283 0.410771 71.482 0 72.8669 0H77H155.462C157.87 0 159.733 2.1129 159.43 4.50232L150.443 75.5023C150.19 77.5013 148.489 79 146.474 79H7.78403C5.66106 79 3.9079 77.3415 3.79019 75.2218L0.29306 12.2478Z"
-                          fill="url(#paint0_linear_117_5)"
-                        ></path>
-                        <defs>
-                          <linearGradient
-                            id="paint0_linear_117_5"
-                            x1="38.7619"
-                            y1="8.71323"
-                            x2="66.9106"
-                            y2="82.8317"
-                            gradientUnits="userSpaceOnUse"
-                          >
-                            <stop stop-color="#C3BBFF"></stop>
-                            <stop offset="1" stop-color="#51469A"></stop>
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                    </span>
-                    <p class="text">{t("yakunlash")}</p>
-                  </button>
+                  ))}
                 </div>
               </div>
-            </>
-          )}
-        </div>
-        {/* Modal oynalar */}
-        <Modal size="lg" centered show={showCreate} onHide={handleCloseCreate}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <div className="boshlovchi">
-                <i class="fa-solid newuser fa-user-check"></i> {window.localStorage.getItem("fullName")}
+            )}
+
+            {/* Persistent Bottom Task Input Box Matching Image */}
+            {onWork && (
+              <div className="new-task-box mb-5 mx-auto">
+                <div className="new-task-head">
+                  <div className="new-task-title">
+                    <i className="fa-solid fa-plus-circle"></i>
+                    <span>Yangi qadam qo'shish</span>
+                  </div>
+                  <div className="d-flex align-items-center gap-2">
+                    <div className="new-task-user">
+                      <i className="fa-regular fa-user"></i>
+                      <span>{myName || "Foydalanuvchi"}</span>
+                    </div>
+                    <button
+                      onClick={handleAi}
+                      className={`ai-btn-top ${aiMode !== 'idle' ? 'processing' : ''}`}
+                      disabled={aiMode !== 'idle' || !taskData}
+                      title="AI Tahrir"
+                    >
+                      <i className={`fa-solid ${aiMode === 'thinking' ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`}></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="new-task-body">
+                  <div className="textarea-wrapper">
+                    {aiMode === "idle" ? (
+                      <textarea
+                        className="task-textarea-custom"
+                        value={taskData}
+                        onChange={(e) => setTaskData(e.target.value)}
+                        placeholder="Bugun qanday natijalarga erishdingiz? Batafsil yozing..."
+                        rows={4}
+                      />
+                    ) : (
+                      <div
+                        className={`ai-animation-container-custom ${aiMode}`}
+                        dangerouslySetInnerHTML={{ __html: displayContent }}
+                      />
+                    )}
+                  </div>
+
+                  {shart && (
+                    <div className="task-type-selector-new">
+                      <label className={`type-badge ${type === 'majburiyat' ? 'selected' : ''}`}>
+                        <input type="radio" name="taskTypeBottom" value="majburiyat" checked={type === "majburiyat"} onChange={(e) => setType(e.target.value)} />
+                        <i className="fa-solid fa-check-double me-2"></i> {t("lavozimmajburiyati")}
+                      </label>
+                      <label className={`type-badge ${type === 'qoshimcha' ? 'selected' : ''}`}>
+                        <input type="radio" name="taskTypeBottom" value="qoshimcha" checked={type === "qoshimcha"} onChange={(e) => setType(e.target.value)} />
+                        <i className="fa-solid fa-plus-circle me-2"></i> {t("rahbartomonidanqoshimcha")}
+                      </label>
+                      <label className={`type-badge ${type === 'tashabbus' ? 'selected' : ''}`}>
+                        <input type="radio" name="taskTypeBottom" value="tashabbus" checked={type === "tashabbus"} onChange={(e) => setType(e.target.value)} />
+                        <i className="fa-solid fa-lightbulb me-2"></i> {t("xodimtashabbusi")}
+                      </label>
+                    </div>
+                  )}
+
+                  <div className="new-task-footer">
+                    <div className="footer-left-actions d-none text-end d-md-flex">
+                      {/* <button className="action-btn"><i className="fa-solid fa-paperclip"></i> Fayl</button>
+                      <button className="action-btn"><i className="fa-solid fa-link"></i> Havola</button> */}
+                    </div>
+
+                    <div className="footer-right-actions">
+                      <button
+                        className="btn-save-creative"
+                        onClick={handleCreateTask}
+                        disabled={!taskData || (shart && !type)}
+                      >
+                        Saqlash <i className="fa-solid fa-arrow-right"></i>
+                      </button>
+
+                      <button
+                        className="btn-finish-creative"
+                        onClick={handleShowEnd}
+                      >
+                        Yakunlash
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="task-modal-body">
-  <textarea
-    className="task-textarea"
-    value={taskData}
-    onChange={(e) => setTaskData(e.target.value)}
-    rows="6"
-    placeholder={t("tafsilotlarnikiriting")}
-  />
-</Modal.Body>
-          <div>
-            <div className="tanlovv row">
-              <label>
-                <input
-                  type="radio"
-                  name="taskType"
-                  value="majburiyat"
-                  checked={type === "majburiyat"}
-                  onChange={(e) => setType(e.target.value)}
-                />
-                {t("lavozimmajburiyati")}
-              </label>
+            )}
 
-              <div className="radio-wrapper">
-  <label className="radio-option">
-    <input
-      type="radio"
-      name="taskType"
-      value="qoshimcha"
-      checked={type === "qoshimcha"}
-      onChange={(e) => setType(e.target.value)}
-      className="radio-input"
-    />
-    <span className="radio-custom"></span>
-    {t("rahbartomonidanqoshimcha")}
-  </label>
-
-  <label className="radio-option">
-    <input
-      type="radio"
-      name="taskType"
-      value="tashabbus"
-      checked={type === "tashabbus"}
-      onChange={(e) => setType(e.target.value)}
-      className="radio-input"
-    />
-    <span className="radio-custom"></span>
-    {t("xodimtashabbusi")}
-  </label>
-</div>
-            </div>
-
-            <Modal.Footer>
-              <OverlayTrigger
-                placement="top"
-                overlay={
-                  <Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>
-                }
-                show={!type}
-              >
-                <span>
-                  <Button
-                    className="mb-4 defaultbtn"
-                    onClick={handleCreateTask}
-                    disabled={!type}
-                  >
-                    {t("saqlash")}
-                  </Button>
-                </span>
-              </OverlayTrigger>
-            </Modal.Footer>
           </div>
-        </Modal>
+        </div>
+      </div>
+      {/* Modal oynalar */}
+      {/* Create Modal Removed */}
 
-        <Modal centered size="lg" show={showEdit} onHide={handleCloseEdit}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <i className="fa-solid fa-pen"></i> {t("vazifaniozgartirish")}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="forbeg">
-            <textarea
-              className="kghgv"
-              value={taskData}
-              onChange={(e) => setTaskData(e.target.value)}
-              rows="6"
-            />
-          </Modal.Body>
-          <div>
+      <Modal centered size="lg" show={showEdit} onHide={handleCloseEdit}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <i className="fa-solid fa-pen"></i> {t("vazifaniozgartirish")}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="forbeg">
+          <textarea
+            className="kghgv"
+            value={taskData}
+            onChange={(e) => setTaskData(e.target.value)}
+            rows="6"
+          />
+        </Modal.Body>
+        <div>
+          {shart && (
             <div className="tanlovv row">
               <label>
                 <input
@@ -770,89 +745,94 @@ const payload = {
                 {t("xodimtashabbusi")}
               </label>
             </div>
+          )}
 
-            <Modal.Footer>
-              <OverlayTrigger
-                placement="top"
-                overlay={
-                  <Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>
-                }
-                show={!type}
-              >
-                <span>
-                  <Button
-                    variant="success"
-                    className="mb-4"
-                    onClick={handleEditTask}
-                    disabled={!type}
-                  >
-                    {t("saqlash")}
-                  </Button>
-                </span>
-              </OverlayTrigger>
-            </Modal.Footer>
-          </div>
-        </Modal>
-
-        <Modal centered show={showDelete} onHide={handleCloseDelete}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <i className="fa-solid fa-trash"></i> {t("ochirish")}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{t("areyousuretodelete")}</Modal.Body>
           <Modal.Footer>
-            <Button variant="danger" onClick={handleDeleteTask}>
-              {t("ochirish")}
-            </Button>
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip id="button-tooltip">{t("turinitanlang")}</Tooltip>
+              }
+              show={shart && !type}
+            >
+              <span>
+                <Button
+                  variant="success"
+                  className="mb-4"
+                  onClick={handleEditTask}
+                  disabled={shart && !type}
+                >
+                  {t("saqlash")}
+                </Button>
+              </span>
+            </OverlayTrigger>
           </Modal.Footer>
-        </Modal>
+        </div>
+      </Modal>
 
-        <Modal centered show={showEnd} onHide={handleCloseEnd}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <i className="fa-regular fa-circle-stop"></i> {t("yakunlash")}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{t("areyousuretoend")}</Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleEndTask}>
-              {t("yakunlash")}
-            </Button>
-          </Modal.Footer>
-        </Modal>
+      <Modal centered show={showDelete} onHide={handleCloseDelete}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <i className="fa-solid fa-trash"></i> {t("ochirish")}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{t("areyousuretodelete")}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleDeleteTask}>
+            {t("ochirish")}
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
-        <Modal centered show={showStart} onHide={handleCloseStart}>
-          <Modal.Header closeButton>
-            <Modal.Title>{t("boshlash")}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-  {t("areyousuretostart")}
+      <Modal centered show={showEnd} onHide={handleCloseEnd} className="creative-modal">
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <i className="fa-solid fa-circle-question me-2 text-warning"></i> {t("yakunlash")}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center py-4">
+          <h5 className="mb-0">Rostan ham yakunlaysizmi?</h5>
+        </Modal.Body>
+        <Modal.Footer className="justify-content-center">
+          <Button variant="outline-secondary" onClick={handleCloseEnd}>
+            Yo'q
+          </Button>
+          <Button variant="primary" onClick={handleEndTask} className="px-5">
+            Ha, yakunlash
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
-  {showPicker && (
-    <div className="mt-3">
-      <DatePicker
-        selected={selectedDate}
-        onChange={(date) => {
-          setSelectedDate(date);
-          setMadeEasier(dayjs(date).format("DD/MM/YYYY HH:mm"));
-          // setShowPicker(false); // tanlangach yopiladi
-        }}
-        showTimeSelect
-        dateFormat="dd/MM/yyyy HH:mm"
-        className="form-control"
-        autoFocus
-      />
-    </div>
-  )}
-</Modal.Body>
-          <Modal.Footer>
-            <Button className="defaultbtn" onClick={handleStartWork}>
-              {t("boshlash")}
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+      <Modal centered show={showStart} onHide={handleCloseStart}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("boshlash")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {t("areyousuretostart")}
+
+          {showPicker && (
+            <div className="mt-3">
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => {
+                  setSelectedDate(date);
+                  setMadeEasier(dayjs(date).format("DD/MM/YYYY HH:mm"));
+                  // setShowPicker(false); // tanlangach yopiladi
+                }}
+                showTimeSelect
+                dateFormat="dd/MM/yyyy HH:mm"
+                className="form-control"
+                autoFocus
+              />
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className="defaultbtn" onClick={handleStartWork}>
+            {t("boshlash")}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import snow from "./Images/snow.png";
 
 const Snowfall = () => {
+  const snowSetting = window.localStorage.getItem("snow");
+
   // Qor donachalari miqdori (Rasm bo'lgani uchun miqdorini biroz kamaytirsangiz ham chiroyli chiqadi)
   const counts = { sm: 100, md: 40, lg: 20 };
 
@@ -28,6 +30,7 @@ const Snowfall = () => {
 
     return allSnow;
   }, []);
+if (snowSetting !== "true") return null;
 
   return (
     <>

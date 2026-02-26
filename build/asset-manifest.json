@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.eab88834.css",
-    "main.js": "/static/js/main.5d4d2e75.js",
+    "main.css": "/static/css/main.fdea62b4.css",
+    "main.js": "/static/js/main.3133cd1c.js",
     "static/js/977.0a69a40a.chunk.js": "/static/js/977.0a69a40a.chunk.js",
     "static/js/455.93e4cfa8.chunk.js": "/static/js/455.93e4cfa8.chunk.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.29aedc26.chunk.js",
@@ -33,6 +33,7 @@
     "static/media/lavozimyoriqnomasi.png": "/static/media/lavozimyoriqnomasi.05699fc56af9468e0393.png",
     "static/media/metroblanklogo.png": "/static/media/metroblanklogo.3aa7c53db8665cfda4d6.png",
     "static/media/image3.png": "/static/media/image3.3115590319939209a72f.png",
+    "static/media/snow.png": "/static/media/snow.0cf47c282eecc7c46e26.png",
     "static/media/avatar.png": "/static/media/avatar.5534688fa56329717dbe.png",
     "static/media/Behruz.jpg": "/static/media/Behruz.a5a1040fade9fe0cd567.jpg",
     "static/media/notfound.png": "/static/media/notfound.e16ee36698f22652f21d.png",
@@ -44,8 +45,8 @@
     "static/media/done.jpg": "/static/media/done.c7a900f332c4972c8b1b.jpg",
     "static/media/half-flag.JPG": "/static/media/half-flag.5a34fa8fc878d7087d04.JPG",
     "index.html": "/index.html",
-    "main.eab88834.css.map": "/static/css/main.eab88834.css.map",
-    "main.5d4d2e75.js.map": "/static/js/main.5d4d2e75.js.map",
+    "main.fdea62b4.css.map": "/static/css/main.fdea62b4.css.map",
+    "main.3133cd1c.js.map": "/static/js/main.3133cd1c.js.map",
     "977.0a69a40a.chunk.js.map": "/static/js/977.0a69a40a.chunk.js.map",
     "455.93e4cfa8.chunk.js.map": "/static/js/455.93e4cfa8.chunk.js.map",
     "reactPlayerYouTube.29aedc26.chunk.js.map": "/static/js/reactPlayerYouTube.29aedc26.chunk.js.map",
@@ -65,7 +66,7 @@
     "488.9c4565b6.chunk.js.map": "/static/js/488.9c4565b6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.eab88834.css",
-    "static/js/main.5d4d2e75.js"
+    "static/css/main.fdea62b4.css",
+    "static/js/main.3133cd1c.js"
   ]
 }

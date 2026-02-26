@@ -8,10 +8,7 @@ import Feruz from '../Images/Feruz.jpg';
 import Usmonov from '../Images/Usmonov.png';
 import ReactPlayer from "react-player";
 import rolik from "../Images/mkundalik.mp4";
-import yosh1 from "../Images/1yosh.jpg";
-import CelebrationModal from "../Celebration";
 const Info = () => {
-  const [showCelebration, setShowCelebration] = useState(false);
 
   const { t } = useTranslation();
   const [myData, setMyData] = useState(null);
@@ -51,14 +48,6 @@ const Info = () => {
     return (
         <div className="tap-page">
             <section className="info-header">
-              <img className="yoshimiz1" src={yosh1} alt=""
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setShowCelebration(true)} />
-              
-                    <CelebrationModal
-                      show={showCelebration}
-                      setShow={setShowCelebration}
-                    />
                 <h5 className="tit">{t("dasturhaqida")}</h5>
                 <p className='aboutp'>
                 mkundalik.uz {t("dasyarat")}<br/><br/>

@@ -16,11 +16,16 @@ import { Spinner } from "react-bootstrap";
 import flag from "../Images/half-flag.JPG";
 import smalllogo from "../Images/metroblanklogo.png";
 import { useLoading } from "../Additional/LoadingScreen";
-
+import Alert from "../Additional/Alert";
 function ScheduleRate() {
   const { t } = useTranslation();
   const { setLoading } = useLoading();
-  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+  const [alert, setAlert] = useState({
+    show: false,
+    type: "",
+    message: "",
+    trigger: 0,
+  });
   const [show, setShow] = useState(false);
   const myId = window.localStorage.getItem("user_id");
   const fullName = window.localStorage.getItem("fullName");
@@ -50,13 +55,14 @@ function ScheduleRate() {
   useEffect(() => {
     getMyData();
   }, []);
-    const handleShow = () => {
+  const handleShow = () => {
     if (thisScheduleHistory.reported) {
-      setAlert({
+      setAlert((prev) => ({
         show: true,
         type: "error",
-        message: "Siz e'tiroz bildirib bo`lgansiz!",
-      });
+        message: "Siz e'tiroz bildirib bo`lgansiz.",
+        trigger: prev.trigger + 1,
+      }));
     } else {
       setShow(true);
     }
@@ -100,12 +106,11 @@ function ScheduleRate() {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `${API}/schedules/getschedulebyid/${id}`
+        `${API}/schedules/getschedulebyid/${id}`,
       );
       setThisScheduleHistory(data.thehistory);
       setChecking(data.thehistory.beginnerId);
       setLoading(false);
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -156,7 +161,12 @@ function ScheduleRate() {
   const handleInputChange = (event) => {
     const value = Number(event.target.value);
     if (value < 1) {
-      alert("Eng kamida 1 ball qo`ya olasiz");
+      setAlert((prev) => ({
+        show: true,
+        type: "error",
+        message: "Eng kamida 1 ball qo`ya olasiz",
+        trigger: prev.trigger + 1,
+      }));
       setManualRating(1);
     } else if (value > 100) {
       setManualRating(100);
@@ -191,6 +201,13 @@ function ScheduleRate() {
   );
   return (
     <>
+      {alert.show && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          trigger={alert.trigger}
+        />
+      )}
       <div ref={componentRef} className="hisobot">
         <div className="scheduleshistory">
           <div className="scheduletepa">
@@ -203,7 +220,8 @@ function ScheduleRate() {
                 <img className="schedulelogo3" src={flag} alt="logo" />
               </div>
               <div className="col-9 bolddd fw-bold text-center">
-                "Toshkent metropoliteni" DUK kundalik hisobotlarni elektron shakllantirish platformasi
+                "Toshkent metropoliteni" DUK kundalik hisobotlarni elektron
+                shakllantirish platformasi
                 <hr className="bolded" />
                 ГУП "Тошкент метрополитени" создание ежедневных отчетов
                 электронная платформа
@@ -221,7 +239,6 @@ function ScheduleRate() {
               taklif va murojaatlar uchun pochta manzili:{" "}
               <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a>{" "}
               | telefon: (71) 227-44-13. <br />
-
               Quyida shakllantirilgan elektron hisobot mazmuniga hisobot egasi
               mas'ul hisoblanadi.
             </div>
@@ -229,22 +246,30 @@ function ScheduleRate() {
           <hr className="hrnone mb-2" />
           <div className="scheduleinfo">
             <div className="schedulebajaruvchilar">
-<table className=" text-start">
-  <tbody>
-    <tr>
-      <td className="fw-bold"><i class="fa-solid fa-users-between-lines"></i> Kompleks:</td>
-      <td className="border-none">{thisScheduleHistory.complex}</td>
-    </tr>
-    <tr>
-      <td className="fw-bold"><i class="fa-solid fa-people-line"></i> Xizmat:</td>
-      <td>{thisScheduleHistory.department}</td>
-    </tr>
-    <tr>
-      <td className="fw-bold"><i class="fa-solid fa-users"></i> Bo`lim:</td>
-      <td>{thisScheduleHistory.section}</td>
-    </tr>
-  </tbody>
-</table>
+              <table className=" text-start">
+                <tbody>
+                  <tr>
+                    <td className="fw-bold">
+                      <i class="fa-solid fa-users-between-lines"></i> Kompleks:
+                    </td>
+                    <td className="border-none">
+                      {thisScheduleHistory.complex}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="fw-bold">
+                      <i class="fa-solid fa-people-line"></i> Xizmat:
+                    </td>
+                    <td>{thisScheduleHistory.department}</td>
+                  </tr>
+                  <tr>
+                    <td className="fw-bold">
+                      <i class="fa-solid fa-users"></i> Bo`lim:
+                    </td>
+                    <td>{thisScheduleHistory.section}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <br />
@@ -420,6 +445,25 @@ function ScheduleRate() {
           <Modal.Title>Баҳолаш</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          
+          <div className="bahoinput text-center">
+            {/* <div className="">
+            <i className="fa-solid ourai fa-robot"></i>
+          {setAI && (
+            <Spinner animation="border" size="sm" className="input-spinner" />
+          )}
+            </div> */}
+            <div className=""><b>{thisScheduleHistory.beginnerName}</b> uchun tizim taklif qilayotgan ball: {manualRating}</div>{" "}
+            <input
+              type="number"
+              value={manualRating}
+              onChange={handleInputChange}
+              min="1"
+              max="100"
+              // className={setAI ? '' : 'no-ai'}
+              // disabled={setAI}
+            />
+          </div>
           <div className="stars">
             {[...Array(10)].map((_, index) => (
               <i
@@ -430,25 +474,6 @@ function ScheduleRate() {
                 ★
               </i>
             ))}
-          </div>
-          <div className="bahoinput text-center">
-            {/* <div className="">
-            <i className="fa-solid ourai fa-robot"></i>
-    {setAI && (
-      <Spinner animation="border" size="sm" className="input-spinner" />
-    )}
-            </div> */}
-            <div className="redword">Tizim taklif qilayotgan ball:</div>{" "}
-            <div className="">* o`zgartirish mumkin.</div>
-            <input
-              type="number"
-              value={manualRating}
-              onChange={handleInputChange}
-              min="1"
-              max="100"
-              // className={setAI ? '' : 'no-ai'}
-              // disabled={setAI}
-            />
           </div>
           <textarea
             className={`kghgv ${isCommentEmpty ? "commentquacke" : ""}`}
@@ -476,28 +501,31 @@ function ScheduleRate() {
         </Modal.Footer>
       </Modal>
       <div className="schedulerated">
-                    <div className="text-center">
-                      <Button
-                        className="baholash-wave-btn"
-                        variant="primary"
-                        onClick={() => setShowModal(true)}
-                      >
-                        {t("baholash")} <i className="fa-solid fa-star"></i>
-                      </Button>
-                    </div>
-                    
-                    {thisScheduleHistory.comment && (
-                      <div className="commentsch align-items-center justify-content-between d-flex">
-                        <div className="">
-                          <b>{t("comment")}:</b> {thisScheduleHistory.comment}
-                        </div>
-                        <i
-                          disabled={thisScheduleHistory.reported}
-                          className="fa-solid excla fa-triangle-exclamation"
-                          ></i>
-                      </div>
-                    )}
-                  </div>
+        {!showModal && (
+  <div className="text-center">
+    <Button
+      className="baholash-wave-btn"
+      variant="primary"
+      onClick={() => setShowModal(true)}
+    >
+      {t("baholash")} <i className="fa-regular fa-thumbs-up"></i>
+    </Button>
+  </div>
+)}
+
+
+        {thisScheduleHistory.comment && (
+          <div className="commentsch align-items-center justify-content-between d-flex">
+            <div className="">
+              <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+            </div>
+            <i
+              disabled={thisScheduleHistory.reported}
+              className="fa-solid excla fa-triangle-exclamation"
+            ></i>
+          </div>
+        )}
+      </div>
     </>
   );
 }

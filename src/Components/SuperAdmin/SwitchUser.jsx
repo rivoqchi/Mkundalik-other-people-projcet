@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Accordion from 'react-bootstrap/Accordion';
 import {
   Modal,
   Button,
@@ -27,21 +28,25 @@ function Xodimlar() {
   const handleClose3 = () => {
     setShow3(false);
     setShowModal2(true);
+      setUserInfo(null);
   };
 
   const handleClose4 = () => {
     setShow4(false);
     setShowModal2(true);
+      setUserInfo(null);
   };
 
   const handleShow3 = () => {
     setShow3(true);
     setShowModal2(false);
+      setUserInfo(null);
   };
 
   const handleShow4 = () => {
     setShow4(true);
     setShowModal2(false);
+      setUserInfo(null);
   };
   const [allSections, setAllSections] = useState([]);
   const [allDepartments, setAllDepartments] = useState([]);
@@ -55,11 +60,23 @@ function Xodimlar() {
 const { setLoading } = useLoading();
   const [error, setError] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  console.log(selectedEmployee);
+  
   const [editing, setEditing] = useState(true);
   const [editData, setEditData] = useState({});
   const [showPopup, setShowPopup] = useState(false);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+  const [userInfo, setUserInfo] = useState(null);
 
+  const getUserById = async () => {
+    try {
+      const { data } = await axios.get(`${API}/auth/getuser/${selectedEmployee._id}`);
+      setUserInfo(data.user);
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+      toast.error("Xodim haqida ma'lumotni yuklashda xatolik yuz berdi.");
+    }
+  };
     const exportToExcel = () => {
       const worksheet = XLSX.utils.json_to_sheet(filteredEmployees);
       const workbook = XLSX.utils.book_new();
@@ -108,6 +125,7 @@ const { setLoading } = useLoading();
       });
       handleClose4();
       setShowModal2(false);
+      setUserInfo(null);
     } catch (error) {
       console.error("Xato yuz berdi: ", error);
       setAlert({ show: true, type: "danger", message: "Xatolik!" });
@@ -172,12 +190,14 @@ const { setLoading } = useLoading();
       );
     }
     setShowModal(false);
+      setUserInfo(null);
   };
 
   const handleEmployeeClick = (employee) => {
     setSelectedEmployee(employee);
     setEditData({ ...employee }); // Tahrir uchun alohida nusxa
     setShowModal2(true);
+      setUserInfo(null);
   };
 
   const handleInputChange = (e) => {
@@ -205,6 +225,7 @@ const { setLoading } = useLoading();
       });
       getAllEmployees();
       setShowModal2(false);
+      setUserInfo(null);
       setLoading(false);
     } catch (error) {
       console.error("Xodimni yangilashda xatolik:", error);
@@ -222,27 +243,7 @@ const { setLoading } = useLoading();
     }));
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(
-        `${API}/auth/deletethisuser/${selectedEmployee._id}`
-      );
-      if (response.status === 200) {
-        setAlert({
-          show: true,
-          type: "success",
-          message: "Xodim muvaffaqiyatli o`chirildi!",
-        });
-        getAllEmployees();
-        setShow3(false);
-        setShowModal2(false);
-      }
-    } catch (error) {
-      setAlert({ show: true, type: "success", message: "Xatolik!" });
-
-      console.error(error);
-    }
-  };
+  
 
   return (
     <div>
@@ -465,6 +466,7 @@ const { setLoading } = useLoading();
                   <option value="sport">Sport murabbiysi</option>
                   <option value="at">AKT nazoratchisi</option>
                   <option value="lang">Til nazoratchisi</option>
+                  <option value="inactive">Nofaol (ishdan bo`shatildi)</option>
                 </Form.Control>
               </Form.Group>
 
@@ -539,6 +541,34 @@ const { setLoading } = useLoading();
                 />
               </Form.Group>
             </Form>
+            <Accordion defaultActiveKey="0">
+      <Accordion.Item eventKey="1">
+        <Accordion.Header>Umumiy ma'lumot</Accordion.Header>
+<Accordion.Body>
+  <button onClick={getUserById} className="defaultbtn">
+    Qidirish...
+  </button>
+
+  {userInfo && (
+    <div className="terminal">
+      <div className="terminal-header">
+        <span className="dot red"></span>
+        <span className="dot yellow"></span>
+        <span className="dot green"></span>
+        <span className="terminal-title">user_info.json</span>
+      </div>
+
+      <pre className="terminal-body">
+        <code>
+          {JSON.stringify(userInfo, null, 2)}
+        </code>
+      </pre>
+    </div>
+  )}
+</Accordion.Body>
+
+      </Accordion.Item>
+    </Accordion>
             {/* <div className="redword">Hech kim o`zgartirmasin! Hali tayyor emas.</div> */}
             <div className="row m-2 align-items-center">
               <div className="col-6 text-start">
@@ -562,10 +592,8 @@ const { setLoading } = useLoading();
           {editing && (
             <Modal.Footer>
               <div className="d-flex justify-content-between w-100">
-                <Button onClick={handleShow3} variant="danger">
-                  Tizimdan o‘chirish
-                </Button>
                 <div className="d-flex align-items-center gap-2">
+                            <div>Ishdan bo`shatish uchun "ROL"ga "Nofaol" tanlanadi.</div>
                   <Button onClick={handleSave} variant="success">
                     Saqlash
                   </Button>
@@ -582,16 +610,12 @@ const { setLoading } = useLoading();
         </Modal.Header>
         <Modal.Body>
           <p className="redword">
-            Rostan ham xodimni o`chirish kerakmi? O`chirilgan xodimning
-            ma'lumotlarini tiklab bo`lmasligini yodingizda saqlang!
+            Rostan ham xodim ishdan bo`shatildimi?
           </p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose3}>
             Qaytish
-          </Button>
-          <Button variant="danger" onClick={handleDelete}>
-            O`chirib yuborish
           </Button>
         </Modal.Footer>
       </Modal>

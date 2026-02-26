@@ -42,9 +42,13 @@ const from = location.state?.from; // faqat string
         if (data.error) {
           setLoading(false);
           setAlert({ show: true, type: "error", message: data.error });
+        } else if (data.employee.role === "inactive") {
+          // 🛑 Role 'inactive' bo'lsa, hech narsani saqlamaymiz
+          setLoading(false);
+          window.localStorage.clear();
+          navigate('/inactive', { replace: true });
         } else if (data.employee.role !== "new") {
-
-          // Token va user info saqlash
+          // ✅ Role 'inactive' bo'lmasa va 'new' bo'lmasa - ma'lumotlarni saqlaymiz
           window.localStorage.setItem("token", data.token);
           window.localStorage.setItem("jwt", JSON.stringify({ token: data.token }));
           window.localStorage.setItem("fullName", data.employee.name);
@@ -53,17 +57,16 @@ const from = location.state?.from; // faqat string
           window.localStorage.setItem("role", data.employee.role);
           window.localStorage.setItem("user_id", data.employee._id);
           window.localStorage.setItem("bd", data.employee?.dateOfBirth?.slice(-5) ?? "11-19");
+          
           setValues({ phone: '', password: '' });
-
           setLoading(false);
 
-          // 🔑 Agar state.from bo'lsa, shu URL ga yo'naltirish
-if (from) {
-  navigate(from, { replace: true });
-  return;
-}
+          // 🔑 Yo'naltirish mantig'i
+          if (from) {
+            navigate(from, { replace: true });
+            return;
+          }
 
-          // Aks holda o‘z role ga mos dashboard
           const dashboardRoutes = {
             employee: "/user/dashboard",
             admin: "/admin/dashboard",
@@ -77,10 +80,12 @@ if (from) {
             at: "/at/dashboard",
             boss: "/boss/dashboard"
           };
-          navigate(dashboardRoutes[data.employee.role], { replace: true });
+          
+          navigate(dashboardRoutes[data.employee.role] || "/", { replace: true });
 
         } else {
-          // Yangi foydalanuvchi
+          // Yangi foydalanuvchi bo'lsa
+          setLoading(false);
           navigate('/iamnew', { replace: true });
         }
       })

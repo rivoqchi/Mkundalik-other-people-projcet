@@ -38,6 +38,11 @@ function Profile() {
     const stopSnow = localStorage.getItem("stop-snow") === "true";
     setIsOn(stopSnow);
   }, []);
+const [isChecked, setIsChecked] = useState(() => {
+  const snow = localStorage.getItem("snow");
+  return snow === null ? true : snow === "false";
+});
+
 
   const [reportCount, setReportCount] = useState(0);
   const user_id = localStorage.getItem("user_id");
@@ -460,23 +465,26 @@ function Profile() {
             </Button>
           </div>
           <div className="qor">
-            <label style={{ cursor: "pointer" }}>
-              <input
-                type="checkbox"
-                checked={!isOn} // isOn = stop-snow
-                onChange={(e) => {
-                  const checked = e.target.checked;
+<label style={{ cursor: "pointer" }}>
+  <input
+    type="checkbox"
+    checked={isChecked}
+    onChange={(e) => {
+      const checked = e.target.checked;
 
-                  // agar switch ON bo‘lsa → qor yoqilgan → stop-snow = false
-                  const stopSnow = !checked;
+      // checkbox ON → snow = false
+      const snowValue = !checked;
 
-                  setIsOn(stopSnow);
-                  localStorage.setItem("stop-snow", stopSnow.toString());
-                  window.location.reload();
-                }}
-              />{" "}
-              Qor animatsiyasi
-            </label>
+      setIsChecked(checked);
+      localStorage.setItem("snow", snowValue.toString());
+
+      window.location.reload();
+    }}
+  />{" "}
+  Qor animatsiyasini o`chirish
+</label>
+
+
           </div>
         </div>
         <div className="profile-right">

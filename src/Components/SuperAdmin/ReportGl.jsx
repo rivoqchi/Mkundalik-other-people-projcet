@@ -33,7 +33,6 @@ const exportToExcel = (reportData) => {
   excelData.push([`Umumiy o'rtacha ball: ${reportData.overallAverageRated}`]);
   excelData.push([]);
 
-  // Xodimlarni department bo‘yicha guruhlash
   const groupedByDepartment = {};
   reportData.employeeReports.forEach((emp) => {
     const dep = emp.department || reportData.department || "Boshqa xizmat";
@@ -41,21 +40,23 @@ const exportToExcel = (reportData) => {
     groupedByDepartment[dep].push(emp);
   });
 
-  // Har bir department uchun alohida bo‘lim yaratish
   Object.keys(groupedByDepartment).forEach((depName) => {
     excelData.push([`${depName.toUpperCase()}`]);
-    excelData.push(["Xodim ismi", "Hisobotlar soni", "O'rtacha baho"]);
+    // SHU YERDA: Ustun sarlavhasiga "Lavozimi" qo'shildi
+    excelData.push(["Xodim ismi", "Lavozimi", "Hisobotlar soni", "O'rtacha baho"]);
+    
     groupedByDepartment[depName].forEach((emp) => {
-      excelData.push([emp.employeeName, emp.reportCount, emp.averageRated]);
+      // SHU YERDA: Qatorga emp.degree qo'shildi
+      excelData.push([emp.employeeName, emp.degree, emp.reportCount, emp.averageRated]);
     });
     excelData.push([]);
   });
 
-  // Past o‘zlashtiruvchilar bo‘limi
   excelData.push(["O'zlashtirishi past bo'lgan xodimlar"]);
-  excelData.push(["Xodim ismi", "Hisobotlar soni", "O'rtacha baho"]);
+  // SHU YERDA: Past o'zlashtiruvchilar jadvaliga ham degree qo'shildi
+  excelData.push(["Xodim ismi", "Lavozimi", "Hisobotlar soni", "O'rtacha baho"]);
   reportData.lowPerformers.forEach((emp) => {
-    excelData.push([emp.employeeName, emp.reportCount, emp.averageRated]);
+    excelData.push([emp.employeeName, emp.degree, emp.reportCount, emp.averageRated]);
   });
 
   const ws = XLSX.utils.aoa_to_sheet(excelData);
