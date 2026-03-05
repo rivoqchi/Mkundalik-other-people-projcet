@@ -59,25 +59,46 @@ const LoadingScreen = ({ loading = true }) => {
   if (!visible) return null;
 
   return (
-    <div className={`liquid-overlay ${loading ? "fade-in" : "fade-out"}`}>
-      <div className="liquid-card">
-        <img src={logo} alt="Logo" className="liquid-logo" />
+    <div className={`premium-loader-overlay ${loading ? "fade-in" : "fade-out"}`}>
+      <div className="loader-ambient-glows">
+        <div className="loader-glow g1"></div>
+        <div className="loader-glow g2"></div>
+      </div>
 
-        {!timeoutReached ? (
-          <>
-            <Spinner animation="border" className="liquid-spinner" />
-            <p className="liquid-text">{currentMessage}</p>
-          </>
-        ) : (
-          <>
-            <p className="timeout-text">
-              ⏳ {t("waiting_time_expired")}
-            </p>
-            <button className="liquid-btn" onClick={handleBackHome}>
-              {t("go_home")}
-            </button>
-          </>
-        )}
+      <div className="premium-loader-content">
+        <div className="loader-visual-container">
+          <div className="orbit-rings">
+            <div className="ring r1"></div>
+            <div className="ring r2"></div>
+            <div className="ring r3"></div>
+          </div>
+          <div className="logo-core">
+            <img src={logo} alt="Logo" className="loader-logo-img" />
+            <div className="core-shimmer"></div>
+          </div>
+        </div>
+
+        <div className="loader-info-section">
+          {!timeoutReached ? (
+            <>
+              <div className="loading-bar-container">
+                <div className="loading-bar-progress"></div>
+              </div>
+              <p className="premium-loader-text">{currentMessage}</p>
+            </>
+          ) : (
+            <div className="timeout-container">
+              <p className="timeout-text">
+                <i className="fa-solid fa-hourglass-end me-2"></i>
+                {t("waiting_time_expired")}
+              </p>
+              <button className="premium-loader-btn" onClick={handleBackHome}>
+                <span>{t("go_home")}</span>
+                <i className="fa-solid fa-house-chimney ms-2"></i>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

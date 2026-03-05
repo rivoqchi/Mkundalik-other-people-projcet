@@ -7,16 +7,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../config";
 import Alert from "../Additional/Alert";
 import { useLoading } from "../Additional/LoadingScreen";
-import { m } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "../Additional/ThemeContext";
 import { Tooltip, OverlayTrigger, Dropdown } from "react-bootstrap";
+
 import calendar from "../Images/calendar.png";
 import logo from "../Images/logo-png.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
 function ScheduleNew() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
+
 
   const myId = window.localStorage.getItem("user_id");
   const [myName, setMyName] = useState([]);
@@ -29,7 +33,7 @@ function ScheduleNew() {
   const [myRole, setMyRole] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const [shart, setShart] = useState(false);
+  const [shart, setShart] = useState(true);
   const [showPicker, setShowPicker] = useState(false);
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -49,7 +53,8 @@ function ScheduleNew() {
     setLoading(true);
 
     try {
-      const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
+      const { data } = await axios.get(`${API}/auth/mydata/${myId}`, { withCredentials: true });
+
       setMyName(data.user.name);
       setMyRole(data.user.role);
       setMySection(data.user.section);
@@ -83,7 +88,8 @@ function ScheduleNew() {
     try {
       const response = await axios.post(`${API}/ai/imloviy-ishlov`, {
         message: `Imloviy xatolarni to'g'irlab rasmiy uslubda faqat matnni qaytar: "${taskData}"`,
-      });
+      }, { withCredentials: true });
+
 
       const newText = response.data.response || taskData;
 
@@ -212,7 +218,8 @@ function ScheduleNew() {
     setDate(currentDate);
 
     axios
-      .get(`${API}/schedules/checktoday/${myId}`)
+      .get(`${API}/schedules/checktoday/${myId}`, { withCredentials: true })
+
       .then((res) => {
         if (res.data.message === "notOnWork") {
           setOnWork(false);
@@ -229,7 +236,8 @@ function ScheduleNew() {
               axios
                 .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {
                   myId,
-                })
+                }, { withCredentials: true })
+
                 .then(
                   setTerminate("Auto terminated"),
                   setOnWork(false),
@@ -241,8 +249,10 @@ function ScheduleNew() {
             } else {
               axios
                 .delete(
-                  `${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`
+                  `${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`,
+                  { withCredentials: true }
                 )
+
                 .then(
                   setTerminate("Auto deleted"),
                   setOnWork(false),
@@ -289,8 +299,10 @@ function ScheduleNew() {
       setLoading(true);
       const response = await axios.put(
         `${API}/schedules/addtask/${workingOn._id}`,
-        { title: taskData, source: shart ? type : "null" }
+        { title: taskData, source: shart ? type : "null" },
+        { withCredentials: true }
       );
+
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseCreate();
       setAlert(prev => ({
@@ -325,7 +337,8 @@ function ScheduleNew() {
           index: currentTaskIndex,
           title: taskData,
           source: shart ? type : "null",
-        }
+        },
+        { withCredentials: true }
       );
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseEdit();
@@ -353,8 +366,10 @@ function ScheduleNew() {
     try {
       setLoading(true);
       const response = await axios.delete(
-        `${API}/schedules/deletetask/${workingOn._id}/${currentTaskIndex}`
+        `${API}/schedules/deletetask/${workingOn._id}/${currentTaskIndex}`,
+        { withCredentials: true }
       );
+
       setTasks(response.data.updatedSchedule.tasks);
       setAlert(prev => ({
         show: true,
@@ -379,7 +394,8 @@ function ScheduleNew() {
   const handleEndTask = async () => {
     await axios.put(`${API}/schedules/end/${workingOn._id}`, {
       myId,
-    });
+    }, { withCredentials: true });
+
     if (myRole === "admin") {
       navigate("/admin/schedule/history");
     } else if (myRole === "employee") {
@@ -429,7 +445,8 @@ function ScheduleNew() {
       ...(madeEasier && { madeEasier: madeEasier }),
     };
 
-    axios.post(`${API}/schedules/create`, payload).then((res) => {
+    axios.post(`${API}/schedules/create`, payload, { withCredentials: true }).then((res) => {
+
       setOnWork(true);
       setWorkingOn(res.data.newSchedule);
       setLoading(false);
@@ -478,12 +495,13 @@ function ScheduleNew() {
             {/* Header Section */}
             <div className="schedule-header">
               <div className="header-title-section">
-                <img className="startlogo" src={logo} alt="Logo" />
+                {/* <img className="startlogo" src={logo} alt="Logo" /> */}
+                <h5>{t("kunlikhisobot")}</h5>
               </div>
               <div className="header-right-section">
                 <div className={`dynamic-status-badge ${onWork ? 'status-jarayonda' : 'status-boshlanmagan'}`}>
                   <i className={`fa-solid ${onWork ? 'fa-spinner fa-spin' : 'fa-clock'}`}></i>
-                  {onWork ? "Jarayonda" : "Boshlanmagan"}
+                  {onWork ? t("jarayonda") : t("boshlanmagan")}
                 </div>
                 <div className="calendar-box-creative">
                   <i className="fa-solid fa-calendar-days"></i>
@@ -498,11 +516,11 @@ function ScheduleNew() {
                 <div className="dynamic-status-badge status-boshlanmagan">
                   {t("boshlanmagan")}
                 </div>
-                <h2 className="mb-4">Salom, {myName}!</h2>
-                <p className="text-sub mb-4">Bugungi ish kuningizni boshlashga tayyormisiz?</p>
+                <h2 className="mb-4">Salom, {myName || window.localStorage.getItem("fullName")}!</h2>
+                <p className="text-sub mb-4">{t("ruready")}</p>
                 <div className="calendar-box-creative mb-5">
                   <i className="fa-solid fa-calendar-check"></i>
-                  <span>Bugun: {date}</span>
+                  <span>{t("bugun")}: {date}</span>
                 </div>
                 <div className="text-center">
                   <button
@@ -558,47 +576,63 @@ function ScheduleNew() {
                 </div>
                 {/* Scrollable list content */}
                 <div className="tasks-scroll-area">
-                  {tasks.map((task, index) => (
-                    <div key={index} className="taskk">
-                      <div className="justify-content-between pb-2 d-flex">
-                        <div className="task-number-badge ">{index + 1} </div>
-                        <div className="task-actions align-items-center">
-                          <div className="d-none d-md-flex gap-2">
-                            <button onClick={() => handleShowEdit(index, task.title, task.source)} className="editbtn" title="Tahrirlash">
-                              <i className="fa-solid fa-pen"></i>
-                            </button>
-                            <button onClick={() => handleShowDelete(index)} className="deletebtn" title="O'chirish">
-                              <i className="fa-solid fa-trash"></i>
-                            </button>
-                          </div>
+                  <AnimatePresence>
+                    {tasks.map((task, index) => (
+                      <motion.div
+                        key={index}
+                        className="taskk"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                      >
+                        <div className="justify-content-between pb-2 d-flex">
+                          <div className="task-number-badge">{index + 1}</div>
+                          <div className="task-actions align-items-center">
+                            <div className="d-none d-md-flex gap-2">
+                              <button onClick={() => handleShowEdit(index, task.title, task.source)} className="editbtn" title="Tahrirlash">
+                                <i className="fa-solid fa-pen-to-square"></i>
+                              </button>
+                              <button onClick={() => handleShowDelete(index)} className="deletebtn" title="O'chirish">
+                                <i className="fa-solid fa-trash-can"></i>
+                              </button>
+                            </div>
 
-                          {/* Mobile Dropdown */}
-                          <div className="d-md-none mobile-task-dropdown">
-                            <Dropdown>
-                              <Dropdown.Toggle id={`dropdown-task-${index}`} className="dropdown-dots">
-                                <i className="fa-solid fa-ellipsis-vertical"></i>
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu align="end">
-                                <Dropdown.Item onClick={() => handleShowEdit(index, task.title, task.source)}>
-                                  <i className="fa-solid fa-pen me-2"></i> Tahrirlash
-                                </Dropdown.Item>
-                                <Dropdown.Item onClick={() => handleShowDelete(index)} className="text-danger">
-                                  <i className="fa-solid fa-trash me-2"></i> O'chirish
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
+                            {/* Mobile Dropdown */}
+                            <div className="d-md-none mobile-task-dropdown">
+                              <Dropdown>
+                                <Dropdown.Toggle id={`dropdown-task-${index}`} className="dropdown-dots">
+                                  <i className="fa-solid fa-ellipsis-vertical"></i>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu align="end" className="mobile-task-menu">
+                                  <Dropdown.Item onClick={() => handleShowEdit(index, task.title, task.source)}>
+                                    <i className="fa-solid fa-pen-to-square me-2"></i> {t("edit")}
+                                  </Dropdown.Item>
+                                  <Dropdown.Item onClick={() => handleShowDelete(index)} className="text-danger">
+                                    <i className="fa-solid fa-trash-can me-2"></i> {t("ochirish")}
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="task-bottom-info">
-                        <div className="task-content-top">
-                          <div className="task-info">
-                            <div className="asdqweh">{task.title}</div>
+
+                        <div className="p-0 task-body">
+                          <div className="d-flex align-items-center gap-2 mb-2">
+                            {task.source !== "null" && (
+                              <OverlayTrigger
+                                placement="top"
+                                overlay={(props) => renderTooltip(props, task.source === "majburiyat" ? t("lavozimmajburiyati") : task.source === "qoshimcha" ? t("rahbartomonidanqoshimcha") : t("xodimtashabbusi"))}
+                              >
+                                <i className={`fa-solid fa-circle sources ${task.source}`} style={{ fontSize: '0.6rem' }}></i>
+                              </OverlayTrigger>
+                            )}
+                            <span className="task-title-text">{task.title}</span>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>
               </div>
             )}
@@ -609,21 +643,11 @@ function ScheduleNew() {
                 <div className="new-task-head">
                   <div className="new-task-title">
                     <i className="fa-solid fa-plus-circle"></i>
-                    <span>Yangi qadam qo'shish</span>
+                    <span>{t("Yangiqadam")}</span>
                   </div>
-                  <div className="d-flex align-items-center gap-2">
-                    <div className="new-task-user">
-                      <i className="fa-regular fa-user"></i>
-                      <span>{myName || "Foydalanuvchi"}</span>
-                    </div>
-                    <button
-                      onClick={handleAi}
-                      className={`ai-btn-top ${aiMode !== 'idle' ? 'processing' : ''}`}
-                      disabled={aiMode !== 'idle' || !taskData}
-                      title="AI Tahrir"
-                    >
-                      <i className={`fa-solid ${aiMode === 'thinking' ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`}></i>
-                    </button>
+                  <div className="new-task-user">
+                    <i className="fa-regular fa-user"></i>
+                    <span>{myName || "Foydalanuvchi"}</span>
                   </div>
                 </div>
 
@@ -649,11 +673,11 @@ function ScheduleNew() {
                     <div className="task-type-selector-new">
                       <label className={`type-badge ${type === 'majburiyat' ? 'selected' : ''}`}>
                         <input type="radio" name="taskTypeBottom" value="majburiyat" checked={type === "majburiyat"} onChange={(e) => setType(e.target.value)} />
-                        <i className="fa-solid fa-check-double me-2"></i> {t("lavozimmajburiyati")}
+                        <i className="fa-solid fa-check me-2"></i> {t("lavozimmajburiyati")}
                       </label>
                       <label className={`type-badge ${type === 'qoshimcha' ? 'selected' : ''}`}>
                         <input type="radio" name="taskTypeBottom" value="qoshimcha" checked={type === "qoshimcha"} onChange={(e) => setType(e.target.value)} />
-                        <i className="fa-solid fa-plus-circle me-2"></i> {t("rahbartomonidanqoshimcha")}
+                        <i className="fa-solid fa-check-double me-2"></i> {t("rahbartomonidanqoshimcha")}
                       </label>
                       <label className={`type-badge ${type === 'tashabbus' ? 'selected' : ''}`}>
                         <input type="radio" name="taskTypeBottom" value="tashabbus" checked={type === "tashabbus"} onChange={(e) => setType(e.target.value)} />
@@ -663,9 +687,16 @@ function ScheduleNew() {
                   )}
 
                   <div className="new-task-footer">
-                    <div className="footer-left-actions d-none text-end d-md-flex">
-                      {/* <button className="action-btn"><i className="fa-solid fa-paperclip"></i> Fayl</button>
-                      <button className="action-btn"><i className="fa-solid fa-link"></i> Havola</button> */}
+                    <div className="footer-left-actions d-flex align-items-center gap-2">
+                      <button
+                        onClick={handleAi}
+                        className={`action-btn ai-btn-footer ${aiMode !== 'idle' ? 'processing' : ''}`}
+                        disabled={aiMode !== 'idle' || !taskData}
+                        title="AI Tahrir"
+                      >
+                        <i className={`fa-solid ${aiMode === 'thinking' ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`}></i>
+                        <span className="d-none d-md-inline ms-1">{t("aitahrir")}</span><span className="newtop">new</span>
+                      </button>
                     </div>
 
                     <div className="footer-right-actions">
@@ -674,14 +705,16 @@ function ScheduleNew() {
                         onClick={handleCreateTask}
                         disabled={!taskData || (shart && !type)}
                       >
-                        Saqlash <i className="fa-solid fa-arrow-right"></i>
+                        <i className="fa-solid fa-cloud-arrow-up"></i>
+                        <span className="d-none d-md-inline ms-2">{t("saqlash")}</span>
                       </button>
 
                       <button
                         className="btn-finish-creative"
                         onClick={handleShowEnd}
                       >
-                        Yakunlash
+                        <i className="fa-solid fa-flag-checkered"></i>
+                        <span className="d-none d-md-inline ms-2">{t("yakunlash")}</span>
                       </button>
                     </div>
                   </div>
@@ -791,14 +824,14 @@ function ScheduleNew() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="text-center py-4">
-          <h5 className="mb-0">Rostan ham yakunlaysizmi?</h5>
+          <h5 className="mb-0">{t("yakunlashmi")}</h5>
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
           <Button variant="outline-secondary" onClick={handleCloseEnd}>
-            Yo'q
+            {t("yoq")}
           </Button>
           <Button variant="primary" onClick={handleEndTask} className="px-5">
-            Ha, yakunlash
+            {t("ha")}
           </Button>
         </Modal.Footer>
       </Modal>

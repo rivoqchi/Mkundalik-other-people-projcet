@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { API } from "../../config";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import DownloadDocx from "./DownloadDocx";
 import { useTranslation } from "react-i18next";
 import { Modal, Button } from "react-bootstrap";
@@ -18,37 +18,30 @@ const getStartDayOfWeek = (month, year) => {
   const day = new Date(year, month, 1).getDay();
   return day === 0 ? 6 : day - 1;
 };
-  const currentDateTime = format(new Date(), "dd.MM.yyyy HH:mm");
-const monthsList = [
-  "Yanvar",
-  "Fevral",
-  "Mart",
-  "Aprel",
-  "May",
-  "Iyun",
-  "Iyul",
-  "Avgust",
-  "Sentyabr",
-  "Oktyabr",
-  "Noyabr",
-  "Dekabr",
-];
+const currentDateTime = format(new Date(), "dd.MM.yyyy HH:mm");
+const SeeSelectedSchedules = () => {
+  const { t } = useTranslation();
+  const { setLoading } = useLoading();
 
-const weekDays = ["Du", "Se", "Chor", "Pay", "Ju", "Sh", "Ya"];
+  const monthsList = [
+    t("yanvar"), t("fevral"), t("mart"), t("aprel"),
+    t("may"), t("iyun"), t("iyul"), t("avgust"),
+    t("sentyabr"), t("oktyabr"), t("noyabr"), t("dekabr")
+  ];
 
-const CalendarComponent = () => {
-const { t } = useTranslation();
-const { setLoading } = useLoading();
-
+  const weekDays = [
+    t("du"), t("se"), t("chor"), t("pay"),
+    t("ju"), t("sh"), t("ya")
+  ];
   const [route, setRoute] = useState(null);
   const [holidays, setHolidays] = useState([]);
-  
-  const myId = useParams().id;
+
+  const id = window.localStorage.getItem("user_id");
+  const myId = useParams().id || window.localStorage.getItem("user_id");
   const [mySectionSchedules, setMySectionSchedules] = useState([]);
   const [mySectionBeginner, setMySectionBeginner] = useState([]);
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
-  const id = window.localStorage.getItem("user_id");
   const thescheduleid = useParams();
   const [showTooltip, setShowTooltip] = useState(false);
   const [bsDates, setBsDates] = useState([]);
@@ -60,10 +53,10 @@ const { setLoading } = useLoading();
   const [month, setMonth] = useState(currentDate.getMonth());
   const [year, setYear] = useState(currentDate.getFullYear());
 
-const checkBs = async () => {
+  const checkBs = async () => {
     try {
-      const { data } = await axios.get(`${API}/auth/bs/check/${myId}`);
-      console.log("✅ checkBs response:", data);
+      const { data } = await axios.get(`${API}/auth/bs/check/${myId}`, { withCredentials: true });
+
 
       if (data.message === "Found") {
         setBsDates(data.bsList);
@@ -78,7 +71,8 @@ const checkBs = async () => {
 
   const getHolidays = async () => {
     try {
-      const { data } = await axios.get(`${API}/auth/holiday/get`);
+      const { data } = await axios.get(`${API}/auth/holiday/get`, { withCredentials: true });
+
       if (data.message === "Found") {
         setHolidays(data.holidays);
       } else {
@@ -112,24 +106,25 @@ const checkBs = async () => {
     //   const { data } = await axios.get(`${API}/schedules/getmyhistory/${myId}`);
     //   setMyScheduleHistory(data.history);
     //   console.log(data);
-      
+
     //   setLoading(false);
     // } catch (error) {
     //   console.error("Error fetching data:", error);
     // }
 
     try {
-      setLoading(true);
+      setLoading(true); // loaderni yoqamiz
       const { data } = await axios.get(
-        `${API}/schedules/getallbyuserid/${myId}?month=${
-          month + 1
-        }&year=${year}`
+        `${API}/schedules/getallbyuserid/${myId}?month=${month + 1}&year=${year}`,
+        { withCredentials: true }
       );
+
       setMySectionBeginner(data.beginner);
       setMySectionSchedules(data.history);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // 0.2s fade-out bilan loader yo‘qoladi
     }
   };
 
@@ -138,7 +133,8 @@ const checkBs = async () => {
   }, [month, year]);
 
   const getMyData = async () => {
-    const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
+    const { data } = await axios.get(`${API}/auth/mydata/${myId}`, { withCredentials: true });
+
     setMyData(data.user);
     setMyRole(data.user.role);
   };
@@ -233,7 +229,7 @@ const checkBs = async () => {
       setRoute("/at");
     } else if (role === "sport") {
       setRoute("/sport");
-    } else{
+    } else {
       setRoute("/null");
     }
   }, []);
@@ -261,110 +257,104 @@ const checkBs = async () => {
     }
   };
 
+  const handleTooltipToggle = (e) => {
+    e.stopPropagation();
+    setShowTooltip(!showTooltip);
+  };
+
   return (
-    <div className="calendar-container def-page">
-      <div className="row w-100 align-items-center justify-content-center">
-        <div className="col-12 col-md-6 text-center">
-
-          <div
-            className="div-container"
-            onMouseEnter={() => setShowTooltip(true)}
-            onMouseLeave={() => setShowTooltip(false)}
-          >
-            <button className="calendar-onhover">
-              {mySectionBeginner.name}, <i>{mySectionBeginner.degree}</i>
-            </button>
-            {showTooltip && (
-              <div className="calendar-tooltip userdatadiv">
-                <p>
-                  <i className="fa-solid fa-user-tie"></i>{" "}
-                  {mySectionBeginner.name}
-                </p>
-                <p>
-                  <i className="fa-solid fa-address-card"></i>{" "}
-                  {mySectionBeginner.degree}
-                </p>
-                <p>
-                  <i className="fa-solid fa-phone-volume"></i>{" "}
-                  {mySectionBeginner.phone?.length > 5
-                    ? "+998*****" + mySectionBeginner.phone.slice(9, 13)
-                    : mySectionBeginner.phone}
-                </p>
-                <p>
-                  <i className="fa-solid fa-briefcase"></i>{" "}
-                  {mySectionBeginner.speciality}
-                </p>
-                <p>
-                  <i className="fa-solid fa-users-rectangle"></i>{" "}
-                  {mySectionBeginner.complex}
-                </p>
-                <p>
-                  <i className="fa-solid fa-users-line"></i>{" "}
-                  {mySectionBeginner.department}
-                </p>
-                <p>
-                  <i className="fa-solid fa-layer-group"></i>{" "}
-                  {mySectionBeginner.section}
-                </p>
-                <p>
-                  <i className="fa-solid fa-house"></i>{" "}
-                  {mySectionBeginner.address?.length > 5
-                    ? mySectionBeginner.address.slice(0, 20) + "*****"
-                    : mySectionBeginner.address}
-                </p>
-              </div>
-            )}
-          </div>
+    <div className="calendar-container def-page" onClick={() => setShowTooltip(false)}>
+      <div className="calendar-header-wrapper">
+        <div
+          className="div-container"
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+          onClick={handleTooltipToggle}
+        >
+          <button className="calendar-onhover">
+            <i className="fa-solid fa-user-shield me-2"></i> {mySectionBeginner.name}
+          </button>
+          {showTooltip && (
+            <div className="calendar-tooltip userdatadiv">
+              <p>
+                <i className="fa-solid fa-user-tie"></i>{" "}
+                {mySectionBeginner.name}
+              </p>
+              <p>
+                <i className="fa-solid fa-address-card"></i>{" "}
+                {mySectionBeginner.degree}
+              </p>
+              <p>
+                <i className="fa-solid fa-phone-volume"></i>{" "}
+                {mySectionBeginner.phone?.length > 5
+                  ? "+998*****" + mySectionBeginner.phone.slice(9, 13)
+                  : mySectionBeginner.phone}
+              </p>
+              <p>
+                <i className="fa-solid fa-briefcase"></i>{" "}
+                {mySectionBeginner.speciality}
+              </p>
+              <p>
+                <i className="fa-solid fa-users-rectangle"></i>{" "}
+                {mySectionBeginner.complex}
+              </p>
+              <p>
+                <i className="fa-solid fa-users-line"></i>{" "}
+                {mySectionBeginner.department}
+              </p>
+              <p>
+                <i className="fa-solid fa-layer-group"></i>{" "}
+                {mySectionBeginner.section}
+              </p>
+              <p>
+                <i className="fa-solid fa-house"></i>{" "}
+                {mySectionBeginner.address?.length > 5
+                  ? mySectionBeginner.address.slice(0, 20) + "*****"
+                  : mySectionBeginner.address}
+              </p>
+            </div>
+          )}
         </div>
-        <div className="col-12 col-md-6 text-center">
-          <div className="calendar-controls">
-            <button onClick={handlePrev} className="calendar-btn">
+
+        <div className="calendar-controls">
+          <button onClick={handlePrev} className="calendar-btn">
             <i className="fa-solid fa-arrow-left"></i>
-            </button>
+          </button>
 
-            <select
-              value={year}
-              onChange={(e) => setYear(Number(e.target.value))}
-              className="calendar-select"
-            >
-              {Array.from({ length: 10 }).map((_, i) => {
-                const y = maxYear - i;
-                return (
-                  <option key={y} value={y}>
-                    {y}
-                  </option>
-                );
-              })}
-            </select>
+          <select
+            value={month}
+            onChange={(e) => setMonth(parseInt(e.target.value))}
+            className="calendar-select"
+          >
+            {monthsList.map((m, i) => (
+              <option key={i} value={i}>
+                {m}
+              </option>
+            ))}
+          </select>
 
-            <select
-              value={month}
-              onChange={(e) => setMonth(Number(e.target.value))}
-              className="calendar-select"
-            >
-              {monthsList.map((m, i) => (
-                <option
-                  key={i}
-                  value={i}
-                  disabled={year === maxYear && i > maxMonth}
-                >
-                  {m}
-                </option>
-              ))}
-            </select>
+          <select
+            value={year}
+            onChange={(e) => setYear(parseInt(e.target.value))}
+            className="calendar-select"
+          >
+            {Array.from({ length: 11 }, (_, i) => 2024 + i).map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
 
-            <button
-              onClick={handleNext}
-              className={`calendar-btn ${
-                year === maxYear && month === maxMonth
-                  ? "calendar-btn-disabled"
-                  : ""
+          <button
+            onClick={handleNext}
+            className={`calendar-btn ${year === maxYear && month === maxMonth
+              ? "calendar-btn-disabled"
+              : ""
               }`}
-            >
-              <i className="fa-solid fa-arrow-right"></i>
-            </button>
-            <AllSchedulesDownload employee={myId} />
-          </div>
+          >
+            <i className="fa-solid fa-arrow-right"></i>
+          </button>
+          <AllSchedulesDownload employee={myId} />
         </div>
       </div>
 
@@ -381,66 +371,67 @@ const checkBs = async () => {
           <div key={`empty-${index}`} className="calendar-day-empty"></div>
         ))}
         {days.map((day, index) => {
-  const schedule = getScheduleForDay(day);
-  const isDisabled = isFutureDay(day);
+          const schedule = getScheduleForDay(day);
+          const isDisabled = isFutureDay(day);
 
-  let statusColor = "";
-  let showDownloadButton = false;
+          let statusColor = "";
+          let showDownloadButton = false;
 
-  if (isBsDay(day)) {
-    statusColor = "calendar-black"; // BS oralig‘idagi kunlar uchun qora status
-  } else if (isHolidayDay(day)) {
-    statusColor = "calendar-black"; // holiday kunlar uchun qora status
-  } else if (!schedule) {
-    statusColor = "calendar-red"; // schedule yo‘q
-  } else if (schedule.rated) {
-    statusColor = "calendar-green"; // rated bor
-    showDownloadButton = true;
-  } else if (!schedule.rated) {
-    statusColor = "calendar-blue"; // schedule bor, lekin rated yo‘q
-    showDownloadButton = true;
-  }
+          if (isBsDay(day)) {
+            statusColor = "calendar-black"; // BS oralig‘idagi kunlar uchun qora status
+          } else if (isHolidayDay(day)) {
+            statusColor = "calendar-black"; // holiday kunlar uchun qora status
+          } else if (!schedule) {
+            statusColor = "calendar-red"; // schedule yo‘q
+          } else if (schedule.rated) {
+            statusColor = "calendar-green"; // rated bor
+            showDownloadButton = true;
+          } else if (!schedule.rated) {
+            statusColor = "calendar-blue"; // schedule bor, lekin rated yo‘q
+            showDownloadButton = true;
+          }
 
-  const isWeekend =
-    (index + startDay) % 7 === 5 || (index + startDay) % 7 === 6;
+          const isWeekend =
+            (index + startDay) % 7 === 5 || (index + startDay) % 7 === 6;
 
-  const currentBs = bsDates.find(bs => {
-    const start = new Date(bs.startDate);
-    const end = new Date(bs.endDate);
-    const current = new Date(`${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`);
-    return current >= start && current <= end;
-  });
+          const currentBs = bsDates.find(bs => {
+            const start = new Date(bs.startDate);
+            const end = new Date(bs.endDate);
+            const current = new Date(`${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`);
+            return current >= start && current <= end;
+          });
 
-  const sababMap = {
-    "У": t("oquvtatilida"),
-    "БС": t("administrativruxsat"),
-    "БЛ": t("mehnatgalayoqatsiz"),
-    "ОТ": t("mehnattatilida"),
-    "УВ": t("mehnatyakunlangan"),
-    "К": t("ishsafarida")
-  };
+          const sababMap = {
+            "У": t("oquvtatilida"),
+            "БС": t("administrativruxsat"),
+            "БЛ": t("mehnatgalayoqatsiz"),
+            "ОТ": t("mehnattatilida"),
+            "УВ": t("mehnatyakunlangan"),
+            "К": t("ishsafarida")
+          };
 
-  const cellContent = (
-    <motion.div
-      whileHover={(isBsDay(day) || isHolidayDay(day)) ? { scale: 1.1, rotate: 1 } : {}}
-      onClick={() => {
-        if (isBsDay(day) || isHolidayDay(day)) handleDayClick(day);
-      }}
-      title={
-        isBsDay(day) && currentBs
-          ? `${sababMap[currentBs.sabab] || currentBs.sabab} (${currentBs.startDate} — ${currentBs.endDate})`
-          : ""
-      }
-      className={`calendar-day 
+          const cellContent = (
+            <motion.div
+              whileHover={(isBsDay(day) || isHolidayDay(day)) ? { scale: 1.1, rotate: 1 } : {}}
+              onClick={() => {
+                if (isBsDay(day) || isHolidayDay(day)) handleDayClick(day);
+              }}
+              title={
+                isBsDay(day) && currentBs
+                  ? `${sababMap[currentBs.sabab] || currentBs.sabab} (${currentBs.startDate} — ${currentBs.endDate})`
+                  : ""
+              }
+              className={`calendar-day  text-decoration-none
     ${(!isBsDay(day) && !isHolidayDay(day) && isDisabled) ? "calendar-day-disabled" : ""} 
-    ${(isWeekend || isHolidayDay(day)) ? "weekend-background" : ""} 
+    ${(isWeekend) ? "weekend-background" : ""}
+    ${(isHolidayDay(day)) ? "holiday-background" : ""}
     ${isBsDay(day) ? "calendar-gray" : ""}`}
-    >
-      {day}
+            >
+              {day}
 
-      {!isDisabled && <div className={statusColor}></div>}
+              {!isDisabled && <div className={`calendar-indicator ${statusColor}`}></div>}
 
-{/* 
+              {/* 
                   <option value="У">{t("oquvtatilida")}</option>
                   <option value="БС">{t("administrativruxsat")}</option>
                   <option value="БЛ">{t("mehnatgalayoqatsiz")}</option>
@@ -448,69 +439,67 @@ const checkBs = async () => {
                   <option value="УВ">{t("mehnatyakunlangan")}</option>
                   <option value="К">{t("ishsafarida")}</option>
                    */}
-      {isBsDay(day) ? (
-        <div className="calendar-bs">
-          <span>{bsDates.find(bs => {
-            const start = new Date(bs.startDate);
-            const end = new Date(bs.endDate);
-            const current = new Date(`${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`);
-            return current >= start && current <= end;
-          })?.sabab || ""}</span>
-        </div>
-      ) : (
-        schedule?.ratedName && (
-          <div
-            className="calendar-rated"
-            title={`${schedule.ratedName} tomonidan ${schedule.rated} ball bilan baholangan`}
-          >
-            <span>{schedule.rated}</span>
-          </div>
-        )
-      )}
+              {isBsDay(day) ? (
+                <div className="calendar-bs">
+                  <span>{bsDates.find(bs => {
+                    const start = new Date(bs.startDate);
+                    const end = new Date(bs.endDate);
+                    const current = new Date(`${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`);
+                    return current >= start && current <= end;
+                  })?.sabab || ""}</span>
+                </div>
+              ) : (
+                schedule?.ratedName && (
+                  <div
+                    className="calendar-rated"
+                    title={`${schedule.ratedName} tomonidan ${schedule.rated} ball bilan baholangan`}
+                  >
+                    <span>{schedule.rated}</span>
+                  </div>
+                )
+              )}
 
-      {isHolidayDay(day) && (
-        <div
-          className="calendar-holiday"
-          title={
-            holidays.find(
-              hol =>
-                hol.holiday ===
-                `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
-            )?.sabab || ""
-          }
-        >
-          <span>🎉</span>
-        </div>
-      )}
+              {isHolidayDay(day) && (
+                <div
+                  className="calendar-holiday"
+                  title={
+                    holidays.find(
+                      hol =>
+                        hol.holiday ===
+                        `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
+                    )?.sabab || ""
+                  }
+                >
+                  <span>🎉</span>
+                </div>
+              )}
 
-      {/* Yuklab olish tugmasi faqat calendar-green yoki calendar-blue uchun */}
-      {showDownloadButton && (
-        <>
-          <Link to={`${route}/archive/schedule/${schedule._id}?download=true`}>
-          <button
-          className="download-btn"
-          onClick={() => console.log(schedule._id)}
-        >
-          <i className="fa-solid fa-arrow-down"></i>
-        </button>
-          </Link>
-        </>
-      )}
-    </motion.div>
-  );
+              {/* Yuklab olish tugmasi faqat calendar-green yoki calendar-blue uchun */}
+              {showDownloadButton && (
+                <Link to={`${route}/archive/schedule/${schedule._id}?download=true`}>
+                  <button
+                    className="download-btn"
+                    title={t("pdf")}
+                  >
+                    <i className="fa-solid fa-file-pdf"></i>
+                  </button>
+                </Link>
+              )}
+            </motion.div>
+          );
 
-  return schedule && !isDisabled ? (
-    <Link
-      key={index}
-      to={`${route}/archive/schedule/${schedule._id}`}
-      className="calendar-link"
-    >
-      {cellContent}
-    </Link>
-  ) : (
-    <React.Fragment key={index}>{cellContent}</React.Fragment>
-  );
-})}
+          return schedule && !isDisabled ? (
+            <Link
+              key={index}
+              to={`${route}/archive/schedule/${schedule._id}`}
+              className="calendar-link"
+            >
+              {cellContent}
+            </Link>
+          ) : (
+            <React.Fragment key={index}>{cellContent}</React.Fragment>
+          );
+        })}
       </motion.div>
 
       <Modal show={showInfoModal} onHide={() => setShowInfoModal(false)} centered>
@@ -518,7 +507,7 @@ const checkBs = async () => {
           <Modal.Title>{t("malumot")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p style={{ fontSize: "16px", color: "#333", textAlign: "center" }}>{modalSabab}</p>
+          <p style={{ fontSize: "16px", textAlign: "center" }}>{modalSabab}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowInfoModal(false)}>
@@ -530,4 +519,4 @@ const checkBs = async () => {
   );
 };
 
-export default CalendarComponent;
+export default SeeSelectedSchedules;

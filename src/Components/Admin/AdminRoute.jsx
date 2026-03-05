@@ -28,11 +28,13 @@ import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import Footer from '../Footer';
+
 import Languages from './Languages';
 import LangEn from './LangEn';
 import LangRu from './LangRu';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
+import Security from '../Security/Security';
 
 function AdminRoute() {
   const location = useLocation();
@@ -44,13 +46,13 @@ function AdminRoute() {
           <Aside />
         </div>
         <div className="col-2 p-0">
-          
+
         </div>
 
         {/* O'ng taraf: Navbar va asosiy content */}
         <div className="col-10 overflow-y-auto h-100vh navv d-flex flex-column p-0">
-        <div className={`bg-always flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
-        <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
+          <div className={` flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
+            <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
             <Routes>
               <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/about" exact element={<Info />} />
@@ -62,7 +64,7 @@ function AdminRoute() {
               <Route path="/about/statistics" exact element={<UmumiyStat />} />
               <Route path="/about/application" exact element={<Application />} />
               <Route path="/about/faq" exact element={<FAQPage />} />
-              
+
               <Route path="/" exact element={<Admin />} />
               <Route path="/dashboard" exact element={<Dashboard />} />
               <Route path="/schedule/new" exact element={<ScheduleNew />} />
@@ -80,9 +82,11 @@ function AdminRoute() {
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
+              <Route path="/profile/security" exact element={<Security />} />
               <Route path="/*" exact element={<NotFound404 />} />
+
             </Routes>
-              <Footer/>
+            <Footer />
           </div>
         </div>
       </div>

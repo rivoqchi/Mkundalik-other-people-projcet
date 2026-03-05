@@ -7,7 +7,7 @@ function LangRu() {
 
   return (
     <div className="enpage-container">
-      <h2 className="enpage-title">Выберите раздел</h2>
+      <h2 className="enpage-title text-primary">Выберите раздел</h2>
       <div className="enpage-button-group">
         <button
           className="enpage-button listening-button"

@@ -12,7 +12,8 @@ function Dashboard() {
   useEffect(() => {
     async function fetchReportCount() {
       try {
-        const res = await fetch(`${API}/auth/counthisobot?_id=${user_id}`);
+        const res = await fetch(`${API}/auth/counthisobot?_id=${user_id}`, { credentials: "include" });
+
         if (res.ok) {
           const data = await res.json();
           setReportCount(data.count || 0);
@@ -30,25 +31,25 @@ function Dashboard() {
 
   return (
     <>
-<div className="dashboard-container def-page row align-items-center">
-      <div className="col-12 col-md-6 text-center">
-        <header className="hero">
-          <h1>MKUNDALIK.UZ</h1>
-          <p>
-            Xodimlar potensiali monitoringgi bo`yicha O`zbekistondagi birinchi
-            kundalik hisobotlarni elektron qayd etish platformasi
-          </p>
-          <Link to="/user/schedule/new">
-            <button className="defaultbtn p-3">Yangi hisobot</button>
-          </Link>
-        </header>
+      <div className="dashboard-container def-page row align-items-center">
+        <div className="col-12 col-md-6 text-center">
+          <header className="hero">
+            <h1>MKUNDALIK.UZ</h1>
+            <p>
+              Xodimlar potensiali monitoringgi bo`yicha O`zbekistondagi birinchi
+              kundalik hisobotlarni elektron qayd etish platformasi
+            </p>
+            <Link to="/user/schedule/new">
+              <button className="defaultbtn p-3">Yangi hisobot</button>
+            </Link>
+          </header>
+        </div>
+        <div className="col-12 col-md-6 text-center">
+          <img src={noting} alt="Noting" className="noting" />
+          <h4 className="dashboard-header">{fullName}</h4>
+          <p>Bugungi kunga qadar sizga tegishli hisobotlar soni: <b>{reportCount}</b></p>
+        </div>
       </div>
-      <div className="col-12 col-md-6 text-center">
-        <img src={noting} alt="Noting" className="noting" />
-        <h4 className="dashboard-header">{fullName}</h4>
-        <p>Bugungi kunga qadar sizga tegishli hisobotlar soni: <b>{reportCount}</b></p>
-      </div>
-    </div>
       <CheckBD />
     </>
   );

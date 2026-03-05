@@ -10,29 +10,21 @@ import logo from "../Images/logo-png.png";
 import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import { useTranslation } from "react-i18next";
+import { signout } from "../Auth/CheckAuth";
 function Aside() {
+
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const navigate = useNavigate();
   const location = useLocation(); // Hozirgi yo'lni olish
-  let token = window.localStorage.getItem("token");
-
-  const logout = async () => {
-    try {
-      const response = await axios.get(`${API}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      window.localStorage.clear();
+  const logout = () => {
+    signout(() => {
       navigate("/");
-    } catch (error) {
-      console.error("Chiqishda xatolik yuz berdi:", error);
-    }
+    });
   };
+
 
   const myId = window.localStorage.getItem("user_id");
   const [notificationLength, setNotificationLength] = useState([]);
@@ -65,62 +57,40 @@ function Aside() {
         </div>
         <nav className="aside-menu">
           <ul>
-            <li
-              className={
-                location.pathname === "/sport/schedule/new" ? "active" : ""
-              }
-            >
-              <Link to="/sport/schedule/new">
+            <li>
+              <Link className={location.pathname.startsWith("/sport/schedule/new") ? "active" : ""} to="/sport/schedule/new">
                 <i className="fa-solid fa-list-check"></i>
                 <span>{t("qaydEtish")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/sport/schedule/history" ? "active" : ""
-              }
-            >
-              <Link to="/sport/schedule/history">
+            <li>
+              <Link className={location.pathname === "/sport/schedule/history" ? "active" : ""} to="/sport/schedule/history">
                 <i className="fa-solid fa-clock-rotate-left"></i>
                 <span>{t("faoliyatim")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/sport/rating/list" ? "active" : ""
-              }
-            >
-              <Link to="/sport/rating/list">
+            <li>
+              <Link className={location.pathname.startsWith("/sport/rating/list") ? "active" : ""} to="/sport/rating/list">
                 <i className="fa-solid fa-medal"></i>
                 <span>{t("xodimlarkorsatkichlari")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/sport/standarts" ? "active" : ""
-              }
-            >
-              <Link to="/sport/standarts">
+            <li>
+              <Link className={location.pathname.startsWith("/sport/standarts") ? "active" : ""} to="/sport/standarts">
                 <i className="fa-solid fa-sitemap"></i>
                 <span>{t("normativlar")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/sport/languages" ? "active" : ""
-              }
-            >
-              <Link to="/sport/languages">
-                <i class="fa-solid fa-language"></i>
+            <li>
+              <Link className={location.pathname.startsWith("/sport/languages") ? "active" : ""} to="/sport/languages">
+                <i className="fa-solid fa-language"></i>
                 <span>Chet tillari</span>
               </Link>
             </li>
 
-            <li
-              className={location.pathname === "/sport/profile" ? "active" : ""}
-            >
-              <Link to="/sport/profile">
-                <i class="fa-solid fa-user"></i>
+            <li>
+              <Link className={location.pathname.startsWith("/sport/profile") ? "active" : ""} to="/sport/profile">
+                <i className="fa-solid fa-user"></i>
                 <span>
                   {t("myInfo")}
                   {/* <span className="newtop">NEW</span> */}

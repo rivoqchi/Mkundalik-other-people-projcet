@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button, Spinner, Alert } from 'react-bootstrap';
 import { API } from '../../config';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 function Tuzilma() {
     const [allEmployees, setAllEmployees] = useState([]);
     const [allComplexes, setAllComplexes] = useState([]);
@@ -12,18 +12,19 @@ function Tuzilma() {
     const [error, setError] = useState(null);
     const [myType, setMyType] = useState(null); // Foydalanuvchi ma'lumoti
     const myId = window.localStorage.getItem("user_id");
-  
+
     const getMyData = async () => {
-      try {
-        const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
-        setMyType(data.user.forNG);        
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
+        try {
+            const { data } = await axios.get(`${API}/auth/mydata/${myId}`, { withCredentials: true });
+
+            setMyType(data.user.forNG);
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
     };
-      useEffect(() => {
+    useEffect(() => {
         getMyData();
-      }, []);
+    }, []);
     // Xodimlarni olish
     const getAllEmployees = async (role = "") => {
         setLoading(true);
@@ -31,7 +32,9 @@ function Tuzilma() {
         try {
             const { data } = await axios.get(`${API}/auth/getallemployeeswithfilter`, {
                 params: { role },
+                withCredentials: true
             });
+
             setAllEmployees(data.employees);
             setFilteredEmployees(data.employees);
         } catch (err) {
@@ -44,7 +47,8 @@ function Tuzilma() {
     // Komplekslarni olish
     const getAllComplexes = async () => {
         try {
-            const { data } = await axios.get(`${API}/complexes/getall`);
+            const { data } = await axios.get(`${API}/complexes/getall`, { withCredentials: true });
+
             setAllComplexes(data.complexes);
         } catch (err) {
             console.error("Error fetching complexes:", err);
@@ -59,42 +63,45 @@ function Tuzilma() {
 
     // Filtrlash funksiyasi (role va kompleks bo‘yicha)
     const handleFilter = async (filterType, value) => {
-      setLoading(true);
-      setError(null);
-  
-      try {
-          if (filterType === "role") {
-              if (value === "complex") {
-                  const { data } = await axios.get(`${API}/auth/getallemployeeswithfilter`, {
-                      params: { role: "complex" },
-                  });
-  
-                  const filtered = data.employees.filter(emp => {
-                      if (myType === true) {
-                          return emp.forNG === true;
-                      } else {
-                          return emp.forNG === false || emp.forNG === undefined;
-                      }
-                  });
-  
-                  setFilteredEmployees(filtered);
-              } else {
-                  const { data } = await axios.get(`${API}/auth/getallemployeeswithfilter`, {
-                      params: { role: value },
-                  });
-                  setFilteredEmployees(data.employees);
-              }
-          } else if (filterType === "complex") {
-              const filtered = allEmployees.filter(emp => emp.complex === value);
-              setFilteredEmployees(filtered);
-          }
-      } catch (err) {
-          setError("Filtrlashda xatolik yuz berdi.");
-      } finally {
-        setShowModal(false);
-        setLoading(false);
-      }
-  };
+        setLoading(true);
+        setError(null);
+
+        try {
+            if (filterType === "role") {
+                if (value === "complex") {
+                    const { data } = await axios.get(`${API}/auth/getallemployeeswithfilter`, {
+                        params: { role: "complex" },
+                        withCredentials: true
+                    });
+
+                    const filtered = data.employees.filter(emp => {
+                        if (myType === true) {
+                            return emp.forNG === true;
+                        } else {
+                            return emp.forNG === false || emp.forNG === undefined;
+                        }
+                    });
+
+                    setFilteredEmployees(filtered);
+                } else {
+                    const { data } = await axios.get(`${API}/auth/getallemployeeswithfilter`, {
+                        params: { role: value },
+                        withCredentials: true
+                    });
+
+                    setFilteredEmployees(data.employees);
+                }
+            } else if (filterType === "complex") {
+                const filtered = allEmployees.filter(emp => emp.complex === value);
+                setFilteredEmployees(filtered);
+            }
+        } catch (err) {
+            setError("Filtrlashda xatolik yuz berdi.");
+        } finally {
+            setShowModal(false);
+            setLoading(false);
+        }
+    };
 
     return (
         <div>
@@ -145,7 +152,7 @@ function Tuzilma() {
             <div className="table-responsive">
                 {loading && <Spinner animation="border" className="d-block mx-auto mt-3" />}
                 {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-                
+
                 {!loading && !error && (
                     <table className="table table-striped mt-3">
                         <thead>

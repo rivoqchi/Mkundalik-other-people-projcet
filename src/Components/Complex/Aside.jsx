@@ -10,7 +10,9 @@ import logo from "../Images/logo-png.png";
 import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import { useTranslation } from "react-i18next";
+import { signout } from "../Auth/CheckAuth";
 function Aside() {
+
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
 
@@ -18,22 +20,12 @@ function Aside() {
   const handleShow = () => setShow(true);
   const navigate = useNavigate();
   const location = useLocation(); // Hozirgi yo'lni olish
-  let token = window.localStorage.getItem("token");
-
-  const logout = async () => {
-    try {
-      const response = await axios.get(`${API}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      window.localStorage.clear();
+  const logout = () => {
+    signout(() => {
       navigate("/");
-    } catch (error) {
-      console.error("Chiqishda xatolik yuz berdi:", error);
-    }
+    });
   };
+
   const myId = window.localStorage.getItem("user_id");
   const [notificationLength, setNotificationLength] = useState([]);
   const getMySectionSchedules = async () => {
@@ -64,34 +56,20 @@ function Aside() {
         </div>
         <nav className="aside-menu">
           <ul>
-            <li
-              className={
-                location.pathname === "/complex/schedule/new" ? "active" : ""
-              }
-            >
-              <Link to="/complex/schedule/new">
+            <li>
+              <Link className={location.pathname.startsWith("/complex/schedule/new") ? "active" : ""} to="/complex/schedule/new">
                 <i className="fa-solid fa-list-check"></i>
                 <span>{t("qaydEtish")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/complex/schedule/history"
-                  ? "active"
-                  : ""
-              }
-            >
-              <Link to="/complex/schedule/history">
+            <li>
+              <Link className={location.pathname === "/complex/schedule/history" ? "active" : ""} to="/complex/schedule/history">
                 <i className="fa-solid fa-clock-rotate-left"></i>
                 <span>{t("faoliyatim")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/complex/rating/ours" ? "active" : ""
-              }
-            >
-              <Link to="/complex/rating/ours">
+            <li>
+              <Link className={location.pathname.startsWith("/complex/rating/ours") ? "active" : ""} to="/complex/rating/ours">
                 <i className="fa-solid fa-medal"></i>
                 <span>{t("xodimlarimkorsatkichlari")}</span>
                 {notificationLength > 0 && ( // Agar `notificationLength` bo‘lsa, chiqadi
@@ -105,44 +83,30 @@ function Aside() {
                 )}
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/complex/employees" ? "active" : ""
-              }
-            >
-              <Link to="/complex/employees">
+            <li>
+              <Link className={location.pathname.startsWith("/complex/employees") ? "active" : ""} to="/complex/employees">
                 <i className="fa-solid fa-sitemap"></i>
                 <span>{t("xodimlar")}</span>
                 {/* <span className="newtop">NEW</span> */}
               </Link>
             </li>
           </ul>
-          <li
-            className={
-              location.pathname === "/complex/languages" ? "active" : ""
-            }
-          >
-            <Link to="/complex/languages">
-              <i class="fa-solid fa-language"></i>
+          <li>
+            <Link className={location.pathname.startsWith("/complex/languages") ? "active" : ""} to="/complex/languages">
+              <i className="fa-solid fa-language"></i>
               <span>{t("foreign")}</span>
             </Link>
           </li>
 
-          <li
-            className={location.pathname === "/complex/profile" ? "active" : ""}
-          >
-            <Link to="/complex/profile">
-              <i class="fa-solid fa-user"></i>
+          <li>
+            <Link className={location.pathname.startsWith("/complex/profile") ? "active" : ""} to="/complex/profile">
+              <i className="fa-solid fa-user"></i>
               <span>{t("myInfo")}</span>
             </Link>
           </li>
-          <li
-            className={
-              location.pathname === "/complex/about" ? "active" : ""
-            }
-          >
-            <Link to="/complex/about">
-              <i class="fa-solid fa-circle-info"></i>
+          <li>
+            <Link className={location.pathname.startsWith("/complex/about") ? "active" : ""} to="/complex/about">
+              <i className="fa-solid fa-circle-info"></i>
               <span>{t("dasturhaqida")}</span>
             </Link>
           </li>

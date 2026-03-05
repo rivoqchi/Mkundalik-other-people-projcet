@@ -4,8 +4,12 @@ import { createEmployee } from "../Auth/CheckAuth";
 import Alert from "../Additional/Alert";
 import axios from "axios";
 import { API } from "../../config";
+import { useTheme } from "../Additional/ThemeContext";
+import { Spinner } from "react-bootstrap";
 
 const AddNewUser = () => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [allSections, setAllSections] = useState([]);
   const [allDepartments, setAllDepartments] = useState([]);
   const [allComplexes, setAllComplexes] = useState([]);
@@ -107,9 +111,11 @@ const AddNewUser = () => {
     key,
   } = values;
 
+  const [loading, setLoading] = useState(false);
   const acceptedBy = myName;
+
   const handleSwitchChange = () => {
-    setAutoDownload(!autoDownload); // Switchni qayta almashtirish
+    setAutoDownload(!autoDownload);
   };
 
   const handleChange = (name) => (event) => {
@@ -132,6 +138,7 @@ const AddNewUser = () => {
     }
 
     try {
+      setLoading(true);
       const employee = {
         name,
         phone,
@@ -155,13 +162,6 @@ const AddNewUser = () => {
           name: "",
           phone: "+998",
           password: "",
-          // complex: "",
-          // department: "",
-          // section: "",
-          // degree: "",
-          // status: "",
-          // success: true,
-          // error: "",
         });
         if (autoDownload) {
           saveToFile();
@@ -183,6 +183,8 @@ const AddNewUser = () => {
         type: "error",
         message: "Server bilan ulanishda xatolik yuz berdi!",
       });
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -216,118 +218,130 @@ const AddNewUser = () => {
   }, [success, error]); // success va error o'zgarganda alertni yangilaydi
 
   const addNewUserForm = () => (
-    <>
+    <div className={`p-4 ${isDark ? "bg-slate-900" : "bg-light"}`} style={{ minHeight: '100vh', transition: 'all 0.3s ease' }}>
       {alert.show && <Alert type={alert.type} message={alert.message} />}
-      <Link to={`/${myRole}/employees`}>
-        <button className="defaultbtn m-3">
-          <i className="fa-solid fa-arrow-left"></i> Orqaga qaytish
-        </button>
-      </Link>
-      <div className="text-center">
-        <h2 className="text-center m-3">Yangi xodim qo'shish</h2>
-        <div className="login-inputss row">
-          <div className="col-12 col-md-6">
-            <div className="form-group">
-              <label className="lab" htmlFor="name">
-                F.I.Sh
-              </label>
-              <input
-                id="name"
-                type="text"
-                onChange={handleChange("name")}
-                placeholder="F.I.Sh"
-                value={name}
-              />
-            </div>
-            <div className="form-group">
-        <label className="lab" htmlFor="phone">
-          Telefon raqami
-        </label>
-        <input
-          id="phone"
-          type="text"
-          onChange={handleChange("phone")}
-          placeholder="Telefon raqami"
-          value={phone}
-        />
+
+      <div className="d-flex align-items-center mb-4 gap-3">
+        <Link to={`/${myRole}/employees`}>
+          <button className={`btn rounded-circle d-flex align-items-center justify-content-center ${isDark ? 'btn-outline-light' : 'btn-outline-dark'}`} style={{ width: '40px', height: '40px', padding: 0 }}>
+            <i className="fa-solid fa-arrow-left"></i>
+          </button>
+        </Link>
+        <h4 className={`m-0 fw-bold ${isDark ? 'text-white' : 'text-dark'}`}>
+          <i className="fa-solid fa-user-plus text-primary me-2"></i> Yangi xodim qo'shish
+        </h4>
       </div>
 
-      <div className="form-group">
-        <label className="lab" htmlFor="password">
-          Parol
-        </label>
-        <input
-          id="password"
-          type="text"
-          onChange={handleChange("password")}
-          placeholder="Parol yarating"
-          value={password}
-          disabled
-          readOnly // foydalanuvchi tahrirlay olmasin
-        />
-      </div>
+      <div className="glass-card p-4 p-md-5 mb-4 mx-auto" style={{ maxWidth: '900px', background: isDark ? 'rgba(30, 41, 59, 0.7)' : 'rgba(255, 255, 255, 0.9)', border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`, borderRadius: '16px', boxShadow: isDark ? '0 10px 30px rgba(0,0,0,0.5)' : '0 10px 30px rgba(0,0,0,0.05)' }}>
+
+        <div className="row g-4">
+          <div className="col-12 col-md-6 d-flex flex-column gap-3">
             <div className="form-group">
-              <label className="lab" htmlFor="degree">
-                Lavozimi
-              </label>
-              <input
-                id="degree"
-                type="text"
-                onChange={handleChange("degree")}
-                placeholder="Lavozimi"
-                value={degree}
-              />
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="name">F.I.Sh</label>
+              <div className="premium-input-wrapper">
+                <i className="fa-solid fa-user input-icon"></i>
+                <input
+                  id="name"
+                  type="text"
+                  className="premium-input-field w-100"
+                  onChange={handleChange("name")}
+                  placeholder="Xodimnig F.I.Sh"
+                  value={name}
+                />
+              </div>
             </div>
+
             <div className="form-group">
-            <label className="lab" htmlFor="acceptedBy">
-              Tasdiqlaydi
-            </label>
-            <input id="acceptedBy" type="text" disabled value={acceptedBy} />
-          </div>
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="phone">Telefon raqami</label>
+              <div className="premium-input-wrapper">
+                <i className="fa-solid fa-phone input-icon"></i>
+                <input
+                  id="phone"
+                  type="text"
+                  className="premium-input-field w-100"
+                  onChange={handleChange("phone")}
+                  placeholder="Telefon raqami"
+                  value={phone}
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="password">Parol (avtomatik yaratiladi)</label>
+              <div className={`premium-input-wrapper ${isDark ? 'opacity-75' : ''}`} style={{ background: isDark ? 'rgba(0,0,0,0.2)' : '#e2e8f0' }}>
+                <i className="fa-solid fa-lock input-icon"></i>
+                <input
+                  id="password"
+                  type="text"
+                  className="premium-input-field w-100 placeholder-muted"
+                  value={password || 'Raqamning oxirgi 4 belgisi...'}
+                  disabled
+                  readOnly
+                  style={{ background: 'transparent' }}
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="degree">Lavozimi</label>
+              <div className="premium-input-wrapper">
+                <i className="fa-solid fa-user-tag input-icon"></i>
+                <input
+                  id="degree"
+                  type="text"
+                  className="premium-input-field w-100"
+                  onChange={handleChange("degree")}
+                  placeholder="Masalan, bosh mutaxassis"
+                  value={degree}
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="acceptedBy">Tasdiqlaydigan shaxs</label>
+              <div className={`premium-input-wrapper ${isDark ? 'opacity-75' : ''}`} style={{ background: isDark ? 'rgba(0,0,0,0.2)' : '#e2e8f0' }}>
+                <i className="fa-solid fa-file-signature input-icon"></i>
+                <input id="acceptedBy" className="premium-input-field w-100" type="text" disabled value={acceptedBy} style={{ background: 'transparent' }} />
+              </div>
+            </div>
           </div>
 
-          <div className="col-12 col-md-6">
-            <div className="form-group selectstatus">
-              <label className="lab" htmlFor="status">
-                Status
-              </label>
-              <select
-                value={myData.role === "admin" ? "employee" : status} // Admin bo'lsa doim employee bo'ladi
-                name="status"
-                id="status"
-                onChange={handleChange("status")}
-                disabled={myData.role === "admin"} // Admin bo'lsa disable qilish
-              >
-                <option selected disabled value="">
-                  Tanlang:
-                </option>
-                <option value="employee">Xodim (Employee)</option>
-                <option value="admin">Bo`lim boshlig`i (Admin)</option>
-                <option value="department">
-                  Xizmat boshlig`i (Department)
-                </option>
-                <option value="complex">
-                  Metropoliten boshlig`i o`rinbosari (Complex)
-                </option>
-                <option value="superadmin">
-                  Super Admin (Barcha imkoniyatlar)
-                </option>
-                <option value="boss">Boshliq / Bosh muhandis (Boss)</option>
-                <option value="commission">
-                  Tizimni nazorat qilish komissiyasi (Commission)
-                </option>
-                <option value="hr">Kadrlar bo`limi (HR)</option>
-                <option value="sport">Sport murabbiysi</option>
-                <option value="at">AKT</option>
-                <option value="lang">Chet tillari nazoratchisi</option>
-              </select>
-            </div>
-            <div className="form-group selectstatus">
-              <label className="lab" htmlFor="section">
-                Kompleks
-              </label>
-              <div className="select">
+          <div className="col-12 col-md-6 d-flex flex-column gap-3">
+            <div className="form-group">
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="status">Tizimdagi Roli (Status)</label>
+              <div className="premium-input-wrapper" style={{ background: myData.role === "admin" && isDark ? 'rgba(0,0,0,0.2)' : '' }}>
+                <i className="fa-solid fa-id-badge input-icon z-index-1"></i>
                 <select
+                  className="premium-input-field w-100"
+                  value={myData.role === "admin" ? "employee" : status}
+                  name="status"
+                  id="status"
+                  onChange={handleChange("status")}
+                  disabled={myData.role === "admin"}
+                  style={{ appearance: 'none', background: 'transparent' }}
+                >
+                  <option disabled value="">Taqdim etiladigan huquqni tanlang</option>
+                  <option value="employee" className={isDark ? "bg-dark text-white" : ""}>Xodim (Standart)</option>
+                  <option value="admin" className={isDark ? "bg-dark text-white" : ""}>Bo'lim boshlig'i (Admin)</option>
+                  <option value="department" className={isDark ? "bg-dark text-white" : ""}>Xizmat boshlig'i (Department)</option>
+                  <option value="complex" className={isDark ? "bg-dark text-white" : ""}>Boshliq o'rinbosari (Complex)</option>
+                  <option value="superadmin" className={isDark ? "bg-dark text-white" : ""}>Super Admin</option>
+                  <option value="boss" className={isDark ? "bg-dark text-white" : ""}>Boshliq / Bosh muhandis</option>
+                  <option value="commission" className={isDark ? "bg-dark text-white" : ""}>Nazorat komissiyasi</option>
+                  <option value="hr" className={isDark ? "bg-dark text-white" : ""}>Kadrlar bo'limi (HR)</option>
+                  <option value="sport" className={isDark ? "bg-dark text-white" : ""}>Sport murabbiysi</option>
+                  <option value="at" className={isDark ? "bg-dark text-white" : ""}>AKT Mutaxassisi</option>
+                  <option value="lang" className={isDark ? "bg-dark text-white" : ""}>Chet tillari nazoratchisi</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="complex">Kompleks / Korxona</label>
+              <div className="premium-input-wrapper" style={{ background: myData.role === "admin" && isDark ? 'rgba(0,0,0,0.2)' : '' }}>
+                <i className="fa-solid fa-building input-icon z-index-1"></i>
+                <select
+                  className="premium-input-field w-100"
                   name="complex"
                   id="complex"
                   onChange={handleChange("complex")}
@@ -335,49 +349,38 @@ const AddNewUser = () => {
                   disabled={myData.role === "admin"}
                 >
                   {myData.role === "admin" ? (
-                    <option selected disabled value={myData.complex}>
-                      {myData.complex}
-                    </option>
+                    <option disabled value={myData.complex}>{myData.complex}</option>
                   ) : (
                     <>
-                      <option disabled selected value="">
-                        Tanlang:
-                      </option>
+                      <option disabled value="">Tashkilotni tanlang</option>
                       {allComplexes.map((i) => (
-                        <option key={i._id} value={i.name}>
-                          {i.name}
-                        </option>
+                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : ""}>{i.name}</option>
                       ))}
                     </>
                   )}
                 </select>
               </div>
             </div>
-            <div className="form-group selectstatus">
-              <label className="lab" htmlFor="section">
-                Departament
-              </label>
-              <div className="select">
+
+            <div className="form-group">
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="department">Departament / Xizmat</label>
+              <div className="premium-input-wrapper" style={{ background: myData.role === "admin" && isDark ? 'rgba(0,0,0,0.2)' : '' }}>
+                <i className="fa-solid fa-sitemap input-icon z-index-1"></i>
                 <select
+                  className="premium-input-field w-100"
                   name="department"
                   id="department"
                   onChange={handleChange("department")}
                   value={department}
-                  disabled={myData.role === "admin"} // Admin bo'lsa disable qilish
+                  disabled={myData.role === "admin"}
                 >
                   {myData.role === "admin" ? (
-                    <option selected disabled value={myData.department}>
-                      {myData.department}
-                    </option>
+                    <option disabled value={myData.department}>{myData.department}</option>
                   ) : (
                     <>
-                      <option disabled selected value="">
-                        Tanlang:
-                      </option>
+                      <option disabled value="">Xizmatni tanlang</option>
                       {allDepartments.map((i) => (
-                        <option key={i._id} value={i.name}>
-                          {i.name}
-                        </option>
+                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : ""}>{i.name}</option>
                       ))}
                     </>
                   )}
@@ -385,72 +388,88 @@ const AddNewUser = () => {
               </div>
             </div>
 
-            <div className="form-group selectstatus">
-              <label className="lab" htmlFor="section">
-                Bo‘lim
-              </label>
-              <div className="select">
+            <div className="form-group">
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="sections">Bo'lim / Bekat</label>
+              <div className="premium-input-wrapper" style={{ background: myData.role === "admin" && isDark ? 'rgba(0,0,0,0.2)' : '' }}>
+                <i className="fa-solid fa-layer-group input-icon z-index-1"></i>
                 <select
+                  className="premium-input-field w-100"
                   name="sections"
                   id="sections"
                   onChange={handleChange("section")}
                   value={section}
-                  disabled={myData.role === "admin"} // Admin bo'lsa disable qilish
+                  disabled={myData.role === "admin"}
                 >
                   {myData.role === "admin" ? (
-                    <option selected disabled value={myData.section}>
-                      {myData.section}
-                    </option>
+                    <option disabled value={myData.section}>{myData.section}</option>
                   ) : (
                     <>
-                      <option disabled selected value="">
-                        Tanlang:
-                      </option>
+                      <option disabled value="">Bo'limni tanlang</option>
                       {allSections.map((i) => (
-                        <option key={i._id} value={i.name}>
-                          {i.name}
-                        </option>
+                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : ""}>{i.name}</option>
                       ))}
                     </>
                   )}
                 </select>
               </div>
             </div>
-            
+
             <div className="form-group">
-              <label className="lab d-flex" htmlFor="key">
-                Kalit so`z <p className="redword"> (agar bo`lsa)</p>
+              <label className={`fw-bold mb-2 ${isDark ? 'text-light' : 'text-dark'}`} htmlFor="key">
+                Kalit so'z <span className="text-secondary opacity-75 fw-normal">(Faqat rahbariyat o'rinbosarlari uchun)</span>
               </label>
-              <input
-                id="key"
-                type="text"
-                onChange={handleChange("key")}
-                placeholder="Kalit so`z"
-                value={key}
-              />
+              <div className="premium-input-wrapper">
+                <i className="fa-solid fa-key input-icon z-index-1"></i>
+                <input
+                  id="key"
+                  type="text"
+                  className="premium-input-field w-100"
+                  onChange={handleChange("key")}
+                  placeholder="Kalit kodi (Majburiy emas)"
+                  value={key}
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="autoDownload">
-            <i className="fa-solid fa-download"></i> Formani to`ldirgandan keyin
-            yuklab olish
-          </label>
-          <input
-            type="checkbox"
-            id="autoDownload"
-            checked={autoDownload}
-            onChange={handleSwitchChange}
-          />
+
+        <hr className={`my-4 opacity-10 ${isDark ? 'border-light' : 'border-dark'}`} />
+
+        <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div className="form-check form-switch d-flex align-items-center gap-2 m-0 p-0">
+            <label className="switch mb-0" style={{ transform: 'scale(0.8)' }}>
+              <input
+                type="checkbox"
+                id="autoDownload"
+                checked={autoDownload}
+                onChange={handleSwitchChange}
+              />
+              <span className="slider round"></span>
+            </label>
+            <label htmlFor="autoDownload" className={`fw-bold m-0 ${isDark ? 'text-white-50' : 'text-muted'}`} style={{ cursor: 'pointer' }}>
+              <i className="fa-solid fa-file-arrow-down me-1"></i> Maxfiy kalitlarni TXT fayl sifatida avto yuklab olish
+            </label>
+          </div>
+
+          <button
+            className="btn btn-primary px-5 py-2 fw-bold d-flex align-items-center gap-2"
+            style={{ borderRadius: '12px', minWidth: '180px', justifyContent: 'center' }}
+            onClick={clickSubmit}
+            disabled={loading}
+          >
+            {loading ? (
+              <><Spinner animation="border" size="sm" /> Yuborilmoqda...</>
+            ) : (
+              <><i className="fa-solid fa-paper-plane"></i> Tizimga qo'shish</>
+            )}
+          </button>
         </div>
-        <button className="signuplogin" onClick={clickSubmit}>
-          Yuborish
-        </button>
+
       </div>
-    </>
+    </div>
   );
 
-  return <div className="">{addNewUserForm()}</div>;
+  return <>{addNewUserForm()}</>;
 };
 
 export default AddNewUser;

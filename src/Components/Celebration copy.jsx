@@ -202,23 +202,23 @@ function CelebrationModal() {
   if (!show) return null;
   const role = localStorage.getItem("role");
 
-const routes = {
-  employee: "/user",
-  admin: "/admin",
-  superadmin: "/superadmin",
-  complex: "/complex",
-  department: "/department",
-  hr: "/hr",
-  lang: "/lang",
-  commission: "/commission",
-  sport: "/sport",
-  at: "/at",
-  boss: "/boss"
-};
+  const routes = {
+    employee: "/user",
+    admin: "/admin",
+    superadmin: "/superadmin",
+    complex: "/complex",
+    department: "/department",
+    hr: "/hr",
+    lang: "/lang",
+    commission: "/commission",
+    sport: "/sport",
+    at: "/at",
+    boss: "/boss"
+  };
 
-const targetRoute = role ? routes[role] : "/statistics";
+  const targetRoute = role ? routes[role] : "/statistics";
 
-          
+
   return (
     <div className="cb-overlay">
       <div className="cb-modal">
@@ -231,14 +231,14 @@ const targetRoute = role ? routes[role] : "/statistics";
         {/* RIGHT CONTENT */}
         <div className="cb-content">
           <div className="cb-header">
-            Hurmatli hamkasblar! <i class="fa-solid fa-ribbon"></i>
+            Hurmatli hamkasblar! <i className="fa-solid fa-ribbon"></i>
           </div>
 
           <div className="cb-title">
             mkundalik.uz axborot tizimi orqali shakllantirilgan
             elektron kundalik hisobotlar soni
             <div className="cb-100k" ref={numberRef}>0</div>
-            tadan oshdi. <button onClick={handleNavigateDetails} style={{ background: "none", border: "none", color: "#667eea", cursor: "pointer", textDecoration: "underline", fontSize: "inherit", fontWeight: "inherit" }}>Batafsil <i class="fa-solid fa-up-right-from-square"></i></button>
+            tadan oshdi. <button onClick={handleNavigateDetails} style={{ background: "none", border: "none", color: "#667eea", cursor: "pointer", textDecoration: "underline", fontSize: "inherit", fontWeight: "inherit" }}>Batafsil <i className="fa-solid fa-up-right-from-square"></i></button>
           </div>
 
           <div className="cb-title">
@@ -248,14 +248,14 @@ const targetRoute = role ? routes[role] : "/statistics";
           </div>
 
           <p className="cb-text">
-            Hurmatli <b>{localStorage.getItem("fullName") || "foydalanuvchi"}</b>,  
+            Hurmatli <b>{localStorage.getItem("fullName") || "foydalanuvchi"}</b>,
             ushbu natija tizimdan samarali foydalanish natijasidir.
           </p>
 
           <div className="cb-footer">
-            <img src={logo} alt="logo" style={{ width:120 }} />
+            <img src={logo} alt="logo" style={{ width: 120 }} />
 
-            
+
             <button
               className="cb-close"
               onClick={() => {

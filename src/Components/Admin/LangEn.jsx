@@ -7,7 +7,7 @@ function LangEn() {
 
   return (
     <div className="enpage-container">
-      <h2 className="enpage-title">Bo‘limni tanlang</h2>
+      <h2 className="enpage-title text-primary">Choose a section</h2>
       <div className="enpage-button-group">
         <button
           className="enpage-button listening-button"

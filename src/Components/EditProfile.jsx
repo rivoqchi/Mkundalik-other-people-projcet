@@ -5,7 +5,7 @@ import { API } from "../config";
 import Alert from "./Additional/Alert";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import logo from "./Images/logo2.png";
+import logo from "./Images/logo-png.png";
 
 function EditProfile() {
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
@@ -22,17 +22,14 @@ function EditProfile() {
   });
 
   const navigate = useNavigate();
-  const [myRole, setMyRole] = useState("");
   const [myData, setMyData] = useState(null);
-
   const myId = window.localStorage.getItem("user_id");
 
   useEffect(() => {
     const getMyData = async () => {
       try {
-        const { data } = await axios.get(`${API}/auth/mydata/${myId}`);
+        const { data } = await axios.get(`${API}/auth/mydata/${myId}`, { withCredentials: true });
         setMyData(data.user);
-        setMyRole(data.user.role);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -43,15 +40,15 @@ function EditProfile() {
   useEffect(() => {
     if (myData) {
       const parseDate = (dateStr) => {
-        if (!dateStr) return null; // Agar sana bo'sh bo'lsa, null qaytar
+        if (!dateStr) return null;
         const parts = dateStr.split(".");
         if (parts.length === 3) {
           const [day, month, year] = parts.map(Number);
-          return new Date(year, month - 1, day); // Yil, oy (0-based), kun
+          return new Date(year, month - 1, day);
         }
-        return new Date(dateStr); // Agar format noto‘g‘ri bo‘lsa, to‘g‘ridan-to‘g‘ri `Date` obyektiga o'tkazishga urinish
+        return new Date(dateStr);
       };
-  
+
       setValues({
         dateOfBirth: parseDate(myData.dateOfBirth),
         firstAct: parseDate(myData.firstAct) || new Date(),
@@ -82,16 +79,8 @@ function EditProfile() {
       speciality,
       address,
     } = values;
-    if (
-      !dateOfBirth ||
-      !name ||
-      !placeOfBirth ||
-      !nationality ||
-      !degree ||
-      !education ||
-      !speciality ||
-      !address
-    ) {
+
+    if (!dateOfBirth || !name || !placeOfBirth || !nationality || !degree || !education || !speciality || !address) {
       setAlert({
         show: true,
         type: "error",
@@ -99,13 +88,10 @@ function EditProfile() {
       });
       return;
     }
+
     try {
-      const formattedDateOfBirth = dateOfBirth
-        .toLocaleDateString("uz-UZ")
-        .replace(/\//g, ".");
-      const formattedFirstAct = values.firstAct
-        .toLocaleDateString("uz-UZ")
-        .replace(/\//g, ".");
+      const formattedDateOfBirth = dateOfBirth.toLocaleDateString("uz-UZ").replace(/\//g, ".");
+      const formattedFirstAct = values.firstAct.toLocaleDateString("uz-UZ").replace(/\//g, ".");
 
       const data = {
         dateOfBirth: formattedDateOfBirth,
@@ -118,13 +104,14 @@ function EditProfile() {
         speciality,
         address,
       };
-      await axios.put(`${API}/auth/editprofile/${myId}`, data);
+      await axios.put(`${API}/auth/editprofile/${myId}`, data, { withCredentials: true });
+
       setAlert({
         show: true,
         type: "success",
-        message: "Xodim muvaffaqiyatli yangilandi!",
+        message: "Ma'lumotlar muvaffaqiyatli yangilandi!",
       });
-      window.location.reload();
+      setTimeout(() => window.location.reload(), 1500);
     } catch (error) {
       setAlert({
         show: true,
@@ -135,114 +122,134 @@ function EditProfile() {
   };
 
   return (
-    <div className="fill-container">
-      <div className="text-center">
-        <img className="logoonform" src={logo} alt="Logo" />
+    <div className="premium-edit-container">
+      <div className="edit-header">
+        <div className="edit-logo-wrapper">
+          <img src={logo} alt="Logo" />
+        </div>
+        <h3>Profilni tahrirlash</h3>
+        <p className="edit-subtitle">Ma'lumotlaringizni yangilab boring</p>
       </div>
-      <h3 className="text-center">Ma'lumotlarni o`zgartirish:</h3>
+
       {alert.show && <Alert type={alert.type} message={alert.message} />}
-      <form className="fill-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">F.I.Sh</label>
-          <input
-            type="text"
-            id="name"
-            value={values.name} // defaultValue o‘rniga value ishlatilmoqda
-            onChange={handleChange("name")}
-            placeholder="Ismingizni kiriting"
-          />
+
+      <form className="premium-edit-form" onSubmit={handleSubmit}>
+        <div className="edit-form-grid">
+          {/* Ism familiya */}
+          <div className="premium-input-group full-width">
+            <label htmlFor="name"><i className="fa-solid fa-user"></i> F.I.Sh</label>
+            <div className="input-with-icon">
+              <input
+                type="text"
+                id="name"
+                value={values.name}
+                onChange={handleChange("name")}
+                placeholder="To'liq ismingizni kiriting"
+              />
+            </div>
+          </div>
+
+          {/* Lavozim */}
+          <div className="premium-input-group full-width">
+            <label htmlFor="degree"><i className="fa-solid fa-briefcase"></i> Lavozim</label>
+            <div className="input-with-icon">
+              <input
+                type="text"
+                id="degree"
+                value={values.degree}
+                onChange={handleChange("degree")}
+                placeholder="Lavozimingizni kiriting"
+              />
+            </div>
+          </div>
+
+          {/* Tug'ilgan sana */}
+          <div className="premium-input-group">
+            <label htmlFor="dateOfBirth"><i className="fa-solid fa-calendar-alt"></i> Tug‘ilgan sana</label>
+            <div className="datepicker-wrapper">
+              <DatePicker
+                selected={values.dateOfBirth}
+                onChange={(date) => setValues({ ...values, dateOfBirth: date })}
+                dateFormat="dd.MM.yyyy"
+                placeholderText="Sanani tanlang"
+                className="premium-datepicker"
+              />
+            </div>
+          </div>
+
+          {/* Tug'ilgan joy */}
+          <div className="premium-input-group">
+            <label htmlFor="placeOfBirth"><i className="fa-solid fa-location-dot"></i> Tug‘ilgan joy</label>
+            <input
+              type="text"
+              id="placeOfBirth"
+              value={values.placeOfBirth}
+              onChange={handleChange("placeOfBirth")}
+              placeholder="Tug‘ilgan joyingiz"
+            />
+          </div>
+
+          {/* Millati */}
+          <div className="premium-input-group">
+            <label htmlFor="nationality"><i className="fa-solid fa-earth-asia"></i> Millati</label>
+            <select
+              id="nationality"
+              value={values.nationality}
+              onChange={handleChange("nationality")}
+            >
+              <option value="">Tanlang</option>
+              <option value="O‘zbek">O‘zbek</option>
+              <option value="Rus">Rus</option>
+              <option value="Boshqa">Boshqa</option>
+            </select>
+          </div>
+
+          {/* Ta'lim */}
+          <div className="premium-input-group">
+            <label htmlFor="education"><i className="fa-solid fa-graduation-cap"></i> Ta'lim</label>
+            <select
+              id="education"
+              value={values.education}
+              onChange={handleChange("education")}
+            >
+              <option value="">Tanlang</option>
+              <option value="O‘rta-maxsus">O‘rta-maxsus</option>
+              <option value="Tugallanmagan Oliy">Tugallanmagan Oliy</option>
+              <option value="Oliy (Bakalavr)">Oliy (Bakalavr)</option>
+              <option value="Oliy (Magistr)">Oliy (Magistr)</option>
+              <option value="Boshqa">Boshqa</option>
+            </select>
+          </div>
+
+          {/* Mutaxassislik */}
+          <div className="premium-input-group">
+            <label htmlFor="speciality"><i className="fa-solid fa-certificate"></i> Mutaxassislik</label>
+            <input
+              type="text"
+              id="speciality"
+              value={values.speciality}
+              onChange={handleChange("speciality")}
+              placeholder="Mutaxassisligingiz"
+            />
+          </div>
+
+          {/* Manzil */}
+          <div className="premium-input-group">
+            <label htmlFor="address"><i className="fa-solid fa-house-user"></i> Manzil</label>
+            <input
+              type="text"
+              id="address"
+              value={values.address}
+              onChange={handleChange("address")}
+              placeholder="Yashash manzilingiz"
+            />
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="degree">Lavozim</label>
-          <input
-            type="text"
-            id="degree"
-            value={values.degree} // defaultValue o‘rniga value ishlatilmoqda
-            onChange={handleChange("degree")}
-            placeholder="Lavozimingizni kiriting"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="dateOfBirth">Tug‘ilgan sana</label>
-          <DatePicker
-            selected={values.dateOfBirth}
-            onChange={(date) => setValues({ ...values, dateOfBirth: date })}
-            dateFormat="dd.MM.yyyy"
-            placeholderText="Sanani tanlang"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="placeOfBirth">Tug‘ilgan joy</label>
-          <input
-            type="text"
-            id="placeOfBirth"
-            defaultValue={values.placeOfBirth}
-            onChange={handleChange("placeOfBirth")}
-            placeholder="Tug‘ilgan joyingizni kiriting"
-          />
-        </div>
-        <div className="form-group d-none">
-          <label htmlFor="firstAct">Tizimga qo`shildi</label>
-          <input
-            type="text"
-            id="firstAct"
-            defaultValue={values.firstAct
-              .toLocaleDateString("uz-UZ")
-              .replace(/\//g, ":")}
-            readOnly
-            disabled
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="nationality">Millati</label>
-          <select
-            id="nationality"
-            defaultValue={values.nationality}
-            onChange={handleChange("nationality")}
-          >
-            <option value="">Tanlang</option>
-            <option value="O‘zbek">O‘zbek</option>
-            <option value="Rus">Rus</option>
-            <option value="Boshqa">Boshqa</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="education">Ta'lim</label>
-          <select
-            id="education"
-            defaultValue={values.education}
-            onChange={handleChange("education")}
-          >
-            <option value="">Tanlang</option>
-            <option value="O‘rta-maxsus">O‘rta-maxsus</option>
-            <option value="Tugallanmagan Oliy">Tugallanmagan Oliy</option>
-            <option value="Oliy (Bakalavr)">Oliy (Bakalavr)</option>
-            <option value="Oliy (Magistr)">Oliy (Magistr)</option>
-            <option value="Boshqa">Boshqa</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="speciality">Mutaxassislik</label>
-          <input
-            type="text"
-            id="speciality"
-            defaultValue={values.speciality}
-            onChange={handleChange("speciality")}
-            placeholder="Mutaxassislikni kiriting"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="address">Manzil</label>
-          <input
-            type="text"
-            id="address"
-            defaultValue={values.address}
-            onChange={handleChange("address")}
-            placeholder="Manzilingizni kiriting"
-          />
-        </div>
-        <button type="submit" className="submit-button">
-          Saqlash
+
+        <button type="submit" className="btn-premium-save">
+          <i className="fa-solid fa-cloud-arrow-up"></i>
+          <span>O'zgarishlarni saqlash</span>
+          <div className="btn-glow"></div>
         </button>
       </form>
     </div>

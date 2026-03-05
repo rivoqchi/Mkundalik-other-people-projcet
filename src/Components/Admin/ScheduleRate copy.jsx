@@ -48,7 +48,7 @@ function ScheduleRate() {
   useEffect(() => {
     getMyData();
   }, []);
-    const handleShow = () => {
+  const handleShow = () => {
     if (thisScheduleHistory.reported) {
       setAlert({
         show: true,
@@ -225,22 +225,22 @@ function ScheduleRate() {
           <hr className="hrnone mb-2" />
           <div className="scheduleinfo">
             <div className="schedulebajaruvchilar">
-<table className=" text-start">
-  <tbody>
-    <tr>
-      <td className="fw-bold"><i class="fa-solid fa-users-between-lines"></i> Kompleks:</td>
-      <td className="border-none">{thisScheduleHistory.complex}</td>
-    </tr>
-    <tr>
-      <td className="fw-bold"><i class="fa-solid fa-people-line"></i> Xizmat:</td>
-      <td>{thisScheduleHistory.department}</td>
-    </tr>
-    <tr>
-      <td className="fw-bold"><i class="fa-solid fa-users"></i> Bo`lim:</td>
-      <td>{thisScheduleHistory.section}</td>
-    </tr>
-  </tbody>
-</table>
+              <table className=" text-start">
+                <tbody>
+                  <tr>
+                    <td className="fw-bold"><i className="fa-solid fa-users-between-lines"></i> Kompleks:</td>
+                    <td className="border-none">{thisScheduleHistory.complex}</td>
+                  </tr>
+                  <tr>
+                    <td className="fw-bold"><i className="fa-solid fa-people-line"></i> Xizmat:</td>
+                    <td>{thisScheduleHistory.department}</td>
+                  </tr>
+                  <tr>
+                    <td className="fw-bold"><i className="fa-solid fa-users"></i> Bo`lim:</td>
+                    <td>{thisScheduleHistory.section}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <br />
@@ -343,7 +343,7 @@ function ScheduleRate() {
               <span>{thisScheduleHistory.degree || t("infonotfound")}</span>
               <div
                 className="qr-container text-center"
-                // style={{ marginLeft: "20px" }}
+              // style={{ marginLeft: "20px" }}
               >
                 <QRCodeSVG value={currentUrl} size={80} />
               </div>
@@ -442,8 +442,8 @@ function ScheduleRate() {
               onChange={handleInputChange}
               min="1"
               max="100"
-              // className={setAI ? '' : 'no-ai'}
-              // disabled={setAI}
+            // className={setAI ? '' : 'no-ai'}
+            // disabled={setAI}
             />
           </div>
           <textarea
@@ -472,28 +472,28 @@ function ScheduleRate() {
         </Modal.Footer>
       </Modal>
       <div className="schedulerated">
-                    <div className="text-center">
-                      <Button
-                        className="baholash-wave-btn"
-                        variant="primary"
-                        onClick={() => setShowModal(true)}
-                      >
-                        {t("baholash")} <i className="fa-solid fa-star"></i>
-                      </Button>
-                    </div>
-                    
-                    {thisScheduleHistory.comment && (
-                      <div className="commentsch align-items-center justify-content-between d-flex">
-                        <div className="">
-                          <b>{t("comment")}:</b> {thisScheduleHistory.comment}
-                        </div>
-                        <i
-                          disabled={thisScheduleHistory.reported}
-                          className="fa-solid excla fa-triangle-exclamation"
-                          ></i>
-                      </div>
-                    )}
-                  </div>
+        <div className="text-center">
+          <Button
+            className="baholash-wave-btn"
+            variant="primary"
+            onClick={() => setShowModal(true)}
+          >
+            {t("baholash")} <i className="fa-solid fa-star"></i>
+          </Button>
+        </div>
+
+        {thisScheduleHistory.comment && (
+          <div className="commentsch align-items-center justify-content-between d-flex">
+            <div className="">
+              <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+            </div>
+            <i
+              disabled={thisScheduleHistory.reported}
+              className="fa-solid excla fa-triangle-exclamation"
+            ></i>
+          </div>
+        )}
+      </div>
     </>
   );
 }

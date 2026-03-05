@@ -8,31 +8,21 @@ import Modal from "react-bootstrap/Modal";
 import note from "../Images/note.png";
 import logo from "../Images/logo-png.png";
 import { useTranslation } from "react-i18next";
-
+import { signout } from "../Auth/CheckAuth";
 function Aside() {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation(); // Hozirgi yo'lni olish
-  let token = window.localStorage.getItem("token");
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const logout = async () => {
-    try {
-      const response = await axios.get(`${API}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      window.localStorage.clear();
+  const logout = () => {
+    signout(() => {
       navigate("/");
-    } catch (error) {
-      console.error("Chiqishda xatolik yuz berdi:", error);
-    }
+    });
   };
 
   return (
@@ -50,52 +40,34 @@ function Aside() {
         </div>
         <nav className="aside-menu">
           <ul>
-            <li
-              className={
-                location.pathname === "/user/schedule/new" ? "active" : ""
-              }
-            >
-              <Link to="/user/schedule/new">
+            <li>
+              <Link className={location.pathname.startsWith("/user/schedule/new") ? "active" : ""} to="/user/schedule/new">
                 <i className="fa-solid fa-list-check"></i>
                 <span>{t("qaydEtish")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/user/schedule/history" ? "active" : ""
-              }
-            >
-              <Link to="/user/schedule/history">
+            <li>
+              <Link className={location.pathname === "/user/schedule/history" ? "active" : ""} to="/user/schedule/history">
                 <i className="fa-solid fa-clock-rotate-left"></i>
                 <span>{t("faoliyatim")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/user/languages" ? "active" : ""
-              }
-            >
-              <Link to="/user/languages">
-                <i class="fa-solid fa-language"></i>
+            <li>
+              <Link className={location.pathname.startsWith("/user/languages") ? "active" : ""} to="/user/languages">
+                <i className="fa-solid fa-language"></i>
                 <span>{t("foreign")}</span>
               </Link>
             </li>
-            <li
-              className={location.pathname === "/user/profile" ? "active" : ""}
-            >
-              <Link to="/user/profile">
-                <i class="fa-solid fa-user"></i>
+            <li>
+              <Link className={location.pathname.startsWith("/user/profile") ? "active" : ""} to="/user/profile">
+                <i className="fa-solid fa-user"></i>
                 <span>{t("myInfo")}</span>
               </Link>
             </li>
 
-            <li
-              className={
-                location.pathname === "/user/about" ? "active" : ""
-              }
-            >
-              <Link to="/user/about">
-                <i class="fa-solid fa-circle-info"></i>
+            <li>
+              <Link className={location.pathname.startsWith("/user/about") ? "active" : ""} to="/user/about">
+                <i className="fa-solid fa-circle-info"></i>
                 <span>{t("dasturhaqida")}</span>
               </Link>
             </li>

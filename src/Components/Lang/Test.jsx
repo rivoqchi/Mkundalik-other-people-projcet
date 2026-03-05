@@ -7,7 +7,7 @@ import { useLoading } from "../Additional/LoadingScreen";
 import Send from "./Send";
 import { API } from "../../config";
 function TestCreator() {
-const { setLoading } = useLoading();
+  const { setLoading } = useLoading();
   const [selectedNormativeId, setSelectedNormativeId] = useState("");
   const [language, setLanguage] = useState("");
   const [allTests, setAllTests] = useState([]);
@@ -17,7 +17,7 @@ const { setLoading } = useLoading();
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const [selectedTestId, setSelectedTestId] = useState("");
-  
+
   const handleShow5 = (testId) => {
     setSelectedTestId(testId); // testId ni state ga saqlash
     setShowModal5(true); // Modalni ochish
@@ -103,7 +103,7 @@ const { setLoading } = useLoading();
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     getAllTests();
   }, []);
@@ -122,9 +122,9 @@ const { setLoading } = useLoading();
     <div className="mh100">
 
       <div className="text-end">
-      <Button className="m-5" variant="primary" onClick={() => setShowModal(true)}>
-        + Yangi Test
-      </Button>
+        <Button className="m-5" variant="primary" onClick={() => setShowModal(true)}>
+          + Yangi Test
+        </Button>
       </div>
       <div className="table-responsive">
         <Table striped bordered hover className="custom-table">
@@ -159,7 +159,7 @@ const { setLoading } = useLoading();
                         setSelectedNormativeId(norm._id);
                         handleShow();
                       }}
-                      >
+                    >
                       O‘chirish
                     </Button>
                     <Button
@@ -171,7 +171,7 @@ const { setLoading } = useLoading();
                         setSelected(norm.sent.map((item) => item));
                         setPassed(norm.pass.map((item) => item));
                       }}
-                      
+
                     >
                       Yuborish
                     </Button>
@@ -301,7 +301,7 @@ const { setLoading } = useLoading();
                               onClick={() => removeOption(oIndex)}
                               className="ms-2"
                             >
-                              <i class="fa-solid fa-trash"></i>
+                              <i className="fa-solid fa-trash"></i>
                             </Button>
                           </div>
                         ))}
@@ -323,7 +323,7 @@ const { setLoading } = useLoading();
                     onClick={() => remove(qIndex)}
                     className="mt-2"
                   >
-                    Savolni o`chirish <i class="fa-solid fa-trash"></i>
+                    Savolni o`chirish <i className="fa-solid fa-trash"></i>
                   </Button>
                 </div>
               </div>
@@ -377,7 +377,7 @@ const { setLoading } = useLoading();
           <Modal.Title>Yuborish</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Send testId={selectedTestId} passed={passed} selected={selected} setSelected={setSelected} handleClose5={handleClose5}/>
+          <Send testId={selectedTestId} passed={passed} selected={selected} setSelected={setSelected} handleClose5={handleClose5} />
         </Modal.Body>
       </Modal>
     </div>

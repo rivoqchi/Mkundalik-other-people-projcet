@@ -39,6 +39,8 @@ import Bayram from './Bayram';
 import Footer from '../Footer';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
+import SecurityDashboard from './SecurityDashboard';
+import Security from '../Security/Security';
 function SuperAdminRoute() {
   const location = useLocation();
   return (
@@ -54,11 +56,11 @@ function SuperAdminRoute() {
 
         {/* O'ng taraf: Navbar va asosiy content */}
         <div className="col-10 overflow-y-auto h-100vh navv d-flex flex-column p-0">
-        <div className={`bg-always flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
+        <div className={`bg- flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
         <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
             <Routes>
               <Route path="/" exact element={<SuperAdmin />} />
-              <Route path="/dashboard" exact element={<Dashboard />} />
+              <Route path="/dashboard" exact element={<SecurityDashboard />} />
               <Route path="/about" exact element={<Info />} />
               <Route path="/about/news" exact element={<News />} />
               <Route path="/about/statistics" exact element={<UmumiyStat />} />
@@ -89,8 +91,10 @@ function SuperAdminRoute() {
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
+              <Route path="/profile/security" exact element={<Security />} />
               <Route path="/*" exact element={<NotFound404 />} />
               <Route path="/test/:id" exact element={<TestPage />} />
+              <Route path="/security" exact element={<SecurityDashboard />} />
 
             </Routes>
             <Footer/>

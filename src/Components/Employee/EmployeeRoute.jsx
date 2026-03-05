@@ -22,6 +22,7 @@ import LangRu from '../Admin/LangRu';
 import LangEn from '../Admin/LangEn';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
+import Security from '../Security/Security';
 function EmployeeRoute() {
   const location = useLocation();
   return (
@@ -37,7 +38,7 @@ function EmployeeRoute() {
 
         {/* O'ng taraf: Navbar va asosiy content */}
         <div className="col-10 overflow-y-auto h-100vh navv d-flex flex-column p-0">
-        <div className={`bg-always flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
+        <div className={` flex-grow-1 ${location.pathname.includes("statistics") ? "stat-page" : ""}`}>
         <Navbarr /> {/* Har doim ekranning o‘ng yuqori qismida turadi */}
             <Routes>
               
@@ -59,6 +60,7 @@ function EmployeeRoute() {
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
               <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
               <Route path="/test/:id" exact element={<TestPage />} />
+              <Route path="/profile/security" exact element={<Security />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
             <Footer/>

@@ -17,6 +17,7 @@ import flag from "../Images/half-flag.JPG";
 import smalllogo from "../Images/metroblanklogo.png";
 import { useLoading } from "../Additional/LoadingScreen";
 import Alert from "../Additional/Alert";
+import { motion } from "framer-motion";
 function ScheduleRate() {
   const { t } = useTranslation();
   const { setLoading } = useLoading();
@@ -131,20 +132,52 @@ function ScheduleRate() {
 
   // PDF yaratish funksiyasi
   const generatePDF = async () => {
-    const input = componentRef.current;
-    const canvas = await html2canvas(input, { scale: 10 }); // Kattaroq ko‘rinish uchun ko‘lam
-    const imgData = canvas.toDataURL("image/jpeg", 1); // Buni 0.8 qilsa ham bo`ladi
+    setLoading(true);
+    try {
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pages = document.querySelectorAll(".a4-page");
 
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = canvas.width / 2; // Tasvirni siqish
-    const imgHeight = canvas.height / 2;
-    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      for (let i = 0; i < pages.length; i++) {
+        const canvas = await html2canvas(pages[i], {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          logging: false
+        });
 
-    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth * ratio, imgHeight * ratio);
-    pdf.save("hisobot.pdf");
+        const imgData = canvas.toDataURL("image/jpeg", 0.85);
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, 0, 210, 297, undefined, 'FAST');
+      }
+
+      pdf.save(
+        `${thisScheduleHistory.beginnerName || "hisobot"}_${thisScheduleHistory.startedAt?.slice(0, 10) || "sana"}_mkundalik.uz.pdf`
+      );
+    } catch (error) {
+      console.error("PDF Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  // Pagination Logic: chunk tasks into pages
+  const TASKS_PER_PAGE_FIRST = 8;
+  const TASKS_PER_PAGE_REST = 15;
+
+  const chunkTasks = (tasks) => {
+    if (!tasks || tasks.length === 0) return [[]];
+    const chunks = [];
+    chunks.push(tasks.slice(0, TASKS_PER_PAGE_FIRST));
+
+    let remaining = tasks.slice(TASKS_PER_PAGE_FIRST);
+    while (remaining.length > 0) {
+      chunks.push(remaining.slice(0, TASKS_PER_PAGE_REST));
+      remaining = remaining.slice(TASKS_PER_PAGE_REST);
+    }
+    return chunks;
+  };
+
+  const taskPages = chunkTasks(thisScheduleHistory.tasks || []);
 
   const currentUrl = `https://mkundalik.uz/documents/archive/schedule/${thisScheduleHistory._id}`;
   const currentDateTime = format(new Date(), "dd.MM.yyyy HH:mm");
@@ -177,8 +210,13 @@ function ScheduleRate() {
 
   const handleSubmit = async () => {
     if (!manualRating || !comment.trim()) {
-      alert("Barcha maydonlarni to‘ldiring");
-      setIsCommentEmpty(true); // commentquacke klassini qo‘shish uchun
+      setAlert((prev) => ({
+        show: true,
+        type: "error",
+        message: "Baholash bali va izohni kiriting",
+        trigger: prev.trigger + 1,
+      }));
+      setIsCommentEmpty(true);
       return;
     }
 
@@ -208,222 +246,129 @@ function ScheduleRate() {
           trigger={alert.trigger}
         />
       )}
-      <div ref={componentRef} className="hisobot">
-        <div className="scheduleshistory">
-          <div className="scheduletepa">
-            <div className="row align-items-center">
-              <div className="col-3 d-flex text-center">
-                <div className="d-block">
-                  <img className="schedulelogo" src={logo} alt="logo" />
-                  <img className="schedulelogo2" src={logomk} alt="logo" />
-                </div>
-                <img className="schedulelogo3" src={flag} alt="logo" />
-              </div>
-              <div className="col-9 bolddd fw-bold text-center">
-                "Toshkent metropoliteni" DUK kundalik hisobotlarni elektron
-                shakllantirish platformasi
-                <hr className="bolded" />
-                ГУП "Тошкент метрополитени" создание ежедневных отчетов
-                электронная платформа
-              </div>
-              {/* <div className="col-4 fw-bold text-center">
-              </div> */}
-            </div>
-          </div>
-          <br />
-          <hr className="hrnone" />
-          <div className="justify-content-between d-flex">
-            <img src={smalllogo} className="smalllogo" alt="logo" />
-            <div className="blankedd text-center">
-              <a href="https://mkundalik.uz">mkundalik.uz</a> tizimi bo‘yicha
-              taklif va murojaatlar uchun pochta manzili:{" "}
-              <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a>{" "}
-              | telefon: (71) 227-44-13. <br />
-              Quyida shakllantirilgan elektron hisobot mazmuniga hisobot egasi
-              mas'ul hisoblanadi.
-            </div>
-          </div>
-          <hr className="hrnone mb-2" />
-          <div className="scheduleinfo">
-            <div className="schedulebajaruvchilar">
-              <table className=" text-start">
-                <tbody>
-                  <tr>
-                    <td className="fw-bold">
-                      <i class="fa-solid fa-users-between-lines"></i> Kompleks:
-                    </td>
-                    <td className="border-none">
-                      {thisScheduleHistory.complex}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="fw-bold">
-                      <i class="fa-solid fa-people-line"></i> Xizmat:
-                    </td>
-                    <td>{thisScheduleHistory.department}</td>
-                  </tr>
-                  <tr>
-                    <td className="fw-bold">
-                      <i class="fa-solid fa-users"></i> Bo`lim:
-                    </td>
-                    <td>{thisScheduleHistory.section}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <br />
-          <p className="ochilgan text-center">
-            <b>{thisScheduleHistory?.startedAt?.slice(0, 10) || "N/A"}</b>
-          </p>
-          <h5 className="text-center">{t("kunhisoboti")}</h5>
-          <div className="scheduletasks">
-            {thisScheduleHistory.tasks?.map((task, index) => (
-              <div key={index} className="task-item">
-                <div className="">
-                  {/* {task.source === "majburiyat" && (
-                    <OverlayTrigger
-                      placement="top"
-                      delay={{ show: 0, hide: 0 }}
-                      overlay={(props) =>
-                        renderTooltip(props, t("lavozimmajburiyati"))
-                      }
-                    >
-                      <i
-                        title={t("lavozimmajburiyati")}
-                        className="fa-solid sources majburiyat fa-square"
-                      ></i>
-                    </OverlayTrigger>
-                  )} */}
-                  {/* {task.source === "qoshimcha" && (
-                    <OverlayTrigger
-                      placement="top"
-                      delay={{ show: 0, hide: 0 }}
-                      overlay={(props) =>
-                        renderTooltip(props, t("rahbartomonidanqoshimcha"))
-                      }
-                    >
-                      <i
-                        title={t("rahbartomonidanqoshimcha")}
-                        className="fa-solid sources qoshimcha fa-square"
-                      ></i>
-                    </OverlayTrigger>
-                  )} */}
-                  {/* {task.source === "tashabbus" && (
-                    <OverlayTrigger
-                      placement="top"
-                      delay={{ show: 0, hide: 0 }}
-                      overlay={(props) =>
-                        renderTooltip(props, t("xodimtashabbusi"))
-                      }
-                    >
-                      <i
-                        title={t("xodimtashabbusi")}
-                        className="fa-solid sources tashabbus fa-square"
-                      ></i>
-                    </OverlayTrigger>
-                  )} */}
-                  <b>{index + 1}.</b> <span>{task.title}</span>
-                </div>
-                <hr className="hrnone2" />
-              </div>
-            ))}
-            <div className="schedulerated">
-              <div className="justify-content-between d-flex">
-                <p>
-                  {thisScheduleHistory?.rated ? (
-                    thisScheduleHistory.ratedName ? (
-                      <>
-                        <b>{thisScheduleHistory.ratedName}</b> {t("ratedBy")}:
-                      </>
-                    ) : (
-                      t("rated")
-                    )
-                  ) : (
-                    t("nonrated")
-                  )}
-                </p>
-                <span className="rateschhh">
-                  {thisScheduleHistory.rated ? (
-                    <div className="align-items-center justify-content-center">
-                      <i className="fa-regular fa-star"></i>
-                      {thisScheduleHistory.rated}
-                      {"/100"}
+      <div ref={componentRef} className="a4-container">
+        {taskPages.map((pageTasks, pageIdx) => (
+          <div key={pageIdx} className="a4-page shadow-lg">
+            {/* Header: Only on first page */}
+            {pageIdx === 0 && (
+              <>
+                <div className="scheduletepa">
+                  <div className="row align-items-center">
+                    <div className="col-3 d-flex text-center">
+                      <div className="d-block">
+                        <img className="schedulelogo" src={logo} alt="logo" />
+                        <img className="schedulelogo2" src={logomk} alt="logo" />
+                      </div>
+                      <img className="schedulelogo3" src={flag} alt="logo" />
                     </div>
-                  ) : (
-                    t("-")
-                  )}
-                </span>
-              </div>
-            </div>
-            {thisScheduleHistory.comment && (
-              <div className="commentsch align-items-center justify-content-between d-flex">
-                <div className="">
-                  <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                    <div className="col-9 bolddd fw-bold text-center" style={{ fontSize: '10pt', lineHeight: '1.2' }}>
+                      "Toshkent metropoliteni" DUK kundalik hisobotlarni elektron shakllantirish platformasi
+                      <hr className="bolded my-1" />
+                      ГУП "Тошкент метрополитени" создание ежедневных отчетов электронная платформа
+                    </div>
+                  </div>
                 </div>
-                <i
-                  disabled={thisScheduleHistory.reported}
-                  onClick={handleShow}
-                  className="fa-solid excla fa-triangle-exclamation"
-                ></i>
+                <div className="d-flex justify-content-between align-items-center mt-3 mb-1">
+                  <img src={smalllogo} className="smalllogo" alt="logo" style={{ width: '40px' }} />
+                  <div className="blankedd text-center" style={{ fontSize: '8pt', opacity: 0.8 }}>
+                    mkundalik.uz tizimi bo‘yicha taklif va murojaatlar uchun pochta manzili: mkundalik@tashmetro.uz | telefon: (71) 227-44-13. <br />
+                    Quyida shakllantirilgan elektron hisobot mazmuniga hisobot egasi mas'ul hisoblanadi.
+                  </div>
+                </div>
+                <hr className="hrnone mb-3" />
+
+                <div className="scheduleinfo mb-3">
+                  <table style={{ fontSize: '10pt', width: '100%' }}>
+                    <tbody>
+                      <tr>
+                        <td className="fw-bold" style={{ width: '100px' }}>Kompleks:</td>
+                        <td>{thisScheduleHistory.complex}</td>
+                      </tr>
+                      <tr>
+                        <td className="fw-bold">Xizmat:</td>
+                        <td>{thisScheduleHistory.department}</td>
+                      </tr>
+                      {thisScheduleHistory.section && thisScheduleHistory.section !== "Yuqori turuvchi" && (
+                        <tr>
+                          <td className="fw-bold">Bo`lim:</td>
+                          <td>{thisScheduleHistory.section}</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="ochilgan text-center mb-1">
+                  <b>{thisScheduleHistory?.startedAt?.slice(0, 10) || "N/A"}</b>
+                </p>
+                <h5 className="text-center fw-bold mb-3">{t("kunhisoboti")}</h5>
+              </>
+            )}
+
+            {/* If not first page, add a small header */}
+            {pageIdx > 0 && (
+              <div className="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                <span className="fw-bold" style={{ fontSize: '10pt' }}>{thisScheduleHistory.beginnerName} - Kun hisoboti</span>
+                <span style={{ fontSize: '9pt', color: '#666' }}>Sana: {thisScheduleHistory?.startedAt?.slice(0, 10)}</span>
               </div>
             )}
-            <div className="schedulebajaruvchilar mt-3 d-flex justify-content-between align-items-center">
-              <span>{thisScheduleHistory.degree || t("infonotfound")}</span>
-              <div
-                className="qr-container text-center"
-                // style={{ marginLeft: "20px" }}
-              >
-                <QRCodeSVG value={currentUrl} size={80} />
-              </div>
-              <span>{thisScheduleHistory.beginnerName}</span>
+
+            {/* Task Items */}
+            <div className="scheduletasks flex-grow-1">
+              {pageTasks.map((task, index) => {
+                const globalIndex = pageIdx === 0 ? index : TASKS_PER_PAGE_FIRST + (pageIdx - 1) * TASKS_PER_PAGE_REST + index;
+                return (
+                  <div key={index} className="task-item mb-2 pb-1 border-bottom border-light">
+                    <div style={{ fontSize: '11pt', lineHeight: '1.4' }}>
+                      <b className="me-2">{globalIndex + 1}.</b> <span>{task.title}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </div>
-          <div>
-            {/* <div className="scheduleconfirms text-end mb-1">
-              {t("infotasdiqlaydi")}:{" "}
-              <span>{thisScheduleHistory.beginnerName}</span>
-            </div> */}
-            {/* <div className="warningtext">
-{t("ushbustikerlar")}
-  <ul className="list-unstyled">
-    <li><i className="fa-solid sources majburiyat fa-square"></i> - {t("lavozimmajburiyati")}</li>
-    <li><i className="fa-solid sources qoshimcha fa-square"></i> - {t("rahbartomonidanqoshimcha")}</li>
-    <li><i className="fa-solid sources tashabbus fa-square"></i> - {t("xodimtashabbusi")}</li>
-  </ul>
-</div> */}
-            {/* checkpoint */}
 
-            {/* checkpoint */}
+            {/* Footer / Meta: Only on last page */}
+            {pageIdx === taskPages.length - 1 && (
+              <div className="mt-4 border-top pt-3">
+                <div className="d-flex justify-content-between">
+                  <div style={{ fontSize: '10pt' }}>
+                    {thisScheduleHistory?.rated && (
+                      <div className="mb-2">
+                        <b>{thisScheduleHistory.ratedName || t("rahbar")}</b> {t("ratedBy")}:
+                        <span className="ms-2 badge bg-success bg-opacity-10 text-success border border-success-subtle px-3">
+                          {thisScheduleHistory.rated}/100
+                        </span>
+                      </div>
+                    )}
+                    {thisScheduleHistory.comment && (
+                      <div className="mb-2 text-muted" style={{ fontSize: '9pt', fontStyle: 'italic' }}>
+                        <b>{t("comment")}:</b> {thisScheduleHistory.comment}
+                      </div>
+                    )}
+                  </div>
+                </div>
 
-            {/* <div className="current-datetime text-end mx-5">
-              {currentDateTime}
-            </div> */}
-          </div>
-
-          {/* checkpoint */}
-          {/* <div className="d-flex align-items-center justify-content-between">
-            <div className="pdfqr">
-              <div className="exclamationqr">
-                {t("checkwithqr")}. <br />
-                {t("doconly")}{" "}
-                <a
-                  href="http://mkundalik.uz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  mkundalik.uz
-                </a>{" "}
-                {t("onsite")}
-                <br />
-                {t("egasijavobgar")}.
-                <div className="current-datetime text-end mx-5">
-                  {currentDateTime}
+                <div className="d-flex justify-content-between align-items-end mt-3">
+                  <div style={{ fontSize: '10pt' }}>
+                    <div className="fw-bold mb-1">{thisScheduleHistory.degree || "Xodim"}</div>
+                    <div className="border-top pt-1 mt-2" style={{ width: '150px', fontSize: '8pt', color: '#999' }}>{t("imzo")}: ________________</div>
+                    <div className="mt-2">{thisScheduleHistory.beginnerName}</div>
+                  </div>
+                  <div className="qr-box text-center">
+                    <QRCodeSVG value={currentUrl} size={70} />
+                    <div style={{ fontSize: '7pt', marginTop: '5px', color: '#999' }}>{t("tekshirish_qr")}</div>
+                  </div>
                 </div>
               </div>
+            )}
+
+            {/* Page Numbering Footer */}
+            <div className="page-footer-meta">
+              <span style={{ fontSize: '8pt' }}>mkundalik.uz - Elektron hisobot tizimi</span>
+              <span className="fw-bold">{pageIdx + 1} / {taskPages.length}</span>
+              <span style={{ fontSize: '8pt' }}>{t("hujjat_id")}: {thisScheduleHistory._id?.slice(-8).toUpperCase()}</span>
             </div>
-          </div> */}
-        </div>
+          </div>
+        ))}
       </div>
       <div className="d-flex justify-content-evenly align-items-center">
         <button
@@ -433,85 +378,94 @@ function ScheduleRate() {
         >
           <i className="fa-solid fa-download"></i> {t("pdf")}
         </button>
-        {/* <DownloadDocx
-          thisScheduleHistory={thisScheduleHistory}
-          currentDateTime={currentDateTime}
-          degree={thisScheduleHistory.degree}
-        /> */}
       </div>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Баҳолаш</Modal.Title>
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered
+        size="lg"
+        className="premium-rating-modal"
+      >
+        <Modal.Header closeButton className="border-0 pb-0">
+          <Modal.Title className="fw-bold w-100 text-center mt-3">
+            <i className="fa-solid fa-star-half-stroke text-warning me-2"></i>
+            {t("baholash")}
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          
-          <div className="bahoinput text-center">
-            {/* <div className="">
-            <i className="fa-solid ourai fa-robot"></i>
-          {setAI && (
-            <Spinner animation="border" size="sm" className="input-spinner" />
-          )}
-            </div> */}
-            <div className=""><b>{thisScheduleHistory.beginnerName}</b> uchun tizim taklif qilayotgan ball: {manualRating}</div>{" "}
-            <input
-              type="number"
-              value={manualRating}
-              onChange={handleInputChange}
-              min="1"
-              max="100"
-              // className={setAI ? '' : 'no-ai'}
-              // disabled={setAI}
+        <Modal.Body className="px-4 pb-4">
+          <div className="rating-user-teaser text-center mb-4 p-3 rounded-4 bg-light">
+            <div className="text-dark small mb-1">{t("didone")}:</div>
+            <div className="fw-bold h5 mb-0 text-primary">{thisScheduleHistory.beginnerName}</div>
+          </div>
+
+          <div className="baho-input-wrapper text-center mb-4">
+            <label className="d-block small mb-2">{t("system_suggestion")}</label>
+            <div className="d-flex align-items-center justify-content-center gap-3">
+              <input
+                type="number"
+                value={manualRating}
+                onChange={handleInputChange}
+                min="1"
+                max="100"
+                className="premium-rating-input"
+              />
+              <span className="h4 mb-0 ">/ 100</span>
+            </div>
+          </div>
+
+          <div className="stars-selection text-center mb-4">
+            <div className="stars-grid">
+              {[...Array(10)].map((_, index) => (
+                <motion.i
+                  key={index}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className={`fastar-large ${index < selectedStars ? "selected" : ""}`}
+                  onClick={() => handleStarClick(index)}
+                >
+                  ★
+                </motion.i>
+              ))}
+            </div>
+            <div className="small mt-2">{t("quick_rating_hint")}</div>
+          </div>
+
+          <div className="comment-section">
+            <label className="d-block small mb-2">{t("detailed_comment_label")}</label>
+            <textarea
+              className={`premium-textarea ${isCommentEmpty ? "shake-error" : ""}`}
+              value={comment}
+              placeholder={t("comment_placeholder")}
+              onChange={(e) => {
+                setComment(e.target.value);
+                setIsCommentEmpty(false);
+              }}
+              rows="4"
             />
           </div>
-          <div className="stars">
-            {[...Array(10)].map((_, index) => (
-              <i
-                key={index}
-                className={`fastar ${index < selectedStars ? "selected" : ""}`}
-                onClick={() => handleStarClick(index)}
-              >
-                ★
-              </i>
-            ))}
-          </div>
-          <textarea
-            className={`kghgv ${isCommentEmpty ? "commentquacke" : ""}`}
-            value={comment}
-            placeholder="Баҳолаш бўйича изоҳ қолдириш зарур:"
-            onChange={(e) => {
-              setComment(e.target.value);
-              setIsCommentEmpty(false); // Foydalanuvchi yozishni boshlasa, class o‘chadi
-            }}
-            rows="3"
-          />
-          {/* <div className="row">
-            <div className="col-6 text-center">
-              <button className="w-100"onClick={() => setTasdiq(true)}>Bahoni tasdiqlash</button>
-            </div>
-          </div> */}
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Бекор қилиш
+        <Modal.Footer className="border-0 pt-0 px-4 pb-4">
+          <Button variant="light" className="px-4 py-2 rounded-pill fw-bold" onClick={() => setShowModal(false)}>
+            {t("bekorqilish")}
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Юбориш
+          <Button variant="primary" className="px-5 py-2 rounded-pill fw-bold shadow-sm" onClick={handleSubmit}>
+            {t("send")} <i className="fa-solid fa-paper-plane ms-2"></i>
           </Button>
         </Modal.Footer>
       </Modal>
       <div className="schedulerated">
         {!showModal && (
-  <div className="text-center">
-    <Button
-      className="baholash-wave-btn"
-      variant="primary"
-      onClick={() => setShowModal(true)}
-    >
-      {t("baholash")} <i className="fa-regular fa-thumbs-up"></i>
-    </Button>
-  </div>
-)}
+          <div className="text-center">
+            <Button
+              className="baholash-wave-btn"
+              variant="primary"
+              onClick={() => setShowModal(true)}
+            >
+              {t("baholash")} <i className="fa-regular fa-thumbs-up"></i>
+            </Button>
+          </div>
+        )}
 
 
         {thisScheduleHistory.comment && (

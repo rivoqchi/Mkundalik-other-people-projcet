@@ -47,7 +47,7 @@ function Langages() {
 
   return (
     <div className="language-selector-container">
-      <h2 className="language-selector-title">{t("chooselang")}</h2>
+      <h2 className="language-selector-title text-primary">{t("chooselang")}</h2>
       <div className="language-button-group">
         <button
           className="language-button rus-lang-button"

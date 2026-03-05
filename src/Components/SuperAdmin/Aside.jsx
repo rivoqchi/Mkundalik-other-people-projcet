@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo2 from '../Images/logo2.png';
 import axios from 'axios';
@@ -7,134 +7,132 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
-function Aside() {  
-    const [show, setShow] = useState(false);
-  
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+import { signout } from '../Auth/CheckAuth';
+function Aside() {
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const navigate = useNavigate();
   const location = useLocation();
-  let token = window.localStorage.getItem("token");
-
-  const logout = async () => {
-    try {
-      const response = await axios.get(`${API}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      
-      window.localStorage.clear();
-      navigate('/');
-    } catch (error) {
-      console.error('Chiqishda xatolik yuz berdi:', error);
-    }
+  const logout = () => {
+    signout(() => {
+      navigate("/");
+    });
   };
+
 
   return (
     <>
-    <div className="aside">
-      <div className="aside-logo">
-        <div className="d-flex align-items-center justify-content-center">
-        <img className='noteimg' src={note} alt="" />
-        <Link to='/superadmin/dashboard'><img className='asidelogo' src={logo} alt="" /></Link>
+      <div className="aside">
+        <div className="aside-logo">
+          <i className="fa-solid fa-shield-halved"></i>
+          <h4>{window.localStorage.getItem("fullName") || "Super Admin"}</h4>
+          <p className="text-muted small mt-1">{window.localStorage.getItem("degree") || "System Administrator"}</p>
         </div>
-        <h5>{window.localStorage.getItem("fullName")}</h5>
-        <p>{window.localStorage.getItem("degree")}</p>
+
+        <nav className="aside-menu">
+          <ul className="mb-4">
+            <li>
+              <Link to="/superadmin/dashboard" className={location.pathname.startsWith("/superadmin/dashboard") ? "active" : ""}>
+                <i className="fa-solid fa-gauge-high"></i>
+                <span>Xavfsizlik</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/superadmin/complex" className={location.pathname.startsWith("/superadmin/complex") ? "active" : ""}>
+                <i className="fa-solid fa-layer-group"></i>
+                <span>Komplekslar</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/superadmin/departments" className={location.pathname.startsWith("/superadmin/departments") ? "active" : ""}>
+                <i className="fa-solid fa-building-user"></i>
+                <span>Xizmatlar</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/superadmin/sections" className={location.pathname.startsWith("/superadmin/sections") ? "active" : ""}>
+                <i className="fa-solid fa-puzzle-piece"></i>
+                <span>Bo`limlar</span>
+              </Link>
+            </li>
+            <li>
+              <Link className={location.pathname === "/superadmin/schedule/history" ? "active" : ""} to="/superadmin/schedule/history">
+                <i className="fa-solid fa-clock-rotate-left"></i>
+                <span>Tarix</span>
+              </Link>
+            </li>
+          </ul>
+
+          <div className="menu-divider px-4 mb-3"><hr className="m-0 opacity-10" /></div>
+
+          <ul className="mb-4">
+            <li>
+              <Link to="/superadmin/employees/adduser" className={location.pathname.startsWith("/superadmin/employees/adduser") ? "active" : ""}>
+                <i className="fa-solid fa-user-plus"></i>
+                <span>Xodim qo`shish</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/superadmin/employees/allusers" className={location.pathname.startsWith("/superadmin/employees/allusers") ? "active" : ""}>
+                <i className="fa-solid fa-users-gear"></i>
+                <span>Barcha xodimlar</span>
+              </Link>
+            </li>
+          </ul>
+
+          <div className="menu-divider px-4 mb-3"><hr className="m-0 opacity-10" /></div>
+
+          <ul>
+            {/* <li>
+              <Link to="/superadmin/report" className={location.pathname.startsWith("/superadmin/report") ? "active" : ""}>
+                <i className="fa-solid fa-file-contract"></i>
+                <span>Davriy hisobot</span>
+              </Link>
+            </li> */}
+            <li>
+              <Link to="/superadmin/report/global" className={location.pathname.startsWith("/superadmin/report/global") ? "active" : ""}>
+                <i className="fa-solid fa-globe"></i>
+                <span>Ma'lumotnoma</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/superadmin/report/holidays" className={location.pathname.startsWith("/superadmin/report/holidays") ? "active" : ""}>
+                <i className="fa-solid fa-calendar-check"></i>
+                <span>Bayramlar</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/superadmin/profile" className={location.pathname.startsWith("/superadmin/profile") ? "active" : ""}>
+                <i className="fa-solid fa-user-shield"></i>
+                <span>Profil sozlamalari</span>
+              </Link>
+            </li>
+            <li className="mt-4">
+              <Link onClick={handleShow} className="text-danger opacity-75">
+                <i className="fa-solid fa-right-from-bracket"></i>
+                <span>Tizimdan chiqish</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <nav className="aside-menu">
-          <ul className='ggfgf'>
-          <li className={location.pathname === '/superadmin/complex' ? 'active' : ''}>
-            <Link to="/superadmin/complex">
-            <i className="fa-solid fa-code-fork"></i>
-              <span>Komplekslar</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/departments' ? 'active' : ''}>
-            <Link to="/superadmin/departments">
-            <i className="fa-solid fa-building-user"></i>
-              <span>Xizmatlar</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/sections' ? 'active' : ''}>
-            <Link to="/superadmin/sections">
-            <i className="fa-solid fa-puzzle-piece"></i>
-              <span>Bo`limlar</span>
-            </Link>
-          </li>
-          </ul>
-          <ul className='ggfgf'>
-          <li className={location.pathname === '/superadmin/employees/adduser' ? 'active' : ''}>
-            <Link to="/superadmin/employees/adduser">
-              <i className="fa-solid fa-sitemap"></i>
-              <span>Yangi xodim qo`shish</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/employees/allusers' ? 'active' : ''}>
-            <Link to="/superadmin/employees/allusers">
-              <i className="fa-solid fa-sitemap"></i>
-              <span>Barcha xodimlar</span>
-            </Link>
-          </li>
-          </ul>
-        <ul>
-          <li className={location.pathname === '/superadmin/report' ? 'active' : ''}>
-            <Link to="/superadmin/report">
-            <i className="fa-solid fa-receipt"></i>
-              <span>Davriy hisobot</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/report/global' ? 'active' : ''}>
-            <Link to="/superadmin/report/global">
-            <i className="fa-solid fa-receipt"></i>
-              <span>Ma'lumotnoma</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/superadmin/report/holidays' ? 'active' : ''}>
-            <Link to="/superadmin/report/holidays">
-            <i className="fa-solid fa-gift"></i>
-              <span>Bayram kunlari</span>
-            </Link>
-          </li>
-
-
-
-          <li className={location.pathname === '/superadmin/about' ? 'active' : ''}>
-            <Link to="/superadmin/about">
-              <i className="fa-solid fa-info"></i>
-              <span>Dastur haqida</span>
-            </Link>
-          </li>
-
-                                                      <li
-                                  className={
-                                    location.pathname === "/superadmin/profile" ? "active" : ""
-                                  }
-                                >
-                                  <Link to="/superadmin/profile">
-                                    <i class="fa-solid fa-user"></i>
-                                    <span>
-                                    Mening ma'lumotlarim
-                                    </span>
-                                  </Link>
-                                </li>
-        </ul>
-      </nav>
-    </div>
-            <Modal centered show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Chiqish</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Profildan chiqmoqchimisiz?</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Bekor qilish
-              </Button>
-              <Button variant="danger" onClick={logout}>
-                Chiqish
-              </Button>
-            </Modal.Footer>
-          </Modal>
+      <Modal centered show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Chiqish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Profildan chiqmoqchimisiz?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Bekor qilish
+          </Button>
+          <Button variant="danger" onClick={logout}>
+            Chiqish
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

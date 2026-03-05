@@ -1,73 +1,66 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo2 from '../Images/logo2.png';
 import axios from 'axios';
 import { API } from '../../config';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useTranslation } from "react-i18next";
+import { signout } from "../Auth/CheckAuth";
 
 function Aside() {
   const navigate = useNavigate();
   const location = useLocation(); // Hozirgi yo'lni olish
-  let token = window.localStorage.getItem("token");
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const logout = async () => {
-    try {
-      const response = await axios.get(`${API}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      
-      window.localStorage.clear();
-      navigate('/');
-    } catch (error) {
-      console.error('Chiqishda xatolik yuz berdi:', error);
-    }
+  const logout = () => {
+    signout(() => {
+      navigate("/");
+    });
   };
 
   return (
     <>
-    <div className="aside">
-      <div className="aside-logo">
-      <i className="fa-solid fa-user"></i>
-        <h5>{window.localStorage.getItem("fullName")}</h5>
-        <p>{window.localStorage.getItem("degree")}</p>
+      <div className="aside">
+        <div className="aside-logo">
+          <i className="fa-solid fa-user"></i>
+          <h5>{window.localStorage.getItem("fullName")}</h5>
+          <p>{window.localStorage.getItem("degree")}</p>
+        </div>
+        <nav className="aside-menu">
+          <ul>
+            <li>
+              <Link className={location.pathname.startsWith("/user/schedule/new") ? "active" : ""} to="/user/schedule/new">
+                <i className="fa-solid fa-list-check"></i>
+                <span>Kundalik ishlarni qayd etish</span>
+              </Link>
+            </li>
+            <li>
+              <Link className={location.pathname === "/user/schedule/history" ? "active" : ""} to="/user/schedule/history">
+                <i className="fa-solid fa-clock-rotate-left"></i>
+                <span>Kundalik ish faoliyatim</span>
+              </Link>
+            </li>
+            <li>
+              <Link className={location.pathname.startsWith("/user/profile") ? "active" : ""} to="/user/profile">
+                <i className="fa-regular fa-user"></i>
+                <span>Mening ma'lumotlarim</span>
+              </Link>
+            </li>
+            <li>
+              <Link onClick={handleShow}>
+                <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Chiqish</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <nav className="aside-menu">
-        <ul>
-          <li className={location.pathname === '/user/schedule/new' ? 'active' : ''}>
-            <Link to="/user/schedule/new">
-              <i className="fa-solid fa-list-check"></i>
-              <span>Kundalik ishlarni qayd etish</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/user/schedule/history' ? 'active' : ''}>
-            <Link to="/user/schedule/history">
-              <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>Kundalik ish faoliyatim</span>
-            </Link>
-          </li>
-          <li className={location.pathname === '/user/profile' ? 'active' : ''}>
-            <Link to="/user/profile">
-              <i className="fa-regular fa-user"></i>
-              <span>Mening ma'lumotlarim</span>
-            </Link>
-          </li>
-          <li>
-            <Link onClick={handleShow}>
-              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-              <span>Chiqish</span>
-            </Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
-        <Modal centered show={show} onHide={handleClose}>
+      <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Chiqish</Modal.Title>
         </Modal.Header>

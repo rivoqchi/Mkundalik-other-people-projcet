@@ -1,26 +1,130 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import { signIn } from './CheckAuth';
 import logomk from '../Images/logo-png.png';
 import { useLoading } from "../Additional/LoadingScreen";
 import Alert from '../Additional/Alert';
-import Navbar from '../Navbar';
-import Footer from '../Footer';
 import { useTranslation } from "react-i18next";
-import { Button, Form, InputGroup } from "react-bootstrap";
+import ReCAPTCHA from "react-google-recaptcha";
+import Agreement from '../Agreement';
+import './Login.scss';
 
 const Login = () => {
   const { t } = useTranslation();
   const { setLoading } = useLoading();
-  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
-  const [values, setValues] = useState({ phone: '+998', password: '' });
+  const canvasRef = useRef(null);
+  const [alert, setAlert] = useState({ show: false, type: "", message: "", trigger: 0 });
+  const [values, setValues] = useState({ phone: '', password: '', captchaToken: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const [showAgreement, setShowAgreement] = useState(false);
+  const [tempUserData, setTempUserData] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // 🔑 Hozirgi URL
+  const location = useLocation();
 
-  const { phone, password } = values;
-const from = location.state?.from; // faqat string
+  const { phone, password, captchaToken } = values;
+  const from = location.state?.from;
+
+  useEffect(() => {
+    if (window.localStorage.getItem("force_security_refresh")) {
+      window.localStorage.removeItem("force_security_refresh");
+      window.location.reload();
+    }
+  }, []);
+
+  // Interactive Particle System
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+
+    let particles = [];
+    const particleCount = 100;
+    const mouse = { x: null, y: null, radius: 150 };
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.baseX = this.x;
+        this.baseY = this.y;
+        this.density = (Math.random() * 30) + 1;
+        this.color = `rgba(99, 102, 241, ${Math.random() * 0.5 + 0.2})`;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
+      }
+      update() {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        let forceDirectionX = dx / distance;
+        let forceDirectionY = dy / distance;
+        let maxDistance = mouse.radius;
+        let force = (maxDistance - distance) / maxDistance;
+        let directionX = forceDirectionX * force * this.density;
+        let directionY = forceDirectionY * force * this.density;
+
+        if (distance < mouse.radius) {
+          this.x -= directionX;
+          this.y -= directionY;
+        } else {
+          if (this.x !== this.baseX) {
+            let dx = this.x - this.baseX;
+            this.x -= dx / 10;
+          }
+          if (this.y !== this.baseY) {
+            let dy = this.y - this.baseY;
+            this.y -= dy / 10;
+          }
+        }
+      }
+    }
+
+    const init = () => {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].draw();
+        particles[i].update();
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    resizeCanvas();
+    init();
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   const handleChange = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
@@ -34,135 +138,294 @@ const from = location.state?.from; // faqat string
     setShowPassword(!showPassword);
   };
 
+  const onCaptchaChange = (token) => {
+    setValues({ ...values, captchaToken: token });
+  };
+
   const clickSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    signIn({ phone, password })
-      .then((data) => {
-        if (data.error) {
-          setLoading(false);
-          setAlert({ show: true, type: "error", message: data.error });
-        } else if (data.employee.role === "inactive") {
-          // 🛑 Role 'inactive' bo'lsa, hech narsani saqlamaymiz
-          setLoading(false);
-          window.localStorage.clear();
-          navigate('/inactive', { replace: true });
-        } else if (data.employee.role !== "new") {
-          // ✅ Role 'inactive' bo'lmasa va 'new' bo'lmasa - ma'lumotlarni saqlaymiz
-          window.localStorage.setItem("token", data.token);
-          window.localStorage.setItem("jwt", JSON.stringify({ token: data.token }));
-          window.localStorage.setItem("fullName", data.employee.name);
-          window.localStorage.setItem("degree", data.employee.degree);
-          window.localStorage.setItem("phone", data.employee.phone);
-          window.localStorage.setItem("role", data.employee.role);
-          window.localStorage.setItem("user_id", data.employee._id);
-          window.localStorage.setItem("bd", data.employee?.dateOfBirth?.slice(-5) ?? "11-19");
-          
-          setValues({ phone: '', password: '' });
-          setLoading(false);
+    if (!phone || !password) {
+      setAlert(prev => ({
+        show: true,
+        type: "info",
+        message: "Ma'lumotlarni to'ldiring!",
+        trigger: prev.trigger + 1
+      }));
+      return;
+    }
 
-          // 🔑 Yo'naltirish mantig'i
-          if (from) {
-            navigate(from, { replace: true });
+    setLoading(true);
+    const fullPhone = phone.startsWith('+998') ? phone : '+998' + phone;
+    const isLogina = location.pathname === '/logina';
+
+    signIn({ phone: fullPhone, password, captchaToken, loginType: isLogina ? 'admin' : 'user' })
+      .then((data) => {
+        if (data.captchaRequired) {
+          setLoading(false);
+          setShowCaptcha(true);
+          setAlert(prev => ({
+            show: true,
+            type: "warning",
+            message: "Xavfsizlik tekshiruvidan o'ting.",
+            trigger: prev.trigger + 1
+          }));
+        } else if (data.locked) {
+          setLoading(false);
+          setAlert(prev => ({
+            show: true,
+            type: "error",
+            message: data.error,
+            trigger: prev.trigger + 1
+          }));
+        } else if (data.error) {
+          setLoading(false);
+          setAlert(prev => ({
+            show: true,
+            type: "error",
+            message: data.error,
+            trigger: prev.trigger + 1
+          }));
+        } else {
+          // Check for agreement
+          if (!data.employee.agree) {
+            setTempUserData(data);
+            setLoading(false);
+            setShowAgreement(true);
             return;
           }
 
-          const dashboardRoutes = {
-            employee: "/user/dashboard",
-            admin: "/admin/dashboard",
-            superadmin: "/superadmin/dashboard",
-            complex: "/complex/dashboard",
-            department: "/department/dashboard",
-            hr: "/hr/dashboard",
-            lang: "/lang/dashboard",
-            commission: "/commission/dashboard",
-            sport: "/sport/dashboard",
-            at: "/at/dashboard",
-            boss: "/boss/dashboard"
-          };
-          
-          navigate(dashboardRoutes[data.employee.role] || "/", { replace: true });
-
-        } else {
-          // Yangi foydalanuvchi bo'lsa
-          setLoading(false);
-          navigate('/iamnew', { replace: true });
+          completeSignIn(data);
         }
       })
-      .catch(() => {
+      .catch((err) => {
         setLoading(false);
-        setAlert({ show: true, type: "error", message: "Serverda xatolik yuz berdi!" });
+        const errMsg = err.response?.data?.error || "Serverda xatolik yuz berdi!";
+        setAlert(prev => ({
+          show: true,
+          type: "error",
+          message: errMsg,
+          trigger: prev.trigger + 1
+        }));
       });
   };
 
+  const completeSignIn = (data) => {
+    window.localStorage.setItem("fullName", data.employee.name);
+    window.localStorage.setItem("degree", data.employee.degree);
+    window.localStorage.setItem("phone", data.employee.phone);
+    window.localStorage.setItem("role", data.employee.role);
+    window.localStorage.setItem("user_id", data.employee._id);
+    window.localStorage.setItem("isSignedIn", "true");
+
+    if (from) {
+      navigate(from, { replace: true });
+      return;
+    }
+
+    const dashboardRoutes = {
+      employee: "/user/dashboard",
+      admin: "/admin/dashboard",
+      superadmin: "/superadmin/dashboard",
+      complex: "/complex/dashboard",
+      department: "/department/dashboard",
+      hr: "/hr/dashboard",
+      lang: "/lang/dashboard",
+      commission: "/commission/dashboard",
+      sport: "/sport/dashboard",
+      at: "/at/dashboard",
+      boss: "/boss/dashboard"
+    };
+    navigate(dashboardRoutes[data.employee.role] || "/", { replace: true });
+  }
+
+  const handleAgreementAccept = async () => {
+    if (!tempUserData) return;
+    setLoading(true);
+    try {
+      await axios.put(`/auth/accept-agreement/${tempUserData.employee._id}`);
+      setShowAgreement(false);
+      completeSignIn(tempUserData);
+    } catch (error) {
+      setLoading(false);
+      setAlert(prev => ({
+        show: true,
+        type: "error",
+        message: "Xatolik yuz berdi!",
+        trigger: prev.trigger + 1
+      }));
+    }
+  };
+
+  // Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { type: "spring", damping: 12, stiffness: 100 } }
+  };
+
   return (
-    <>
-      <Navbar />
-      <MDBContainer fluid className='loginpg background-radial-gradient overflow-hidden'>
-        <MDBRow>
-          <MDBCol md='6' className='text-center text-md-start d-flex flex-column justify-content-center'>
-            <h1 className="my-5 display-3 fw-bold ls-tight px-3 text-white">
-              {t("tizimga")} <br />
-              <span style={{ color: 'hsl(218, 81%, 75%)' }}>{t("login")}</span>
-            </h1>
-            <p className='px-3' style={{ color: 'hsl(218, 81%, 85%)' }}>
-              {t("xizfoytizkir")}<br />
-            </p>
-          </MDBCol>
+    <div className="login-page-premium">
+      <canvas ref={canvasRef} className="particle-canvas" />
+      <div className="ambient-glows">
+        <div className="glow glow-1"></div>
+        <div className="glow glow-2"></div>
+        <div className="glow glow-3"></div>
+      </div>
 
-          <MDBCol md='6' className='position-relative'>
-            <div id="radius-shape-1" className="position-absolute rounded-circle shadow-5-strong"></div>
-            <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
+      <div className="split-layout">
+        {/* Visual Side */}
+        <motion.div
+          className="visual-side"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          <div className="cyber-core-container">
+            <div className="core-rings"></div>
+            <div className="core-orb"></div>
+          </div>
+          <div className="visual-text">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <img src={logomk} alt="Logo" />
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+            >
+              {t("xizfoytizkir")}
+            </motion.p>
+          </div>
+        </motion.div>
 
-            <MDBCard className='my-5 bg-glass'>
-              <MDBCardBody className='p-5'>
-                {alert.show && <Alert type={alert.type} message={alert.message} />}
-                <img src={logomk} alt="Logo" className="w-50 mx-auto d-block mb-4" />
+        {/* Form Side */}
+        <div className="form-side">
+          <motion.div
+            className="login-card-2"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div className="login-header-premium" variants={itemVariants}>
+              <div className="logo-badge">
+                <img src={logomk} alt="Logo" />
+              </div>
+              <h1>Kirish</h1>
+              <p className="subtitle">Tizimga kirish uchun ma'lumotlarni kiriting</p>
+            </motion.div>
 
-                <div className="new-input-group mb-4">
-                  <InputGroup>
-                    <InputGroup.Text className='inpgr'>+998</InputGroup.Text>
-                    <Form.Control
-                      type="number"
-                      className='inpgr shadow-none'
-                      placeholder="XXXXXXXXX"
-                      value={phone.slice(4)}
-                      onKeyDown={handleKeyDown}
-                      onChange={(e) => setValues({ ...values, phone: '+998' + e.target.value })}
-                    />
-                  </InputGroup>
-                </div>
+            <form onSubmit={clickSubmit} className="auth-form-premium">
+              <motion.div className="input-wrapper-cyber" variants={itemVariants}>
+                <label className="cyber-label">Telefon raqam</label>
+                <div className="field-icon"><i className="fa-solid fa-phone-volume"></i></div>
+                <input
+                  type="text"
+                  className="input-field"
+                  placeholder="99 XXX XX XX"
+                  value={phone.startsWith('+998') ? phone.slice(4) : phone}
+                  onChange={(e) => setValues({ ...values, phone: e.target.value })}
+                  onKeyDown={handleKeyDown}
+                />
+              </motion.div>
 
-                <div className="new-input-group mb-4">
-                  <Form.Group controlId="formPassword">
-                    <Form.Label>{t("parol")}</Form.Label>
-                    <InputGroup>
-                      <Form.Control
-                        className='inpgr shadow-none'
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder="Parolingiz"
-                        value={password}
-                        onKeyDown={handleKeyDown}
-                        onChange={handleChange('password')}
-                      />
-                      <Button variant="outline-secondary" className='inpgr' onClick={togglePasswordVisibility}>
-                        {showPassword ? <i className="fa-solid fa-eye-slash"></i> : <i className="fa-solid fa-eye"></i>}
-                      </Button>
-                    </InputGroup>
-                  </Form.Group>
-                </div>
+              <motion.div className="input-wrapper-cyber" variants={itemVariants}>
+                <label className="cyber-label">Parol</label>
+                <div className="field-icon"><i className="fa-solid fa-shield-keyhole"></i></div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="input-field"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={handleChange('password')}
+                  onKeyDown={handleKeyDown}
+                />
+                <button
+                  type="button"
+                  className="pass-toggle"
+                  onClick={togglePasswordVisibility}
+                >
+                  <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                </button>
+              </motion.div>
 
-                <button className='w-100 login-btn mb-4' size='md' onClick={clickSubmit}>{t("login")}</button>
-                <p className="text-center mt-3">
-                  {t("parolunut")}? <Link to='/signup'>{t("tiklash")}</Link>
-                </p>
-              </MDBCardBody>
-            </MDBCard>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-      <Footer />
-    </>
+              {showCaptcha && (
+                <motion.div
+                  className="captcha-container-premium"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                >
+                  <ReCAPTCHA
+                    sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                    onChange={onCaptchaChange}
+                    theme="dark"
+                  />
+                </motion.div>
+              )}
+
+              <motion.button
+                className="btn-cyber-submit"
+                type="submit"
+                variants={itemVariants}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="shimmer"></div>
+                <span>TIZIMGA KIRISH</span>
+                <i className="fa-solid fa-bolt-lightning"></i>
+              </motion.button>
+            </form>
+
+            <motion.div className="login-bottom-info" variants={itemVariants}>
+              <div className="divider"></div>
+              <div className="security-indicator">
+                <div className="status-dot"></div>
+                <span>SSL SHIFRLANGAN ULANISH</span>
+              </div>
+              <p className="signup-prompt">
+                <Link to='/signup'>{t("signup")}</Link>
+              </p>
+
+              <p className="signup-prompt"><Link to='/'>{t("homega")}</Link>
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {alert.show && (
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 50, opacity: 0 }}
+            className="alert-fixed-container"
+          >
+            <Alert
+              type={alert.type}
+              message={alert.message}
+              trigger={alert.trigger}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <Agreement
+        show={showAgreement}
+        onAccept={handleAgreementAccept}
+        onCancel={() => setShowAgreement(false)}
+      />
+    </div>
   );
 };
 

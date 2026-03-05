@@ -22,16 +22,13 @@ const postRequest = async (url, body) => {
 // GET requests
 const getRequest = async (url) => {
   try {
-    const token = localStorage.getItem("token"); // string token
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    };
-    if (token) headers.Authorization = `Bearer ${token}`; // faqat string
     const response = await fetch(`${API}${url}`, {
       method: "GET",
-      headers,
-      credentials: "include"
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include" // ✅ Sends httpOnly cookies automatically
     });
     return await response.json();
   } catch (err) {
@@ -54,34 +51,32 @@ export const createEmployee = (employee) => postRequest("/auth/create/newemploye
 export const newAdmin = (user) => postRequest("/auth/addnewadmin", user);
 
 // ❌ Signout
-export const signout = (next) => {
+export const signout = async (next) => {
   if (typeof window !== "undefined") {
-    localStorage.removeItem("token");
+    await getRequest("/auth/logout");
+    window.localStorage.clear();
     next?.();
-    return getRequest("/auth/signout");
   }
 };
 
 // ❌ isAuthenticated
 export const isAuthenticated = () => {
   if (typeof window === "undefined") return false;
-  const jwt = localStorage.getItem("token");
-  return jwt ? JSON.parse(jwt) : false;
+  return window.localStorage.getItem("isSignedIn") === "true";
 };
 
 // ❌ fetchRole
-    export const fetchRole = async () => {
-      const token = localStorage.getItem("jwt"); // <--- Haqiqiy kalit nomini ishlatib ko'ring
-      if (!token) return null;
-      const data = await getRequest("/auth", token);
-      return data?.message || null;
-    };
-    
+export const fetchRole = async () => {
+  const data = await getRequest("/auth");
+  if (data?.error) {
+    window.localStorage.clear();
+    return null;
+  }
+  return data?.role || window.localStorage.getItem("role");
+};
 
-// ❌ auth (GET request, body yo‘q)
-    export const auth = async () => {
-      const jwt = localStorage.getItem("jwt"); // <--- jwt kalitidan oling
-      const token = jwt ? JSON.parse(jwt).token : null; // Agar JWT obyekti ichida token bo'lsa
-      if (!token) return null; // Token topilmasa, so'rov yubormang
-      return await getRequest("/auth", token);
-    };
+
+// ❌ auth (Backend profile check)
+export const auth = async () => {
+  return await getRequest("/auth");
+};

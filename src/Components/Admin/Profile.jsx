@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API } from "../../config";
+import { signout } from '../Auth/CheckAuth';
 import React, { useState, useEffect } from "react";
 import logo from "../Images/logo-png.png";
 import year1 from "../Images/1year.png";
@@ -15,10 +16,10 @@ import EditProfile from "../EditProfile";
 import { useTranslation } from "react-i18next";
 import Accordion from "react-bootstrap/Accordion";
 import CelebrationModal from "../Celebration";
-
+import avatarr from "../Images/avatarr.png";
+import { Link } from "react-router-dom";
 function Profile() {
-    const [showCelebration, setShowCelebration] = useState(false);
-  let token = window.localStorage.getItem("token");
+  const [showCelebration, setShowCelebration] = useState(false);
   const { t } = useTranslation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -38,10 +39,10 @@ function Profile() {
     const stopSnow = localStorage.getItem("stop-snow") === "true";
     setIsOn(stopSnow);
   }, []);
-const [isChecked, setIsChecked] = useState(() => {
-  const snow = localStorage.getItem("snow");
-  return snow === null ? true : snow === "false";
-});
+  const [isChecked, setIsChecked] = useState(() => {
+    const snow = localStorage.getItem("snow");
+    return snow === null ? true : snow === "false";
+  });
 
 
   const [reportCount, setReportCount] = useState(0);
@@ -51,7 +52,8 @@ const [isChecked, setIsChecked] = useState(() => {
   useEffect(() => {
     async function fetchReportCount() {
       try {
-        const res = await fetch(`${API}/auth/counthisobot?_id=${user_id}`);
+        const res = await fetch(`${API}/auth/counthisobot?_id=${user_id}`, { credentials: "include" });
+
         if (res.ok) {
           const data = await res.json();
           setReportCount(data.count || 0);
@@ -116,23 +118,17 @@ const [isChecked, setIsChecked] = useState(() => {
   const handleViewFile = (fileId) => {
     setViewingFileId(fileId);
   };
-  const logout = async () => {
-    try {
-      const response = await axios.get(`${API}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
 
-      window.localStorage.clear();
+  const logout = () => {
+    signout(() => {
       window.location.replace("/");
-    } catch (error) {
-      console.error("Chiqishda xatolik yuz berdi:", error);
-    }
+    });
   };
+
   const getMyData = async () => {
     setLoading(true);
-    const { data } = await axios.get(`${API}/auth/mydata/${id}`);
+    const { data } = await axios.get(`${API}/auth/mydata/${id}`, { withCredentials: true });
+
     setMyData(data.user);
     if (data.user.role === "employee") {
       setMyRole("user");
@@ -160,23 +156,6 @@ const [isChecked, setIsChecked] = useState(() => {
     getMyData();
   }, []);
 
-  const handlePasswordChange = async () => {
-    if (!oldPassword || !newPassword) {
-      setMessage("Iltimos, barcha maydonlarni to‘ldiring");
-      return;
-    }
-
-    try {
-      const response = await axios.put(`${API}/auth/changepass/${id}`, {
-        oldPassword,
-        newPassword,
-      });
-      setMessage(response.data.message);
-    } catch (error) {
-      setMessage(error.response?.data?.message || "Xatolik yuz berdi");
-    }
-  };
-
   const sendBS = async () => {
     if (!sabab || !bsStartDate || !bsEndDate || !ogoh || !ogoh2) {
       alert(
@@ -190,7 +169,8 @@ const [isChecked, setIsChecked] = useState(() => {
         sabab,
         startDate: bsStartDate,
         endDate: bsEndDate,
-      });
+      }, { withCredentials: true });
+
       alert("Ma’lumot muvaffaqiyatli yuborildi!");
       setBS(false);
       setBsStartDate("");
@@ -206,321 +186,363 @@ const [isChecked, setIsChecked] = useState(() => {
 
   return (
     <>
-      <div className="profile-container">
-        <div className="profile-left">
-          <h5 className="tit d-flex">{myData.name} - <div className="tangacha"><i class="fa-solid fa-coins"></i> {reportCount}</div></h5>
-          <Accordion defaultActiveKey="1" onSelect={(k) => setActiveKey(k)} flush>
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>
-                <i class="fa-solid fa-user passs"></i> {t("personalInfo")}
-              </Accordion.Header>
-              <Accordion.Body>
-                <div className="datum">
-                  <p className="ours">{t("tel")}</p>
-                  <p className="theirs">{myData.phone}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("dateOfBirth")}</p>
-                  <p className="theirs">{myData.dateOfBirth}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("address")}</p>
-                  <p className="theirs">{myData.address}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("complex")}</p>
-                  <p className="theirs">{myData.complex}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("department")}</p>
-                  <p className="theirs">{myData.department}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("section")}</p>
-                  <p className="theirs">{myData.section}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("degree")}</p>
-                  <p className="theirs">{myData.degree}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("nationality")}</p>
-                  <p className="theirs">{myData.nationality}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("education")}</p>
-                  <p className="theirs">{myData.education}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("speciality")}</p>
-                  <p className="theirs">{myData.speciality}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("placeOfBirth")}</p>
-                  <p className="theirs">{myData.placeOfBirth}</p>
-                </div>
-                <div className="datum">
-                  <p className="ours">{t("firstAct")}</p>
-                  <p className="theirs">{myData.firstAct}</p>
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
+      <div className="profile-wrapper-premium">
+        <div className="profile-header-banner">
+          <div className="banner-overlay"></div>
+          <Link to={`/${myRole}/profile/security`} className="security-banner-btn" title={t("Xavfsizlik")}>
+            <i className="fa-solid fa-shield-halved"></i>
+            <span className="d-none d-md-inline ms-1">{t("Xavfsizlik")}</span>
+          </Link>
+          <div className="profile-user-info">
+            <div className="profile-avatar-wrapper" onClick={() => setShowCelebration(true)}>
+              <img src={avatarr} alt="Avatar" className="profile-avatar-main" />
+              <div className="avatar-pulse"></div>
+            </div>
+            <div className="profile-names">
+              <h2 className="user-title-name">{myData.name}</h2>
+              <div className="user-meta-info">
+                <span className="meta-item"><i className="fa-solid fa-coins"></i> {reportCount} {t("tangacha")}</span>
+                <span className="meta-divider">|</span>
+                <span className="meta-item"><i className="fa-solid fa-building"></i> {myData.department}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            <Accordion.Item eventKey="1">
-              <Accordion.Header>
-                <i class="fa-solid fa-trophy passs"></i> {t("korsatkichlarim")}
-              </Accordion.Header>
-              <Accordion.Body>
-                <div className="datum">
-                  {/* Yuqori qatordagi active boxlar */}
-                  <div className="achi-boxes">
-                    {[500, 400, 300, 200, 150, 100, 75, 50, 10, 3, 1].map(
-                      (num, idx) =>
-                        num <= reportCount ? (
-                          <div
-                            key={idx}
-                            className="achi-box active"
-                            onClick={() => handleAchievementClick(num)}
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={(e) =>
-                              e.key === "Enter" && handleAchievementClick(num)
-                            }
-                          >
-                            {num}
-                          </div>
-                        ) : null
-                    )}
-                    <div
-                      className="achi-box active anniversary-badge"
-                      onClick={handleAnniversaryClick}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) =>
-                        e.key === "Enter" && handleAnniversaryClick()
-                      }
-                    >
-                      <img
-                        src={year1}
-                        alt="1 year anniversary"
-                        className="anniversary-image"
-                      />
+        <div className="profile-grid-layout">
+          <div className="profile-main-content">
+            <Accordion defaultActiveKey="0" onSelect={(k) => setActiveKey(k)} flush className="premium-accordion">
+              <Accordion.Item eventKey="0" className="glass-accordion-item">
+                <Accordion.Header>
+                  <div className="header-content">
+                    <i className="fa-solid fa-user-gear"></i>
+                    <span>{t("personalInfo")}</span>
+                  </div>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <div className="premium-info-grid">
+                    <div className="info-card-mini">
+                      <span className="label">{t("tel")}</span>
+                      <span className="value">{myData.phone}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("dateOfBirth")}</span>
+                      <span className="value">{myData.dateOfBirth}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("address")}</span>
+                      <span className="value">{myData.address}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("complex")}</span>
+                      <span className="value">{myData.complex}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("department")}</span>
+                      <span className="value">{myData.department}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("section")}</span>
+                      <span className="value">{myData.section}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("degree")}</span>
+                      <span className="value">{myData.degree}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("nationality")}</span>
+                      <span className="value">{myData.nationality}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("education")}</span>
+                      <span className="value">{myData.education}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("speciality")}</span>
+                      <span className="value">{myData.speciality}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("placeOfBirth")}</span>
+                      <span className="value">{myData.placeOfBirth}</span>
+                    </div>
+                    <div className="info-card-mini">
+                      <span className="label">{t("firstAct")}</span>
+                      <span className="value">{myData.firstAct}</span>
                     </div>
                   </div>
+                </Accordion.Body>
+              </Accordion.Item>
 
-                  {/* Jarayonda qismi */}
-                  {reportCount < 1000 && (
-                    <div className="in-progress-section">
-                      <p className="in-progress-title">Jarayonda</p>
-                      <div className="achi-boxes">
-                        {[1, 3, 10, 50, 75, 100, 150, 200, 300, 400, 500]
-                          .filter((num) => num > reportCount)
-                          .map((num, idx) => {
-                            const percent = Math.min(
-                              (reportCount / num) * 100,
-                              100
-                            ).toFixed(0);
-                            return (
-                              <div key={idx} className="achi-box inactive">
-                                {num}
-                                <span className="percent">{percent}%</span>
-                              </div>
-                            );
-                          })}
+
+              <Accordion.Item eventKey="1" className="glass-accordion-item">
+                <Accordion.Header>
+                  <div className="header-content">
+                    <i className="fa-solid fa-trophy"></i>
+                    <span>{t("korsatkichlarim")}</span>
+                  </div>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <div className="achievements-container-premium">
+                    {/* Yuqori qatordagi active boxlar */}
+                    <div className="achi-grid-premium">
+                      {[500, 400, 300, 200, 150, 100, 75, 50, 10, 3, 1].map(
+                        (num, idx) =>
+                          num <= reportCount ? (
+                            <div
+                              key={idx}
+                              className="achi-badge-premium active"
+                              onClick={() => handleAchievementClick(num)}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) =>
+                                e.key === "Enter" && handleAchievementClick(num)
+                              }
+                            >
+                              <div className="badge-icon"><i className="fa-solid fa-award"></i></div>
+                              <span className="badge-number">{num}</span>
+                            </div>
+                          ) : null
+                      )}
+                      <div
+                        className="achi-badge-premium active anniversary-special"
+                        onClick={handleAnniversaryClick}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) =>
+                          e.key === "Enter" && handleAnniversaryClick()
+                        }
+                      >
+                        <img
+                          src={year1}
+                          alt="1 year"
+                          className="anniversary-img-tiny"
+                        />
                       </div>
                     </div>
-                  )}
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
 
-            <Accordion.Item eventKey="2">
-              <Accordion.Header>
-                <i class="fa-solid fa-file passs"></i> {t("hujjatlarim")}
-              </Accordion.Header>
-              <Accordion.Body>
-                <div className="datum align-items-center">
-                  <p className="ours align-items-center">
-                    {t("lavozimyoriqnomasi")}:
-                  </p>
-                  <LavozimYoriqnomasi />
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
+                    {/* Jarayonda qismi */}
+                    {reportCount < 1000 && (
+                      <div className="progress-milestones-section">
+                        <h6 className="section-subtitle">{t("inProgress")}</h6>
+                        <div className="achi-grid-premium">
+                          {[1, 3, 10, 50, 75, 100, 150, 200, 300, 400, 500]
+                            .filter((num) => num > reportCount)
+                            .map((num, idx) => {
+                              const percent = Math.min(
+                                (reportCount / num) * 100,
+                                100
+                              ).toFixed(0);
+                              return (
+                                <div key={idx} className="achi-badge-premium locked">
+                                  <span className="badge-number">{num}</span>
+                                  <div className="milestone-progress">
+                                    <div className="progress-fill" style={{ width: `${percent}%` }}></div>
+                                  </div>
+                                  <span className="percent-label">{percent}%</span>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
 
-            <Accordion.Item eventKey="3">
-              <Accordion.Header>
-                <i class="fa-solid fa-person-circle-check passs"></i>{" "}
-                {t("ishdabolmagankun")}
-              </Accordion.Header>
-              <Accordion.Body>
-                <select
-                  name="sabab"
-                  className="rrr"
-                  id="sabab"
-                  value={sabab}
-                  onChange={(e) => setSabab(e.target.value)}
-                >
-                  <option value="" disabled>
-                    {t("sababnitanlang")}
-                  </option>
-                  <option value="У">{t("oquvtatilida")}</option>
-                  <option value="БС">{t("administrativruxsat")}</option>
-                  <option value="БЛ">{t("mehnatgalayoqatsiz")}</option>
-                  <option value="ОТ">{t("mehnattatilida")}</option>
-                  <option value="УВ">{t("mehnatyakunlangan")}</option>
-                  <option value="К">{t("ishsafarida")}</option>
-                </select>
-                <div className="d-flex row flex-column gap-2 mb-3">
-                  <input
-                    type="date"
-                    className="rrr col-6"
-                    value={bsStartDate}
-                    onChange={(e) => setBsStartDate(e.target.value)}
-                  />
-                  <input
-                    className="rrr col-6"
-                    type="date"
-                    value={bsEndDate}
-                    onChange={(e) => setBsEndDate(e.target.value)}
-                  />
-                  <p className="danger">{t("tatildavrida")}</p>
-                  <div className="d-flex align-items-center">
+              {/* <Accordion.Item eventKey="2" className="glass-accordion-item">
+                <Accordion.Header>
+                  <div className="header-content">
+                    <i className="fa-solid fa-file-shield"></i>
+                    <span>{t("hujjatlarim")}</span>
+                  </div>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <div className="premium-doc-row">
+                    <div className="doc-info">
+                      <i className="fa-solid fa-file-pdf doc-icon"></i>
+                      <div>
+                        <span className="doc-label">{t("lavozimyoriqnomasi")}</span>
+                        <p className="doc-desc">Sizning rasmiy majburiyatlaringiz ro'yxati</p>
+                      </div>
+                    </div>
+                    <LavozimYoriqnomasi />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item> */}
+
+              <Accordion.Item eventKey="3" className="glass-accordion-item">
+                <Accordion.Header>
+                  <div className="header-content">
+                    <i className="fa-solid fa-calendar-minus"></i>
+                    <span>{t("ishdabolmagankun")}</span>
+                  </div>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <div className="premium-form-container">
+                    <div className="form-grid-premium">
+                      <div className="form-group-premium">
+                        <label>{t("sabab")}</label>
+                        <div className="premium-select-wrapper">
+                          <select
+                            name="sabab"
+                            className="premium-select"
+                            id="sabab"
+                            value={sabab}
+                            onChange={(e) => setSabab(e.target.value)}
+                          >
+                            <option value="" disabled>{t("sababnitanlang")}</option>
+                            <option value="У">{t("oquvtatilida")}</option>
+                            <option value="БС">{t("administrativruxsat")}</option>
+                            <option value="БЛ">{t("mehnatgalayoqatsiz")}</option>
+                            <option value="ОТ">{t("mehnattatilida")}</option>
+                            <option value="УВ">{t("mehnatyakunlangan")}</option>
+                            <option value="К">{t("ishsafarida")}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="form-group-premium">
+                        <label>{t("startDate")}</label>
+                        <div className="premium-input-wrapper">
+                          <i className="fa-solid fa-calendar-day input-icon"></i>
+                          <input
+                            type="date"
+                            className="premium-input-field date-field"
+                            value={bsStartDate}
+                            onChange={(e) => setBsStartDate(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group-premium">
+                        <label>{t("endDate")}</label>
+                        <div className="premium-input-wrapper">
+                          <i className="fa-solid fa-calendar-check input-icon"></i>
+                          <input
+                            className="premium-input-field date-field"
+                            type="date"
+                            value={bsEndDate}
+                            onChange={(e) => setBsEndDate(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="warning-box-premium mt-3">
+                      <p><i className="fa-solid fa-circle-exclamation"></i> {t("tatildavrida")}</p>
+                    </div>
+
+                    <div className="checkbox-group-premium mt-3">
+                      <label className="checkbox-container-premium">
+                        <input
+                          type="checkbox"
+                          checked={ogoh}
+                          onChange={(e) => setOgoh(e.target.checked)}
+                        />
+                        <span className="checkmark"></span>
+                        <span className="cb-text">{t("kadrlarboliminiogoh")}</span>
+                      </label>
+                      <label className="checkbox-container-premium">
+                        <input
+                          type="checkbox"
+                          checked={ogoh2}
+                          onChange={(e) => setOgoh2(e.target.checked)}
+                        />
+                        <span className="checkmark"></span>
+                        <span className="cb-text">{t("asoskadrda")}</span>
+                      </label>
+                    </div>
+
+                    <div className="form-footer-premium">
+                      <p className="footer-note">⚠️ {t("diqqatqilingg")}</p>
+                      <Button variant="primary" className="btn-send-premium" onClick={sendBS}>
+                        <i className="fa-solid fa-paper-plane"></i> {t("send")}
+                      </Button>
+                    </div>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+
+
+            </Accordion>
+
+            <div className="profile-actions-area">
+              <div className="status-indicator-card glass-card">
+                <div className="indicator-content">
+                  <div className={`indicator-dot ${myData.telegramChatId ? 'active' : 'inactive'}`}></div>
+                  <div className="indicator-text">
+                    <span className="label">Telegram Bildirishnomasi</span>
+                    <span className={`status-text ${myData.telegramChatId ? 'text-success' : 'text-danger'}`}>
+                      {myData.telegramChatId ? 'Ulangan ✅' : 'Ulanmagan ❌'}
+                    </span>
+                  </div>
+                </div>
+                <a href="https://t.me/mkundalik_hisobot" target="_blank" rel="noopener noreferrer" className="no-decor">
+                  <Button className="btn-telegram-link">
+                    <i className="fa-brands fa-telegram"></i> {t("linkTelegram")}
+                  </Button>
+                </a>
+              </div>
+
+              <div className="settings-controls glass-card">
+                <div className="snow-toggle-area">
+                  <label className="premium-switch">
                     <input
                       type="checkbox"
-                      className="mx-2"
-                      name="ogoh"
-                      id="ogoh"
-                      checked={ogoh}
-                      onChange={(e) => setOgoh(e.target.checked)}
+                      checked={isChecked}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        const snowValue = !checked;
+                        setIsChecked(checked);
+                        localStorage.setItem("snow", snowValue.toString());
+                        window.location.reload();
+                      }}
                     />
-                    {t("kadrlarboliminiogoh")}
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <input
-                      type="checkbox"
-                      className="mx-2"
-                      name="ogoh"
-                      id="ogoh2"
-                      checked={ogoh2}
-                      onChange={(e) => setOgoh2(e.target.checked)}
-                    />
-                    {t("asoskadrda")}
-                  </div>
-                  <p className="redword">⚠️ {t("diqqatqilingg")}</p>
-                  <Button variant="primary" onClick={sendBS}>
-                    {t("send")}
+                    <span className="slider round"></span>
+                    <span className="switch-label">Qor animatsiyasi</span>
+                  </label>
+                </div>
+
+                <div className="action-buttons-group">
+                  <Button className="btn-edit-premium" onClick={handleShow2}>
+                    <i className="fa-solid fa-pen-nib"></i> {t("edit")}
+                  </Button>
+                  <Button className="btn-logout-premium" onClick={handleShow}>
+                    <i className="fa-solid fa-power-off"></i> {t("logOut")}
                   </Button>
                 </div>
-              </Accordion.Body>
-            </Accordion.Item>
-
-            <Accordion.Item eventKey="4">
-              <Accordion.Header>
-                <i class="fa-solid fa-lock passs"></i> {t("updatePass")}
-              </Accordion.Header>
-              <Accordion.Body>
-                <div className="changepass d-flex flex-column gap-3">
-                  <input
-                    type="password"
-                    placeholder={t("oldPass")}
-                    value={oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                  />
-                  <input
-                    type="password"
-                    placeholder={t("newPass")}
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                  />
-                  {message && <p>{message}</p>}
-                  <div className="d-flex justify-content-start gap-3">
-                    <Button
-                      className="btn-primary"
-                      onClick={handlePasswordChange}
-                    >
-                      {t("updatePass")}
-                    </Button>
-                  </div>
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-          <div className="justify-content-between d-flex align-items-center mt-4">
-            {myData.telegramChatId ? (
-              <h5 className="text-success">
-                Telegram bildirishnomasi: ulangan ✅
-              </h5>
-            ) : (
-              <h5 className="text-danger">
-                {t("Telegram bildirishnomasi: ulanmagan❌")}
-              </h5>
-            )}
-            <Button className="btn-primary" onClick={handleShow2}>
-              {t("edit")} <i className="fa-solid fa-pen"></i>
-            </Button>
-            <Button className="btn-danger" onClick={handleShow}>
-              {t("logOut")}{" "}
-              <i className="fa-solid fa-arrow-right-from-bracket"></i>
-            </Button>
+              </div>
+            </div>
           </div>
-          <div className="qor">
-<label style={{ cursor: "pointer" }}>
-  <input
-    type="checkbox"
-    checked={isChecked}
-    onChange={(e) => {
-      const checked = e.target.checked;
 
-      // checkbox ON → snow = false
-      const snowValue = !checked;
+          <div className="profile-sidebar-premium">
+            <div className="sidebar-image-card glass-card">
+              <img src={banner} alt="Banner" className="sidebar-banner-img" />
+              <div className="banner-overlay-text">
+              </div>
+            </div>
 
-      setIsChecked(checked);
-      localStorage.setItem("snow", snowValue.toString());
-
-      window.location.reload();
-    }}
-  />{" "}
-  Qor animatsiyasini o`chirish
-</label>
-
-
+            <div className="quick-stats-card glass-card">
+              <h5>{t("statistika")}</h5>
+              <div className="mini-stat-row">
+                <span>Hisobotlar</span>
+                <span className="stat-val">{reportCount}</span>
+              </div>
+              <div className="mini-stat-progress">
+                <div className="progress-bar-inner" style={{ width: `${Math.min((reportCount / 500) * 100, 100)}%` }}></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="profile-right">
-          <img
-        className="mt-5"
-        src={yosh1}
-        alt=""
-        style={{ cursor: "pointer" }}
-        onClick={() => setShowCelebration(true)}
-      />
-
-      <CelebrationModal
-        show={showCelebration}
-        setShow={setShowCelebration}
-      />
-          <a
-            href="https://t.me/mkundalik_hisobot"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button className="m-5 defaultbutton">
-              <i class="fa-brands fa-telegram"></i> Telegram orqali
-              bildirishnomalarni qabul qilish
-            </Button>
-          </a>
-          <img src={banner} alt="banner" />
-        </div>
-        {/* <div className="profile-right2">
-          <button>sad</button>
-          <img src={banner} alt="banner" />
-        </div> */}
       </div>
 
-      <Modal centered show={show} onHide={handleClose}>
+
+      <Modal centered show={show} onHide={handleClose} className="premium-modal">
         <Modal.Header closeButton>
-          <Modal.Title>{t("logOut")}</Modal.Title>
+          <Modal.Title>
+            <i className="fa-solid fa-right-from-bracket"></i>
+            {t("logOut")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>{t("profildanchiqmoqchimisiz")}</Modal.Body>
         <Modal.Footer>
@@ -533,9 +555,12 @@ const [isChecked, setIsChecked] = useState(() => {
         </Modal.Footer>
       </Modal>
 
-      <Modal centered show={show2} onHide={handleClose2}>
+      <Modal centered show={show2} onHide={handleClose2} className="premium-modal">
         <Modal.Header closeButton>
-          <Modal.Title>{t("edit")}</Modal.Title>
+          <Modal.Title>
+            <i className="fa-solid fa-user-pen"></i>
+            {t("edit")}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditProfile />
@@ -547,87 +572,48 @@ const [isChecked, setIsChecked] = useState(() => {
         centered
         show={showAchievementModal}
         onHide={() => setShowAchievementModal(false)}
+        className="premium-modal celebration-modal"
       >
-        <Modal.Header closeButton style={{ borderBottom: "2px solid #ffc107" }}>
+        <Modal.Header closeButton>
           <Modal.Title>
-            <i
-              className="fa-solid fa-star"
-              style={{ color: "#ffc107", marginRight: "8px" }}
-            ></i>
+            <i className="fa-solid fa-trophy"></i>
             Tabriklaymiz!
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ textAlign: "center", padding: "30px 20px" }}>
-          {selectedAchievement === "anniversary" ? (
-            <>
-              <div style={{ marginBottom: "20px" }}>
-                <img
-                  src={yosh1}
-                  alt="1 year anniversary"
-                  style={{
-                    maxHeight: "120px",
-                    height: "auto",
-                    borderRadius: "20px",
-                    marginBottom: "15px",
-                  }}
-                />
-              </div>
-              <h5
-                style={{
-                  fontSize: "20px",
-                  marginBottom: "15px",
-                  fontWeight: "600",
-                }}
-              >
-                Hurmatli {fullName}!
-              </h5>
-              <p style={{ fontSize: "16px", lineHeight: "1.6" }}>
-                Siz <strong>mkundalik</strong> platformasida{" "}
-                <strong>1 yil</strong> davomida faoliyat ko'rsatayotganingizdan
-                xursandmiz! 🎉
-              </p>
-              <p style={{ fontSize: "14px", fontStyle: "italic" }}>
-                Sizning mehnatingu va dedikatsiyangiz uchun rahmat. Keling,
-                yangi maqsadlarga erishib, birga rivojlanib boramiz!
-              </p>
-            </>
-          ) : (
-            <>
-              <h3
-                style={{
-                  fontSize: "48px",
-                  color: "#ffc107",
-                  marginBottom: "15px",
-                  fontWeight: "700",
-                }}
-              >
-                {selectedAchievement}
-              </h3>
-              <h5
-                style={{
-                  fontSize: "18px",
-                  marginBottom: "15px",
-                  fontWeight: "600",
-                }}
-              >
-                Hurmatli {fullName}!
-              </h5>
-              <p style={{ fontSize: "16px", lineHeight: "1.6" }}>
-                Siz bugun qadar{" "}
-                <strong>{selectedAchievement} ta hisobot</strong> yozgansiz! 📊
-              </p>
-              <p style={{ fontSize: "14px", fontStyle: "italic" }}>
-                Bunday yuqori samaradorlik va mehnatni davom ettiring! Sizning
-                kotribusiyangiz juda muhim! 💪
-              </p>
-            </>
-          )}
+        <Modal.Body>
+          <div className="celebration-content">
+            {selectedAchievement === "anniversary" ? (
+              <>
+                <img src={yosh1} alt="Anniversary" className="anniversary-img-large" />
+                <h5>Hurmatli {fullName}!</h5>
+                <p>
+                  Siz <strong>mkundalik</strong> platformasida <strong>1 yil</strong> davomida faoliyat ko'rsatayotganingizdan xursandmiz! 🎉
+                </p>
+                <p className="small-note">
+                  Sizning mehnatingiz va sodiqligingiz uchun rahmat. Birgalikda yangi marralarni zabt etamiz!
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="trophy-display">
+                  <i className="fa-solid fa-award"></i>
+                </div>
+                <h3>{selectedAchievement}</h3>
+                <h5>Hurmatli {fullName}!</h5>
+                <p>
+                  Siz bugungi kunga qadar <strong>{selectedAchievement} ta hisobot</strong> yozdingiz! 📊
+                </p>
+                <p className="small-note">
+                  Bunday yuqori samaradorlikni davom ettiring! Sizning hissangiz biz uchun juda muhim. 💪
+                </p>
+              </>
+            )}
+          </div>
         </Modal.Body>
-        <Modal.Footer style={{ borderTop: "2px solid #ffc107" }}>
+        <Modal.Footer>
           <Button
             variant="warning"
             onClick={() => setShowAchievementModal(false)}
-            style={{ fontWeight: "600" }}
           >
             Yopish
           </Button>

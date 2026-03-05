@@ -8,6 +8,7 @@ import ScheduleHistory from '../Admin/ScheduleHistory';
 import Aside from './Aside';
 import LookSchedule from '../Admin/LookSchedule';
 import PleaseInstruction from '../Asking/PleaseInstruction'
+import Security from '../Security/Security';
 function StaffRoute() {
   return (
     <div className="container-fluid">
@@ -25,6 +26,7 @@ function StaffRoute() {
               <Route path="/schedule/new" exact element={<ScheduleNew />} />
               <Route path="/schedule/history" exact element={<ScheduleHistory />} />
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
+              <Route path="/profile/security" exact element={<Security />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
           </div>

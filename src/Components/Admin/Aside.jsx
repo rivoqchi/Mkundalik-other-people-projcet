@@ -10,7 +10,9 @@ import logo from "../Images/logo-png.png";
 import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import { useTranslation } from "react-i18next";
+import { signout } from "../Auth/CheckAuth";
 function Aside() {
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -18,22 +20,12 @@ function Aside() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  let token = window.localStorage.getItem("token");
-
-  const logout = async () => {
-    try {
-      const response = await axios.get(`${API}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      window.localStorage.clear();
+  const logout = () => {
+    signout(() => {
       navigate("/");
-    } catch (error) {
-      console.error("Chiqishda xatolik yuz berdi:", error);
-    }
+    });
   };
+
   const myId = window.localStorage.getItem("user_id");
   const [notificationLength, setNotificationLength] = useState([]);
   const getMySectionSchedules = async () => {
@@ -64,32 +56,20 @@ function Aside() {
         </div>
         <nav className="aside-menu">
           <ul>
-            <li
-              className={
-                location.pathname === "/admin/schedule/new" ? "active" : ""
-              }
-            >
-              <Link to="/admin/schedule/new">
+            <li>
+              <Link className={location.pathname.startsWith("/admin/schedule/new") ? "active" : ""} to="/admin/schedule/new">
                 <i className="fa-solid fa-list-check"></i>
                 <span>{t("qaydEtish")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/admin/schedule/history" ? "active" : ""
-              }
-            >
-              <Link to="/admin/schedule/history">
+            <li>
+              <Link className={location.pathname === "/admin/schedule/history" ? "active" : ""} to="/admin/schedule/history">
                 <i className="fa-solid fa-clock-rotate-left"></i>
                 <span>{t("faoliyatim")}</span>
               </Link>
             </li>
-            <li
-              className={
-                location.pathname === "/admin/rating/ours" ? "active" : ""
-              }
-            >
-              <Link to="/admin/rating/ours">
+            <li>
+              <Link className={location.pathname.startsWith("/admin/rating/ours") ? "active" : ""} to="/admin/rating/ours">
                 <i className="fa-solid fa-medal"></i>
                 <span>{t("xodimlarimkorsatkichlari")}</span>
                 {notificationLength > 0 && ( // Agar `notificationLength` bo‘lsa, chiqadi
@@ -104,51 +84,38 @@ function Aside() {
               </Link>
             </li>
 
-            <li
-              className={
-                location.pathname === "/admin/employees" ? "active" : ""
-              }
-            >
-              <Link to="/admin/employees">
+            <li>
+              <Link className={location.pathname.startsWith("/admin/employees") ? "active" : ""} to="/admin/employees">
                 <i className="fa-solid fa-sitemap"></i>
                 <span>{t("xodimlar")}</span>
-                {/* <span className="newtop">NEW</span> */}
               </Link>
             </li>
 
-            <li
-              className={
-                location.pathname === "/admin/languages" ? "active" : ""
-              }
-            >
-              <Link to="/admin/languages">
-                <i class="fa-solid fa-language"></i>
+
+
+            <li>
+              <Link className={location.pathname.startsWith("/admin/languages") ? "active" : ""} to="/admin/languages">
+                <i className="fa-solid fa-language"></i>
                 <span>{t("foreign")}</span>
               </Link>
             </li>
 
-            <li
-              className={location.pathname === "/admin/profile" ? "active" : ""}
-            >
-              <Link to="/admin/profile">
-                <i class="fa-solid fa-user"></i>
+            <li>
+              <Link className={location.pathname.startsWith("/admin/profile") ? "active" : ""} to="/admin/profile">
+                <i className="fa-solid fa-user"></i>
                 <span className="">{t("myInfo")}</span>
               </Link>
             </li>
-                        <li className={location.pathname === "/admin/about" ? "active" : ""}>
-                          <Link to="/admin/about">
-                            <i class="fa-solid fa-circle-info"></i>
-                            <span>{t("dasturhaqida")}</span>
-                          </Link>
-                        </li>
+            <li>
+              <Link className={location.pathname.startsWith("/admin/about") ? "active" : ""} to="/admin/about">
+                <i className="fa-solid fa-circle-info"></i>
+                <span>{t("dasturhaqida")}</span>
+              </Link>
+            </li>
 
-            {/* <li
-              className={
-                location.pathname === "/admin/ict" ? "active" : ""
-              }
-            >
-              <Link to="/admin/ict">
-              <i class="fa-solid fa-computer"></i>
+            {/* <li>
+              <Link className={location.pathname.startsWith("/admin/ict") ? "active" : ""} to="/admin/ict">
+              <i className="fa-solid fa-computer"></i>
                 <span>
                   Improve ICT 
                 </span>

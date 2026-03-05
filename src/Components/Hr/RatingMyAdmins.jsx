@@ -8,10 +8,11 @@ function RatingMyAdmins() {
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const id = window.localStorage.getItem("user_id")
-  
+
   const getMySectionSchedules = async () => {
     try {
-      const { data } = await axios.get(`${API}/schedules/getmysection/admin/${myId}`);
+      const { data } = await axios.get(`${API}/schedules/getmysection/admin/${myId}`, { withCredentials: true });
+
       setMySectionSchedules(data.schedules);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -20,29 +21,30 @@ function RatingMyAdmins() {
   useEffect(() => {
     getMySectionSchedules();
   }, []);
-  const getMyData = async () =>{
-    const {data} = await axios.get(`${API}/auth/mydata/${id}`)
-    
+  const getMyData = async () => {
+    const { data } = await axios.get(`${API}/auth/mydata/${id}`, { withCredentials: true })
+
+
     setMyData(data.user)
     if (data.user.role === 'employee') {
-    setMyRole("user")
-    }else if (data.user.role === 'admin') {
-        setMyRole("admin")
-    }else if (data.user.role === 'superadmin') {
+      setMyRole("user")
+    } else if (data.user.role === 'admin') {
+      setMyRole("admin")
+    } else if (data.user.role === 'superadmin') {
       setMyRole("superadmin")
-    }else if (data.user.role === 'complex') {
+    } else if (data.user.role === 'complex') {
       setMyRole("complex")
-    }else if (data.user.role === 'hr') {
+    } else if (data.user.role === 'hr') {
       setMyRole("hr")
-    }else if (data.user.role === 'department') {
+    } else if (data.user.role === 'department') {
       setMyRole("department")
-    }else if (data.user.role === 'boss') {
+    } else if (data.user.role === 'boss') {
       setMyRole("boss")
-    }else if (data.user.role === 'commission') {
+    } else if (data.user.role === 'commission') {
       setMyRole("commission")
     }
   }
-  useEffect(() =>{
+  useEffect(() => {
     getMyData()
   }, [])
   return (
@@ -61,9 +63,8 @@ function RatingMyAdmins() {
               key={i._id}
             >
               <button
-                className={`schedulehistorybtn ${
-                  !i.rated ? "unrated" : "rated"
-                }`}
+                className={`schedulehistorybtn ${!i.rated ? "unrated" : "rated"
+                  }`}
               >
                 <span className="bold">{i.beginnerName}</span>ning {i.startedAt.slice(0, 10)} da bajargan ishlar hisoboti
                 {i.rated && <span className="yulduzcha"><i className="fa-regular fa-star"></i> {i.rated}</span>}

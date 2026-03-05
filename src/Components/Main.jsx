@@ -11,15 +11,15 @@ import LangSelect from "./LangSelect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import "./Main.scss";
-import Navbarr from "./Navbar";
 import { useTranslation } from "react-i18next";
 function Main() {
   const [isOpen, setIsOpen] = useState(false);
-  let isSignedIn = window.localStorage.getItem("token") ? true : false;
+  let isSignedIn = window.localStorage.getItem("isSignedIn") === "true";
   const [route, setRoute] = useState("");
 
+
   const { t } = useTranslation();
-  
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -76,11 +76,11 @@ function Main() {
             <li>{t("instruction")}</li>
           </a>
           <LangSelect />
-          
+
           {isSignedIn ? (
             <Link onClick={() => setIsOpen(false)} to={`${route}/dashboard`}>
-                <button className="login-btn">{t("privatecab")}</button>
-                </Link>
+              <button className="login-btn">{t("privatecab")}</button>
+            </Link>
           ) : (
             <Link onClick={() => setIsOpen(false)} to="/login">
               <button className="login-btn">{t("privatecab")}</button>
@@ -126,7 +126,7 @@ function Main() {
               <i className="fa-solid fa-1"></i> {t("howdoesitworkdesc2")}
             </h2>
             <p>
-            {t("howdoesitworkdesc3")}.
+              {t("howdoesitworkdesc3")}.
             </p>
           </div>
           <div className="col-12 col-md-6 align-items-center">
@@ -143,7 +143,7 @@ function Main() {
               <i className="fa-solid fa-2"></i> {t("howdoesitworkdesc4")}
             </h2>
             <p>
-            {t("howdoesitworkdesc5")}.
+              {t("howdoesitworkdesc5")}.
             </p>
           </div>
         </div>
@@ -154,7 +154,7 @@ function Main() {
               <i className="fa-solid fa-3"></i> {t("howdoesitworkdesc6")}
             </h2>
             <p>
-            {t("howdoesitworkdesc7")}.
+              {t("howdoesitworkdesc7")}.
             </p>
           </div>
           <div className="col-12 col-md-6 align-items-center">
@@ -171,7 +171,7 @@ function Main() {
               <i className="fa-solid fa-4"></i> {t("howdoesitworkdesc8")}
             </h2>
             <p>
-            {t("howdoesitworkdesc9")}.
+              {t("howdoesitworkdesc9")}.
             </p>
           </div>
         </div>
@@ -189,14 +189,14 @@ function Main() {
             <h1 className="son">100 000+</h1> <p>{t("wroten")}</p>
           </div>
         </div>
-        
+
       </div>
 
       <footer className="footer row mb-4">
         <div className="col-12 col-md-4 text-start">
           <img src={logo} className="footer-logo" alt="logo" />
           <p>
-          {t("aboutfooter")}
+            {t("aboutfooter")}
           </p>
         </div>
         <div className="col-12 col-md-4">
@@ -238,7 +238,7 @@ function Main() {
             </li>
             <br />
             <span className="ctrl-enter">
-            {t("ctrlenter")}
+              {t("ctrlenter")}
             </span>
             <br />
             <span className="ctrl-enter">{t("allrightsreserved")}.</span>

@@ -1,126 +1,85 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { signup } from './CheckAuth';
-import Alert from '../Additional/Alert';
-import Navbar from '../Navbar';
-import Footer from '../Footer';
-import axios from 'axios';
-import { API } from '../../config'
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useTranslation } from "react-i18next";
+import logomk from '../Images/logo-png.png';
+import './Login.scss';
+
 const Signup = () => {
+    const { t } = useTranslation();
 
-    const checkStatus = async () => {
-        try {
-          let res = await axios.get(`${API}/auth`, {
-            headers: {
-              authorization: window.localStorage.getItem("token"),
-            },
-          });
-          
-          const status = res.data.data.status;
-      
-          if (!status || status === "" || status === "none") {
-          } else if (status === "user") {
-          }
-        } catch (error) {
-          console.error("Statusni tekshirishda xatolik:", error);
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1, delayChildren: 0.3 }
         }
-      };
-      useEffect(() => {
-        checkStatus();
-      }, []);
-
-
-
-    const [alert, setAlert] = useState({ show: false, type: "", message: "" });
-    const navigate = useNavigate();
-    const [values, setValues] = useState({
-        name: '', phone: '', password: '', error: '', success: false
-    });
-
-    const { name, phone, password, success, error } = values;
-
-    const handleChange = name => event => {
-        setValues({ ...values, error: false, [name]: event.target.value });
     };
 
-    const handlePasswordShow = () => {
-        const icon = document.getElementById("password-icon");
-        icon.className === "fa-solid fa-eye" ? icon.className = "fa-solid fa-eye-slash" : icon.className = "fa-solid fa-eye";
-        const passwordInput = document.getElementById("password-input");
-        passwordInput.type === "password" ? passwordInput.type = "text" : passwordInput.type = "password";
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: { y: 0, opacity: 1, transition: { type: "spring", damping: 12, stiffness: 100 } }
     };
-
-    const clickSubmit = event => {
-        event.preventDefault();
-        if (phone.split('').length !== 13) {
-            return setValues({ ...values, error: 'Telefon raqamni tekshirib qaytadan kiriting!' });
-        }
-        if (phone.slice(0, 4) !== '+998') {
-            return setValues({ ...values, error: `Faqat O'zbekiston raqamini kiriting!` });
-        }
-        setValues({ ...values, error: false });
-        signup({ name, phone, password }).then(data => {
-            if (data.error) {
-                setValues({ ...values, error: data.error, success: false });
-            } else {
-                navigate('/iamnew')
-                setValues({
-                    ...values, name: '', phone: '', password: '', error: '', success: true
-                });
-            }
-        });
-    };
-
-    useEffect(() => {
-        if (success) {
-            setAlert({ show: true, type: "success", message: "Muvaffaqiyatli ro'yxatdan o'tdingiz!" });
-        } else if (error) {
-            setAlert({ show: true, type: "error", message: error });
-        } else {
-            setAlert({ show: false, type: "", message: "" });
-        }
-    }, [success, error]);
-
-    const signUpForm = () => (
-        <>
-        <h1>403</h1>
-        <div className="text-center">
-            Parolni tiklash uchun NIB xodimlariga murojaat qiling, yoki <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a> pochtasiga ariza qoldiring. <br />
-            tizim administratoriga murojaat qiling.
-            </div><br />
-            <a href="mailto:mkundalik@tashmetro.uz">mkundalik@tashmetro.uz</a><br /><br /><br />
-        <Link to="/login"><button className="defaultbtn">Kirish</button></Link>
-            {/* {alert.show && <Alert type={alert.type} message={alert.message} />}
-            <div className='text-center Auth__body-form'>
-                <h2 className='text-center'><i className="fa-solid fa-link"></i> Ro'yxatdan o'tish</h2>
-                <div className="login-inputs">
-                    <input type="text" onChange={handleChange('name')} placeholder="F.I.Sh" value={name} />
-                    <input type="text" onChange={handleChange('phone')} placeholder="Telefon raqami" value={phone} />
-                    <div className="password-wrap">
-                        <input
-                            id="password-input"
-                            type="password"
-                            onChange={handleChange('password')}
-                            placeholder="Parol"
-                            value={password}
-                        />
-                        <button className='eye' onClick={handlePasswordShow}>
-                            <i id="password-icon" className="fa-solid fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                <button className='signuplogin' onClick={clickSubmit}>Ro'yxatdan o'tish</button>
-                <p className="mt-3 dontacc">
-                Hisob bormi? <Link to='/login'>Kirish</Link>
-                </p>
-                <h2><i className="fa-brands fa-telegram"></i> orqali kirish</h2>
-            </div> */}
-        </>
-    );
 
     return (
-        <div className='signuup'>
-            {signUpForm()}
+        <div className="login-page-premium">
+            <div className="ambient-glows">
+                <div className="glow glow-1"></div>
+                <div className="glow glow-2"></div>
+                <div className="glow glow-3"></div>
+            </div>
+
+            <div className="split-layout" style={{ justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100%' }}>
+
+                <div className="form-side" style={{ maxWidth: '600px', width: '100%' }}>
+                    <motion.div
+                        className="login-card-2"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        style={{ textAlign: 'center', padding: '40px' }}
+                    >
+                        <motion.div className="login-header-premium" variants={itemVariants}>
+                            <div className="logo-badge" style={{ margin: '0 auto 20px' }}>
+                                <img src={logomk} alt="Logo" />
+                            </div>
+                            <h1 className='text-center' style={{ fontSize: '2rem', color: '#ff4d4f' }}>Ro'yxatdan o'tish yopiq</h1>
+                            <p className="subtitle" style={{ fontSize: '1.1rem', marginTop: '10px' }}>
+                                Tizim xavfsizligi va maxfiyligi sababli ochiq ro'yxatdan o'tish imkoniyati bloklangan.
+                            </p>
+                        </motion.div>
+
+                        <motion.div variants={itemVariants} style={{ margin: '30px 0', padding: '20px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '15px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                            <i className="fa-solid fa-circle-info" style={{ fontSize: '2rem', color: '#6366f1', marginBottom: '15px' }}></i>
+                            <p style={{ color: '#e2e8f0', lineHeight: '1.6' }}>
+                                Parolni tiklash uchun NIB xodimlariga murojaat qiling yoki quyidagi elektron pochtaga ariza qoldiring:
+                            </p>
+                            <a href="mailto:mkundalik@tashmetro.uz" style={{ display: 'inline-block', marginTop: '15px', color: '#6366f1', fontSize: '1.2rem', fontWeight: 'bold', textDecoration: 'none' }}>
+                                mkundalik@tashmetro.uz
+                            </a>
+                        </motion.div>
+
+                        <motion.div variants={itemVariants}>
+                            <Link to="/login" style={{ textDecoration: 'none' }}>
+                                <motion.button
+                                    className="btn-cyber-submit"
+                                    type="button"
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    style={{ background: 'linear-gradient(45deg, #10b981, #059669)', border: 'none' }}
+                                >
+                                    <div className="shimmer"></div>
+                                    <div className="text-center">
+                                        <span>KIRISH SAHIFASIGA QAYTISH</span>
+                                    </div>
+                                    <i className="fa-solid fa-arrow-right-to-bracket" style={{ marginLeft: '10px' }}></i>
+                                </motion.button>
+                            </Link>
+                        </motion.div>
+
+                    </motion.div>
+                </div>
+            </div>
         </div>
     );
 };

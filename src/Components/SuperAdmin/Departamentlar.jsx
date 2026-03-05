@@ -6,15 +6,18 @@ import Card from "react-bootstrap/Card";
 import { API } from "../../config";
 import Alert from "../Additional/Alert";
 import axios from "axios";
+import { useTheme } from "../Additional/ThemeContext";
 
 function Departamentlar() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const [showAdmins, setShowAdmins] = useState(false);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [allSections, setAllSections] = useState([]);
-  
+
   const [selectedSection, setSelectedSection] = useState(null);
   const [users, setUsers] = useState([]);
 
@@ -53,8 +56,8 @@ function Departamentlar() {
   const getAllSections = async () => {
     try {
       const { data } = await axios.get(`${API}/sectors/getall`);
-      setAllSections(data.sections);     
-       
+      setAllSections(data.sections);
+
     } catch (error) {
       console.error("Error fetching sections:", error);
     }
@@ -86,112 +89,150 @@ function Departamentlar() {
   }, []);
 
   return (
-    <>
+    <div className={`p-4 ${isDark ? "bg-slate-900" : "bg-light"}`} style={{ minHeight: "100vh", transition: "all 0.3s ease" }}>
       {alert.show && <Alert type={alert.type} message={alert.message} />}
-      <div className="justify-content-between d-flex m-5">
-        <h1>Departamentlar</h1>
-        <h3>Jami: {allSections.length} ta departament mavjud</h3>
-        <Link to="/superadmin/departments/add">
-          <button className="defaultbtn">+ Yangi departament</button>
+
+      <div className="d-flex flex-wrap justify-content-between align-items-center mb-5 mt-3 px-3">
+        <div>
+          <h2 className={`fw-bold ${isDark ? "text-white" : "text-dark"}`}>Departamentlar</h2>
+          <p className={`mb-0 ${isDark ? "text-white-50" : "text-muted"}`}>Jami: {allSections.length} ta departament mavjud</p>
+        </div>
+        <Link to="/superadmin/departments/add" className="text-decoration-none mt-3 mt-md-0">
+          <Button variant="primary" className="rounded-pill px-4 shadow-sm fw-bold">
+            <i className="fa-solid fa-plus me-2"></i> Yangi departament
+          </Button>
         </Link>
       </div>
-      <div className="m-5">
-        {allSections.map((section) => (
-          <Card key={section._id} className="mb-3 sectionscard">
-            <Card.Body className="d-flex justify-content-between align-items-center">
-              <div className="d-flex">
-                <i className="fa-regular flagg fa-font-awesome"></i>
-                <h5 className="mb-0 mx-5">{section.name}</h5>
-              </div>
-            </Card.Body>
-            <div className="operations justify-content-between d-flex text-end m-3">
-              <div className="infosssss">
-                <span className="tabolimboshligi" onClick={() => handleShowAdmins(section)}>
-                  {section.sections.length} ta bo‘lim mavjud
-                </span>
-              </div>
-              <div>
-                <Link to={`/superadmin/departments/edit/${section._id}`}><i className="fa-solid fa-pen-to-square sectionicon sectionedit"></i></Link>
-                <i
-                  className="fa-solid fa-trash sectionicon sectiondelete"
-                  onClick={() => handleShow(section)}
-                ></i>
+
+      <div className="px-3">
+        <div className="row">
+          {allSections.map((section) => (
+            <div className="col-12 col-md-6 mb-4" key={section._id}>
+              <div
+                className={`glass-card h-100 overflow-hidden rounded-4 ${isDark ? 'border-secondary border-opacity-25' : 'border-0 shadow-sm'}`}
+                style={{ transition: "transform 0.2s" }}
+              >
+                <div className={`p-4 d-flex justify-content-between align-items-center border-bottom ${isDark ? 'border-light border-opacity-10' : 'border-dark border-opacity-10'}`}>
+                  <div className="d-flex align-items-center gap-3">
+                    <div className="rounded-circle bg-primary bg-opacity-10 p-3 d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px' }}>
+                      <i className="fa-regular fa-building text-primary fs-4"></i>
+                    </div>
+                    <h5 className={`mb-0 fw-bold ${isDark ? 'text-light' : 'text-dark'}`}>{section.name}</h5>
+                  </div>
+                  <div className="d-flex gap-2">
+                    <Link to={`/superadmin/departments/edit/${section._id}`} className="btn btn-outline-primary btn-sm rounded-circle" title="Tahrirlash">
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </Link>
+                    <button className="btn btn-outline-danger btn-sm rounded-circle" onClick={() => handleShow(section)} title="O'chirish">
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div className={`p-3 d-flex flex-wrap gap-2 justify-content-center ${isDark ? 'bg-dark bg-opacity-25' : 'bg-light bg-opacity-50'}`}>
+                  <button
+                    className={`btn btn-sm ${isDark ? 'btn-outline-light' : 'btn-outline-dark'} rounded-pill px-4 py-1 fw-medium`}
+                    onClick={() => handleShowAdmins(section)}
+                  >
+                    <i className="fa-solid fa-layer-group text-info me-2"></i>
+                    {section.sections.length} ta bo‘lim
+                  </button>
+                </div>
               </div>
             </div>
-          </Card>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Delete Modal */}
       {selectedSection && (
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>O‘chirish</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Rostdan ham <strong>{selectedSection.name}</strong> bo‘limini o‘chirmoqchimisiz?
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Yopish
-            </Button>
-            <Button variant="danger" onClick={handleDeleteSection}>
-              O‘chirish
-            </Button>
-          </Modal.Footer>
+        <Modal show={show} onHide={handleClose} centered className={isDark ? "dark-modal" : ""}>
+          <div className={isDark ? "bg-dark text-light rounded" : ""}>
+            <Modal.Header closeButton className={isDark ? "border-secondary" : ""}>
+              <Modal.Title><i className="fa-solid fa-triangle-exclamation text-danger me-2"></i>O‘chirish</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className={isDark ? "bg-dark" : ""}>
+              Rostdan ham <strong>{selectedSection.name}</strong> departamentini o‘chirmoqchimisiz?
+            </Modal.Body>
+            <Modal.Footer className={isDark ? "border-secondary" : ""}>
+              <Button variant={isDark ? "outline-light" : "secondary"} onClick={handleClose}>
+                Bekor qilish
+              </Button>
+              <Button variant="danger" onClick={handleDeleteSection}>
+                O‘chirish
+              </Button>
+            </Modal.Footer>
+          </div>
         </Modal>
       )}
 
-      {/* Users Modal */}
+      {/* Users Modal (For Consistency) */}
       {showUsers && (
-  <Modal show={showUsers} onHide={handleCloseUsers}>
-    <Modal.Header closeButton>
-      <Modal.Title>
-        {/* {selectedSection.name} xodimlari: {users.length} ta */}
-      </Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      {users.map((user) => (
-          <Link className="text-decoration-none" to={`/admin/base/user/${user._id}`}>
-        <div key={user._id} className="mb-3 modalichidauser">
-          <i className="fa-regular fa-user"></i>
-          <span>{user.name}</span>
-        </div>
-          </Link>
-      ))}
-    </Modal.Body>
-    <Modal.Footer>
-      <Button variant="secondary" onClick={handleCloseUsers}>
-        Yopish
-      </Button>
-    </Modal.Footer>
-  </Modal>
-)}
-
-      {/* Admins Modal */}
-      {showAdmins && selectedSection && (
-        <Modal show={showAdmins} onHide={handleCloseAdmins}>
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedSection.name} bo‘limlari</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {selectedSection.sections.map((admin) => (
-              <Link className="text-decoration-none" to={`/admin/base/user/${admin.ObjectID}`}>
-              <div key={admin._id} className="mb-3 modalichidauser">
-                  <i className="fa-regular fa-user"></i>
-                <span>{admin.name}</span>
+        <Modal show={showUsers} onHide={handleCloseUsers} centered className={isDark ? "dark-modal" : ""}>
+          <div className={isDark ? "bg-dark text-light rounded" : ""}>
+            <Modal.Header closeButton className={isDark ? "border-secondary" : ""}>
+              <Modal.Title className="fs-5">
+                Xodimlar: <span className="text-info">{users.length}</span> ta
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body className={isDark ? "bg-dark p-2" : "p-2"}>
+              <div className="list-group list-group-flush" style={{ maxHeight: "400px", overflowY: "auto" }}>
+                {users.map((user) => (
+                  <Link
+                    key={user._id}
+                    to={`/admin/base/user/${user._id}`}
+                    className={`list-group-item list-group-item-action border-0 mb-1 rounded d-flex align-items-center gap-3 ${isDark ? 'bg-secondary bg-opacity-25 text-light hover-bg-secondary' : ''}`}
+                  >
+                    <div className="rounded-circle bg-info bg-opacity-10 p-2 d-flex align-items-center justify-content-center">
+                      <i className="fa-solid fa-user text-info"></i>
+                    </div>
+                    <span className="fw-medium">{user.name}</span>
+                  </Link>
+                ))}
+                {users.length === 0 && (
+                  <div className="text-center p-4 text-muted">Hozircha xodimlar yo'q</div>
+                )}
               </div>
-                </Link>
-            ))}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseAdmins}>
-              Yopish
-            </Button>
-          </Modal.Footer>
+            </Modal.Body>
+            <Modal.Footer className={isDark ? "border-secondary" : ""}>
+              <Button variant={isDark ? "outline-light" : "secondary"} onClick={handleCloseUsers}>Yopish</Button>
+            </Modal.Footer>
+          </div>
         </Modal>
       )}
-    </>
+
+      {/* Sections Modal */}
+      {showAdmins && selectedSection && (
+        <Modal show={showAdmins} onHide={handleCloseAdmins} centered className={isDark ? "dark-modal" : ""}>
+          <div className={isDark ? "bg-dark text-light rounded" : ""}>
+            <Modal.Header closeButton className={isDark ? "border-secondary" : ""}>
+              <Modal.Title className="fs-5">{selectedSection.name} bo‘limlari</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className={isDark ? "bg-dark p-2" : "p-2"}>
+              <div className="list-group list-group-flush" style={{ maxHeight: "400px", overflowY: "auto" }}>
+                {selectedSection.sections.map((sectionItem) => (
+                  <div
+                    key={sectionItem._id}
+                    className={`list-group-item border-0 mb-1 rounded d-flex align-items-center gap-3 ${isDark ? 'bg-info bg-opacity-10 text-light' : 'bg-light'}`}
+                  >
+                    <div className="rounded-circle bg-info bg-opacity-25 p-2 d-flex align-items-center justify-content-center">
+                      <i className="fa-solid fa-layer-group text-info"></i>
+                    </div>
+                    <span className="fw-medium">{sectionItem.name}</span>
+                  </div>
+                ))}
+                {selectedSection.sections.length === 0 && (
+                  <div className="text-center p-4 text-muted">Ushbu departamentga bo'limlar biriktirilmagan</div>
+                )}
+              </div>
+            </Modal.Body>
+            <Modal.Footer className={isDark ? "border-secondary" : ""}>
+              <Button variant={isDark ? "outline-light" : "secondary"} onClick={handleCloseAdmins}>Yopish</Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
+      )}
+    </div>
   );
 }
 

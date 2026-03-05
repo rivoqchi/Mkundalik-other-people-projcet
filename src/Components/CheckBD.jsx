@@ -204,7 +204,7 @@ const colors = [
           <p className="cb-text">
             Hurmatli <b>{localStorage.getItem("fullName")}</b>,  
             <b> mkundalik.uz</b> jamoasi sizni tug‘ilgan kuningiz bilan samimiy tabriklaydi!  
-            Sizga sog‘lik, omad va katta yutuqlar tilaymiz <i class="fa-solid fa-ribbon"></i>
+            Sizga sog‘lik, omad va katta yutuqlar tilaymiz <i className="fa-solid fa-ribbon"></i>
           </p>
 
           <img src={logo} alt="" style={{ width:220, marginTop:10 }} />

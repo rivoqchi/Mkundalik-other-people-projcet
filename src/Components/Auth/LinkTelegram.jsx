@@ -19,7 +19,7 @@ function LinkTelegram() {
 
     // Telegram auth function
     window.onTelegramAuth = (user) => {
-      console.log('User authorized:', user);
+      // console.log('User authorized:', user);
       verifyAndSaveUserData(user);
     };
 
