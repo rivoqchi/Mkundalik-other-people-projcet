@@ -1399,6 +1399,22 @@ input.form-control.active {
     padding: 20px 25px;
     background: var(--bg-card);
     border-top: 1px solid var(--border-cyber);
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 15px;
+      
+      .footer-left-actions, .footer-right-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .footer-right-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
   }
 
   .action-btn {
@@ -1431,6 +1447,10 @@ input.form-control.active {
     transition: all 0.3s;
     box-shadow: 0 8px 20px var(--accent-glow);
     
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+    
     &:hover:not(:disabled) {
       transform: translateY(-3px);
       box-shadow: 0 12px 25px var(--accent-glow);
@@ -1448,6 +1468,12 @@ input.form-control.active {
     font-weight: 700;
     margin-left: 15px;
     transition: all 0.3s;
+    
+    @media (max-width: 768px) {
+      margin-left: 0;
+      width: 100%;
+      padding: 15px 25px; /* Kattaroq ko'rinishi uchun biroz padding qo'shildi */
+    }
     
     &:hover {
       background: #f43f5e;
@@ -10410,6 +10436,12 @@ input:checked + .slider:before {
   padding: 40px 20px;
   background: var(--bg-primary);
   min-height: 100vh;
+  
+  /* Mobil qurilmalarda A4 qog'oz kesilmasligi uchun gorizontal scroll qoshamiz */
+  @media (max-width: 768px) {
+    overflow-x: auto;
+    align-items: flex-start; /* Scroll qilish qulay bo'lishi uchun chapdan boshlash ustunroq */
+  }
 }
 
 .a4-page {
@@ -10449,7 +10481,8 @@ input:checked + .slider:before {
 .hrnone { border-top: 1px solid #ccc !important; opacity: 0.5 !important; }
 .hrnone2 { border-top: 1px dashed #eee !important; opacity: 1 !important; }
 
-/* Responsive adjustments for the A4 preview */
+/* Responsive adjustments for the A4 preview - Mobil qurilmalarda ham proporsiyani saqlash uchun o'chirdik */
+/* 
 @media (max-width: 215mm) {
   .a4-page {
     width: 95vw;
@@ -10457,6 +10490,7 @@ input:checked + .slider:before {
     padding: 10mm;
   }
 }
+*/
 
 /* Print Media */
 @media print {

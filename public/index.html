@@ -20,6 +20,16 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
 
 <!--  -->
+    <!-- Anti-Clickjacking Frame-busting Script -->
+    <style id="antiClickjack">body{display:none !important;}</style>
+    <script type="text/javascript">
+      if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        if (antiClickjack) antiClickjack.parentNode.removeChild(antiClickjack);
+      } else {
+        top.location = self.location;
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>  

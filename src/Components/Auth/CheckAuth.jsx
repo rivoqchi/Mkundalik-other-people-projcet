@@ -28,8 +28,17 @@ const getRequest = async (url) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      credentials: "include" // ✅ Sends httpOnly cookies automatically
+      credentials: "include" // cookie yuborish uchun
     });
+
+    // Agar status 401 bo‘lsa, userni logout qilish
+    if (response.status === 401) {
+      window.localStorage.clear();
+      // optional: login sahifasiga yo‘naltirish
+      window.location.href = "/login";
+      return null;
+    }
+
     return await response.json();
   } catch (err) {
     console.error(`GET ${url} xatolik:`, err);

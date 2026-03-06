@@ -256,5 +256,9 @@
     "aitahrir": "AI Tahrir",
     "Xavfsizlik": "Xavfsizlik",
     "security_update_title": "Xavfsizlik yangilanishi",
-    "security_update_desc": "Hurmatli foydalanuvchi, tizimda xavfsizlikka oid yangilanish bo'lganligi munosabati bilan, xizmatdan foydalanish uchun qaytadan login qilishingiz kerak."
+    "security_update_desc": "Hurmatli foydalanuvchi, tizimda xavfsizlikka oid yangilanish bo'lganligi munosabati bilan, xizmatdan foydalanish uchun qaytadan login qilishingiz kerak.",
+    "texnik_profilaktika": "Texnik profilaktika",
+    "texnik_profilaktika_desc": "Hurmatli foydalanuvchi, o`tgan kunlarda texnik profilaktika ishlari olib borilganligi munosabati bilan ushbu sanalar uchun kundalik hisobotlarni to`ldirish ochiq.",
+    "bugungi": "Bugungi kun uchun boshlash",
+    "qaytayozishshartemas": "Agar ushbu sanada ma'lumot qoldirgan bo`lsangiz, qayta yozish shart emas."
 }

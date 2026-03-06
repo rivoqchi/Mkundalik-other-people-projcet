@@ -429,11 +429,15 @@ function ScheduleNew() {
       return () => clearInterval(timer); // Cleanup
     }
   }, [terminate]);
-  const handleStartWork = () => {
+  const handleStartWork = (customDate = null) => {
     setLoading(true);
     if (handleShowStart) {
       handleCloseStart();
     }
+
+    // Check if customDate is valid string (not mouse event from a button)
+    const finalDate = (typeof customDate === 'string') ? customDate : madeEasier;
+
     const payload = {
       beginnerName: myName,
       beginnerId: window.localStorage.getItem("user_id"),
@@ -442,7 +446,7 @@ function ScheduleNew() {
       complex: myComplex,
       role: myRole,
       degree: myDegree,
-      ...(madeEasier && { madeEasier: madeEasier }),
+      ...(finalDate && { madeEasier: finalDate }),
     };
 
     axios.post(`${API}/schedules/create`, payload, { withCredentials: true }).then((res) => {
@@ -505,7 +509,7 @@ function ScheduleNew() {
                 </div>
                 <div className="calendar-box-creative">
                   <i className="fa-solid fa-calendar-days"></i>
-                  <span>{date}</span>
+                  <span>{workingOn?.startedAt?.slice(0, 10) || date}</span>
                 </div>
               </div>
             </div>
@@ -706,7 +710,7 @@ function ScheduleNew() {
                         disabled={!taskData || (shart && !type)}
                       >
                         <i className="fa-solid fa-cloud-arrow-up"></i>
-                        <span className="d-none d-md-inline ms-2">{t("saqlash")}</span>
+                        <span className=" d-md-inline ms-2">{t("saqlash")}</span>
                       </button>
 
                       <button
@@ -714,7 +718,7 @@ function ScheduleNew() {
                         onClick={handleShowEnd}
                       >
                         <i className="fa-solid fa-flag-checkered"></i>
-                        <span className="d-none d-md-inline ms-2">{t("yakunlash")}</span>
+                        <span className="d-md-inline ms-2">{t("yakunlash")}</span>
                       </button>
                     </div>
                   </div>
@@ -838,33 +842,33 @@ function ScheduleNew() {
 
       <Modal centered show={showStart} onHide={handleCloseStart}>
         <Modal.Header closeButton>
-          <Modal.Title>{t("boshlash")}</Modal.Title>
+          <Modal.Title>{t("ishniboshlash")}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          {t("areyousuretostart")}
-
-          {showPicker && (
-            <div className="mt-3">
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => {
-                  setSelectedDate(date);
-                  setMadeEasier(dayjs(date).format("DD/MM/YYYY HH:mm"));
-                  // setShowPicker(false); // tanlangach yopiladi
-                }}
-                showTimeSelect
-                dateFormat="dd/MM/yyyy HH:mm"
-                className="form-control"
-                autoFocus
-              />
-            </div>
-          )}
+        <Modal.Body className="text-center py-4">
+          <p className="mb-4" style={{ fontSize: '1.1rem', fontWeight: '500' }}>
+            {t("texnik_profilaktika_desc")}
+          </p>
+          <p className="mb-4" style={{ fontSize: '1.1rem', color: "red", fontWeight: '500' }}>
+            {t("qaytayozishshartemas")}
+          </p>
+          <div className="d-flex justify-content-center gap-3">
+            <Button
+              className="defaultbtn px-4"
+              onClick={() => handleStartWork("05/03/2026 09:00")}
+            >
+              05.03.2026
+            </Button>
+            <Button
+              className="defaultbtn px-4"
+              onClick={() => handleStartWork("06/03/2026 09:00")}
+            >
+              06.03.2026
+            </Button>
+            <Button className="defaultbtn" onClick={handleStartWork}>
+              {t("bugungi")}
+            </Button>
+          </div>
         </Modal.Body>
-        <Modal.Footer>
-          <Button className="defaultbtn" onClick={handleStartWork}>
-            {t("boshlash")}
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );
