@@ -111,6 +111,7 @@ function DynamicSEO() {
 
   const { title, desc } = getSEO();
 
+  
   return (
     <Helmet>
       <title>{title}</title>
