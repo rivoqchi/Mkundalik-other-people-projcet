@@ -1,251 +1,171 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import logo from "./Images/logo-png.png";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+// Images & Assets
 import noting from "./Images/noting.png";
-import avatar from "./Images/avatar.png";
 import img1 from "./Images/Pinterest/image.png";
 import img2 from "./Images/Pinterest/image2.png";
 import img3 from "./Images/Pinterest/image3.png";
 import img4 from "./Images/Pinterest/image4.png";
-import LangSelect from "./LangSelect";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import "./Main.scss";
+
+// Components
+import Navbarr from "./Navbar";
+import Footer from "./Footer";
+import { useTheme } from "./Additional/ThemeContext";
 import { useTranslation } from "react-i18next";
+
+// Styles
+import "./Main.scss";
+
 function Main() {
-  const [isOpen, setIsOpen] = useState(false);
-  let isSignedIn = window.localStorage.getItem("isSignedIn") === "true";
-  const [route, setRoute] = useState("");
-
-
+  const { theme } = useTheme();
   const { t } = useTranslation();
+  const isSignedIn = window.localStorage.getItem("isSignedIn") === "true";
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
   useEffect(() => {
-    const role = window.localStorage.getItem("role");
-    if (role === "admin") {
-      setRoute("/admin");
-    } else if (role === "employee") {
-      setRoute("/user");
-    } else if (role === "superadmin") {
-      setRoute("/superadmin");
-    } else if (role === "complex") {
-      setRoute("/complex");
-    } else if (role === "department") {
-      setRoute("/department");
-    } else if (role === "hr") {
-      setRoute("/hr");
-    } else if (role === "lang") {
-      setRoute("/lang");
-    } else if (role === "boss") {
-      setRoute("/boss");
-    } else if (role === "commission") {
-      setRoute("/commission");
-    } else if (role === "staff") {
-      setRoute("/staff");
-    } else if (role === "at") {
-      setRoute("/at");
-    } else if (role === "sport") {
-      setRoute("/sport");
-    }
+    // Initialize AOS with premium settings
+    AOS.init({
+      duration: 1000,
+      once: true,
+      easing: "ease-out-back",
+      offset: 100
+    });
   }, []);
 
+  const getDashboardLink = () => {
+    const role = window.localStorage.getItem("role");
+    const roleRoutes = {
+      admin: "/admin/dashboard",
+      employee: "/user/dashboard",
+      superadmin: "/superadmin/dashboard",
+      complex: "/complex/dashboard",
+      department: "/department/dashboard",
+      hr: "/hr/dashboard",
+      lang: "/lang/dashboard",
+      boss: "/boss/dashboard",
+      commission: "/commission/dashboard",
+      staff: "/staff/dashboard",
+      at: "/at/dashboard",
+      sport: "/sport/dashboard"
+    };
+    return roleRoutes[role] || "/";
+  };
+
+  const route = getDashboardLink();
+
+  const stats = [
+    { val: "600+", label: t("xodimlar"), icon: "fa-users-gear" },
+    { val: "100k+", label: t("wroten"), icon: "fa-database" },
+    { val: "100%", label: t("digitalized"), icon: "fa-microchip" }
+  ];
 
   return (
-    <div className="navvv mainpg ">
+    <div className={`mainpg ${theme === "dark" ? "dark-mode" : "light-mode"}`}>
+      <Navbarr />
 
-
-      <nav className="nav">
-        <div className="logo2">
-          <img src={logo} alt="logo" />
-        </div>
-
-        <div className={`nav-links ${isOpen ? "open" : ""}`}>
-          <a onClick={() => setIsOpen(false)} href="#">
-            <li>{t("main")}</li>
-          </a>
-          <a onClick={() => setIsOpen(false)} href="#statistika">
-            <li>{t("statistika")}</li>
-          </a>
-          <a
-            onClick={() => setIsOpen(false)}
-            href="/templates/instructions.pdf"
-          >
-            <li>{t("instruction")}</li>
-          </a>
-          <LangSelect />
-
-          {isSignedIn ? (
-            <Link onClick={() => setIsOpen(false)} to={`${route}/dashboard`}>
-              <button className="login-btn">{t("privatecab")}</button>
-            </Link>
-          ) : (
-            <Link onClick={() => setIsOpen(false)} to="/login">
-              <button className="login-btn">{t("privatecab")}</button>
-            </Link>
-          )}
-        </div>
-
-        <div className="hamburger" onClick={toggleMenu}>
-          <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
-        </div>
-      </nav>
-      <div className="row mt-5 mb-5 align-items-center">
-        <div className="col-12 col-md-6 text-center">
-          <header className="hero">
-            <h1>MKUNDALIK.UZ</h1>
-            <p>{t("axtizim")}
-            </p>
+      {/* --- HERO: BOLD & CREATIVE --- */}
+      <section className="hero-creative">
+        <div className="hero-content" data-aos="zoom-out-up">
+          <div className="hero-badge">
+             <span className="pulse"></span>
+            <span>{t("tashmetro")}</span>
+          </div>
+          <h1 className="hero-title">MKUNDALIK<span className="accent-dot">.</span>UZ</h1>
+          <p className="hero-subtitle">{t("axtizim")}</p>
+          <div className="hero-buttons">
             {isSignedIn ? (
-              <Link onClick={() => setIsOpen(false)} to={`${route}/dashboard`}>
-                <button className="login-btn">{t("privatecab")}</button>
+              <Link to={route} className="btn-premium">
+                <span>{t("privatecab")}</span>
+                <i className="fa-solid fa-arrow-right-long"></i>
               </Link>
             ) : (
-              <Link onClick={() => setIsOpen(false)} to="/login">
-                <button className="login-btn">{t("privatecab")}</button>
+              <Link to="/login" className="btn-premium">
+                <span>{t("privatecab")}</span>
+                <i className="fa-solid fa-arrow-right-long"></i>
               </Link>
             )}
-          </header>
-        </div>
-        <div className="col-12 col-md-6 text-center w100">
-          <img src={noting} alt="Noting" className="noting" />
-        </div>
-      </div>
-
-      <div className="bu-qanday-ishlaydi hero">
-        <h1>{t("howdoesitwork")}?</h1>
-        <p>
-          {t("howdoesitworkdesc")}:
-        </p>
-
-        <div className="row howdoesitwork align-items-center">
-          <div className="col-12 col-md-6 align-items-center">
-            <h2 className="how22">
-              <i className="fa-solid fa-1"></i> {t("howdoesitworkdesc2")}
-            </h2>
-            <p>
-              {t("howdoesitworkdesc3")}.
-            </p>
-          </div>
-          <div className="col-12 col-md-6 align-items-center">
-            <img className="noting2" src={img2} alt="" />
           </div>
         </div>
+        <div className="hero-image-wrapper" data-aos="fade-left" data-aos-delay="300">
+           <img src={noting} alt="Hero Mockup" />
+           <div className="blob-bg"></div>
+        </div>
+      </section>
 
-        <div className="row howdoesitwork align-items-center">
-          <div className="col-12 col-md-6 align-items-center">
-            <img className="noting2" src={img3} alt="" />
-          </div>
-          <div className="col-12 col-md-6 align-items-center">
-            <h2 className="how22">
-              <i className="fa-solid fa-2"></i> {t("howdoesitworkdesc4")}
-            </h2>
-            <p>
-              {t("howdoesitworkdesc5")}.
-            </p>
-          </div>
+      {/* --- DYNAMIC FEATURES SECTION --- */}
+      <section id="features" className="features-section">
+        <div className="section-title" data-aos="fade-up">
+          <span className="sub-title">{t("process")}</span>
+          <h2>{t("howdoesitwork")}?</h2>
+          <p>{t("howdoesitworkdesc")}</p>
         </div>
 
-        <div className="row howdoesitwork align-items-center">
-          <div className="col-12 col-md-6 align-items-center">
-            <h2 className="how22">
-              <i className="fa-solid fa-3"></i> {t("howdoesitworkdesc6")}
-            </h2>
-            <p>
-              {t("howdoesitworkdesc7")}.
-            </p>
+        <div className="features-grid">
+          <div className="feature-card" data-aos="fade-up" data-aos-delay="100">
+            <div className="card-number">01</div>
+            <div className="card-icon"><i className="fa-solid fa-user-plus"></i></div>
+            <h3>{t("howdoesitworkdesc2")}</h3>
+            <p>{t("howdoesitworkdesc3")}</p>
+            <div className="img-container">
+               <img src={img2} alt="Step 1" className="feature-img" />
+            </div>
           </div>
-          <div className="col-12 col-md-6 align-items-center">
-            <img className="noting2" src={img4} alt="" />
+
+          <div className="feature-card" data-aos="fade-up" data-aos-delay="200">
+            <div className="card-number">02</div>
+            <div className="card-icon"><i className="fa-solid fa-pen-to-square"></i></div>
+            <h3>{t("howdoesitworkdesc4")}</h3>
+            <p>{t("howdoesitworkdesc5")}</p>
+            <div className="img-container">
+              <img src={img3} alt="Step 2" className="feature-img" />
+            </div>
+          </div>
+
+          <div className="feature-card" data-aos="fade-up" data-aos-delay="300">
+            <div className="card-number">03</div>
+            <div className="card-icon"><i className="fa-solid fa-check-double"></i></div>
+            <h3>{t("howdoesitworkdesc6")}</h3>
+            <p>{t("howdoesitworkdesc7")}</p>
+            <div className="img-container">
+              <img src={img4} alt="Step 3" className="feature-img" />
+            </div>
+          </div>
+
+          <div className="feature-card" data-aos="fade-up" data-aos-delay="400">
+            <div className="card-number">04</div>
+            <div className="card-icon"><i className="fa-solid fa-chart-line"></i></div>
+            <h3>{t("howdoesitworkdesc8")}</h3>
+            <p>{t("howdoesitworkdesc9")}</p>
+            <div className="img-container">
+              <img src={img1} alt="Step 4" className="feature-img" />
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="row howdoesitwork align-items-center">
-          <div className="col-12 col-md-6 align-items-center">
-            <img className="noting2" src={img1} alt="" />
-          </div>
-          <div className="col-12 col-md-6 align-items-center">
-            <h2 className="how22">
-              <i className="fa-solid fa-4"></i> {t("howdoesitworkdesc8")}
-            </h2>
-            <p>
-              {t("howdoesitworkdesc9")}.
-            </p>
-          </div>
+      {/* --- IMPACT STATISTICS: CREATIVE REDESIGN --- */}
+      <section id="statistika" className="stats-section">
+        <div className="section-title" data-aos="fade-up">
+           <span className="sub-title">{t("impact")}</span>
+           <h2>{t("statistika")}</h2>
         </div>
-      </div>
-
-
-      <div id="statistika" className="statistics hero">
-        <h1>{t("statistika")}</h1>
-        <p>{t("tashmetroduk")}</p>
-        <div className="statistics-main text-center">
-          <div className="statistics-main2">
-            <h1 className="son">600+</h1> <p>{t("xodimlar")}</p>
-          </div>
-          <div className="statistics-main2">
-            <h1 className="son">100 000+</h1> <p>{t("wroten")}</p>
-          </div>
+        <div className="stats-creative">
+          {stats.map((item, idx) => (
+             <div className="stat-card-tech" key={idx} data-aos="zoom-in-up" data-aos-delay={idx * 150}>
+                <div className="stat-glow"></div>
+                <div className="stat-icon-wrapper">
+                   <i className={`fa-solid ${item.icon}`}></i>
+                </div>
+                <div className="stat-val">{item.val}</div>
+                <div className="stat-label">{item.label}</div>
+             </div>
+          ))}
         </div>
+      </section>
 
-      </div>
-
-      <footer className="footer row mb-4">
-        <div className="col-12 col-md-4 text-start">
-          <img src={logo} className="footer-logo" alt="logo" />
-          <p>
-            {t("aboutfooter")}
-          </p>
-        </div>
-        <div className="col-12 col-md-4">
-          <ul className="list-unstyled bbg text-start">
-            <li>
-              <Link to="/statistika">
-                <i className="fa-solid fa-chart-simple"></i> {t("statistika")}
-              </Link>
-            </li>
-            <li>
-              <a href="/templates/instructions.pdf">
-                <i className="fa-solid fa-book"></i> {t("dasfoyyoriq")}
-              </a>
-            </li>
-            <li>
-              <Link to="/about">
-                <i className="fa-solid fa-circle-info"></i> {t("dasturhaqida")}
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className="col-12 col-md-4">
-          <ul className="list-unstyled bbg text-start">
-            <li>
-              <a href="tel:+998712413140">
-                <i className="fa-solid fa-phone-volume"></i> +998 (71) 241-31-40
-              </a>
-            </li>
-            <li>
-              <div className="ctrl-enter">
-                <i className="fa-solid fa-phone-volume"></i> {t("ichkiraqam")}: 50-55
-              </div>
-            </li>
-            <li>
-              <a href="mailto:mkundalik@tashmetro.uz">
-                <i className="fa-solid fa-envelope"></i> mkundalik@tashmetro.uz
-              </a>
-            </li>
-            <br />
-            <span className="ctrl-enter">
-              {t("ctrlenter")}
-            </span>
-            <br />
-            <span className="ctrl-enter">{t("allrightsreserved")}.</span>
-            <p className="ctrl-enter">Toshkent - 2025</p>
-          </ul>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -52,12 +52,12 @@ function Aside() {
                 <span>{t("faoliyatim")}</span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link className={location.pathname.startsWith("/user/languages") ? "active" : ""} to="/user/languages">
                 <i className="fa-solid fa-language"></i>
                 <span>{t("foreign")}</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link className={location.pathname.startsWith("/user/profile") ? "active" : ""} to="/user/profile">
                 <i className="fa-solid fa-user"></i>

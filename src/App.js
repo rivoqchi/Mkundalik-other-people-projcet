@@ -55,12 +55,29 @@ import { ThemeProvider, useTheme } from "./Components/Additional/ThemeContext";
 import { Toaster } from "sonner";
 import Inactive from "./Components/Auth/Inactive";
 import { HelmetProvider, Helmet } from "react-helmet-async";
+import VersionChecker from "./Components/Additional/VersionChecker";
+import MobilePromoBanner from "./Components/Additional/MobilePromoBanner";
+
+
 
 
 import { signout } from "./Components/Auth/CheckAuth";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = API;
+
+axios.interceptors.request.use(
+  (config) => {
+    const token = typeof window !== "undefined" ? window.localStorage.getItem("token") : "";
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 axios.interceptors.response.use(
   (response) => response,
@@ -134,7 +151,11 @@ function AppContent() {
         <CtrlEnter />
         <XatolikXabar />
         <Snowing />
-        <LoginAgainAlert />
+        <MobilePromoBanner />
+        <VersionChecker />
+
+        {/* <LoginAgainAlert /> */}
+
         <Routes>
           <Route path="/" exact element={<Main />} />
           <Route path="/fill" exact element={<Fill />} />

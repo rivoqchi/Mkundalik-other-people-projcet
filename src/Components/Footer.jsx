@@ -91,16 +91,37 @@ function Footer() {
                     <i className="fa-solid fa-question-circle"></i> FAQ
                   </Link>
                 </li>
-                {/* <li>
-                  <Link to={`${route}/about/application`}>
-                    <i className="fa-solid fa-mobile-screen"></i> App
-                  </Link>
-                </li> */}
+                <li>
+                  <a target="blank" href="https://t.me/mkundalikuz">
+                    <i className="fa-brands fa-telegram"></i> Yangiliklar
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* App Section */}
+            <div className="col-12 col-md-4 col-lg-2 footer-col">
+              <h5 className="footer-title">{t("ilova") || "Ilova"}</h5>
+              <ul className="list-unstyled footer-links text-start">
+                <li>
+                  <a href="https://mdata.uz/download/mkundalik-android.apk" target="_blank" rel="noopener noreferrer">
+                    <i className="fa-brands fa-android"></i> Android APK
+                  </a>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => alert("iOS ilova hozircha mavjud emas, vaqtinchalik brauzerdan foydalaning.")}
+                    className="btn-link text-decoration-none p-0 border-0 bg-transparent text-start"
+                    style={{color: 'inherit', fontSize: 'inherit'}}
+                  >
+                    <i className="fa-brands fa-apple"></i> iOS App
+                  </button>
+                </li>
               </ul>
             </div>
 
             {/* Contact Section */}
-            <div className="col-12 col-md-4 col-lg-4 footer-col">
+            <div className="col-12 col-md-4 col-lg-2 footer-col">
               <h5 className="footer-title">{t("contacts")}</h5>
               <ul className="list-unstyled footer-contact text-start">
                 <li>
@@ -122,16 +143,28 @@ function Footer() {
             </div>
           </div>
 
-          {/* <div className="footer-copyright mt-5">
+          <div className="footer-copyright mt-5 pt-3 border-top">
             <div className="row align-items-center">
               <div className="col-md-6 text-md-start">
-                <span>© 2025 "Toshkent Metropoliteni" DUK. {t("allrightsreserved")}.</span>
+                <span className="opacity-75">© 2025 "Toshkent Metropoliteni" DUK. {t("allrightsreserved")}.</span>
               </div>
-              <div className="col-md-6 text-md-end">
-                <p className="m-0">Developed with <i className="fa-solid fa-heart text-danger mx-1"></i> for Task Management</p>
+              <div className="col-md-6 text-md-end d-flex align-items-center justify-content-md-end gap-3 mt-2 mt-md-0">
+                <div className="version-info mb-5 d-flex align-items-center gap-2">
+                  <span className="badge bg-secondary-subtle text-secondary border px-2 py-1" style={{fontSize: '11px'}}>
+                    v{localStorage.getItem('app_version') || '2.0.7'}
+                  </span>
+                  <button 
+                    onClick={() => window.dispatchEvent(new CustomEvent('check-app-version'))}
+                    className="btn btn-sm btn-outline-secondary py-0 px-2"
+                    style={{fontSize: '11px'}}
+                  >
+                    <i className="fa-solid fa-sync fa-xs me-1"></i> {t("checkupdate") || "Yangilanishni tekshirish"}
+                  </button>
+                </div>
+                {/* <p className="m-0 small opacity-75">Developed by A. Behruz</p> */}
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </footer>
     </>

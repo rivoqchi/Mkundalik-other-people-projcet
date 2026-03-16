@@ -118,7 +118,7 @@ function Sections() {
                     <h5 className={`mb-0 fw-bold ${isDark ? 'text-light' : 'text-dark'}`}>{section.name}</h5>
                   </div>
                   <div className="d-flex gap-2">
-                    <Link to={`/admin/sections/edit/${section._id}`} className="btn btn-outline-primary btn-sm rounded-circle" title="Tahrirlash">
+                    <Link to={`/superadmin/sections/edit/${section._id}`} className="btn btn-outline-primary btn-sm rounded-circle" title="Tahrirlash">
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Link>
                     <button className="btn btn-outline-danger btn-sm rounded-circle" onClick={() => handleShow(section)} title="O'chirish">

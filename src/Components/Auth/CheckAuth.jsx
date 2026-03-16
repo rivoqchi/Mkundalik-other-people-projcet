@@ -3,12 +3,18 @@ import { API } from '../../config';
 // POST requests
 const postRequest = async (url, body) => {
   try {
+    const token = typeof window !== "undefined" ? window.localStorage.getItem("token") : "";
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${API}${url}`, {
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify(body),
       credentials: "include" // cookie bilan ishlash uchun
     });
@@ -22,12 +28,18 @@ const postRequest = async (url, body) => {
 // GET requests
 const getRequest = async (url) => {
   try {
+    const token = typeof window !== "undefined" ? window.localStorage.getItem("token") : "";
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${API}${url}`, {
       method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers,
       credentials: "include" // cookie yuborish uchun
     });
 

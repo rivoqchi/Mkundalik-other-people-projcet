@@ -40,6 +40,7 @@ function Aside() {
                 <span>Xavfsizlik</span>
               </Link>
             </li>
+            <hr className="m-0 opacity-10" />
             <li>
               <Link to="/superadmin/complex" className={location.pathname.startsWith("/superadmin/complex") ? "active" : ""}>
                 <i className="fa-solid fa-layer-group"></i>
@@ -58,21 +59,11 @@ function Aside() {
                 <span>Bo`limlar</span>
               </Link>
             </li>
-            <li>
-              <Link className={location.pathname === "/superadmin/schedule/history" ? "active" : ""} to="/superadmin/schedule/history">
-                <i className="fa-solid fa-clock-rotate-left"></i>
-                <span>Tarix</span>
-              </Link>
-            </li>
-          </ul>
-
-          <div className="menu-divider px-4 mb-3"><hr className="m-0 opacity-10" /></div>
-
-          <ul className="mb-4">
+            <hr className="m-0 opacity-10" />
             <li>
               <Link to="/superadmin/employees/adduser" className={location.pathname.startsWith("/superadmin/employees/adduser") ? "active" : ""}>
                 <i className="fa-solid fa-user-plus"></i>
-                <span>Xodim qo`shish</span>
+                <span>Yangi xodim</span>
               </Link>
             </li>
             <li>
@@ -81,17 +72,6 @@ function Aside() {
                 <span>Barcha xodimlar</span>
               </Link>
             </li>
-          </ul>
-
-          <div className="menu-divider px-4 mb-3"><hr className="m-0 opacity-10" /></div>
-
-          <ul>
-            {/* <li>
-              <Link to="/superadmin/report" className={location.pathname.startsWith("/superadmin/report") ? "active" : ""}>
-                <i className="fa-solid fa-file-contract"></i>
-                <span>Davriy hisobot</span>
-              </Link>
-            </li> */}
             <li>
               <Link to="/superadmin/report/global" className={location.pathname.startsWith("/superadmin/report/global") ? "active" : ""}>
                 <i className="fa-solid fa-globe"></i>
@@ -102,18 +82,6 @@ function Aside() {
               <Link to="/superadmin/report/holidays" className={location.pathname.startsWith("/superadmin/report/holidays") ? "active" : ""}>
                 <i className="fa-solid fa-calendar-check"></i>
                 <span>Bayramlar</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/superadmin/profile" className={location.pathname.startsWith("/superadmin/profile") ? "active" : ""}>
-                <i className="fa-solid fa-user-shield"></i>
-                <span>Profil sozlamalari</span>
-              </Link>
-            </li>
-            <li className="mt-4">
-              <Link onClick={handleShow} className="text-danger opacity-75">
-                <i className="fa-solid fa-right-from-bracket"></i>
-                <span>Tizimdan chiqish</span>
               </Link>
             </li>
           </ul>

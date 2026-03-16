@@ -1,0 +1,163 @@
+.mobile-promo-card {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    z-index: 11000;
+    overflow: hidden;
+    animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    .promo-container {
+        padding: 24px;
+        text-align: center;
+        position: relative;
+
+        .close-promo {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #f1f2f6;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #747d8c;
+            transition: all 0.2s;
+
+            &:hover {
+                background: #dfe4ea;
+                color: #2f3542;
+            }
+        }
+
+        .promo-icon {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .promo-content {
+            h3 {
+                margin: 0 0 8px;
+                font-size: 18px;
+                font-weight: 800;
+                color: #2f3542;
+            }
+
+            p {
+                margin: 0 0 20px;
+                font-size: 14px;
+                color: #57606f;
+                line-height: 1.5;
+            }
+
+            .promo-buttons {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+
+                .promo-btn {
+                    flex: 1;
+                    padding: 10px;
+                    border-radius: 12px;
+                    font-size: 14px;
+                    font-weight: 700;
+                    text-decoration: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    transition: all 0.2s;
+                    border: none;
+                    cursor: pointer;
+
+                    &.android {
+                        background: #2ed573;
+                        color: white;
+
+                        &:hover {
+                            background: #26af5e;
+                            transform: translateY(-2px);
+                        }
+                    }
+
+                    &.ios {
+                        background: #2f3542;
+                        color: white;
+
+                        &:hover {
+                            background: #1e272e;
+                            transform: translateY(-2px);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Dark mode for Promo
+.dark-mode {
+    .mobile-promo-card {
+        background: rgba(30, 39, 46, 0.98);
+        border-color: rgba(255, 255, 255, 0.1);
+
+        .close-promo {
+            background: #2f3542;
+            color: #ced6e0;
+        }
+
+        .promo-content {
+            h3 {
+                color: white;
+            }
+
+            p {
+                color: #a4b0be;
+            }
+
+            .promo-btn.ios {
+                background: #57606f;
+
+                &:hover {
+                    background: #747d8c;
+                }
+            }
+        }
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -100px) scale(0.5);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate(-50%, 20px) scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+}

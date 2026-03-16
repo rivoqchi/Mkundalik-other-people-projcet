@@ -44,14 +44,12 @@ function Xodimlar() {
 
   const handleShow3 = () => {
     setShow3(true);
-    setShowModal2(false);
-    setUserInfo(null);
+    handleCloseModal2();
   };
 
   const handleShow4 = () => {
     setShow4(true);
-    setShowModal2(false);
-    setUserInfo(null);
+    handleCloseModal2();
   };
   const [allSections, setAllSections] = useState([]);
   const [allDepartments, setAllDepartments] = useState([]);
@@ -72,6 +70,12 @@ function Xodimlar() {
   const [showPopup, setShowPopup] = useState(false);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [userInfo, setUserInfo] = useState(null);
+
+  // Manager Assign State
+  const [managerPhone, setManagerPhone] = useState("+998");
+  const [managerInfo, setManagerInfo] = useState(null);
+  const [isLoadingManager, setIsLoadingManager] = useState(false);
+  const [assignedFromManager, setAssignedFromManager] = useState(false);
 
   const getUserById = async () => {
     try {
@@ -129,8 +133,7 @@ function Xodimlar() {
         message: "Xodim muvaffaqiyatli yangilandi!",
       });
       handleClose4();
-      setShowModal2(false);
-      setUserInfo(null);
+      handleCloseModal2();
     } catch (error) {
       console.error("Xato yuz berdi: ", error);
       setAlert({ show: true, type: "danger", message: "Xatolik!" });
@@ -203,12 +206,76 @@ function Xodimlar() {
     setEditData({ ...employee }); // Tahrir uchun alohida nusxa
     setShowModal2(true);
     setUserInfo(null);
+    setManagerPhone('+998');
+    setManagerInfo(null);
+    setIsLoadingManager(false);
+    setAssignedFromManager(false);
+  };
+
+  const handleCloseModal2 = () => {
+    setShowModal2(false);
+    setUserInfo(null);
+    setManagerPhone('+998');
+    setManagerInfo(null);
+    setIsLoadingManager(false);
+    setAssignedFromManager(false);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const getManagerByPhone = async () => {
+    if (managerPhone.length < 13) {
+      toast.warning("Iltimos, telefon raqamni to'liq kiriting.");
+      return;
+    }
+    setIsLoadingManager(true);
+    setManagerInfo(null);
+    try {
+      const { data } = await axios.get(`${API}/auth/getuserbyphone/${managerPhone.replace('+', '%2B')}`);
+      setManagerInfo(data.user);
+    } catch (error) {
+      console.error("Error fetching manager by phone:", error);
+      setManagerInfo({ notFound: true });
+    } finally {
+      setIsLoadingManager(false);
+    }
+  };
+
+  const handleAssignManager = () => {
+    if (!managerInfo || managerInfo.notFound) return;
+
+    // Calculate role based on manager's role
+    let newRole = "employee";
+    switch (managerInfo.role) {
+      case "complex":
+        newRole = "department";
+        break;
+      case "department":
+        newRole = "admin";
+        break;
+      case "admin":
+        newRole = "employee";
+        break;
+      default:
+        newRole = "employee";
+    }
+
+    // Apply the extracted data to the current editing employee
+    setSelectedEmployee((prev) => ({
+      ...prev,
+      complex: managerInfo.complex || prev.complex,
+      department: managerInfo.department || prev.department,
+      section: managerInfo.section || prev.section,
+      role: newRole,
+    }));
+    
+    setAssignedFromManager(true);
+    toast.success("Xodim ma'lumotlari rahbariga moslashtirildi. Lavozimni qo'lda kiriting.");
+  };
+
   // Faqat Saqlash bosilganda ishlaydi
   const handleSave = async () => {
     setLoading(true);
@@ -229,8 +296,7 @@ function Xodimlar() {
         message: "Xodim muvaffaqiyatli yangilandi!",
       });
       getAllEmployees();
-      setShowModal2(false);
-      setUserInfo(null);
+      handleCloseModal2();
       setLoading(false);
     } catch (error) {
       console.error("Xodimni yangilashda xatolik:", error);
@@ -278,6 +344,7 @@ function Xodimlar() {
         localStorage.setItem("phone", data.employee.phone);
         localStorage.setItem("role", data.employee.role);
         localStorage.setItem("user_id", data.employee._id);
+        localStorage.setItem("token", data.token);
         localStorage.setItem("isSignedIn", "true");
 
         toast.success(`${data.employee.name} profili bilan tizimga kirildi!`);
@@ -488,7 +555,7 @@ function Xodimlar() {
         </div>
       </div>
       {editing && (
-        <Modal show={showModal2} onHide={() => setShowModal2(false)}>
+        <Modal show={showModal2} onHide={handleCloseModal2}>
           <Modal.Header closeButton>
             <Modal.Title className="d-flex align-items-center justify-content-between">
               <div className="">Lavozimni ko`chirish</div>
@@ -535,6 +602,7 @@ function Xodimlar() {
                   value={selectedEmployee?.role || ""}
                   onChange={handleChange}
                   disabled={!editing}
+                  className={assignedFromManager ? "border border-primary bg-primary bg-opacity-10" : ""}
                 >
                   <option value="employee">Employee</option>
                   <option value="admin">Admin</option>
@@ -559,6 +627,7 @@ function Xodimlar() {
                   value={selectedEmployee?.complex || ""}
                   onChange={handleChange}
                   disabled={!editing}
+                  className={assignedFromManager ? "border border-primary bg-primary bg-opacity-10" : ""}
                 >
                   <option disabled value="">
                     Tanlang:
@@ -572,13 +641,14 @@ function Xodimlar() {
               </Form.Group>
 
               <Form.Group>
-                <Form.Label>Xizmat</Form.Label>
+                <Form.Label>Xizmat/Departament</Form.Label>
                 <Form.Control
                   as="select"
                   name="department"
                   value={selectedEmployee?.department || ""}
                   onChange={handleChange}
                   disabled={!editing}
+                  className={assignedFromManager ? "border border-primary bg-primary bg-opacity-10" : ""}
                 >
                   <option disabled value="">
                     Tanlang:
@@ -592,13 +662,14 @@ function Xodimlar() {
               </Form.Group>
 
               <Form.Group>
-                <Form.Label>Bo'lim</Form.Label>
+                <Form.Label>Bo'lim/Qism</Form.Label>
                 <Form.Control
                   as="select"
                   name="section"
                   value={selectedEmployee?.section || ""}
                   onChange={handleChange}
                   disabled={!editing}
+                  className={assignedFromManager ? "border border-primary bg-primary bg-opacity-10" : ""}
                 >
                   <option disabled value="">
                     Tanlang:
@@ -648,6 +719,51 @@ function Xodimlar() {
                   )}
                 </Accordion.Body>
 
+              </Accordion.Item>
+            </Accordion>
+
+            <Accordion defaultActiveKey="0" className="mt-3">
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Rahbarga biriktirish</Accordion.Header>
+                <Accordion.Body>
+                  <p className="text-muted small mb-2">Rahbarga biriktirish uchun qidiring. Topilgandan so'ng "Biriktirish" tugmasini bossangiz, struktura avtomatik to'ldiriladi.</p>
+                  <InputGroup className="mb-3">
+                    <Form.Control
+                      type="text"
+                      placeholder="Rahbarning telefon raqami"
+                      value={managerPhone}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (!val.startsWith('+998')) {
+                          setManagerPhone('+998' + val.replace(/[^0-9]/g, '').slice(3));
+                        } else {
+                          setManagerPhone('+' + val.replace(/[^0-9]/g, ''));
+                        }
+                      }}
+                      maxLength={13} // +998XXXXXXXXX
+                    />
+                    <Button variant="outline-primary" onClick={getManagerByPhone} disabled={isLoadingManager}>
+                      {isLoadingManager ? <span className="spinner-border spinner-border-sm"></span> : "Qidirish"}
+                    </Button>
+                  </InputGroup>
+
+                  {managerInfo && !managerInfo.notFound && (
+                    <div className="d-flex align-items-center justify-content-between p-3 border rounded bg-light border-primary mb-3">
+                      <div>
+                        <div className="fw-bold fs-6">{managerInfo.name}</div>
+                        <div className="text-muted small text-uppercase">Rol: {managerInfo.role}</div>
+                        <div className="text-muted small">{managerInfo.degree || "Lavozim kiritilmagan"}</div>
+                      </div>
+                      <Button variant="primary" size="sm" onClick={handleAssignManager} className="rounded-pill px-3 shadow-sm">
+                        Biriktirish
+                      </Button>
+                    </div>
+                  )}
+
+                  {managerInfo && managerInfo.notFound && (
+                    <Alert2 type="danger" message="Bunday telefon raqamli rahbar topilmadi." />
+                  )}
+                </Accordion.Body>
               </Accordion.Item>
             </Accordion>
             {/* <div className="redword">Hech kim o`zgartirmasin! Hali tayyor emas.</div> */}

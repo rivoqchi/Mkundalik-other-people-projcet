@@ -73,7 +73,6 @@ function AdminRoute() {
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
               <Route path="/rate/schedule/:id" exact element={<ScheduleRate />} />
               <Route path="/rating/ours" exact element={<ScheduleSectionRating />} />
-              <Route path="/sections" exact element={<Sections />} />
               <Route path="/sections/edit/:id" exact element={<EditSection />} />
               <Route path="/sections/add" exact element={<NewSection />} />
               <Route path="/profile" exact element={<Profile />} />

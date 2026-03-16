@@ -190,7 +190,7 @@
     "send": "Yuborish",
     "dasyaratuvchi": "Dastur yaratuvchilari",
     "behlav": "Dasturiy ta’minotni ishlab chiqish hamda uning barqaror va xavfsiz ishlashini ta’minlovchi full-stack dasturchi",
-    "ferlav": "Dasturiy ta’minotning funksional imkoniyatlari, texnik talablariga mosligi va ishlab chiqish jarayonining belgilangan muddatlarda bajarilishini nazorat qiluvchi loyiha rahbari",
+    "ferlav": "Dasturiy ta’minotning texnik talablariga mosligi va ishlab chiqish jarayonining belgilangan muddatlarda bajarilishini nazorat qiluvchi loyiha rahbari",
     "jahlav": "Loyiha muallifi",
     "zamtex": "Dasturni yaratish davomida foydalanilgan zamonaviy texnologiyalar",
     "takshik": "Taklif va shikoyatlar",
@@ -260,5 +260,14 @@
     "texnik_profilaktika": "Texnik profilaktika",
     "texnik_profilaktika_desc": "Hurmatli foydalanuvchi, o`tgan kunlarda texnik profilaktika ishlari olib borilganligi munosabati bilan ushbu sanalar uchun kundalik hisobotlarni to`ldirish ochiq.",
     "bugungi": "Bugungi kun uchun boshlash",
-    "qaytayozishshartemas": "Agar ushbu sanada ma'lumot qoldirgan bo`lsangiz, qayta yozish shart emas."
+    "qaytayozishshartemas": "Agar ushbu sanada ma'lumot qoldirgan bo`lsangiz, qayta yozish shart emas.",
+    "android": "Android",
+    "ios": "iOS",
+    "web": "Web",
+    "checkupdate": "Yangilanishni tekshirish",
+    "tashmetro": "Toshkent metropoliteni",
+    "process": "Jarayon",
+    "digitalized": "Raqamlashtirilgan"
+    
+
 }

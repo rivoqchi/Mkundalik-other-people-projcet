@@ -40,6 +40,9 @@ const Behruz = () => {
                         </ul>
                     </div>
 
+
+                    
+
                     <div className="bio-card education">
                         <h3><i className="fa-solid fa-graduation-cap"></i> Ta'lim</h3>
                         <p><strong>2023 - hozirgacha:</strong> Islom Karimov nomidagi Toshkent davlat texnika universiteti (TDTU) talabasi.</p>
@@ -51,6 +54,20 @@ const Behruz = () => {
                         <p><strong>2025 - hozirgacha:</strong> "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash va axborot kommunikatsiyalarini rivojlantirish xizmati.</p>
                         <p>Dasturiy tizimlar arxitekturasi va kiberxavfsizlik masalalari bo'yicha bosh mutaxassis.</p>
                     </div>
+
+<div className="bio-card main-info">
+
+<p><b>Behruz Abdurakhimov</b> — <b>Full-Stack dasturchi</b> bo‘lib, u <b>mkundalik.uz</b> axborot tizimini <i>loyihalash, ishlab chiqish va texnik jihatdan shakllantirish</i> jarayonlarini to‘liq amalga oshirgan.</p>
+
+<p>Loyiha doirasida u <b>tizim arxitekturasi</b>ni ishlab chiqish, <b>backend va frontend</b> qismlarini yaratish, <b>ma’lumotlar bazasi tuzilmasi</b>ni loyihalash hamda <b>API xizmatlari</b>ni ishlab chiqish kabi asosiy texnik vazifalarni bajargan.</p>
+
+<p>Shuningdek, tizimda <b>autentifikatsiya va avtorizatsiya</b> mexanizmlarini joriy etish, <b>token asosidagi xavfsizlik</b>, <b>cookie siyosatlari</b> hamda <b>OAuth integratsiyasi</b> kabi zamonaviy <u>kiberxavfsizlik yechimlari</u>ni tatbiq etgan.</p>
+
+<p>U platformaning <b>foydalanuvchi interfeysi (UI)</b> va <b>foydalanuvchi tajribasi (UX)</b>ni ham mustaqil ravishda ishlab chiqib, tizimni <b>MERN stack</b> (<i>MongoDB, Express.js, React.js, Node.js</i>) asosida yaratgan.</p>
+
+<p>Bundan tashqari, loyiha doirasida <b>mobil qurilmalar uchun moslashuvchan (responsive)</b> veb platforma ishlab chiqilgan hamda <b>Android va iOS</b> qurilmalari uchun mobil ilovalar integratsiyasi amalga oshirilgan.</p>
+
+</div>
 
                     <div className="bio-card social-links">
                         <h3><i className="fa-solid fa-share-nodes"></i> Ijtimoiy tarmoqlar</h3>

@@ -43,6 +43,7 @@ const Jahongir = () => {
                     <div className="bio-card education">
                         <h3><i className="fa-solid fa-graduation-cap"></i> Ma'lumot</h3>
                         <p>Davlat va jamoat arbobi. Ko'p yillik boshqaruv tajribasiga ega yetuk mutaxassis.</p>
+                        <p style={{ marginTop: '10px' }}><strong>Mukofotlari:</strong> 2024-yilda "Fidokorona xizmatlari uchun" ordeni bilan taqdirlangan.</p>
                     </div>
 
                     <div className="bio-card experience">

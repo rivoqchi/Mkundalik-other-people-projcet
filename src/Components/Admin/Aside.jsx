@@ -93,12 +93,12 @@ function Aside() {
 
 
 
-            <li>
+            {/* <li>
               <Link className={location.pathname.startsWith("/admin/languages") ? "active" : ""} to="/admin/languages">
                 <i className="fa-solid fa-language"></i>
                 <span>{t("foreign")}</span>
               </Link>
-            </li>
+            </li> */}
 
             <li>
               <Link className={location.pathname.startsWith("/admin/profile") ? "active" : ""} to="/admin/profile">

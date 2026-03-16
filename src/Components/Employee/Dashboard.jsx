@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { API } from "../../config";
+import axios from "axios";
 import logo from "../Images/logo2.png";
 import noting from "../Images/noting.png";
 import CheckBD from "../CheckBD";
@@ -12,14 +13,8 @@ function Dashboard() {
   useEffect(() => {
     async function fetchReportCount() {
       try {
-        const res = await fetch(`${API}/auth/counthisobot?_id=${user_id}`, { credentials: "include" });
-
-        if (res.ok) {
-          const data = await res.json();
-          setReportCount(data.count || 0);
-        } else {
-          setReportCount(0);
-        }
+        const { data } = await axios.get(`${API}/auth/counthisobot?_id=${user_id}`);
+        setReportCount(data.count || 0);
       } catch (error) {
         setReportCount(0);
       }

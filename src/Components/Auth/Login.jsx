@@ -3,6 +3,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signIn } from './CheckAuth';
+import { API } from '../../config';
 import logomk from '../Images/logo-png.png';
 import { useLoading } from "../Additional/LoadingScreen";
 import Alert from '../Additional/Alert';
@@ -155,7 +156,8 @@ const Login = () => {
     }
 
     setLoading(true);
-    const fullPhone = phone.startsWith('+998') ? phone : '+998' + phone;
+    let cleanPhone = phone.replace(/\s+/g, '');
+    const fullPhone = cleanPhone.startsWith('+998') ? cleanPhone : '+998' + cleanPhone;
     const isLogina = location.pathname === '/logina';
 
     signIn({ phone: fullPhone, password, captchaToken, loginType: isLogina ? 'admin' : 'user' })
@@ -215,6 +217,7 @@ const Login = () => {
     window.localStorage.setItem("phone", data.employee.phone);
     window.localStorage.setItem("role", data.employee.role);
     window.localStorage.setItem("user_id", data.employee._id);
+    window.localStorage.setItem("token", data.token);
     window.localStorage.setItem("isSignedIn", "true");
 
     if (from) {
@@ -242,7 +245,12 @@ const Login = () => {
     if (!tempUserData) return;
     setLoading(true);
     try {
-      await axios.put(`/auth/accept-agreement/${tempUserData.employee._id}`);
+      await axios.put(`${API}/auth/accept-agreement/${tempUserData.employee._id}`, {}, {
+        headers: {
+          Authorization: `Bearer ${tempUserData.token}`
+        },
+        withCredentials: true
+      });
       setShowAgreement(false);
       completeSignIn(tempUserData);
     } catch (error) {
@@ -330,11 +338,19 @@ const Login = () => {
                 <label className="cyber-label">Telefon raqam</label>
                 <div className="field-icon"><i className="fa-solid fa-phone-volume"></i></div>
                 <input
-                  type="text"
+                  type="tel"
                   className="input-field"
                   placeholder="99 XXX XX XX"
                   value={phone.startsWith('+998') ? phone.slice(4) : phone}
-                  onChange={(e) => setValues({ ...values, phone: e.target.value })}
+                  onChange={(e) => {
+                    let val = e.target.value.replace(/\D/g, '');
+                    if (val.length > 9) val = val.slice(0, 9);
+                    let formatted = val;
+                    if (val.length > 2) formatted = val.slice(0, 2) + ' ' + val.slice(2);
+                    if (val.length > 5) formatted = formatted.slice(0, 6) + ' ' + formatted.slice(6);
+                    if (val.length > 7) formatted = formatted.slice(0, 9) + ' ' + formatted.slice(9);
+                    setValues({ ...values, phone: formatted });
+                  }}
                   onKeyDown={handleKeyDown}
                 />
               </motion.div>

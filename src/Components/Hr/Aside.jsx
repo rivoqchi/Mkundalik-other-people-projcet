@@ -57,12 +57,12 @@ function Aside() {
                 <span>{t("xodimlar")}</span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link className={location.pathname.startsWith("/hr/languages") ? "active" : ""} to="/hr/languages">
                 <i className="fa-solid fa-language"></i>
                 <span>{t("foreign")}</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link className={location.pathname.startsWith("/hr/report/global") ? "active" : ""} to="/hr/report/global">
                 <i className="fa-solid fa-receipt"></i>

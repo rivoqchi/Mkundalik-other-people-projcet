@@ -138,6 +138,13 @@ function ScheduleNew() {
   const [aiMode, setAiMode] = useState("idle"); // idle, thinking, writing, error
   const [displayContent, setDisplayContent] = useState("");
   const backupTextRef = useRef("");
+  const textareaRef = useRef(null);
+
+  const handleFocusTextarea = () => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
 
   // Helper to generate skeleton blocks from text
   const generateSkeleton = (text) => {
@@ -178,7 +185,10 @@ function ScheduleNew() {
     }, 50); // Speed of typing
   };
   // Modalni yopish funksiyalari
-  const handleCloseEdit = () => setShowEdit(false);
+  const handleCloseEdit = () => {
+    setShowEdit(false);
+    setTaskData("");
+  };
   const handleCloseDelete = () => setShowDelete(false);
   const handleCloseCreate = () => setShowCreate(false);
   const handleCloseEnd = () => setShowEnd(false);
@@ -645,7 +655,7 @@ function ScheduleNew() {
             {onWork && (
               <div className="new-task-box mb-5 mx-auto">
                 <div className="new-task-head">
-                  <div className="new-task-title">
+                  <div className="new-task-title" onClick={handleFocusTextarea} style={{ cursor: 'pointer' }}>
                     <i className="fa-solid fa-plus-circle"></i>
                     <span>{t("Yangiqadam")}</span>
                   </div>
@@ -659,6 +669,7 @@ function ScheduleNew() {
                   <div className="textarea-wrapper">
                     {aiMode === "idle" ? (
                       <textarea
+                        ref={textareaRef}
                         className="task-textarea-custom"
                         value={taskData}
                         onChange={(e) => setTaskData(e.target.value)}
@@ -846,26 +857,35 @@ function ScheduleNew() {
         </Modal.Header>
         <Modal.Body className="text-center py-4">
           <p className="mb-4" style={{ fontSize: '1.1rem', fontWeight: '500' }}>
-            {t("texnik_profilaktika_desc")}
+            {t("areyousuretostart")}<br/>{date}
           </p>
-          <p className="mb-4" style={{ fontSize: '1.1rem', color: "red", fontWeight: '500' }}>
-            {t("qaytayozishshartemas")}
-          </p>
+          
+          {showPicker && (
+            <div className="mb-4 d-flex justify-content-center">
+              <DatePicker
+                selected={madeEasier ? new Date(madeEasier.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5")) : null}
+                onChange={(date) => {
+                  if (date) {
+                    const formattedDate = dayjs(date).format("DD/MM/YYYY HH:mm");
+                    setMadeEasier(formattedDate);
+                  } else {
+                    setMadeEasier("");
+                  }
+                }}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                timeCaption="Vaqt"
+                dateFormat="dd/MM/yyyy HH:mm"
+                className="form-control text-center"
+                placeholderText="Tug`ilgan sanangizni kiriting:"
+              />
+            </div>
+          )}
+
           <div className="d-flex justify-content-center gap-3">
-            <Button
-              className="defaultbtn px-4"
-              onClick={() => handleStartWork("05/03/2026 09:00")}
-            >
-              05.03.2026
-            </Button>
-            <Button
-              className="defaultbtn px-4"
-              onClick={() => handleStartWork("06/03/2026 09:00")}
-            >
-              06.03.2026
-            </Button>
-            <Button className="defaultbtn" onClick={handleStartWork}>
-              {t("bugungi")}
+            <Button className="defaultbtn" onClick={() => handleStartWork(showPicker ? madeEasier : null)}>
+              {t("ishniboshlash")}
             </Button>
           </div>
         </Modal.Body>

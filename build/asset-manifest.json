@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.c0390f3d.css",
-    "main.js": "/static/js/main.185965a8.js",
+    "main.css": "/static/css/main.37ad7c87.css",
+    "main.js": "/static/js/main.5e454268.js",
     "static/js/977.0a69a40a.chunk.js": "/static/js/977.0a69a40a.chunk.js",
     "static/js/455.93e4cfa8.chunk.js": "/static/js/455.93e4cfa8.chunk.js",
     "reactPlayerYouTube.js": "/static/js/reactPlayerYouTube.29aedc26.chunk.js",
@@ -20,9 +20,9 @@
     "reactPlayerPreview.js": "/static/js/reactPlayerPreview.2508dfe9.chunk.js",
     "static/js/488.9c4565b6.chunk.js": "/static/js/488.9c4565b6.chunk.js",
     "static/media/mkundalik.mp4": "/static/media/mkundalik.06f98bb3cd3ee70043d0.mp4",
+    "static/media/noting.png": "/static/media/noting.300e5f5490305ae17492.png",
     "static/media/1yosh.jpg": "/static/media/1yosh.3fc8c02ca43cc5e254f5.jpg",
     "static/media/Usmonov.png": "/static/media/Usmonov.2082303000d9680c1ebc.png",
-    "static/media/noting.png": "/static/media/noting.bc95157dcb5158a8ee7b.png",
     "static/media/image2.png": "/static/media/image2.cfcf46b5d479d3edfd31.png",
     "static/media/image.png": "/static/media/image.d0d5370c3bdb67c92a11.png",
     "static/media/teacher.png": "/static/media/teacher.567b81eaf726e915b6b3.png",
@@ -34,7 +34,6 @@
     "static/media/metroblanklogo.png": "/static/media/metroblanklogo.3aa7c53db8665cfda4d6.png",
     "static/media/image3.png": "/static/media/image3.3115590319939209a72f.png",
     "static/media/snow.png": "/static/media/snow.0cf47c282eecc7c46e26.png",
-    "static/media/avatar.png": "/static/media/avatar.5534688fa56329717dbe.png",
     "static/media/Behruz.jpg": "/static/media/Behruz.a5a1040fade9fe0cd567.jpg",
     "static/media/notfound.png": "/static/media/notfound.e16ee36698f22652f21d.png",
     "static/media/loading.gif": "/static/media/loading.90672f1deffccbcdf4f1.gif",
@@ -46,8 +45,8 @@
     "static/media/logo-png.png": "/static/media/logo-png.6b0dda4a5d8d275caec0.png",
     "static/media/half-flag.JPG": "/static/media/half-flag.5a34fa8fc878d7087d04.JPG",
     "index.html": "/index.html",
-    "main.c0390f3d.css.map": "/static/css/main.c0390f3d.css.map",
-    "main.185965a8.js.map": "/static/js/main.185965a8.js.map",
+    "main.37ad7c87.css.map": "/static/css/main.37ad7c87.css.map",
+    "main.5e454268.js.map": "/static/js/main.5e454268.js.map",
     "977.0a69a40a.chunk.js.map": "/static/js/977.0a69a40a.chunk.js.map",
     "455.93e4cfa8.chunk.js.map": "/static/js/455.93e4cfa8.chunk.js.map",
     "reactPlayerYouTube.29aedc26.chunk.js.map": "/static/js/reactPlayerYouTube.29aedc26.chunk.js.map",
@@ -67,7 +66,7 @@
     "488.9c4565b6.chunk.js.map": "/static/js/488.9c4565b6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c0390f3d.css",
-    "static/js/main.185965a8.js"
+    "static/css/main.37ad7c87.css",
+    "static/js/main.5e454268.js"
   ]
 }

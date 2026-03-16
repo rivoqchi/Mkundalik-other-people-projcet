@@ -17,6 +17,7 @@ function EditStructure() {
   const [allUsers, setAllUsers] = useState([]);
   const [sectionName, setSectionName] = useState("");
   const [selectedSections, setSelectedSections] = useState([]);
+  const [updateType, setUpdateType] = useState(null);
   const acceptedBy = window.localStorage.getItem("fullName");
 
 
@@ -67,10 +68,20 @@ function EditStructure() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!updateType) {
+      setAlert({
+        show: true,
+        type: "danger",
+        message: "Iltimos, o'zgartirish turidan birini tanlang!",
+      });
+      return;
+    }
+
     const payload = {
       name: sectionName,
       acceptedBy,
       sections: selectedSections,
+      updateType,
     };
 
     try {
@@ -158,6 +169,36 @@ function EditStructure() {
             ))}
           </div>
         </Form.Group>
+
+        {/* Majburiy o'zgartirish turi */}
+        <Form.Group className="mb-4">
+          <Form.Label className="fw-bold text-danger">* O'zgartirish turi:</Form.Label>
+          <div className="border border-danger border-opacity-50 p-3 rounded bg-danger bg-opacity-10">
+            <Form.Check
+              type="radio"
+              id="update-all"
+              name="updateType"
+              label="1. Lavozim nomini barcha joydan o'zgartirish (butun tarix ma'lumotlari ham o`zgaradi. complex, employees, va barcha o'tgan jadvallarda)"
+              value="1"
+              onChange={(e) => setUpdateType(Number(e.target.value))}
+              checked={updateType === 1}
+              required
+              className="mb-3 fw-medium"
+            />
+            <Form.Check
+              type="radio"
+              id="update-today"
+              name="updateType"
+              label="2. Buyruq asosida lavozim nomini bugungi kundan boshlab o'zgartirish (faqat complex va employees'da yangilanadi, jadvallar tarixi eski nom bilan saqlanadi)"
+              value="2"
+              onChange={(e) => setUpdateType(Number(e.target.value))}
+              checked={updateType === 2}
+              required
+              className="fw-medium"
+            />
+          </div>
+        </Form.Group>
+
         <Button variant="success" type="submit">
           Yangilash
         </Button>
