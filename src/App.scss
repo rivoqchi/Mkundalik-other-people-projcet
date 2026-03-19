@@ -12366,6 +12366,7 @@ input:checked+.slider:before {
 
 .premium-rating-modal {
   .modal-content {
+    z-index: 9999999999999999999;
     border-radius: 28px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 80px rgba(0, 0, 0, 0.5);

@@ -317,6 +317,59 @@ function Xodimlar() {
   const [impersonatePassword, setImpersonatePassword] = useState("");
   const [impersonateCaptcha, setImpersonateCaptcha] = useState("");
   const [showImpersonateCaptcha, setShowImpersonateCaptcha] = useState(false);
+  const [showModifiedDatesModal, setShowModifiedDatesModal] = useState(false);
+  const [newModifiedDate, setNewModifiedDate] = useState("");
+  const [tempModifiedDates, setTempModifiedDates] = useState([]);
+
+  const openModifiedDatesModal = (emp) => {
+    setSelectedEmployee(emp);
+    setTempModifiedDates(emp.modifiedDates || []);
+    setShowModifiedDatesModal(true);
+  };
+
+  const handleAddModifiedDate = () => {
+    if (!newModifiedDate) return;
+    const date = new Date(newModifiedDate);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
+
+    if (tempModifiedDates.includes(formattedDate)) {
+      toast.warning("Ushbu kun allaqachon ro'yxatda bor!");
+      return;
+    }
+
+    setTempModifiedDates([...tempModifiedDates, formattedDate]);
+    setNewModifiedDate("");
+  };
+
+  const handleDeleteModifiedDate = (dateToDelete) => {
+    setTempModifiedDates(tempModifiedDates.filter((d) => d !== dateToDelete));
+  };
+
+  const handleSaveModifiedDates = async () => {
+    setLoading(true);
+    try {
+      // Create a fresh object to send to the backend
+      const updatedUser = {
+        ...selectedEmployee,
+        modifiedDates: tempModifiedDates
+      };
+      
+      await axios.put(`${API}/auth/editauser/${selectedEmployee._id}`, updatedUser);
+      toast.success("Sababli kunlar muvaffaqiyatli saqlandi!");
+      getAllEmployees();
+      setShowModifiedDatesModal(false);
+    } catch (error) {
+      console.error("Error saving modified dates:", error);
+      toast.error("Xatolik yuz berdi!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleImpersonate = async () => {
     if (!impersonatePassword) {
@@ -480,8 +533,8 @@ function Xodimlar() {
                 <th className={`border-0 py-3 ${isDark ? 'text-secondary' : 'text-muted'}`}>Bo'lim</th>
                 <th className={`border-0 py-3 ${isDark ? 'text-secondary' : 'text-muted'}`}>Lavozimi</th>
                 <th className={`border-0 py-3 ${isDark ? 'text-secondary' : 'text-muted'}`}>Telefon</th>
-                <th className={`border-0 py-3 text-center ${isDark ? 'text-secondary' : 'text-muted'}`}>Impersonatizatsiya</th>
                 <th className={`border-0 py-3 text-center ${isDark ? 'text-secondary' : 'text-muted'}`}>Amallar</th>
+                <th className={`border-0 py-3 text-center ${isDark ? 'text-secondary' : 'text-muted'}`}>Impersonatizatsiya</th>
               </tr>
             </thead>
             <tbody>
@@ -539,6 +592,15 @@ function Xodimlar() {
                       onClick={() => openImpersonateModal(emp)}
                     >
                       <i className="fa-solid fa-user-secret me-1"></i> Kirish
+                    </Button>
+                    <Button
+                      variant={isDark ? "outline-info" : "outline-primary"}
+                      size="sm"
+                      className="rounded-pill px-3 ms-2"
+                      onClick={() => openModifiedDatesModal(emp)}
+                      title="Sababli kun qo'shish"
+                    >
+                      S / K
                     </Button>
                   </td>
                 </tr>
@@ -904,6 +966,63 @@ function Xodimlar() {
             disabled={showImpersonateCaptcha && !impersonateCaptcha}
           >
             <i className="fa-solid fa-bolt"></i> Kirish
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showModifiedDatesModal} onHide={() => setShowModifiedDatesModal(false)} centered>
+        <Modal.Header closeButton className={isDark ? "bg-slate-800 text-white border-slate-700" : ""}>
+          <Modal.Title className="fw-bold">
+            <i className="fa-solid fa-calendar-plus text-primary me-2"></i> Sababli kunlar
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={isDark ? "bg-slate-800 text-white" : ""}>
+          <div className="mb-4">
+            <p className="mb-1 text-secondary" style={{ fontSize: '0.9rem' }}>Xodim:</p>
+            <h5 className="fw-bold mb-0">{selectedEmployee?.name}</h5>
+          </div>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-medium">Yangi kun qo'shish (DD/MM/YYYY 00:00)</Form.Label>
+            <div className="d-flex gap-2">
+              <Form.Control
+                type="datetime-local"
+                value={newModifiedDate}
+                onChange={(e) => setNewModifiedDate(e.target.value)}
+                className={isDark ? "bg-slate-700 text-white border-slate-600" : ""}
+              />
+              <Button variant="primary" onClick={handleAddModifiedDate}>
+                Qo'shish
+              </Button>
+            </div>
+          </Form.Group>
+
+          <hr className={isDark ? "border-slate-700" : ""} />
+
+          <Form.Label className="fw-medium mb-2">Kunlar ro'yxati</Form.Label>
+          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+            {tempModifiedDates.length > 0 ? (
+              <ul className="list-group list-group-flush border-top border-bottom">
+                {tempModifiedDates.map((date, idx) => (
+                  <li key={idx} className={`list-group-item d-flex justify-content-between align-items-center ${isDark ? "bg-slate-800 text-white border-slate-700" : ""}`}>
+                    <span>{date}</span>
+                    <Button variant="link" className="text-danger p-0" onClick={() => handleDeleteModifiedDate(date)}>
+                      <i className="fa-solid fa-trash-can"></i>
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-center text-secondary my-3 italic">Hozircha kunlar yo'q</p>
+            )}
+          </div>
+        </Modal.Body>
+        <Modal.Footer className={isDark ? "bg-slate-800 border-slate-700" : ""}>
+          <Button variant="secondary" onClick={() => setShowModifiedDatesModal(false)}>
+            Bekor qilish
+          </Button>
+          <Button variant="success" onClick={handleSaveModifiedDates} disabled={!selectedEmployee}>
+            Saqlash
           </Button>
         </Modal.Footer>
       </Modal>

@@ -31,6 +31,7 @@ function ScheduleNew() {
   const [myPosition, setMyPosition] = useState([]);
   const [myDegree, setMyDegree] = useState([]);
   const [myRole, setMyRole] = useState([]);
+  const [modifiedDates, setModifiedDates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [shart, setShart] = useState(true);
@@ -60,8 +61,9 @@ function ScheduleNew() {
       setMySection(data.user.section);
       setMyDepartment(data.user.department);
       setMyComplex(data.user.complex);
-      setMyDegree(data.user.degree);
+       setMyDegree(data.user.degree);
       setMyPosition(data.user.employee);
+      setModifiedDates(data.user.modifiedDates || []);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -241,7 +243,7 @@ function ScheduleNew() {
           setOnWork(true);
           setLoading(false);
 
-          if (startedDate !== today) {
+          if (startedDate !== today && !fetchedWorkingOn.modified) {
             if (fetchedWorkingOn.tasks && fetchedWorkingOn.tasks.length > 0) {
               axios
                 .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {
@@ -445,8 +447,11 @@ function ScheduleNew() {
       handleCloseStart();
     }
 
+    const date = dayjs().format("DD/MM/YYYY HH:mm");
+    
     // Check if customDate is valid string (not mouse event from a button)
-    const finalDate = (typeof customDate === 'string') ? customDate : madeEasier;
+    const finalDate = (typeof customDate === 'string') ? customDate : null;
+    const isModified = finalDate && modifiedDates.includes(finalDate);
 
     const payload = {
       beginnerName: myName,
@@ -457,9 +462,17 @@ function ScheduleNew() {
       role: myRole,
       degree: myDegree,
       ...(finalDate && { madeEasier: finalDate }),
+      ...(isModified && { modified: date }),
     };
 
     axios.post(`${API}/schedules/create`, payload, { withCredentials: true }).then((res) => {
+      // If it was a modified date, remove it from user's profile so it can't be used again
+      if (isModified) {
+        const updatedDates = modifiedDates.filter(d => d !== finalDate);
+        setModifiedDates(updatedDates);
+        axios.put(`${API}/auth/editauser/${myId}`, { modifiedDates: updatedDates }, { withCredentials: true })
+          .catch(err => console.error("Error updating modified dates:", err));
+      }
 
       setOnWork(true);
       setWorkingOn(res.data.newSchedule);
@@ -882,6 +895,19 @@ function ScheduleNew() {
               />
             </div>
           )}
+
+          <div className="d-flex justify-content-center flex-wrap gap-2 mb-3">
+            {modifiedDates.map((mDate, idx) => (
+              <Button 
+                key={idx} 
+                variant="outline-info" 
+                className="rounded-pill px-3"
+                onClick={() => handleStartWork(mDate)}
+              >
+                {mDate}
+              </Button>
+            ))}
+          </div>
 
           <div className="d-flex justify-content-center gap-3">
             <Button className="defaultbtn" onClick={() => handleStartWork(showPicker ? madeEasier : null)}>

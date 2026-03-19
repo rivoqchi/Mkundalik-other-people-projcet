@@ -42,20 +42,20 @@ const Feruz = () => {
                     <div className="bio-card education">
                         <h3><i className="fa-solid fa-graduation-cap"></i> Ta'lim</h3>
                         <p>
-                            2021 yil Toshkent davlat transport universitetini bakalavr bosqichi.<br />
-                            2023 yil Toshkent davlat transport universitetini magistratura bosqichi.
+                            2021-yil Toshkent davlat transport universitetini bakalavr bosqichi.<br />
+                            2023-yil Toshkent davlat transport universitetini magistratura bosqichi.
                         </p>
                     </div>
 
                     <div className="bio-card experience">
                         <h3><i className="fa-solid fa-briefcase"></i> Mehnat faoliyati</h3>
                         <p>
-                            <strong>2021 dekabr - 2023 aprel</strong>: "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash bo'limi muhandis dasturchi.<br />
-                            <strong>2023 aprel - 2024 iyul</strong>: "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash bo'limi boshlig'i.<br />
-                            <strong>2024 iyul - 2026 fevral</strong>: "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash va axborot kommunikatsiya texnologiyalarini rivojlantirish xizmati boshlig'i.
+                            <strong>2021-yil dekabr — 2023-yil aprel</strong>: "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash bo'limi muhandis dasturchi.<br />
+                            <strong>2023-yil aprel — 2024-yil iyul</strong>: "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash bo'limi boshlig'i.<br />
+                            <strong>2024-yil iyul — 2026-yil fevral</strong>: "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash va axborot kommunikatsiya texnologiyalarini rivojlantirish xizmati boshlig'i.
                         </p>
                     </div>
-                    <span className="text-center text-danger mt-4 fw-bold">* Ma'lumotlar 2026 yil mart holatiga ko'ra</span>
+                    <span className="text-center text-danger mt-4 fw-bold">* Ma'lumotlar 2026-yil mart holatiga ko'ra</span>
                 </div>
             </div>
         </div>

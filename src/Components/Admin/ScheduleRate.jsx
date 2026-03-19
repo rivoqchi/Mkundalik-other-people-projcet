@@ -347,6 +347,11 @@ function ScheduleRate() {
                   </div>
                 </div>
 
+                {thisScheduleHistory.modified && (
+                  <div className="mt-3 text-danger fw-bold" style={{ fontSize: '9pt' }}>
+                    * Ushbu hisobot belgilangan muddatda topshirilmagan. Ma’lum sabablarga ko‘ra administrator tomonidan kirish (dostup) huquqi qayta taqdim etildi. {thisScheduleHistory.startedAt?.slice(0, 10)} kuni topshirilishi lozim bo‘lgan hisobot amalda {thisScheduleHistory.modified?.slice(0, 10)} kuni topshirildi
+                  </div>
+                )}
                 <div className="d-flex justify-content-between align-items-end mt-3">
                   <div style={{ fontSize: '10pt' }}>
                     <div className="fw-bold mb-1">{thisScheduleHistory.degree || "Xodim"}</div>

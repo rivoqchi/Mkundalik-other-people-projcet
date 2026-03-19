@@ -18,6 +18,8 @@ function EditStructure() {
   const [sectionName, setSectionName] = useState("");
   const [selectedSections, setSelectedSections] = useState([]);
   const [updateType, setUpdateType] = useState(null);
+  const [showMoveInput, setShowMoveInput] = useState(false);
+  const [newComplexName, setNewComplexName] = useState("");
   const acceptedBy = window.localStorage.getItem("fullName");
 
 
@@ -85,7 +87,6 @@ function EditStructure() {
     };
 
     try {
-      
       await axios.put(`${API}/sectors/update/${id}`, payload);
       setAlert({
         show: true,
@@ -104,11 +105,60 @@ function EditStructure() {
     }
   };
 
+  const handleMoveEmployees = async () => {
+    if (!newComplexName.trim()) {
+      setAlert({ show: true, type: "danger", message: "Yangi kompleks nomini kiriting!" });
+      return;
+    }
+
+    if (!window.confirm(`Haqiqatan ham "${sectionName}" xizmatidagi barcha xodimlarni "${newComplexName}" kompleksiga ko'chirishni xohlaysizmi?`)) {
+      return;
+    }
+
+    try {
+      const { data } = await axios.put(`${API}/auth/asd/changeemployeescomplexbydepartment`, {
+        departmentName: sectionName,
+        newComplexName: newComplexName
+      });
+      setAlert({ show: true, type: "success", message: data.message });
+      setShowMoveInput(false);
+      setNewComplexName("");
+    } catch (error) {
+      console.error("Error moving employees:", error);
+      setAlert({ show: true, type: "danger", message: error.response?.data?.message || "Xatolik yuz berdi" });
+    }
+  };
+
   return (
     <>
       {alert.show && <Alert type={alert.type} message={alert.message} />}
 
       <h1 className="m-5">Bo`limni tahrirlash</h1>
+
+      <div className="mx-5 mb-4 p-3 border rounded bg-light shadow-sm">
+        <Button 
+          variant="outline-warning" 
+          className="fw-bold mb-3"
+          onClick={() => setShowMoveInput(!showMoveInput)}
+        >
+          {showMoveInput ? "Bekor qilish" : "Ushbu xizmatga tegishli barcha xodimlarni boshqa kompleksga ko`chirish"}
+        </Button>
+
+        {showMoveInput && (
+          <div className="d-flex gap-2">
+            <Form.Control 
+              type="text" 
+              placeholder="Yangi kompleks nomini kiriting yoki paste qiling"
+              value={newComplexName}
+              onChange={(e) => setNewComplexName(e.target.value)}
+            />
+            <Button variant="warning" className="px-5 fw-bold" onClick={handleMoveEmployees}>
+              Ko'chirish
+            </Button>
+          </div>
+        )}
+      </div>
+
       <Form className="m-5" onSubmit={handleSubmit}>
         {/* Bo‘lim nomi */}
         <Form.Group className="mb-3">

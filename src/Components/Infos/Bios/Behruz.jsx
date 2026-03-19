@@ -15,7 +15,7 @@ const Behruz = () => {
 
                 <Helmet>
                     <title>Abdurakhimov Behruz - Full-stack dasturchi | mkundalik.uz</title>
-                    <meta name="description" content="Abdurakhimov Behruz G'. - Toshkent Metropoliteni bosh mutaxassisi, Full-stack dasturchi. mkundalik loyihasi asoschisi." />
+                    <meta name="description" content="Abdurakhimov Behruz G'ofur o`g`li - Toshkent Metropoliteni bosh mutaxassisi, Full-stack dasturchi. mkundalik loyihasi asoschisi." />
                     <meta name="keywords" content="Behruz Abdurakhimov, behruzed, mkundalik, full-stack developer, Toshkent metropoliteni, dasturchi" />
                     <link rel="canonical" href="https://mkundalik.uz/about/behruz" />
                 </Helmet>
@@ -25,7 +25,7 @@ const Behruz = () => {
                         <img src={BehruzImg} alt="Abdurakhimov B. G`." />
                         <div className="bio-avatar-glow"></div>
                     </div>
-                    <h1>Abdurakhimov Behruz G`.</h1>
+                    <h1>Abdurakhimov Behruz G`ofur o`g`li</h1>
                     <p className="bio-role">Full-stack Dasturchi</p>
                 </div>
 
@@ -45,13 +45,13 @@ const Behruz = () => {
 
                     <div className="bio-card education">
                         <h3><i className="fa-solid fa-graduation-cap"></i> Ta'lim</h3>
-                        <p><strong>2023 - hozirgacha:</strong> Islom Karimov nomidagi Toshkent davlat texnika universiteti (TDTU) talabasi.</p>
+                        <p><strong>2023-yildan hozirgacha:</strong> Islom Karimov nomidagi Toshkent davlat texnika universiteti (TDTU) talabasi.</p>
                         <p>Full-stack dasturlash yo'nalishida zamonaviy texnologiyalar (MERN stack) bo'yicha mutaxassis.</p>
                     </div>
 
                     <div className="bio-card experience">
                         <h3><i className="fa-solid fa-briefcase"></i> Ish faoliyati</h3>
-                        <p><strong>2025 - hozirgacha:</strong> "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash va axborot kommunikatsiyalarini rivojlantirish xizmati.</p>
+                        <p><strong>2025-yil fevral oyidan hozirgacha:</strong> "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash va axborot kommunikatsiyalarini rivojlantirish xizmati.</p>
                         <p>Dasturiy tizimlar arxitekturasi va kiberxavfsizlik masalalari bo'yicha bosh mutaxassis.</p>
                     </div>
 
@@ -100,7 +100,7 @@ const Behruz = () => {
                             ></iframe>
                         </div>
                     </div>
-                    <span className="text-center text-danger mt-4 fw-bold">* Ma'lumotlar 2026 yil mart holatiga ko'ra</span>
+                    <span className="text-center text-danger mt-4 fw-bold">* Ma'lumotlar 2026-yil mart oyi holatiga ko'ra</span>
                 </div>
             </div>
         </div>
