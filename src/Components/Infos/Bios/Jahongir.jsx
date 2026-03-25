@@ -2,12 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Usmonov from '../../Images/Usmonov.png';
+import Navbarr from '../../Navbar';
 
 const Jahongir = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="premium-bio-page">
+        <>
+        <Navbarr />
+        <div className="premium-bio-page pt-5">
             <div className="bio-container">
                 <button className="bio-back-btn" onClick={() => navigate(-1)}>
                     <i className="fa-solid fa-arrow-left"></i> Orqaga
@@ -58,6 +61,7 @@ const Jahongir = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

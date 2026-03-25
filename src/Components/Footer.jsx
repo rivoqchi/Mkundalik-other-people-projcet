@@ -146,7 +146,7 @@ function Footer() {
           <div className="footer-copyright mt-5 pt-3 border-top">
             <div className="row align-items-center">
               <div className="col-md-6 text-md-start">
-                <span className="opacity-75">© 2025 "Toshkent Metropoliteni" DUK. {t("allrightsreserved")}.</span>
+                <span className="opacity-75">© 2026 "Toshkent Metropoliteni" DUK. {t("allrightsreserved")}.</span>
               </div>
               <div className="col-md-6 text-md-end d-flex align-items-center justify-content-md-end gap-3 mt-2 mt-md-0">
                 <div className="version-info mb-5 d-flex align-items-center gap-2">

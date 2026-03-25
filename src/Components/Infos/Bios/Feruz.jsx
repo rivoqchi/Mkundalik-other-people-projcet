@@ -2,12 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import FeruzImg from '../../Images/Feruz.jpg';
+import Navbarr from '../../Navbar';
 
 const Feruz = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="premium-bio-page">
+        <>
+        <Navbarr />
+        <div className="premium-bio-page pt-5">
             <div className="bio-container">
                 <button className="bio-back-btn" onClick={() => navigate(-1)}>
                     <i className="fa-solid fa-arrow-left"></i> Orqaga
@@ -59,6 +62,7 @@ const Feruz = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

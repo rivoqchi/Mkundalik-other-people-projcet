@@ -8,6 +8,7 @@ import Feruz from '../Images/Feruz.jpg';
 import Usmonov from '../Images/Usmonov.png';
 import ReactPlayer from "react-player";
 import rolik from "../Images/mkundalik.mp4";
+import Navbarr from '../Navbar';
 
 const Info = () => {
   const { t } = useTranslation();
@@ -41,6 +42,8 @@ const Info = () => {
   }, [myId]);
 
   return (
+    <>
+    <Navbarr />
     <div className="tap-page info-redesign">
       <section className="info-header">
         <h1 className="tit">{t("dasturhaqida")}</h1>
@@ -152,6 +155,7 @@ const Info = () => {
         </section>
       )}
     </div>
+    </>
   );
 };
 

@@ -450,8 +450,8 @@ function ScheduleNew() {
     const date = dayjs().format("DD/MM/YYYY HH:mm");
     
     // Check if customDate is valid string (not mouse event from a button)
-    const finalDate = (typeof customDate === 'string') ? customDate : null;
-    const isModified = finalDate && modifiedDates.includes(finalDate);
+    const finalDate = (typeof customDate === 'string') ? customDate : (showPicker ? madeEasier : null);
+    const isModified = !!(finalDate && modifiedDates.includes(finalDate));
 
     const payload = {
       beginnerName: myName,
