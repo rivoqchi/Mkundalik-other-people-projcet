@@ -6,6 +6,8 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
+import { Modal, Button, Spinner } from "react-bootstrap";
+import FormattedTypewriter from "../Additional/FormattedTypewriter";
 
 const PAGE_SIZES = [10, 20, 50, 100, "all"];
 
@@ -28,6 +30,11 @@ function RatingMyAdmins() {
   const [unratedOnly, setUnratedOnly] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+
+  // AI Summary State
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [aiSummary, setAiSummary] = useState("");
+  const [isSummarizing, setIsSummarizing] = useState(false);
 
   const { setLoading } = useLoading();
   const navigate = useNavigate();
@@ -131,6 +138,69 @@ function RatingMyAdmins() {
     setPage(1);
   };
 
+  const handleAiSectionSummarize = async () => {
+    setIsSummarizing(true);
+    setShowAiModal(true);
+    const url = buildUrl();
+    if (!url) return;
+
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear();
+
+    try {
+      // 1. Fetch ALL reports for the section for CURRENT MONTH ONLY
+      const { data } = await axios.post(url, {
+        page: 1,
+        limit: "all",
+        unratedOnly: false,
+        myRole,
+        month: currentMonth,
+        year: currentYear,
+        ...(myRole === "complex" && isNZS ? { nzs: true } : {}),
+      });
+
+      const allReports = data.schedules || [];
+      if (allReports.length === 0) {
+        setAiSummary(t("malumotyoq"));
+        setIsSummarizing(false);
+        return;
+      }
+
+      // 2. Recursive function to handle errors (413, 400, 500)
+      const getSummary = async (reportsToProcess, retryCount = 0) => {
+        try {
+          const { data: aiResponse } = await axios.post(`${API}/ai/summarize`, { 
+            reports: reportsToProcess,
+            language: localStorage.getItem("i18nextLng") || "uz"
+          }, { withCredentials: true });
+          return aiResponse.response;
+        } catch (error) {
+          const status = error.response?.status;
+          // If content too large or bad request (often length related)
+          if ((status === 413 || status === 400) && retryCount < 5) {
+            console.warn(`Content too large, reducing dataset by 50% (Retry: ${retryCount + 1})...`);
+            const reducedReports = reportsToProcess
+              .sort(() => 0.5 - Math.random())
+              .slice(0, Math.floor(reportsToProcess.length * 2 / 3)); // Reduce slightly less aggressively
+            
+            if (reducedReports.length === 0) throw new Error("Dataset exhausted");
+            return await getSummary(reducedReports, retryCount + 1);
+          }
+          throw error;
+        }
+      };
+
+      const summary = await getSummary(allReports);
+      setAiSummary(summary);
+    } catch (error) {
+      console.error("AI Section Summary Error:", error);
+      setAiSummary("Tahlil jarayonida xatolik yuz berdi. Iltimos keyinroq qayta urinib ko'ring.");
+    } finally {
+      setIsSummarizing(false);
+    }
+  };
+
   const visiblePages = () => {
     const pages = [];
     const delta = 2;
@@ -189,6 +259,26 @@ function RatingMyAdmins() {
           <ProgressBar animated striped variant="success" now={greenPct} label={`${greenPct}%`} key={1} />
           <ProgressBar animated variant="danger" now={redPct} label={`${redPct}%`} key={2} />
         </ProgressBar>
+      </div>
+
+      {/* ─── NEW CENTRAL AI ACTION ─── */}
+      <div className="rating-central-ai-block text-center my-4 py-3">
+        <Button 
+          className="btn-premium-ai btn-lg d-inline-flex align-items-center px-5 py-3 shadow-lg rounded-pill"
+          onClick={handleAiSectionSummarize}
+          disabled={isSummarizing || totalAll === 0}
+          style={{ fontSize: '1.2rem', fontWeight: '700' }}
+        >
+          {isSummarizing ? (
+            <><Spinner animation="border" size="sm" className="me-2" /> Tahlil qilinmoqda...</>
+          ) : (
+            <><i className="fa-solid fa-wand-magic-sparkles me-2 fa-lg"></i> Xodimlarning bu oygi natijalari (AI)</>
+          )}
+        </Button>
+        <div className="mt-2 text-muted small">
+          <i className="fa-solid fa-circle-info me-1"></i>
+          Ushbu bo'limdagi barcha xodimlarning ko'rsatkichlari bo'yicha umumiy AI tahlilini olish
+        </div>
       </div>
 
       {/* ─── Controls Bar ─── */}
@@ -363,6 +453,46 @@ function RatingMyAdmins() {
           </button>
         </div>
       )}
+
+      {/* ─── AI Summary Modal ─── */}
+      <Modal 
+        show={showAiModal} 
+        onHide={() => setShowAiModal(false)} 
+        centered 
+        size="lg"
+        dialogClassName="ai-summary-modal"
+        className="ai-summary-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <i className="fa-solid fa-wand-magic-sparkles me-2"></i>
+            Xodimlarning bu oygi natijalari (AI)
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="ai-summary-body">
+          {isSummarizing ? (
+            <div className="text-center p-5">
+              <div className="spinner-border text-primary mb-3" role="status"></div>
+              <p>AI ma'lumotlarni tahlil qilmoqda...</p>
+            </div>
+          ) : (
+            <div className="ai-content-reveal p-3">
+              <FormattedTypewriter text={aiSummary} speed={5} />
+              <div className="text-end text-danger danger redword mt-3">
+                <small className="text-muted">
+                  <i className="fa-solid fa-wand-magic-sparkles me-1"></i>
+                  * AI tomonidan yaratilgan
+                </small>
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAiModal(false)}>
+            Yopish
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </motion.div>
   );
 }

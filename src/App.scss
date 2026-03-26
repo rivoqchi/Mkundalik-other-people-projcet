@@ -5190,6 +5190,15 @@ input:checked+.slider:before {
   background-color: #e9f0f7;
 }
 
+.rating-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
 .report-header {
   margin-bottom: 25px;
 }

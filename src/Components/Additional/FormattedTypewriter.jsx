@@ -21,10 +21,14 @@ const FormattedTypewriter = ({ text, speed = 10 }) => {
 
   const renderContent = (content) => {
     if (!content) return "";
-    const parts = content.split(/(\*\*.*?\*\*)/g);
+    // Split by bold (**) and then by italic (*)
+    const parts = content.split(/(\*\*.*?\*\*|\*.*?\*)/g);
     return parts.map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {
         return <strong key={i}>{part.slice(2, -2)}</strong>;
+      }
+      if (part.startsWith("*") && part.endsWith("*")) {
+        return <i key={i}>{part.slice(1, -1)}</i>;
       }
       return part;
     });
