@@ -17,7 +17,8 @@ import flag from "../Images/half-flag.JPG";
 import smalllogo from "../Images/metroblanklogo.png";
 import { useLoading } from "../Additional/LoadingScreen";
 import Alert from "../Additional/Alert";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import FormattedTypewriter from "../Additional/FormattedTypewriter";
 function ScheduleRate() {
   const { t } = useTranslation();
   const { setLoading } = useLoading();
@@ -76,10 +77,15 @@ function ScheduleRate() {
   const [tasdiq, setTasdiq] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [setAI, setSetAi] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiResult, setAiResult] = useState(null);
+  const [isAiApplied, setIsAiApplied] = useState(false);
   useEffect(() => {
     if (showModal) {
       setSetAi(false);
-
+      setAiResult(null);
+      setIsAiApplied(false);
+      
       let summarizedBall = 0;
       let tasks = thisScheduleHistory.tasks || [];
       tasks.forEach((task) => {
@@ -98,7 +104,7 @@ function ScheduleRate() {
     } else {
       setSetAi(false);
     }
-  }, [showModal]);
+  }, [showModal, thisScheduleHistory.tasks]);
 
   const { id } = useParams();
   const componentRef = useRef();
@@ -205,6 +211,36 @@ function ScheduleRate() {
       setManualRating(100);
     } else {
       setManualRating(value);
+    }
+  };
+
+  const handleAiRate = async () => {
+    if (!thisScheduleHistory.tasks || thisScheduleHistory.tasks.length === 0) return;
+    
+    setIsAnalyzing(true);
+    setAiResult(null);
+    try {
+      const { data } = await axios.post(`${API}/ai/rate-task`, {
+        degree: thisScheduleHistory.degree,
+        tasks: thisScheduleHistory.tasks,
+        language: localStorage.getItem("i18nextLng") || "uz"
+      });
+      
+      if (data.score) {
+        setAiResult(data);
+        setManualRating(data.score);
+        setIsAiApplied(true);
+      }
+    } catch (error) {
+      console.error("AI Rating Error:", error);
+      setAlert((prev) => ({
+        show: true,
+        type: "error",
+        message: "AI tahlilida xatolik yuz berdi",
+        trigger: prev.trigger + 1,
+      }));
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -405,7 +441,23 @@ function ScheduleRate() {
           </div>
 
           <div className="baho-input-wrapper text-center mb-4">
-            <label className="d-block small mb-2">{t("system_suggestion")}</label>
+            <div className="d-flex flex-column align-items-center mb-3">
+              <Button 
+                variant="outline-primary" 
+                size="sm" 
+                className={`rounded-pill px-3 mb-2 ai-analyze-btn ${isAnalyzing ? 'analyzing' : ''}`}
+                onClick={handleAiRate}
+                disabled={isAnalyzing}
+              >
+                {isAnalyzing ? (
+                  <><Spinner animation="border" size="sm" className="me-2" /> Tahlil qilinmoqda...</>
+                ) : (
+                  <><i className="fa-solid fa-wand-magic-sparkles me-2"></i> AI Tahlil</>
+                )}
+              </Button>
+              <label className="d-block small mb-2">{t("system_suggestion")}</label>
+            </div>
+            
             <div className="d-flex align-items-center justify-content-center gap-3">
               <input
                 type="number"
@@ -413,10 +465,35 @@ function ScheduleRate() {
                 onChange={handleInputChange}
                 min="1"
                 max="100"
-                className="premium-rating-input"
+                className={`premium-rating-input ${isAiApplied ? "ai-score-applied" : ""}`}
               />
               <span className="h4 mb-0 ">/ 100</span>
             </div>
+
+            <AnimatePresence>
+              {aiResult && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="ai-suggestion-box mt-4 p-3 rounded-4"
+                >
+                  <div className="d-flex align-items-center mb-2 text-primary">
+                    <i className="fa-solid fa-robot me-2"></i>
+                    <small className="fw-bold">AI FIKRI:</small>
+                  </div>
+                  <div className="ai-message-text text-start">
+                    <FormattedTypewriter text={aiResult.message} speed={10} />
+                  </div>
+                  <div className="text-end mt-2">
+                    <small className="text-muted" style={{ fontSize: '10px' }}>
+                      <i className="fa-solid fa-wand-magic-sparkles me-1"></i>
+                      * AI tomonidan xodimning lavozimi va vazifalari tahlil qilindi
+                    </small>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="stars-selection text-center mb-4">

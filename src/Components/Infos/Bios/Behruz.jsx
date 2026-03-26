@@ -10,6 +10,7 @@ const Behruz = () => {
     return (
         <>
         <Navbarr />
+        
         <div className="premium-bio-page pt-5">
             <div className="bio-container">
                 <button className="bio-back-btn" onClick={() => navigate(-1)}>

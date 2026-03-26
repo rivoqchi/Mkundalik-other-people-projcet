@@ -111,51 +111,49 @@ function Bayram() {
         </div>
       </div>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered className={isDark ? "dark-modal" : ""}>
-        <div className={isDark ? "bg-dark text-light rounded" : ""}>
-          <Modal.Header closeButton className={isDark ? "border-secondary" : ""}>
-            <Modal.Title><i className="fa-solid fa-calendar-plus text-primary me-2"></i> Yangi bayram qo‘shish</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className={isDark ? "bg-dark" : ""}>
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label className={`fw-bold ${isDark ? "text-light" : "text-dark"}`}>Belgilangan Sana</Form.Label>
-                <div className="premium-input-wrapper">
-                  <i className="fa-regular fa-calendar input-icon text-primary"></i>
-                  <Form.Control
-                    type="date"
-                    className="premium-input-field ps-5"
-                    value={holiday}
-                    onChange={(e) => setHoliday(e.target.value)}
-                    style={{ background: 'transparent' }}
-                  />
-                </div>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label className={`fw-bold ${isDark ? "text-light" : "text-dark"}`}>Sabab (Bayram Nomi)</Form.Label>
-                <div className="premium-input-wrapper">
-                  <i className="fa-solid fa-typewriter input-icon text-primary"></i>
-                  <Form.Control
-                    type="text"
-                    className="premium-input-field ps-5"
-                    placeholder="Masalan: Mustaqillik kuni"
-                    value={sabab}
-                    onChange={(e) => setSabab(e.target.value)}
-                    style={{ background: 'transparent' }}
-                  />
-                </div>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer className={isDark ? "border-secondary" : ""}>
-            <Button variant={isDark ? "outline-light" : "secondary"} onClick={() => setShowModal(false)}>
-              Bekor qilish
-            </Button>
-            <Button variant="primary" onClick={sendBS} disabled={loading}>
-              {loading ? <Spinner size="sm" /> : <><i className="fa-solid fa-check"></i> Saqlash</>}
-            </Button>
-          </Modal.Footer>
-        </div>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton className={isDark ? "bg-dark text-white border-secondary" : "bg-white text-dark border-bottom"}>
+          <Modal.Title><i className="fa-solid fa-calendar-plus text-primary me-2"></i> Yangi bayram qo‘shish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label className={`fw-bold ${isDark ? "text-light" : "text-dark"}`}>Belgilangan Sana</Form.Label>
+              <div className="premium-input-wrapper">
+                <i className="fa-regular fa-calendar input-icon text-primary"></i>
+                <Form.Control
+                  type="date"
+                  className="premium-input-field ps-5"
+                  value={holiday}
+                  onChange={(e) => setHoliday(e.target.value)}
+                  style={{ background: 'transparent' }}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label className={`fw-bold ${isDark ? "text-light" : "text-dark"}`}>Sabab (Bayram Nomi)</Form.Label>
+              <div className="premium-input-wrapper">
+                <i className="fa-solid fa-typewriter input-icon text-primary"></i>
+                <Form.Control
+                  type="text"
+                  className="premium-input-field ps-5"
+                  placeholder="Masalan: Mustaqillik kuni"
+                  value={sabab}
+                  onChange={(e) => setSabab(e.target.value)}
+                  style={{ background: 'transparent' }}
+                />
+              </div>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer className={isDark ? "bg-dark text-white border-secondary" : "bg-white text-dark border-top"}>
+          <Button variant={isDark ? "outline-light" : "secondary"} onClick={() => setShowModal(false)}>
+            Bekor qilish
+          </Button>
+          <Button variant="primary" onClick={sendBS} disabled={loading}>
+            {loading ? <Spinner size="sm" /> : <><i className="fa-solid fa-check"></i> Saqlash</>}
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );

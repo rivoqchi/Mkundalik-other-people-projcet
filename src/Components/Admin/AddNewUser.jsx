@@ -321,17 +321,17 @@ const AddNewUser = () => {
                   style={{ appearance: 'none', background: 'transparent' }}
                 >
                   <option disabled value="">Taqdim etiladigan huquqni tanlang</option>
-                  <option value="employee" className={isDark ? "bg-dark text-white" : ""}>Xodim (Standart)</option>
-                  <option value="admin" className={isDark ? "bg-dark text-white" : ""}>Bo'lim boshlig'i (Admin)</option>
-                  <option value="department" className={isDark ? "bg-dark text-white" : ""}>Xizmat boshlig'i (Department)</option>
-                  <option value="complex" className={isDark ? "bg-dark text-white" : ""}>Boshliq o'rinbosari (Complex)</option>
-                  <option value="superadmin" className={isDark ? "bg-dark text-white" : ""}>Super Admin</option>
-                  <option value="boss" className={isDark ? "bg-dark text-white" : ""}>Boshliq / Bosh muhandis</option>
-                  <option value="commission" className={isDark ? "bg-dark text-white" : ""}>Nazorat komissiyasi</option>
-                  <option value="hr" className={isDark ? "bg-dark text-white" : ""}>Kadrlar bo'limi (HR)</option>
-                  <option value="sport" className={isDark ? "bg-dark text-white" : ""}>Sport murabbiysi</option>
-                  <option value="at" className={isDark ? "bg-dark text-white" : ""}>AKT Mutaxassisi</option>
-                  <option value="lang" className={isDark ? "bg-dark text-white" : ""}>Chet tillari nazoratchisi</option>
+                  <option value="employee" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Xodim (Standart)</option>
+                  <option value="admin" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Bo'lim boshlig'i (Admin)</option>
+                  <option value="department" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Xizmat boshlig'i (Department)</option>
+                  <option value="complex" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Boshliq o'rinbosari (Complex)</option>
+                  <option value="superadmin" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Super Admin</option>
+                  <option value="boss" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Boshliq / Bosh muhandis</option>
+                  <option value="commission" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Nazorat komissiyasi</option>
+                  <option value="hr" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Kadrlar bo'limi (HR)</option>
+                  <option value="sport" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Sport murabbiysi</option>
+                  <option value="at" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>AKT Mutaxassisi</option>
+                  <option value="lang" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Chet tillari nazoratchisi</option>
                 </select>
               </div>
             </div>
@@ -354,7 +354,7 @@ const AddNewUser = () => {
                     <>
                       <option disabled value="">Tashkilotni tanlang</option>
                       {allComplexes.map((i) => (
-                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : ""}>{i.name}</option>
+                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>{i.name}</option>
                       ))}
                     </>
                   )}
@@ -380,7 +380,7 @@ const AddNewUser = () => {
                     <>
                       <option disabled value="">Xizmatni tanlang</option>
                       {allDepartments.map((i) => (
-                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : ""}>{i.name}</option>
+                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>{i.name}</option>
                       ))}
                     </>
                   )}
@@ -406,7 +406,7 @@ const AddNewUser = () => {
                     <>
                       <option disabled value="">Bo'limni tanlang</option>
                       {allSections.map((i) => (
-                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : ""}>{i.name}</option>
+                        <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>{i.name}</option>
                       ))}
                     </>
                   )}

@@ -913,12 +913,12 @@ function Xodimlar() {
       </Modal>
 
       <Modal show={showImpersonateModal} onHide={() => setShowImpersonateModal(false)} centered>
-        <Modal.Header closeButton className={isDark ? "bg-slate-800 text-white border-slate-700" : ""}>
+        <Modal.Header closeButton className={isDark ? "bg-slate-800 text-white border-slate-700" : "bg-white text-dark border-bottom"}>
           <Modal.Title className="fw-bold">
             <i className="fa-solid fa-user-shield text-danger me-2"></i> Impersonatizatsiya
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className={isDark ? "bg-slate-800 text-white" : ""}>
+        <Modal.Body className={isDark ? "bg-slate-800 text-white" : "bg-white text-dark"}>
           <div className="mb-4">
             <p className="mb-1 text-secondary" style={{ fontSize: '0.9rem' }}>Target User:</p>
             <h5 className="fw-bold mb-0">{selectedEmployee?.name}</h5>
@@ -955,7 +955,7 @@ function Xodimlar() {
             </div>
           )}
         </Modal.Body>
-        <Modal.Footer className={isDark ? "bg-slate-800 border-slate-700" : ""}>
+        <Modal.Footer className={isDark ? "bg-slate-800 border-slate-700" : "bg-white border-top"}>
           <Button variant="secondary" onClick={() => setShowImpersonateModal(false)} className="px-4">
             Bekor qilish
           </Button>
@@ -971,12 +971,12 @@ function Xodimlar() {
       </Modal>
 
       <Modal show={showModifiedDatesModal} onHide={() => setShowModifiedDatesModal(false)} centered>
-        <Modal.Header closeButton className={isDark ? "bg-slate-800 text-white border-slate-700" : ""}>
+        <Modal.Header closeButton className={isDark ? "bg-slate-800 text-white border-slate-700" : "bg-white text-dark border-bottom"}>
           <Modal.Title className="fw-bold">
             <i className="fa-solid fa-calendar-plus text-primary me-2"></i> Sababli kunlar
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className={isDark ? "bg-slate-800 text-white" : ""}>
+        <Modal.Body className={isDark ? "bg-slate-800 text-white" : "bg-white text-dark"}>
           <div className="mb-4">
             <p className="mb-1 text-secondary" style={{ fontSize: '0.9rem' }}>Xodim:</p>
             <h5 className="fw-bold mb-0">{selectedEmployee?.name}</h5>
@@ -1017,7 +1017,7 @@ function Xodimlar() {
             )}
           </div>
         </Modal.Body>
-        <Modal.Footer className={isDark ? "bg-slate-800 border-slate-700" : ""}>
+        <Modal.Footer className={isDark ? "bg-slate-800 border-slate-700" : "bg-white border-top"}>
           <Button variant="secondary" onClick={() => setShowModifiedDatesModal(false)}>
             Bekor qilish
           </Button>

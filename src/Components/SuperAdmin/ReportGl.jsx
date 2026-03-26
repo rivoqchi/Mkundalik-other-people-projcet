@@ -136,9 +136,9 @@ function Report() {
                 onChange={(e) => setFilterByDepartment(e.target.value ? { name: e.target.value } : {})}
                 style={{ background: 'transparent', appearance: 'none' }}
               >
-                <option value="" className={isDark ? "bg-dark text-white" : ""}>Barcha xizmatlar (Umumiy)</option>
+                <option value="" className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>Barcha xizmatlar (Umumiy)</option>
                 {departments.map((item) => (
-                  <option key={item._id} value={item.name} className={isDark ? "bg-dark text-white" : ""}>
+                  <option key={item._id} value={item.name} className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>
                     {item.name}
                   </option>
                 ))}

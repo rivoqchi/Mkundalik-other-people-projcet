@@ -73,7 +73,7 @@ function ScheduleNew() {
   }, []);
 
   const navigate = useNavigate();
-  const [alert, setAlert] = useState({
+  const [alertData, setAlertData] = useState({
     show: false,
     type: "",
     message: "",
@@ -101,7 +101,7 @@ function ScheduleNew() {
     } catch (error) {
       console.error("Error fetching AI response:", error);
       setAiMode("error");
-      setAlert({
+      setAlertData({
         show: true,
         type: "error",
         message: "AI xizmati vaqtincha ishlamayapti",
@@ -115,6 +115,7 @@ function ScheduleNew() {
       }, 2000);
     }
   };
+
   const [date, setDate] = useState("");
   const [onWork, setOnWork] = useState(false);
   const [workingOn, setWorkingOn] = useState(null);
@@ -317,7 +318,7 @@ function ScheduleNew() {
 
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseCreate();
-      setAlert(prev => ({
+      setAlertData(prev => ({
         show: true,
         type: "success",
         message: "Qo‘shildi!",
@@ -329,7 +330,7 @@ function ScheduleNew() {
     } catch (error) {
       setLoading(false);
       console.error("Taskni qo‘shishda xatolik:", error);
-      setAlert(prev => ({
+      setAlertData(prev => ({
         show: true,
         type: "error",
         message: "Xatolik!",
@@ -354,7 +355,7 @@ function ScheduleNew() {
       );
       setTasks(response.data.updatedSchedule.tasks);
       handleCloseEdit();
-      setAlert(prev => ({
+      setAlertData(prev => ({
         show: true,
         type: "success",
         message: "Yangilandi!",
@@ -363,7 +364,7 @@ function ScheduleNew() {
       setLoading(false);
     } catch (error) {
       console.error("Taskni o'zgartirishda xatolik:", error);
-      setAlert(prev => ({
+      setAlertData(prev => ({
         show: true,
         type: "error",
         message: "Xatolik!",
@@ -383,7 +384,7 @@ function ScheduleNew() {
       );
 
       setTasks(response.data.updatedSchedule.tasks);
-      setAlert(prev => ({
+      setAlertData(prev => ({
         show: true,
         type: "success",
         message: "O`chirildi!",
@@ -393,7 +394,7 @@ function ScheduleNew() {
       setLoading(false);
     } catch (error) {
       console.error("Taskni o'chirishda xatolik:", error);
-      setAlert(prev => ({
+      setAlertData(prev => ({
         show: true,
         type: "error",
         message: "Xatolik!",
@@ -477,7 +478,7 @@ function ScheduleNew() {
       setOnWork(true);
       setWorkingOn(res.data.newSchedule);
       setLoading(false);
-      setAlert(prev => ({
+      setAlertData(prev => ({
         show: true,
         type: "success",
         message: "Boshlandi!",
@@ -493,11 +494,11 @@ function ScheduleNew() {
   return (
     <>
 
-      {alert.show && (
+      {alertData.show && (
         <Alert
-          type={alert.type}
-          message={alert.message}
-          trigger={alert.trigger}
+          type={alertData.type}
+          message={alertData.message}
+          trigger={alertData.trigger}
         />
       )}      {/* <div className="oqrang text-center m-3 ushbustikerlar mb-4">
           <h5>{t("ushbustikerlar")}</h5>
@@ -725,6 +726,7 @@ function ScheduleNew() {
                         <i className={`fa-solid ${aiMode === 'thinking' ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`}></i>
                         <span className="d-none d-md-inline ms-1">{t("aitahrir")}</span><span className="newtop">new</span>
                       </button>
+                      
                     </div>
 
                     <div className="footer-right-actions">
