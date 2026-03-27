@@ -19,7 +19,7 @@ const Behruz = () => {
 
                 <Helmet>
                     <title>Abdurakhimov Behruz - Full-stack dasturchi | mkundalik.uz</title>
-                    <meta name="description" content="Abdurakhimov Behruz G'ofur o`g`li - Toshkent Metropoliteni bosh mutaxassisi, Full-stack dasturchi. mkundalik loyihasi asoschisi." />
+                    <meta name="description" content="Abdurakhimov Behruz G'ofur o`g`li - Toshkent metropoliteni bosh mutaxassisi, Full-stack dasturchi. mkundalik loyihasi asoschisi." />
                     <meta name="keywords" content="Behruz Abdurakhimov, behruzed, mkundalik, full-stack developer, Toshkent metropoliteni, dasturchi" />
                     <link rel="canonical" href="https://mkundalik.uz/about/behruz" />
                 </Helmet>

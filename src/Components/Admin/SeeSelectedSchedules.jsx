@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { Modal, Button } from "react-bootstrap";
 import AllSchedulesDownload from "../SuperAdmin/AllSchedulesDownload";
 import { useLoading } from "../Additional/LoadingScreen";
+import FormattedTypewriter from "../Additional/FormattedTypewriter";
 
 const getDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
@@ -48,6 +49,9 @@ const SeeSelectedSchedules = () => {
 
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [modalSabab, setModalSabab] = useState("");
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [aiSummary, setAiSummary] = useState("");
+  const [isSummarizing, setIsSummarizing] = useState(false);
 
   const currentDate = new Date();
   const [month, setMonth] = useState(currentDate.getMonth());
@@ -262,6 +266,53 @@ const SeeSelectedSchedules = () => {
     setShowTooltip(!showTooltip);
   };
 
+  const handleGenerateSummary = async () => {
+    if (mySectionSchedules.length === 0) return;
+    
+    setIsSummarizing(true);
+    setAiSummary("");
+    setShowAiModal(true);
+
+    const reduceReports = (reports, factor) => {
+      return reports.map(report => {
+        if (!report.tasks || report.tasks.length === 0) return report;
+        const shuffledTasks = [...report.tasks].sort(() => 0.5 - Math.random());
+        const reducedTasks = shuffledTasks.slice(0, Math.ceil(report.tasks.length * factor));
+        return { ...report, tasks: reducedTasks };
+      });
+    };
+
+    const attemptSummary = async (reports, currentFactor = 1.0) => {
+      try {
+        const { data } = await axios.post(`${API}/ai/summarize`, {
+          reports: reports,
+          language: localStorage.getItem("i18nextLng") || "uz"
+        }, { withCredentials: true });
+
+        if (data && data.response) {
+          setAiSummary(data.response);
+          setIsSummarizing(false);
+        } else {
+          throw new Error("Empty AI response");
+        }
+      } catch (error) {
+        const status = error.response?.status;
+        if ((status === 413 || status === 400 || status === 500) && currentFactor > 0.05) {
+          console.warn(`Content too large (factor ${currentFactor}), reducing by 50% and retrying...`);
+          const nextFactor = currentFactor * 0.5;
+          const reduced = reduceReports(mySectionSchedules, nextFactor);
+          await attemptSummary(reduced, nextFactor);
+        } else {
+          console.error("AI xulosa xatoligi:", error);
+          setAiSummary("Xulosa yaratishda xatolik yuz berdi. Iltimos keyinroq urunib ko'ring.");
+          setIsSummarizing(false);
+        }
+      }
+    };
+
+    await attemptSummary(mySectionSchedules);
+  };
+
   return (
     <div className="calendar-container def-page" onClick={() => setShowTooltip(false)}>
       <div className="calendar-header-wrapper">
@@ -353,6 +404,13 @@ const SeeSelectedSchedules = () => {
               }`}
           >
             <i className="fa-solid fa-arrow-right"></i>
+          </button>
+          <button 
+            className="calendar-btn ai-summary-btn btn-premium-ai" 
+            onClick={handleGenerateSummary}
+            title="AI Xulosa"
+          >
+            <i className={`fa-solid ${isSummarizing ? "fa-spinner fa-spin" : "fa-wand-magic-sparkles"}`}></i>
           </button>
           <AllSchedulesDownload employee={myId} />
         </div>
@@ -511,6 +569,45 @@ const SeeSelectedSchedules = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowInfoModal(false)}>
+            Yopish
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal 
+        show={showAiModal} 
+        onHide={() => setShowAiModal(false)} 
+        centered 
+        size="lg"
+        dialogClassName="ai-summary-modal"
+        className="ai-summary-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <i className="fa-solid fa-wand-magic-sparkles me-2"></i>
+            {monthsList[month]} oyi uchun AI xulosa
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="ai-summary-body">
+          {isSummarizing ? (
+            <div className="text-center p-5">
+              <div className="spinner-border text-primary mb-3" role="status"></div>
+              <p>AI ma'lumotlarni tahlil qilmoqda...</p>
+            </div>
+          ) : (
+            <div className="ai-content-reveal p-3">
+              <FormattedTypewriter text={aiSummary} speed={5} />
+              <div className="text-end text-danger danger redword mt-3">
+                <small className="text-muted">
+                  <i className="fa-solid fa-wand-magic-sparkles me-1"></i>
+                  * AI tomonidan yaratilgan
+                </small>
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAiModal(false)}>
             Yopish
           </Button>
         </Modal.Footer>

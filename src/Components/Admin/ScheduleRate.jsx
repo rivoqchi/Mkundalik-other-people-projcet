@@ -80,6 +80,16 @@ function ScheduleRate() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiResult, setAiResult] = useState(null);
   const [isAiApplied, setIsAiApplied] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyAiFeedback = () => {
+    if (!aiResult?.message) return;
+    // Remove all markdown asterisks
+    const cleanText = aiResult.message.replace(/\*/g, "");
+    navigator.clipboard.writeText(cleanText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   useEffect(() => {
     if (showModal) {
       setSetAi(false);
@@ -476,8 +486,15 @@ function ScheduleRate() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="ai-suggestion-box mt-4 p-3 rounded-4"
+                  className="ai-suggestion-box mt-4 p-3 rounded-4 position-relative"
                 >
+                  <button 
+                    className={`copy-ai-btn ${copied ? "copied" : ""}`}
+                    onClick={handleCopyAiFeedback}
+                    title="Nusxa olish"
+                  >
+                    <i className={`fa-solid ${copied ? "fa-check" : "fa-copy"}`}></i>
+                  </button>
                   <div className="d-flex align-items-center mb-2 text-primary">
                     <i className="fa-solid fa-robot me-2"></i>
                     <small className="fw-bold">AI FIKRI:</small>

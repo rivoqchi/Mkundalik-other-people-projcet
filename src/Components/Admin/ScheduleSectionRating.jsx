@@ -167,24 +167,34 @@ function RatingMyAdmins() {
         return;
       }
 
-      // 2. Recursive function to handle errors (413, 400, 500)
+      // 2. Recursive function to handle errors (413, 400)
       const getSummary = async (reportsToProcess, retryCount = 0) => {
+        if (!reportsToProcess || reportsToProcess.length === 0) {
+          throw new Error("No reports to process");
+        }
+
         try {
           const { data: aiResponse } = await axios.post(`${API}/ai/summarize`, { 
             reports: reportsToProcess,
             language: localStorage.getItem("i18nextLng") || "uz"
           }, { withCredentials: true });
-          return aiResponse.response;
+          
+          if (aiResponse && aiResponse.response) {
+            return aiResponse.response;
+          } else {
+            throw new Error("Empty AI response");
+          }
         } catch (error) {
           const status = error.response?.status;
-          // If content too large or bad request (often length related)
-          if ((status === 413 || status === 400) && retryCount < 5) {
-            console.warn(`Content too large, reducing dataset by 50% (Retry: ${retryCount + 1})...`);
-            const reducedReports = reportsToProcess
-              .sort(() => 0.5 - Math.random())
-              .slice(0, Math.floor(reportsToProcess.length * 2 / 3)); // Reduce slightly less aggressively
+          // If content too large or bad request (often length related) or generic error that might be load related
+          if ((status === 413 || status === 400 || status === 500) && retryCount < 10) {
+            console.warn(`AI Summary attempt ${retryCount + 1} failed (Status: ${status}). Reducing dataset by 50%...`);
             
-            if (reducedReports.length === 0) throw new Error("Dataset exhausted");
+            // Fisher-Yates shuffle for true randomness before slicing
+            const shuffled = [...reportsToProcess].sort(() => Math.random() - 0.5);
+            const halfSize = Math.max(1, Math.floor(shuffled.length / 2));
+            const reducedReports = shuffled.slice(0, halfSize);
+            
             return await getSummary(reducedReports, retryCount + 1);
           }
           throw error;

@@ -5,6 +5,7 @@ import axios from "axios";
 import logo from "../Images/logo2.png";
 import noting from "../Images/noting.png";
 import CheckBD from "../CheckBD";
+import AiMotivation from "../Additional/AiMotivation";
 function Dashboard() {
   const [reportCount, setReportCount] = useState(0);
   const user_id = localStorage.getItem("user_id");
@@ -34,6 +35,7 @@ function Dashboard() {
             Xodimlar potensiali monitoringgi bo`yicha O`zbekistondagi birinchi
             kundalik hisobotlarni elektron qayd etish platformasi
           </p>
+          <AiMotivation />
           <Link to="/complex/schedule/new">
             <button className="defaultbtn p-3">Yangi hisobot</button>
           </Link>

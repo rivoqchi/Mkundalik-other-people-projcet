@@ -9,6 +9,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    lng: "uz", // Force Uzbek as default
     resources: {
       uz: { translation: uz },
       uz_cyr: { translation: uzCyr },

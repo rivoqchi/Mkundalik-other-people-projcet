@@ -666,8 +666,15 @@ function ScheduleNew() {
             )}
 
             {/* Persistent Bottom Task Input Box Matching Image */}
-            {onWork && (
-              <div className="new-task-box mb-5 mx-auto">
+            <AnimatePresence>
+              {onWork && (
+                <motion.div 
+                  className="new-task-box mb-5 mx-auto"
+                  initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
                 <div className="new-task-head">
                   <div className="new-task-title" onClick={handleFocusTextarea} style={{ cursor: 'pointer' }}>
                     <i className="fa-solid fa-plus-circle"></i>
@@ -738,7 +745,6 @@ function ScheduleNew() {
                         <i className="fa-solid fa-cloud-arrow-up"></i>
                         <span className=" d-md-inline ms-2">{t("saqlash")}</span>
                       </button>
-
                       <button
                         className="btn-finish-creative"
                         onClick={handleShowEnd}
@@ -749,8 +755,9 @@ function ScheduleNew() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
+          </AnimatePresence>
 
           </div>
         </div>

@@ -159,7 +159,14 @@ body {
   }
 
   .ai-summary-body {
-    background-color: var(--bg-card) !important;
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border-radius: 0 0 15px 15px;
+
+    .text-muted {
+      color: var(--text-secondary) !important;
+      opacity: 0.8;
+    }
     .ai-content-reveal {
       color: var(--text-primary) !important;
       strong {
@@ -170,6 +177,70 @@ body {
       }
     }
   }
+}
+
+// Global Light Mode Modal Close button fix
+body:not(.dark-mode) {
+  .modal-header .btn-close {
+    filter: none !important;
+    opacity: 1 !important;
+    background-color: transparent !important;
+  }
+}
+
+/* AI Suggestion Box & Copy Button */
+.ai-suggestion-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-cyber);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: all 0.3s ease;
+
+  .ai-message-text {
+    line-height: 1.6;
+    color: var(--text-primary);
+  }
+
+  .copy-ai-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(var(--accent-primary-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.2);
+    color: var(--accent-primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+
+    &:hover {
+      background: var(--accent-primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    &.copied {
+      background: #10b981;
+      color: white;
+      border-color: #059669;
+      transform: scale(1.1);
+    }
+
+    i {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.dark-mode .ai-suggestion-box {
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* PREMIUM AI BUTTON ANIMATIONS */

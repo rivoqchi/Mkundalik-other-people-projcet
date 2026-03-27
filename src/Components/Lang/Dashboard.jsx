@@ -1,16 +1,22 @@
 import React from 'react';
 import image from '../Images/teacher.png';
+import AiMotivation from '../Additional/AiMotivation';
 
 function Dashboard() {
   return ( 
-    <>
-      <div className="dashlogo">
+    <div className="def-page text-center">
+      <div className="dashlogo mb-3">
         <img src={image} alt="" />
       </div>
-      <h1 className="text-center mh100">
+      <h1 className="mb-4">
         Til murabbiysi profili
       </h1>
-    </>
+      <div className="row justify-content-center">
+          <div className="col-md-8">
+              <AiMotivation />
+          </div>
+      </div>
+    </div>
   );
 }
 

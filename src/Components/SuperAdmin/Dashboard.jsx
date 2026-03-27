@@ -4,6 +4,7 @@ import { API } from "../../config";
 import logo from "../Images/logo2.png";
 import noting from "../Images/noting.png";
 import CheckBD from "../CheckBD";
+import AiMotivation from "../Additional/AiMotivation";
 function Dashboard() {
   const fullName = localStorage.getItem("fullName") || "";
 
@@ -17,6 +18,7 @@ function Dashboard() {
               Xodimlar potensiali monitoringgi bo`yicha O`zbekistondagi birinchi
               kundalik hisobotlarni elektron qayd etish platformasi
             </p>
+            <AiMotivation />
             <Link to="/superadmin/employees/allusers">
               <button className="defaultbtn p-3">Barcha xodimlar</button>
             </Link>

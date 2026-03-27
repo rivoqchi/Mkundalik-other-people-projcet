@@ -7,7 +7,9 @@ const DownloadObject = ({ employee }) => {
 
   // Schedule ma'lumotlarini olish
   const getSchedules = async () => {
-    const response = await fetch(`${API}/auth/getschedules?_id=${employee}`);
+    const response = await fetch(`${API}/auth/getschedules?_id=${employee}`, {
+      credentials: "include"
+    });
     if (!response.ok) {
       throw new Error("Ma'lumot olishda xatolik yuz berdi");
     }

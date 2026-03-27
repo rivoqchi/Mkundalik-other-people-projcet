@@ -116,13 +116,13 @@ function DynamicSEO() {
   // Route based SEO logic
   const getSEO = () => {
     const path = location.pathname;
-    if (path === "/") return { title: "mkundalik.uz - Asosiy sahifa", desc: "Toshkent Metropoliteni xodimlarining ish faoliyatini raqamlashtirish tizimi." };
+    if (path === "/") return { title: "mkundalik.uz - Asosiy sahifa", desc: "Toshkent metropoliteni xodimlarining ish faoliyatini raqamlashtirish tizimi." };
     if (path === "/about") return { title: "Dastur haqida - mkundalik.uz", desc: "mkundalik loyihasi va uning imkoniyatlari haqida ma'lumotlar." };
-    if (path === "/about/behruz") return { title: "Abdurakhimov Behruz - Full-stack dasturchi | mkundalik.uz", desc: "Toshkent Metropoliteni DUK axborot xavfsizligini ta'minlash va axborot kommunikatsiya texnologiyalarini rivojlantirish xizmati bosh mutaxassisi, Full-stack dasturchi. mkundalik tizimi dasturchisi." };
+    if (path === "/about/behruz") return { title: "Abdurakhimov Behruz - Full-stack dasturchi | mkundalik.uz", desc: "Toshkent metropoliteni DUK axborot xavfsizligini ta'minlash va axborot kommunikatsiya texnologiyalarini rivojlantirish xizmati bosh mutaxassisi, Full-stack dasturchi. mkundalik tizimi dasturchisi." };
     if (path === "/about/jahongir") return { title: "Usmanov Raxmonbek - Toshkent metropoliteni boshlig'i | mkundalik.uz", desc: "Usmanov Raxmonbek Djaxongirovich - Toshkent metropoliteni DUK boshlig'i, loyiha homiysi." };
     if (path === "/about/feruz") return { title: "Toshpo`latov Feruz - Loyiha rahbari | mkundalik.uz", desc: "Toshpo`latov Feruz G'. - mkundalik loyihasi rahbari, texnik nazorat mutaxassisi." };
     if (path === "/user/schedule/new") return { title: "Yangi hisobot", desc: "Yozilgan hisobot toifasiga ko`ra sun'iy intellekt orqali baho taklif qilinadi, bahoni esa rahbar belgilaydi." };
-    if (path.includes("/user")) return { title: "Xodim profili - mkundalik.uz", desc: "Toshkent Metropoliteni xodimi shaxsiy ish sahifasi va ko'rsatkichlari." };
+    if (path.includes("/user")) return { title: "Xodim profili - mkundalik.uz", desc: "Toshkent metropoliteni xodimi shaxsiy ish sahifasi va ko'rsatkichlari." };
     return { title: "mkundalik.uz", desc: "Ish faoliyatini boshqarish tizimi" };
   };
 
