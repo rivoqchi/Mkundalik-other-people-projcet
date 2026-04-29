@@ -140,8 +140,17 @@ function ScheduleNew() {
   // AI Animation States
   const [aiMode, setAiMode] = useState("idle"); // idle, thinking, writing, error
   const [displayContent, setDisplayContent] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const backupTextRef = useRef("");
   const textareaRef = useRef(null);
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    if (bottomRef.current && tasks.length > 0) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [tasks]);
+
 
   const handleFocusTextarea = () => {
     if (textareaRef.current) {
@@ -309,7 +318,7 @@ function ScheduleNew() {
   // Vazifa qo'shish
   const handleCreateTask = async () => {
     try {
-      setLoading(true);
+      setIsSaving(true);
       const response = await axios.put(
         `${API}/schedules/addtask/${workingOn._id}`,
         { title: taskData, source: shart ? type : "null" },
@@ -324,11 +333,11 @@ function ScheduleNew() {
         message: "Qo‘shildi!",
         trigger: prev.trigger + 1
       }));
-      setLoading(false);
+      setIsSaving(false);
       resetType();
       setTaskData("");
     } catch (error) {
-      setLoading(false);
+      setIsSaving(false);
       console.error("Taskni qo‘shishda xatolik:", error);
       setAlertData(prev => ({
         show: true,
@@ -343,7 +352,7 @@ function ScheduleNew() {
   // Vazifani o'zgartirish
   const handleEditTask = async () => {
     try {
-      setLoading(true);
+      setIsSaving(true);
       const response = await axios.put(
         `${API}/schedules/edittask/${workingOn._id}`,
         {
@@ -361,7 +370,7 @@ function ScheduleNew() {
         message: "Yangilandi!",
         trigger: prev.trigger + 1
       }));
-      setLoading(false);
+      setIsSaving(false);
     } catch (error) {
       console.error("Taskni o'zgartirishda xatolik:", error);
       setAlertData(prev => ({
@@ -370,7 +379,7 @@ function ScheduleNew() {
         message: "Xatolik!",
         trigger: prev.trigger + 1
       }));
-      setLoading(false);
+      setIsSaving(false);
     }
   };
 
@@ -612,7 +621,7 @@ function ScheduleNew() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                        transition={{ duration: 0.3 }}
                       >
                         <div className="justify-content-between pb-2 d-flex">
                           <div className="task-number-badge">{index + 1}</div>
@@ -664,15 +673,14 @@ function ScheduleNew() {
                 </div>
               </div>
             )}
-
-            {/* Persistent Bottom Task Input Box Matching Image */}
+            {/* Persistent Top Task Input Box Matching Image */}
             <AnimatePresence>
               {onWork && (
                 <motion.div 
-                  className="new-task-box mb-5 mx-auto"
-                  initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                  className="new-task-box mb-4 mx-auto mt-4"
+                  initial={{ opacity: 0, y: -20, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 >
                 <div className="new-task-head">
@@ -740,14 +748,24 @@ function ScheduleNew() {
                       <button
                         className="btn-save-creative"
                         onClick={handleCreateTask}
-                        disabled={!taskData || (shart && !type)}
+                        disabled={isSaving || !taskData || (shart && !type)}
                       >
-                        <i className="fa-solid fa-cloud-arrow-up"></i>
-                        <span className=" d-md-inline ms-2">{t("saqlash")}</span>
+                        {isSaving ? (
+                          <>
+                            <i className="fa-solid fa-spinner fa-spin"></i>
+                            <span className=" d-md-inline ms-2">Saqlanmoqda...</span>
+                          </>
+                        ) : (
+                          <>
+                            <i className="fa-solid fa-cloud-arrow-up"></i>
+                            <span className=" d-md-inline ms-2">{t("saqlash")}</span>
+                          </>
+                        )}
                       </button>
                       <button
                         className="btn-finish-creative"
                         onClick={handleShowEnd}
+                        disabled={taskData.trim() !== ""}
                       >
                         <i className="fa-solid fa-flag-checkered"></i>
                         <span className="d-md-inline ms-2">{t("yakunlash")}</span>
@@ -755,9 +773,12 @@ function ScheduleNew() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <div ref={bottomRef} style={{ height: "1px", width: "100%" }} />
+
+
 
           </div>
         </div>
@@ -830,9 +851,16 @@ function ScheduleNew() {
                   variant="success"
                   className="mb-4"
                   onClick={handleEditTask}
-                  disabled={shart && !type}
+                  disabled={isSaving || (shart && !type)}
                 >
-                  {t("saqlash")}
+                  {isSaving ? (
+                    <>
+                      <i className="fa-solid fa-spinner fa-spin me-2"></i>
+                      Saqlanmoqda...
+                    </>
+                  ) : (
+                    t("saqlash")
+                  )}
                 </Button>
               </span>
             </OverlayTrigger>

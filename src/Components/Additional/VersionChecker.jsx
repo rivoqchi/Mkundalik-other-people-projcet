@@ -16,27 +16,13 @@ const VersionChecker = () => {
     });
 
     const checkVersion = useCallback(async () => {
-        try {
-            const response = await axios.get('/app-version');
-            const serverData = response.data;
-            setVersionData(serverData);
-
-            if (serverData.version !== localVersion) {
-                setShowUpdate(true);
-            } else {
-                setShowUpdate(false);
-            }
-        } catch (error) {
-            console.error('Error checking version:', error);
-        }
+        // Diabled per user request to prevent CORS error
+        return;
     }, [localVersion]);
 
     const trackPlatform = useCallback(async (plat) => {
-        try {
-            await axios.post('/app-version/track', { platform: plat });
-        } catch (error) {
-            console.error('Error tracking platform usage:', error);
-        }
+        // Diabled per user request to prevent CORS error
+        return;
     }, []);
 
     useEffect(() => {

@@ -70,7 +70,7 @@ function Main() {
         <div className="hero-content" data-aos="zoom-out-up">
           <div className="hero-badge">
              <span className="pulse"></span>
-            <span>{t("tashmetro")}</span>
+            <span>{t("tashmetroduk")}</span>
           </div>
           <h1 className="hero-title">MKUNDALIK<span className="accent-dot">.</span>UZ</h1>
           <p className="hero-subtitle">{t("axtizim")}</p>

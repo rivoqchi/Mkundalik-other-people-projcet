@@ -48,7 +48,8 @@ import Jahongir from "./Components/Infos/Bios/Jahongir";
 import Feruz from "./Components/Infos/Bios/Feruz";
 import Behruz from "./Components/Infos/Bios/Behruz";
 import CheckBD from "./Components/CheckBD";
-import Snowing from "./Components/Snowing";
+import Atmosphere from "./Components/Atmosphere";
+import { WeatherProvider } from "./Components/Additional/WeatherContext";
 import CelebrationModal from "./Components/Celebration";
 import { LoadingProvider } from "./Components/Additional/LoadingScreen";
 import { ThemeProvider, useTheme } from "./Components/Additional/ThemeContext";
@@ -98,13 +99,15 @@ function App() {
   return (
     <HelmetProvider>
       <ThemeProvider>
-        <LoadingProvider>
-          <Router>
-            <ScrollToTop />
-            <DynamicSEO />
-            <AppContent />
-          </Router>
-        </LoadingProvider>
+        <WeatherProvider>
+          <LoadingProvider>
+            <Router>
+              <ScrollToTop />
+              <DynamicSEO />
+              <AppContent />
+            </Router>
+          </LoadingProvider>
+        </WeatherProvider>
       </ThemeProvider>
     </HelmetProvider>
   );
@@ -118,8 +121,8 @@ function DynamicSEO() {
     const path = location.pathname;
     if (path === "/") return { title: "mkundalik.uz - Asosiy sahifa", desc: "Toshkent metropoliteni xodimlarining ish faoliyatini raqamlashtirish tizimi." };
     if (path === "/about") return { title: "Dastur haqida - mkundalik.uz", desc: "mkundalik loyihasi va uning imkoniyatlari haqida ma'lumotlar." };
-    if (path === "/about/behruz") return { title: "Abdurakhimov Behruz - Full-stack dasturchi | mkundalik.uz", desc: "Toshkent metropoliteni DUK axborot xavfsizligini ta'minlash va axborot kommunikatsiya texnologiyalarini rivojlantirish xizmati bosh mutaxassisi, Full-stack dasturchi. mkundalik tizimi dasturchisi." };
-    if (path === "/about/jahongir") return { title: "Usmanov Raxmonbek - Toshkent metropoliteni boshlig'i | mkundalik.uz", desc: "Usmanov Raxmonbek Djaxongirovich - Toshkent metropoliteni DUK boshlig'i, loyiha homiysi." };
+    if (path === "/about/behruz") return { title: "Abdurakhimov Behruz - Full-stack dasturchi | mkundalik.uz", desc: "Toshkent metropoliteni AJ axborot xavfsizligini ta'minlash va axborot kommunikatsiya texnologiyalarini rivojlantirish xizmati bosh mutaxassisi, Full-stack dasturchi. mkundalik tizimi dasturchisi." };
+    if (path === "/about/jahongir") return { title: "Usmanov Raxmonbek - Toshkent metropoliteni boshlig'i | mkundalik.uz", desc: "Usmanov Raxmonbek Djaxongirovich - Toshkent metropoliteni AJ boshlig'i, loyiha homiysi." };
     if (path === "/about/feruz") return { title: "Toshpo`latov Feruz - Loyiha rahbari | mkundalik.uz", desc: "Toshpo`latov Feruz G'. - mkundalik loyihasi rahbari, texnik nazorat mutaxassisi." };
     if (path === "/user/schedule/new") return { title: "Yangi hisobot", desc: "Yozilgan hisobot toifasiga ko`ra sun'iy intellekt orqali baho taklif qilinadi, bahoni esa rahbar belgilaydi." };
     if (path.includes("/user")) return { title: "Xodim profili - mkundalik.uz", desc: "Toshkent metropoliteni xodimi shaxsiy ish sahifasi va ko'rsatkichlari." };
@@ -150,7 +153,7 @@ function AppContent() {
         <CheckIsTest />
         <CtrlEnter />
         <XatolikXabar />
-        <Snowing />
+        <Atmosphere />
         <MobilePromoBanner />
         <VersionChecker />
 

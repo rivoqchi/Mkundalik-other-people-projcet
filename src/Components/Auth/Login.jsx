@@ -35,6 +35,27 @@ const Login = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      const isShiftCtrlA = e.ctrlKey && e.shiftKey && (e.key === 'a' || e.key === 'A' || e.code === 'KeyA');
+      const isShiftCtrlZ = e.ctrlKey && e.shiftKey && (e.key === 'z' || e.key === 'Z' || e.code === 'KeyZ');
+      
+      if (isShiftCtrlA || isShiftCtrlZ) {
+        e.preventDefault();
+        if (location.pathname === '/login') {
+          navigate('/logina', { replace: true });
+        } else if (location.pathname === '/logina') {
+          navigate('/login', { replace: true });
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleGlobalKeyDown);
+    };
+  }, [location.pathname, navigate]);
+
   // Interactive Particle System
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -216,6 +237,7 @@ const Login = () => {
     window.localStorage.setItem("degree", data.employee.degree);
     window.localStorage.setItem("phone", data.employee.phone);
     window.localStorage.setItem("role", data.employee.role);
+    window.localStorage.setItem("section", data.employee.section);
     window.localStorage.setItem("user_id", data.employee._id);
     window.localStorage.setItem("token", data.token);
     window.localStorage.setItem("isSignedIn", "true");

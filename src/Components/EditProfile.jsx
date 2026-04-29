@@ -105,6 +105,8 @@ function EditProfile() {
         address,
       };
       await axios.put(`${API}/auth/editprofile/${myId}`, data, { withCredentials: true });
+      window.localStorage.setItem("fullName", name);
+      window.localStorage.setItem("degree", degree);
 
       setAlert({
         show: true,
@@ -200,6 +202,12 @@ function EditProfile() {
               <option value="">Tanlang</option>
               <option value="O‘zbek">O‘zbek</option>
               <option value="Rus">Rus</option>
+              <option value="Qoraqalpoq">Qoraqalpoq</option>
+              <option value="Qozoq">Qozoq</option>
+              <option value="Tojik">Tojik</option>
+              <option value="Arman">Arman</option>
+              <option value="Tatar">Tatar</option>
+              <option value="Ukrain">Ukrain</option>
               <option value="Boshqa">Boshqa</option>
             </select>
           </div>
@@ -217,6 +225,10 @@ function EditProfile() {
               <option value="Tugallanmagan Oliy">Tugallanmagan Oliy</option>
               <option value="Oliy (Bakalavr)">Oliy (Bakalavr)</option>
               <option value="Oliy (Magistr)">Oliy (Magistr)</option>
+              <option value="Oliy (Doktorantura)">Oliy (Doktorantura)</option>
+              <option value="Oliy (Ospirantura)">Oliy (Ospirantura)</option>
+              <option value="Oliy (Akademik magistratura)">Oliy (Akademik magistratura)</option>
+              <option value="Ilmiy unvon">Ilmiy unvon</option>
               <option value="Boshqa">Boshqa</option>
             </select>
           </div>
@@ -244,8 +256,7 @@ function EditProfile() {
               placeholder="Yashash manzilingiz"
             />
           </div>
-        </div>
-
+        </div><br /><br />
         <button type="submit" className="btn-premium-save">
           <i className="fa-solid fa-cloud-arrow-up"></i>
           <span>O'zgarishlarni saqlash</span>

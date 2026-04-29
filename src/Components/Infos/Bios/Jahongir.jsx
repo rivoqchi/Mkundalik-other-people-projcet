@@ -17,7 +17,7 @@ const Jahongir = () => {
                 </button>
 
                 <Helmet>
-                    <title>Usmanov Raxmonbek - «Toshkent metropoliteni» DUK boshlig‘i | mkundalik.uz</title>
+                    <title>Usmanov Raxmonbek - «Toshkent metropoliteni» AJ boshlig‘i | mkundalik.uz</title>
                     <meta name="description" content="Usmanov Raxmonbek Djaxongirovich - Toshkent metropoliteni DUK boshlig'i, davlat va jamoat arbobi." />
                     <meta name="keywords" content="Raxmonbek Usmanov, Toshkent metropoliteni boshlig'i, metropoliten hokimi, mkundalik" />
                     <link rel="canonical" href="https://mkundalik.uz/about/jahongir" />

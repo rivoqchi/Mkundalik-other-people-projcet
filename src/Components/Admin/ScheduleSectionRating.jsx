@@ -18,6 +18,7 @@ function RatingMyAdmins() {
   const [myData, setMyData] = useState(null);
   const [isNZS, setIsNZS] = useState(false);
   const [myRole, setMyRole] = useState("");
+  const [superiors, setSuperiors] = useState([]);
 
   // Stats (always full totals)
   const [totalAll, setTotalAll] = useState(0);
@@ -47,8 +48,15 @@ function RatingMyAdmins() {
     if (myRole === "complex") return `${API}/schedules/getmysection/department/${myId}`;
     return null;
   }, [myRole, myId]);
-
+  const mySection = window.localStorage.getItem("section");
   const fetchSchedules = useCallback(async () => {
+    if (mySection === "Yuqori turuvchi" && myRole === 'admin') {
+      setSchedules([]);
+      setTotalCount(0);
+      setTotalPages(1);
+      setLoading(false);
+      return;
+    }
     const url = buildUrl();
     if (!url) return;
     setLoading(true);
@@ -74,6 +82,12 @@ function RatingMyAdmins() {
 
   // Fetch global stats (always without filter/pagination)
   const fetchStats = useCallback(async () => {
+    if (window.localStorage.getItem("section") === "Yuqori turuvchi") {
+      setTotalAll(0);
+      setTotalRated(0);
+      setTotalUnrated(0);
+      return;
+    }
     const url = buildUrl();
     if (!url) return;
     try {
@@ -102,6 +116,21 @@ function RatingMyAdmins() {
   useEffect(() => {
     if (myRole && myId) fetchStats();
   }, [myRole, myId]);
+
+  const fetchSuperiors = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`${API}/auth/mysuperiors/${myId}`);
+      if (data && data.superiors) {
+        setSuperiors(data.superiors);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [myId]);
+
+  useEffect(() => {
+    if (myId) fetchSuperiors();
+  }, [myId]);
 
   const getMyData = async () => {
     setLoading(true);
@@ -237,6 +266,40 @@ function RatingMyAdmins() {
           </div>
         </div>
       </div>
+
+      {/* ─── Superiors Block ─── */}
+      {superiors.length > 0 && (
+        <motion.div className="superiors-container mb-5" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <h3 className="section-title-sm mb-4" style={{ fontSize: "1.3rem", fontWeight: "800", color: "var(--m-text)" }}>
+            <i className="fa-solid fa-user-tie me-2" style={{ color: "var(--m-accent)" }}></i>Sizni baholashi mumkin bo'lgan rahbarlar
+          </h3>
+          <div className="superiors-grid">
+            <AnimatePresence>
+              {superiors.map((sup, idx) => (
+                <motion.div 
+                  key={sup._id} 
+                  className={`superior-card role-card-${sup.role}`}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1, duration: 0.4 }}
+                  whileHover={{ scale: 1.05, y: -8, boxShadow: "0 15px 35px rgba(37,99,235,0.2)" }}
+                >
+                  <div className={`superior-avatar avatar-${sup.role}`}>
+                     {sup.name.charAt(0)}
+                  </div>
+                  <div className="superior-info">
+                    <h5>{sup.name}</h5>
+                    <p className="superior-role">
+                      {sup.role === 'boss' ? 'Rahbariyat' : sup.role === 'complex' ? sup.complex : sup.role === 'department' ? sup.department : sup.section}
+                    </p>
+                    <span className={`badge-role bg-${sup.role}`}>{sup.role}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      )}
 
       {/* ─── Stats Cards ─── */}
       <div className="rating-stats-row">

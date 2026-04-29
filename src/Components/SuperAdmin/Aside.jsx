@@ -7,7 +7,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import note from '../Images/note.png';
 import logo from '../Images/logo-png.png';
-import { signout } from '../Auth/CheckAuth';
+import { useTranslation } from "react-i18next";
+import { signout } from "../Auth/CheckAuth";
+import WeatherAside from "../WeatherAside";
 function Aside() {
 
   const [show, setShow] = useState(false);
@@ -16,6 +18,7 @@ function Aside() {
   const handleShow = () => setShow(true);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   const logout = () => {
     signout(() => {
       navigate("/");
@@ -79,13 +82,16 @@ function Aside() {
               </Link>
             </li>
             <li>
-              <Link to="/superadmin/report/holidays" className={location.pathname.startsWith("/superadmin/report/holidays") ? "active" : ""}>
-                <i className="fa-solid fa-calendar-check"></i>
-                <span>Bayramlar</span>
+              <Link className={location.pathname.startsWith("/superadmin/about") ? "active" : ""} to="/superadmin/about">
+                <i className="fa-solid fa-circle-info"></i>
+                <span>{t("dasturhaqida")}</span>
               </Link>
             </li>
           </ul>
         </nav>
+        <div className="d-none d-md-block mb-3">
+          <WeatherAside />
+        </div>
       </div>
       <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>

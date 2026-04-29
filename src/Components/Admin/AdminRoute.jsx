@@ -35,6 +35,7 @@ import LangRu from './LangRu';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
 import Security from '../Security/Security';
+import WeatherMoreInfo from '../WeatherMoreInfo';
 
 function AdminRoute() {
   const location = useLocation();
@@ -82,6 +83,7 @@ function AdminRoute() {
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
               <Route path="/profile/security" exact element={<Security />} />
+              <Route path="/weather" exact element={<WeatherMoreInfo />} />
               <Route path="/*" exact element={<NotFound404 />} />
 
             </Routes>

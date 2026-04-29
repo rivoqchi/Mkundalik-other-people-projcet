@@ -5,7 +5,7 @@ import Alert from "../Additional/Alert";
 import axios from "axios";
 import { API } from "../../config";
 import { useTheme } from "../Additional/ThemeContext";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Modal, Button, Form } from "react-bootstrap";
 
 const AddNewUser = () => {
   const { theme } = useTheme();
@@ -16,6 +16,11 @@ const AddNewUser = () => {
   const [myData, setMyData] = useState([]);
   const [myRole, setMyRole] = useState([]);
   const [myName, setMyName] = useState([]);
+
+  const [showDepartmentModal, setShowDepartmentModal] = useState(false);
+  const [newDepartmentName, setNewDepartmentName] = useState("");
+  const [showSectionModal, setShowSectionModal] = useState(false);
+  const [newSectionName, setNewSectionName] = useState("");
 
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [autoDownload, setAutoDownload] = useState(false); // Switch holati
@@ -118,6 +123,51 @@ const AddNewUser = () => {
     setAutoDownload(!autoDownload);
   };
 
+  const filteredDepartments = allDepartments.filter(d => !complex || d.complex === complex);
+  const filteredSections = allSections.filter(s => !department || s.sector === department);
+
+  const handleCreateDepartment = async () => {
+    if (!newDepartmentName) return;
+    try {
+      const payload = {
+        name: newDepartmentName,
+        acceptedBy: myName,
+        sections: [],
+        complex: complex,
+      };
+      await axios.post(`${API}/sectors/new`, payload);
+      await getAllDepartments();
+      setValues(prev => ({ ...prev, department: newDepartmentName }));
+      setShowDepartmentModal(false);
+      setNewDepartmentName("");
+      setAlert({show: true, type: "success", message: "Yangi xizmat/departament yaratildi!"});
+    } catch (err) {
+      console.error(err);
+      setAlert({show: true, type: "error", message: "Xatolik yuz berdi"});
+    }
+  };
+
+  const handleCreateSection = async () => {
+    if (!newSectionName) return;
+    try {
+      const payload = {
+        name: newSectionName,
+        acceptedBy: myName,
+        admins: [],
+        sector: department,
+      };
+      await axios.post(`${API}/sections/new`, payload);
+      await getAllSections();
+      setValues(prev => ({ ...prev, section: newSectionName }));
+      setShowSectionModal(false);
+      setNewSectionName("");
+      setAlert({show: true, type: "success", message: "Yangi bo'lim yaratildi!"});
+    } catch (err) {
+      console.error(err);
+      setAlert({show: true, type: "error", message: "Xatolik yuz berdi"});
+    }
+  };
+
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value, error: false });
   };
@@ -196,6 +246,23 @@ const AddNewUser = () => {
       setValues((prev) => ({ ...prev, password: "" }));
     }
   }, [values.phone]);
+  useEffect(() => {
+    if (status === 'department') {
+      setValues(prev => ({ ...prev, section: "Yuqori turuvchi" }));
+    } else if (status === 'complex') {
+      setValues(prev => ({ ...prev, department: "Yuqori turuvchi", section: "Yuqori turuvchi" }));
+    } else if (['boss', 'superadmin', 'commission', 'hr', 'sport', 'at', 'lang'].includes(status)) {
+      setValues(prev => ({ ...prev, complex: "Yuqori turuvchi", department: "Yuqori turuvchi", section: "Yuqori turuvchi" }));
+    } else if (status === 'admin' || status === 'employee') {
+      setValues(prev => ({ 
+        ...prev, 
+        complex: prev.complex === "Yuqori turuvchi" ? "" : prev.complex,
+        department: prev.department === "Yuqori turuvchi" ? "" : prev.department,
+        section: prev.section === "Yuqori turuvchi" ? "" : prev.section
+      }));
+    }
+  }, [status]);
+
   const saveToFile = () => {
     const data = `Avtorizatsiya mkundalik.uz: \n\nTelefon: ${phone} \nParol: ${password} \n\nIsm: ${name} \nKompleks: ${complex}  \nDepartament: ${department}  \nBo'lim: ${section} \nLavozim: ${degree}\nStatus: ${status} \nTasdiqlagan shaxs: Tizim administratori \n\nmkundalik.uz -> Kirish`;
     const blob = new Blob([data], { type: "text/plain" });
@@ -346,7 +413,7 @@ const AddNewUser = () => {
                   id="complex"
                   onChange={handleChange("complex")}
                   value={complex}
-                  disabled={myData.role === "admin"}
+                  disabled={myData.role === "admin" || ['boss', 'superadmin', 'commission', 'hr', 'sport', 'at', 'lang'].includes(status)}
                 >
                   {myData.role === "admin" ? (
                     <option disabled value={myData.complex}>{myData.complex}</option>
@@ -356,6 +423,7 @@ const AddNewUser = () => {
                       {allComplexes.map((i) => (
                         <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>{i.name}</option>
                       ))}
+                      <option value="Yuqori turuvchi">Yuqori turuvchi</option>
                     </>
                   )}
                 </select>
@@ -370,18 +438,32 @@ const AddNewUser = () => {
                   className="premium-input-field w-100"
                   name="department"
                   id="department"
-                  onChange={handleChange("department")}
+                  onChange={(e) => {
+                    if (e.target.value === "CREATE_NEW_DEPARTMENT") {
+                      if (!complex) {
+                        setAlert({show: true, type: "error", message: "Avval kompleksni tanlang!"});
+                        return;
+                      }
+                      setShowDepartmentModal(true);
+                      e.target.value = department; // reset the visually selected value until created
+                    } else {
+                      handleChange("department")(e);
+                    }
+                  }}
                   value={department}
-                  disabled={myData.role === "admin"}
+                  disabled={myData.role === "admin" || ['complex', 'boss', 'superadmin', 'commission', 'hr', 'sport', 'at', 'lang'].includes(status)}
                 >
                   {myData.role === "admin" ? (
                     <option disabled value={myData.department}>{myData.department}</option>
                   ) : (
                     <>
                       <option disabled value="">Xizmatni tanlang</option>
-                      {allDepartments.map((i) => (
+                      {filteredDepartments.map((i) => (
                         <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>{i.name}</option>
                       ))}
+                      <option value="Yuqori turuvchi">Yuqori turuvchi</option>
+                      <option disabled className="text-center">──────────</option>
+                      <option value="CREATE_NEW_DEPARTMENT" className="fw-bold" style={{ color: "var(--bs-primary)" }}>+ Yangi xizmat yaratish</option>
                     </>
                   )}
                 </select>
@@ -396,18 +478,32 @@ const AddNewUser = () => {
                   className="premium-input-field w-100"
                   name="sections"
                   id="sections"
-                  onChange={handleChange("section")}
+                  onChange={(e) => {
+                    if (e.target.value === "CREATE_NEW_SECTION") {
+                      if (!department) {
+                        setAlert({show: true, type: "error", message: "Avval xizmat/departamentni tanlang!"});
+                        return;
+                      }
+                      setShowSectionModal(true);
+                      e.target.value = section; // reset the visually selected value until created
+                    } else {
+                      handleChange("section")(e);
+                    }
+                  }}
                   value={section}
-                  disabled={myData.role === "admin"}
+                  disabled={myData.role === "admin" || ['department', 'complex', 'boss', 'superadmin', 'commission', 'hr', 'sport', 'at', 'lang'].includes(status)}
                 >
                   {myData.role === "admin" ? (
                     <option disabled value={myData.section}>{myData.section}</option>
                   ) : (
                     <>
                       <option disabled value="">Bo'limni tanlang</option>
-                      {allSections.map((i) => (
+                      {filteredSections.map((i) => (
                         <option key={i._id} value={i.name} className={isDark ? "bg-dark text-white" : "bg-white text-dark"}>{i.name}</option>
                       ))}
+                      <option value="Yuqori turuvchi">Yuqori turuvchi</option>
+                      <option disabled className="text-center">──────────</option>
+                      <option value="CREATE_NEW_SECTION" className="fw-bold" style={{ color: "var(--bs-primary)" }}>+ Yangi bo'lim yaratish</option>
                     </>
                   )}
                 </select>
@@ -466,6 +562,51 @@ const AddNewUser = () => {
         </div>
 
       </div>
+
+      <Modal show={showDepartmentModal} onHide={() => setShowDepartmentModal(false)} centered>
+        <Modal.Header closeButton className={isDark ? 'bg-dark text-white' : ''}>
+          <Modal.Title>Yangi departament yaratish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={isDark ? 'bg-dark text-white' : ''}>
+          <Form.Group>
+            <Form.Label>Departament nomi</Form.Label>
+            <Form.Control 
+              type="text" 
+              placeholder="Nomni kiriting..."
+              value={newDepartmentName}
+              onChange={e => setNewDepartmentName(e.target.value)}
+              className={isDark ? 'bg-dark text-white border-secondary' : ''}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer className={isDark ? 'bg-dark border-secondary' : ''}>
+          <Button variant="secondary" onClick={() => setShowDepartmentModal(false)}>Bekor qilish</Button>
+          <Button variant="primary" onClick={handleCreateDepartment}>Yaratish</Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showSectionModal} onHide={() => setShowSectionModal(false)} centered>
+        <Modal.Header closeButton className={isDark ? 'bg-dark text-white' : ''}>
+          <Modal.Title>Yangi bo'lim yaratish</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={isDark ? 'bg-dark text-white' : ''}>
+          <Form.Group>
+            <Form.Label>Bo'lim nomi</Form.Label>
+            <Form.Control 
+              type="text" 
+              placeholder="Nomni kiriting..."
+              value={newSectionName}
+              onChange={e => setNewSectionName(e.target.value)}
+              className={isDark ? 'bg-dark text-white border-secondary' : ''}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer className={isDark ? 'bg-dark border-secondary' : ''}>
+          <Button variant="secondary" onClick={() => setShowSectionModal(false)}>Bekor qilish</Button>
+          <Button variant="primary" onClick={handleCreateSection}>Yaratish</Button>
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 

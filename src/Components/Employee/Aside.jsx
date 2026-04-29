@@ -9,6 +9,7 @@ import note from "../Images/note.png";
 import logo from "../Images/logo-png.png";
 import { useTranslation } from "react-i18next";
 import { signout } from "../Auth/CheckAuth";
+import WeatherAside from "../WeatherAside";
 function Aside() {
   const { t } = useTranslation();
 
@@ -73,6 +74,9 @@ function Aside() {
             </li>
           </ul>
         </nav>
+        <div className="d-none d-md-block mb-3">
+          <WeatherAside />
+        </div>
       </div>
       <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>

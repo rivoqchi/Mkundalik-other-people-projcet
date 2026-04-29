@@ -11,6 +11,7 @@ import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import { useTranslation } from "react-i18next";
 import { signout } from "../Auth/CheckAuth";
+import WeatherAside from "../WeatherAside";
 function Aside() {
 
   const { t } = useTranslation();
@@ -29,6 +30,10 @@ function Aside() {
   const myId = window.localStorage.getItem("user_id");
   const [notificationLength, setNotificationLength] = useState([]);
   const getMySectionSchedules = async () => {
+    if (window.localStorage.getItem("section") === "Yuqori turuvchi" && window.localStorage.getItem("role") === 'admin') {
+      setNotificationLength(0);
+      return;
+    }
     try {
       const { data } = await axios.get(
         `${API}/schedules/notification/length/${myId}`
@@ -90,27 +95,23 @@ function Aside() {
                 {/* <span className="newtop">NEW</span> */}
               </Link>
             </li>
+            <li>
+              <Link className={location.pathname.startsWith("/complex/profile") ? "active" : ""} to="/complex/profile">
+                <i className="fa-solid fa-user"></i>
+                <span>{t("myInfo")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link className={location.pathname.startsWith("/complex/about") ? "active" : ""} to="/complex/about">
+                <i className="fa-solid fa-circle-info"></i>
+                <span>{t("dasturhaqida")}</span>
+              </Link>
+            </li>
           </ul>
-          {/* <li>
-            <Link className={location.pathname.startsWith("/complex/languages") ? "active" : ""} to="/complex/languages">
-              <i className="fa-solid fa-language"></i>
-              <span>{t("foreign")}</span>
-            </Link>
-          </li> */}
-
-          <li>
-            <Link className={location.pathname.startsWith("/complex/profile") ? "active" : ""} to="/complex/profile">
-              <i className="fa-solid fa-user"></i>
-              <span>{t("myInfo")}</span>
-            </Link>
-          </li>
-          <li>
-            <Link className={location.pathname.startsWith("/complex/about") ? "active" : ""} to="/complex/about">
-              <i className="fa-solid fa-circle-info"></i>
-              <span>{t("dasturhaqida")}</span>
-            </Link>
-          </li>
         </nav>
+        <div className="d-none d-md-block mb-3">
+          <WeatherAside />
+        </div>
       </div>
       <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>

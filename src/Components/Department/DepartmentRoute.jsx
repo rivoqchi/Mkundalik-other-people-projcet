@@ -26,20 +26,19 @@ import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
+import WeatherMoreInfo from '../WeatherMoreInfo';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import Footer from '../Footer';
 import TestPage from '../Lang/TestPage';
-
-
-
 import Languages from '../Admin/Languages';
 import LangRu from '../Admin/LangRu';
 import LangEn from '../Admin/LangEn';
-
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-dom";
+import { useLocation as useRouteLocation } from "react-router-dom";
 import Security from '../Security/Security';
+
 function DepartmentRoute() {
-  const location = useLocation();
+  const location = useRouteLocation();
   return (
     <div className="container-fluid">
       <div className="row">
@@ -85,6 +84,7 @@ function DepartmentRoute() {
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
+              <Route path="/weather" exact element={<WeatherMoreInfo />} />
               <Route path="/profile/security" exact element={<Security />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>

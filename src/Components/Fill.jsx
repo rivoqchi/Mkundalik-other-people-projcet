@@ -197,6 +197,12 @@ function Fill() {
               <option value="">Tanlang</option>
               <option value="O‘zbek">O‘zbek</option>
               <option value="Rus">Rus</option>
+              <option value="Qoraqalpoq">Qoraqalpoq</option>
+              <option value="Qozoq">Qozoq</option>
+              <option value="Tojik">Tojik</option>
+              <option value="Arman">Arman</option>
+              <option value="Tatar">Tatar</option>
+              <option value="Ukrain">Ukrain</option>
               <option value="Boshqa">Boshqa</option>
             </select>
           </motion.div>
@@ -210,6 +216,10 @@ function Fill() {
               <option value="Tugallanmagan Oliy">Tugallanmagan Oliy</option>
               <option value="Oliy (Bakalavr)">Oliy (Bakalavr)</option>
               <option value="Oliy (Magistr)">Oliy (Magistr)</option>
+              <option value="Oliy (Doktorantura)">Oliy (Doktorantura)</option>
+              <option value="Oliy (Ospirantura)">Oliy (Ospirantura)</option>
+              <option value="Oliy (Akademik magistratura)">Oliy (Akademik magistratura)</option>
+              <option value="Ilmiy unvon">Ilmiy unvon</option>
               <option value="Boshqa">Boshqa</option>
             </select>
           </motion.div>
@@ -222,7 +232,7 @@ function Fill() {
               className="input-field"
               value={values.speciality}
               onChange={handleChange("speciality")}
-              placeholder="Mutaxassislikни kiriting"
+              placeholder="Mutaxassislikni kiriting"
             />
           </motion.div>
 
@@ -234,7 +244,7 @@ function Fill() {
               className="input-field"
               value={values.address}
               onChange={handleChange("address")}
-              placeholder="To'liq manzilни kiriting"
+              placeholder="To'liq manzilni kiriting"
             />
           </motion.div>
 

@@ -226,7 +226,7 @@ function ScheduleRate() {
                       <img className="schedulelogo3" src={flag} alt="logo" />
                     </div>
                     <div className="col-9 bolddd fw-bold text-center" style={{ fontSize: '10pt', lineHeight: '1.2' }}>
-                      "Toshkent metropoliteni" DUK kundalik hisobotlarni elektron shakllantirish platformasi
+                      "Toshkent metropoliteni" AJ kundalik hisobotlarni elektron shakllantirish platformasi
                       <hr className="bolded my-1" />
                       ГУП "Тошкент метрополитени" создание ежедневных отчетов электронная платформа
                     </div>

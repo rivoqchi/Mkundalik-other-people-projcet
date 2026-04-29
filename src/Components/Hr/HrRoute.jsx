@@ -23,16 +23,16 @@ import ReportGl from '../SuperAdmin/ReportGl';
 import Bayram from '../SuperAdmin/Bayram';
 import PleaseInstruction from '../Asking/PleaseInstruction'
 import SeeSelectedSchedules from '../Admin/SeeSelectedSchedules';
+import WeatherMoreInfo from '../WeatherMoreInfo';
 import Footer from '../Footer';
-
-
 import Languages from '../Admin/Languages';
 import LangRu from '../Admin/LangRu';
 import LangEn from '../Admin/LangEn';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
 import Security from '../Security/Security';
-function DepartmentRoute() {
+
+function HrRoute() {
   const location = useLocation();
   return (
     <div className="container-fluid">
@@ -76,6 +76,7 @@ function DepartmentRoute() {
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
               <Route path="/test/:id" exact element={<TestPage />} />
+              <Route path="/weather" exact element={<WeatherMoreInfo />} />
               <Route path="/profile/security" exact element={<Security />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>
@@ -88,4 +89,4 @@ function DepartmentRoute() {
   );
 }
 
-export default DepartmentRoute;
+export default HrRoute;

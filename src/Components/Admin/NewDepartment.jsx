@@ -17,6 +17,8 @@ function NewStructure() {
   const [sectionName, setSectionName] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [allSections, setAllSections] = useState([]);
+  const [allComplexes, setAllComplexes] = useState([]);
+  const [selectedComplex, setSelectedComplex] = useState("");
   const [selectedAdmins, setSelectedAdmins] = useState([]);
   const acceptedBy = window.localStorage.getItem("fullName");
   
@@ -27,15 +29,24 @@ function NewStructure() {
   const getAllData = async () => {
     try {
       const { data } = await axios.get(`${API}/sections/getall`);
-      
       setAllUsers(data.sections);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
   };
 
+  const getComplexes = async () => {
+    try {
+      const { data } = await axios.get(`${API}/complexes/getall`);
+      setAllComplexes(data.complexes || []);
+    } catch (error) {
+      console.error("Error fetching complexes:", error);
+    }
+  };
+
   useEffect(() => {
     getAllData();
+    getComplexes();
   }, []);
 
   // Adminlarni tanlash
@@ -60,10 +71,20 @@ function NewStructure() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!selectedComplex) {
+      setAlert({
+        show: true,
+        type: "danger",
+        message: "Iltimos, departament biriktiriladigan kompleksni tanlang!",
+      });
+      return;
+    }
+
     const payload = {
       name: sectionName,
       acceptedBy,
       sections: selectedAdmins,
+      complex: selectedComplex,
     };
     
 
@@ -102,6 +123,20 @@ function NewStructure() {
             onChange={(e) => setSectionName(e.target.value)}
             required
           />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Kompleksni tanlang</Form.Label>
+          <Form.Select 
+            value={selectedComplex}
+            onChange={(e) => setSelectedComplex(e.target.value)}
+            required
+          >
+            <option value="" disabled>Kompleks tanlang...</option>
+            {allComplexes.map((c) => (
+              <option key={c._id} value={c.name}>{c.name}</option>
+            ))}
+          </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-3">

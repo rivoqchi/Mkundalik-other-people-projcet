@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import logo from './Images/logo-png.png';
 import { useTranslation } from "react-i18next";
+import Agreement from "./Agreement";
 function Footer() {
   const [route, setRoute] = useState("");
+  const [showAgreement, setShowAgreement] = useState(false);
   const { t } = useTranslation();
   useEffect(() => {
     const role = window.localStorage.getItem("role");
@@ -96,6 +98,15 @@ function Footer() {
                     <i className="fa-brands fa-telegram"></i> Yangiliklar
                   </a>
                 </li>
+                <li>
+                  <button 
+                    onClick={() => setShowAgreement(true)}
+                    className="btn-link text-decoration-none p-0 border-0 bg-transparent text-start mt-2"
+                    style={{color: 'inherit', fontSize: 'inherit'}}
+                  >
+                    <i className="fa-solid fa-file-contract"></i> Foydalanish shartlari
+                  </button>
+                </li>
               </ul>
             </div>
 
@@ -103,10 +114,19 @@ function Footer() {
             <div className="col-12 col-md-4 col-lg-2 footer-col">
               <h5 className="footer-title">{t("ilova") || "Ilova"}</h5>
               <ul className="list-unstyled footer-links text-start">
-                <li>
+                {/* <li>
                   <a href="https://mdata.uz/download/mkundalik-android.apk" target="_blank" rel="noopener noreferrer">
                     <i className="fa-brands fa-android"></i> Android APK
                   </a>
+                </li> */}
+                <li>
+                  <button 
+                    onClick={() => alert("Android ilova hozircha texnik ishlov jarayonida, vaqtinchalik brauzerdan foydalaning.")}
+                    className="btn-link text-decoration-none p-0 border-0 bg-transparent text-start"
+                    style={{color: 'inherit', fontSize: 'inherit'}}
+                  >
+                    <i className="fa-brands fa-android"></i> Android APK
+                  </button>
                 </li>
                 <li>
                   <button 
@@ -146,7 +166,7 @@ function Footer() {
           <div className="footer-copyright mt-5 pt-3 border-top">
             <div className="row align-items-center">
               <div className="col-md-6 text-md-start">
-                <span className="opacity-75">© 2026 "Toshkent metropoliteni" DUK. {t("allrightsreserved")}.</span>
+                <span className="opacity-75">© 2026 "Toshkent metropoliteni" AJ. {t("allrightsreserved")}.</span>
               </div>
               <div className="col-md-6 text-md-end d-flex align-items-center justify-content-md-end gap-3 mt-2 mt-md-0">
                 <div className="version-info mb-5 d-flex align-items-center gap-2">
@@ -167,6 +187,12 @@ function Footer() {
           </div>
         </div>
       </footer>
+
+      <Agreement 
+        show={showAgreement} 
+        onCancel={() => setShowAgreement(false)} 
+        viewMode={true} 
+      />
     </>
   );
 }

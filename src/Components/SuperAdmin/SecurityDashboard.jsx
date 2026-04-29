@@ -165,6 +165,19 @@ const SecurityDashboard = () => {
         }
     };
 
+    const handleRunBackup = async () => {
+        if (!window.confirm('Haqiqatan ham hozir bazadan nusxa olib Telegramga yubormoqchimisiz?')) return;
+        setGlobalLoading(true);
+        try {
+            const { data } = await axios.post(`${API}/security/run-backup`);
+            toast.success(data.message || 'Backup muvaffaqiyatli yakunlandi');
+        } catch (err) {
+            toast.error('Backup qilishda xatolik yuz berdi: ' + (err.response?.data?.error || err.message));
+        } finally {
+            setGlobalLoading(false);
+        }
+    };
+
     if (loading && !stats) return (
         <div className="security-loader" style={{ height: '100vh', background: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <motion.div
@@ -479,6 +492,45 @@ const SecurityDashboard = () => {
                                         BLOKLASH <i className="fa-solid fa-gavel ms-2"></i>
                                     </button>
                                 </form>
+                            </div>
+
+                            <div className="mb-5 p-4 rounded-4 position-relative overflow-hidden" style={{
+                                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%)',
+                                border: '1px solid rgba(16, 185, 129, 0.2)',
+                                boxShadow: '0 8px 32px 0 rgba(16, 185, 129, 0.05)'
+                            }}>
+                                <div className="position-absolute top-0 end-0 p-3 opacity-10" style={{ transform: 'translate(10%, -20%)' }}>
+                                    <i className="fa-solid fa-database fa-5x text-success"></i>
+                                </div>
+                                <h6 className="small text-success fw-bold mb-2 font-monospace d-flex align-items-center gap-2 position-relative z-1">
+                                    <div className="live-glow" style={{background: '#10b981', boxShadow: '0 0 10px #10b981', width: '8px', height: '8px'}}></div>
+                                    TIZIM_ZAXIRASINI_YARATISH
+                                </h6>
+                                <p className="small text-secondary mb-4 position-relative z-1" style={{ fontSize: '0.85rem' }}>
+                                    Barcha jadval va ma'lumotlarni xavfsiz (.zip) arxiviga joylab, tegishli maxfiy Telegram kanaliga yuborish.
+                                </p>
+                                
+                                <motion.button 
+                                    whileHover={{ scale: 1.02, boxShadow: '0 0 25px rgba(16, 185, 129, 0.6)' }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={handleRunBackup} 
+                                    className="w-100 py-3 fw-bold rounded-3 d-flex align-items-center justify-content-center gap-2 position-relative overflow-hidden border-0 text-white"
+                                    style={{
+                                        background: 'linear-gradient(90deg, #10b981, #059669)',
+                                        boxShadow: '0 0 15px rgba(16, 185, 129, 0.3)',
+                                        letterSpacing: '1px',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                >
+                                    <i className="fa-solid fa-cloud-arrow-up fs-5"></i>
+                                    <span>ZAXIRANI BOSHLASH</span>
+                                    <motion.div
+                                        className="position-absolute top-0 start-0 w-100 h-100 bg-white"
+                                        initial={{ opacity: 0, x: '-100%' }}
+                                        whileHover={{ opacity: 0.2, x: '100%' }}
+                                        transition={{ duration: 0.8, ease: 'easeInOut', repeat: Infinity, repeatDelay: 1 }}
+                                    />
+                                </motion.button>
                             </div>
 
                             <div className="threat-analytics">

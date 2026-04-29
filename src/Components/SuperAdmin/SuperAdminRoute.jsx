@@ -37,10 +37,12 @@ import FAQPage from '../Infos/FAQPage';
 import SwitchUser from './SwitchUser';
 import Bayram from './Bayram';
 import Footer from '../Footer';
+import WeatherMoreInfo from '../WeatherMoreInfo';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
 import SecurityDashboard from './SecurityDashboard';
 import Security from '../Security/Security';
+
 function SuperAdminRoute() {
   const location = useLocation();
   return (
@@ -87,15 +89,14 @@ function SuperAdminRoute() {
               <Route path="/profile" exact element={<Profile />} />
               <Route path="/employees" exact element={<Xodimlar />} />
               <Route path="/employees/allusers" exact element={<SwitchUser />} />
-              {/* <Route path="/employees/switchuser" exact element={<SwitchUser />} /> */}
               <Route path="/employees/registered-users" exact element={<FilterNewUsers />} />
               <Route path="/employees/confirm/:id" exact element={<Confirm />} />
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
               <Route path="/profile/security" exact element={<Security />} />
+              <Route path="/weather" exact element={<WeatherMoreInfo />} />
               <Route path="/*" exact element={<NotFound404 />} />
               <Route path="/test/:id" exact element={<TestPage />} />
               <Route path="/security" exact element={<SecurityDashboard />} />
-
             </Routes>
             <Footer/>
           </div>

@@ -7,6 +7,7 @@ import { API } from "../config";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "./Additional/ThemeContext";
 import logo from "./Images/logo-png.png";
+import WeatherAside from "./WeatherAside";
 
 const Navbarr = () => {
   const { theme, toggleTheme } = useTheme();
@@ -166,6 +167,8 @@ const Navbarr = () => {
                </button>
             </div>
 
+
+
             <motion.div 
               className="mobile-ov-links"
               initial="hidden"
@@ -209,7 +212,9 @@ const Navbarr = () => {
                  </motion.div>
                ))}
             </motion.div>
-
+            <div className="mx-3 mt-2">
+               <WeatherAside onClick={() => setIsOpen(false)} />
+            </div>
             <div className="mobile-ov-footer">
                <div className="ov-actions-grid">
                   <div className="ov-action-item">

@@ -523,7 +523,7 @@ function Xodimlar() {
       {error && <Alert variant="danger">{error}</Alert>}
 
       <div className="glass-card overflow-hidden" style={{ background: isDark ? 'rgba(30, 41, 59, 0.7)' : 'rgba(255, 255, 255, 0.9)', border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`, borderRadius: '16px' }}>
-        <div className="table-responsive" style={{ maxHeight: '70vh' }}>
+        <div className="table-responsive" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
           <table className={`table table-hover mb-0 ${isDark ? 'table-dark' : ''}`} style={{ background: 'transparent' }}>
             <thead style={{ position: 'sticky', top: 0, zIndex: 1 }}>
               <tr style={{ background: isDark ? '#0f172a' : '#f8fafc' }}>
@@ -940,6 +940,14 @@ function Xodimlar() {
                 placeholder="Parolingizni kiriting"
                 value={impersonatePassword}
                 onChange={(e) => setImpersonatePassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (!showImpersonateCaptcha || impersonateCaptcha) {
+                      handleImpersonate();
+                    }
+                  }
+                }}
                 style={{ background: 'transparent', color: isDark ? 'white' : 'black', border: 'none', paddingLeft: '40px' }}
               />
             </div>

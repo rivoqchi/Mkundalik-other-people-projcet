@@ -18,6 +18,7 @@ import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
+import WeatherMoreInfo from '../WeatherMoreInfo';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
@@ -31,7 +32,6 @@ function BossRoute() {
         {/* Chapdagi Aside panel */}
         <div className="col-2 p-0">
           <Aside /> {/* Chap panel */}
-          {/* <PleaseInstruction/> */}
         </div>
 
         {/* O‘ng taraf: Navbar va asosiy content */}
@@ -53,6 +53,7 @@ function BossRoute() {
               <Route path="/structure" exact element={<Xodimlar />} />
               <Route path="/schedule/history/:id" exact element={<SeeSelectedSchedules />} />
               <Route path="/archive/schedule/:id" exact element={<LookSchedule />} />
+              <Route path="/weather" exact element={<WeatherMoreInfo />} />
               <Route path="/profile/security" exact element={<Security />} />
               <Route path="/*" exact element={<NotFound404 />} />
               <Route path="/test/:id" exact element={<TestPage />} />

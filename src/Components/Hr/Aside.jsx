@@ -9,6 +9,7 @@ import note from "../Images/note.png";
 import logo from "../Images/logo-png.png";
 import { useTranslation } from "react-i18next";
 import { signout } from "../Auth/CheckAuth";
+import WeatherAside from "../WeatherAside";
 function Aside() {
 
   const { t } = useTranslation();
@@ -77,13 +78,16 @@ function Aside() {
             </li>
 
             <li>
-              <Link className={location.pathname.startsWith("/hr/profile") ? "active" : ""} to="/hr/profile">
-                <i className="fa-solid fa-user"></i>
-                <span>{t("myInfo")}</span>
+              <Link className={location.pathname.startsWith("/hr/about") ? "active" : ""} to="/hr/about">
+                <i className="fa-solid fa-circle-info"></i>
+                <span>{t("dasturhaqida")}</span>
               </Link>
             </li>
           </ul>
         </nav>
+        <div className="d-none d-md-block mb-3">
+          <WeatherAside />
+        </div>
       </div>
       <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>

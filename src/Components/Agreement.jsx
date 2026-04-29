@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from './Additional/ThemeContext';
 
-const Agreement = ({ show, onAccept, onCancel }) => {
+const Agreement = ({ show, onAccept, onCancel, viewMode = false }) => {
     const { t } = useTranslation();
     const { theme } = useTheme();
     const [accepted, setAccepted] = useState(false);
@@ -193,6 +193,7 @@ const Agreement = ({ show, onAccept, onCancel }) => {
                                 <h6>8. Shaxsiy ma’lumotlar va integratsiya</h6>
                                 <p>8.1. Tizimda saqlanadigan shaxsiy ma’lumotlar kelajakda boshqa axborot tizimlari bilan integratsiya qilish maqsadida ko‘chirilishi mumkin.</p>
                                 <p>8.2. Ushbu holat foydalanuvchi tomonidan oldindan qabul qilingan deb hisoblanadi.</p>
+                                <p>8.3. Xodimlar ma’lumotlari himoyasi uchun zarur texnik va tashkiliy xavfsizlik choralar ko‘rilgan bo‘lib, tizim "Kiberxavfsizlik markazi" DUK tomonidan ekspertiziyadan o‘tkazilgan. Shunga qaramay, fors-major holatlar yoki nazoratdan tashqari yuzaga keladigan favqulodda vaziyatlar oqibatida ma’lumotlarning yo‘qolishi, buzilishi yoki sizib chiqishi holatlarida hech kim javobgar hisoblanmaydi.</p>
                             </div>
 
                             <div className="terms-section">
@@ -221,24 +222,35 @@ const Agreement = ({ show, onAccept, onCancel }) => {
                         </div>
                     </div>
                     <div className="agreement-footer">
-                        <div 
-                            className="agreement-checkbox-wrapper" 
-                            onClick={() => setAccepted(!accepted)}
-                        >
-                            <div className={`agreement-checkbox ${accepted ? 'checked' : ''}`}>
-                                <i className="fa-solid fa-check"></i>
-                            </div>
-                            <span className="small fw-medium">
-                                Men foydalanish shartlari bilan tanishdim va ularga roziman
-                            </span>
-                        </div>
-                        <button 
-                            className={`btn-agreement-submit ${accepted ? 'active' : ''}`}
-                            disabled={!accepted}
-                            onClick={onAccept}
-                        >
-                            KIRISH
-                        </button>
+                        {!viewMode ? (
+                            <>
+                                <div 
+                                    className="agreement-checkbox-wrapper" 
+                                    onClick={() => setAccepted(!accepted)}
+                                >
+                                    <div className={`agreement-checkbox ${accepted ? 'checked' : ''}`}>
+                                        <i className="fa-solid fa-check"></i>
+                                    </div>
+                                    <span className="small fw-medium">
+                                        Men foydalanish shartlari bilan tanishdim va ularga roziman
+                                    </span>
+                                </div>
+                                <button 
+                                    className={`btn-agreement-submit ${accepted ? 'active' : ''}`}
+                                    disabled={!accepted}
+                                    onClick={onAccept}
+                                >
+                                    KIRISH
+                                </button>
+                            </>
+                        ) : (
+                            <button 
+                                className="btn-agreement-submit active"
+                                onClick={onCancel}
+                            >
+                                YOPISH
+                            </button>
+                        )}
                     </div>
                 </Modal>
             )}

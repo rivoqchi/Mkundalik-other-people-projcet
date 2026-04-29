@@ -25,6 +25,7 @@ import UmumiyStat from '../Infos/UmumiyStat';
 import About from '../Infos/About';
 import Application from '../Infos/Application';
 import FAQPage from '../Infos/FAQPage';
+import WeatherMoreInfo from '../WeatherMoreInfo';
 import FoydalanishYoriqnomasi from '../FoydalanishYoriqnomasi';
 import Footer from '../Footer';
 import Languages from '../Admin/Languages';
@@ -33,6 +34,7 @@ import LangEn from '../Admin/LangEn';
 import { useLocation } from "react-router-dom";
 import TestPage from '../Lang/TestPage';
 import Security from '../Security/Security';
+
 function ComplexRoute() {
   const location = useLocation();
   return (
@@ -80,6 +82,7 @@ function ComplexRoute() {
               <Route path="/employees/adduser" exact element={<AddNewUser />} />
               <Route path="/instructions" exact element={<FoydalanishYoriqnomasi />} />
               <Route path="/test/:id" exact element={<TestPage />} />
+              <Route path="/weather" exact element={<WeatherMoreInfo />} />
               <Route path="/profile/security" exact element={<Security />} />
               <Route path="/*" exact element={<NotFound404 />} />
             </Routes>

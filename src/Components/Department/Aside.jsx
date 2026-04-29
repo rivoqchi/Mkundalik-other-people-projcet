@@ -11,6 +11,7 @@ import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import { useTranslation } from "react-i18next";
 import { signout } from "../Auth/CheckAuth";
+import WeatherAside from "../WeatherAside";
 function Aside() {
 
   const { t } = useTranslation();
@@ -29,6 +30,10 @@ function Aside() {
   const myId = window.localStorage.getItem("user_id");
   const [notificationLength, setNotificationLength] = useState([]);
   const getMySectionSchedules = async () => {
+    if (window.localStorage.getItem("section") === "Yuqori turuvchi" && window.localStorage.getItem("role") === 'admin') {
+      setNotificationLength(0);
+      return;
+    }
     try {
       const { data } = await axios.get(
         `${API}/schedules/notification/length/${myId}`
@@ -113,6 +118,9 @@ function Aside() {
             </li>
           </ul>
         </nav>
+        <div className="d-none d-md-block mb-3">
+          <WeatherAside />
+        </div>
       </div>
       <Modal centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>

@@ -441,6 +441,8 @@ const CalendarComponent = () => {
             statusColor = "calendar-black"; // holiday kunlar uchun qora status
           } else if (!schedule) {
             statusColor = "calendar-red"; // schedule yo‘q
+          } else if (!schedule.closed) {
+            statusColor = "calendar-orange"; // yopilmagan (jarayonda)
           } else if (schedule.rated) {
             statusColor = "calendar-green"; // rated bor
             showDownloadButton = true;
@@ -471,8 +473,13 @@ const CalendarComponent = () => {
           const cellContent = (
             <motion.div
               whileHover={(isBsDay(day) || isHolidayDay(day)) ? { scale: 1.1, rotate: 1 } : {}}
-              onClick={() => {
-                if (isBsDay(day) || isHolidayDay(day)) handleDayClick(day);
+              onClick={(e) => {
+                if (isBsDay(day) || isHolidayDay(day)) {
+                  handleDayClick(day);
+                } else if (schedule && !schedule.closed) {
+                  e.preventDefault();
+                  alert(t("jarayonda") || "Jarayonda");
+                }
               }}
               title={
                 isBsDay(day) && currentBs
@@ -546,7 +553,7 @@ const CalendarComponent = () => {
             </motion.div>
           );
 
-          return schedule && !isDisabled ? (
+          return schedule && !isDisabled && schedule.closed ? (
             <Link
               key={index}
               to={`${route}/archive/schedule/${schedule._id}`}

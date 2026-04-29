@@ -1578,6 +1578,7 @@ input.form-control.active {
   margin-bottom: 20px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  border-left: 3px solid var(--accent-glow);
   /* overflow: hidden; */
   // Removed to allow dropdowns to show
 
@@ -1586,17 +1587,6 @@ input.form-control.active {
     background: var(--bg-card);
     border-color: var(--accent-primary);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 4px;
-    background: var(--accent-primary);
-    opacity: 0.6;
   }
 }
 
@@ -1968,11 +1958,18 @@ input.form-control.active {
       /* Kattaroq ko'rinishi uchun biroz padding qo'shildi */
     }
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: #f43f5e;
       color: #fff;
       border-color: #f43f5e;
       box-shadow: 0 8px 15px rgba(244, 63, 94, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(1);
+      border-color: rgba(255, 255, 255, 0.1);
     }
   }
 }
@@ -4648,6 +4645,11 @@ input:checked+.slider:before {
   &.calendar-blue {
     background-color: #3b82f6;
     color: #3b82f6;
+  }
+
+  &.calendar-orange {
+    background-color: #f59e0b;
+    color: #f59e0b;
   }
 
   &.calendar-black {
@@ -8397,6 +8399,102 @@ input:checked+.slider:before {
   font-size: 0.75rem;
   color: var(--text-secondary);
   margin: 0;
+}
+
+// ─── Superiors Block ─────────────────────────────────────────
+.superiors-container {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-cyber);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  margin-top: 1rem;
+
+  .dark-mode & {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .superiors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .superior-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-cyber);
+    border-radius: 16px;
+    cursor: default;
+    transition: all 0.3s ease;
+
+    .dark-mode & {
+      background: rgba(30, 41, 59, 0.8);
+    }
+
+    .superior-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .avatar-boss { background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 5px 15px rgba(239,68,68,0.3); }
+    .avatar-complex { background: linear-gradient(135deg, #f59e0b, #b45309); box-shadow: 0 5px 15px rgba(245,158,11,0.3); }
+    .avatar-department { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 5px 15px rgba(59,130,246,0.3); }
+    .avatar-admin { background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 5px 15px rgba(16,185,129,0.3); }
+
+    .superior-info {
+      display: flex;
+      flex-direction: column;
+
+      h5 {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        line-height: 1.2;
+      }
+
+      .superior-role {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin: 4px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 140px;
+      }
+
+      .badge-role {
+        font-size: 0.6rem;
+        padding: 3px 8px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        width: max-content;
+        color: #fff;
+      }
+      
+      .bg-boss { background: #ef4444; }
+      .bg-complex { background: #f59e0b; }
+      .bg-department { background: #3b82f6; }
+      .bg-admin { background: #10b981; }
+    }
+  }
 }
 
 // ─── Stats Row ─────────────────────────────────────────────

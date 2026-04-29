@@ -6,6 +6,7 @@ import './MobilePromoBanner.scss';
 const PROMO_DISMISSED_KEY = 'mobile_promo_dismissed';
 
 const MobilePromoBanner = () => {
+    return null; // Vaqtinchalik o'chirildi
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {

@@ -493,7 +493,7 @@ function Profile() {
                       }}
                     />
                     <span className="slider round"></span>
-                    <span className="switch-label">Qor animatsiyasi</span>
+                    <span className="switch-label">Sahifa animatsiyasi</span>
                   </label>
                 </div>
 

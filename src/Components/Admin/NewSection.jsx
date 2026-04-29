@@ -17,6 +17,8 @@ function NewSection() {
   const [sectionName, setSectionName] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [allSections, setAllSections] = useState([]);
+  const [allDepartments, setAllDepartments] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedAdmins, setSelectedAdmins] = useState([]);
   const acceptedBy = window.localStorage.getItem("fullName");
 
@@ -33,8 +35,18 @@ function NewSection() {
     }
   };
 
+  const getDepartments = async () => {
+    try {
+      const { data } = await axios.get(`${API}/sectors/getall`);
+      setAllDepartments(data.sections || []);
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+    }
+  };
+
   useEffect(() => {
     getAllData();
+    getDepartments();
   }, []);
 
   // Adminlarni tanlash
@@ -59,10 +71,20 @@ function NewSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!selectedDepartment) {
+      setAlert({
+        show: true,
+        type: "danger",
+        message: "Iltimos, bo'lim biriktiriladigan xizmat/departamentni tanlang!",
+      });
+      return;
+    }
+
     const payload = {
       name: sectionName,
       acceptedBy,
       admins: selectedAdmins,
+      sector: selectedDepartment,
     };
 
     try {
@@ -100,6 +122,20 @@ function NewSection() {
             onChange={(e) => setSectionName(e.target.value)}
             required
           />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Departament/Xizmatni tanlang</Form.Label>
+          <Form.Select 
+            value={selectedDepartment}
+            onChange={(e) => setSelectedDepartment(e.target.value)}
+            required
+          >
+            <option value="" disabled>Departament tanlang...</option>
+            {allDepartments.map((d) => (
+              <option key={d._id} value={d.name}>{d.name}</option>
+            ))}
+          </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-3">

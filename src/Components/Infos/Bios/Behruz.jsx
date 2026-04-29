@@ -55,7 +55,7 @@ const Behruz = () => {
 
                     <div className="bio-card experience">
                         <h3><i className="fa-solid fa-briefcase"></i> Ish faoliyati</h3>
-                        <p><strong>2025-yil fevral oyidan hozirgacha:</strong> "Toshkent metropoliteni" DUK Axborot xavfsizligini ta'minlash va axborot kommunikatsiyalarini rivojlantirish xizmati.</p>
+                        <p><strong>2025-yil fevral oyidan hozirgacha:</strong> "Toshkent metropoliteni" AJ Axborot xavfsizligini ta'minlash va axborot kommunikatsiyalarini rivojlantirish xizmati.</p>
                         <p>Dasturiy tizimlar arxitekturasi va kiberxavfsizlik masalalari bo'yicha bosh mutaxassis.</p>
                     </div>
 

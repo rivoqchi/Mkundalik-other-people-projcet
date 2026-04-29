@@ -35,7 +35,10 @@ function LoginWithTelegram() {
       if (response.status === 200) {
         window.localStorage.setItem("token", response.data.token);
         window.localStorage.setItem("fullName", response.data.employee.name);
+        window.localStorage.setItem("degree", response.data.employee.degree);
         window.localStorage.setItem("phone", response.data.employee.phone);
+        window.localStorage.setItem("role", response.data.employee.role);
+        window.localStorage.setItem("section", response.data.employee.section);
         window.localStorage.setItem("user_id", response.data.employee._id);
         
         const roleRedirects = {

@@ -44,6 +44,10 @@ function Xodimlar() {
 
   // Xodimlar ro‘yxatini olish
   const getMyEmployees = async (role) => {
+    if (mySection === "Yuqori turuvchi" && myRole === 'admin') {
+      setEmployees([]);
+      return;
+    }
     try {
       const params = {
         role,
