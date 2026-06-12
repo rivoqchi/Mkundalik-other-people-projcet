@@ -58,6 +58,7 @@ import Inactive from "./Components/Auth/Inactive";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import VersionChecker from "./Components/Additional/VersionChecker";
 import MobilePromoBanner from "./Components/Additional/MobilePromoBanner";
+import NotificationPrompt from "./Components/Additional/NotificationPrompt";
 
 
 
@@ -86,6 +87,8 @@ axios.interceptors.response.use(
     // Session expired or revoked
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
       if (window.location.pathname !== '/login' && window.location.pathname !== '/logina') {
+        const currentPath = window.location.pathname + window.location.search + window.location.hash;
+        sessionStorage.setItem("redirectAfterLogin", currentPath);
         signout(() => {
           window.location.replace("/login");
         });
@@ -156,6 +159,7 @@ function AppContent() {
         <Atmosphere />
         <MobilePromoBanner />
         <VersionChecker />
+        <NotificationPrompt />
 
         {/* <LoginAgainAlert /> */}
 

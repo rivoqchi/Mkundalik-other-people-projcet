@@ -10,6 +10,7 @@ import Alert from '../Additional/Alert';
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from "react-google-recaptcha";
 import Agreement from '../Agreement';
+import { requestNotificationPermission } from '../Additional/NotificationManager';
 import './Login.scss';
 
 const Login = () => {
@@ -242,8 +243,12 @@ const Login = () => {
     window.localStorage.setItem("token", data.token);
     window.localStorage.setItem("isSignedIn", "true");
 
-    if (from) {
-      navigate(from, { replace: true });
+    // Redirect: avval state.from, keyin sessionStorage, aks holda dashboard
+    const redirectTo = from || sessionStorage.getItem("redirectAfterLogin");
+    sessionStorage.removeItem("redirectAfterLogin");
+
+    if (redirectTo) {
+      navigate(redirectTo, { replace: true });
       return;
     }
 

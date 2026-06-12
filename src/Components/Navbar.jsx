@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "./Additional/ThemeContext";
 import logo from "./Images/logo-png.png";
 import WeatherAside from "./WeatherAside";
+import { requestNotificationPermission } from "./Additional/NotificationManager";
 
 const Navbarr = () => {
   const { theme, toggleTheme } = useTheme();
@@ -28,6 +29,10 @@ const Navbarr = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Notification permission is now handled by the global NotificationPrompt component
+  }, [isSignedIn]);
 
   const logout = async () => {
     try {

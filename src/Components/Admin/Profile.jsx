@@ -18,6 +18,7 @@ import Accordion from "react-bootstrap/Accordion";
 import CelebrationModal from "../Celebration";
 import avatarr from "../Images/avatarr.png";
 import { Link } from "react-router-dom";
+import { requestNotificationPermission } from "../Additional/NotificationManager";
 function Profile() {
   const [showCelebration, setShowCelebration] = useState(false);
   const { t } = useTranslation();
@@ -476,6 +477,38 @@ function Profile() {
                     <i className="fa-brands fa-telegram"></i> {t("linkTelegram")}
                   </Button>
                 </a>
+              </div>
+
+              <div className="status-indicator-card glass-card">
+                <div className="indicator-content">
+                  <div className={`indicator-dot ${("Notification" in window) ? (Notification.permission === 'granted' ? 'active' : (Notification.permission === 'denied' ? 'inactive' : 'pending')) : 'inactive'}`}></div>
+                  <div className="indicator-text">
+                    <span className="label">Brauzer Bildirishnomasi</span>
+                    <span className={`status-text ${("Notification" in window) ? (Notification.permission === 'granted' ? 'text-success' : (Notification.permission === 'denied' ? 'text-danger' : 'text-warning')) : 'text-secondary'}`}>
+                      {!("Notification" in window) 
+                        ? 'Qurilmangizda qo‘llab-quvvatlanmaydi ❌' 
+                        : (Notification.permission === 'granted' ? 'Ruxsat berilgan ✅' : (Notification.permission === 'denied' ? 'Bloklangan ❌' : 'Ruxsat so‘ralmagan ⚠️'))}
+                    </span>
+                  </div>
+                </div>
+                {("Notification" in window) ? (
+                  <Button 
+                    className="btn-browser-notif" 
+                    variant={Notification.permission === 'granted' ? "success" : "primary"}
+                    onClick={async () => { 
+                      await requestNotificationPermission(); 
+                      window.location.reload(); 
+                    }} 
+                    disabled={Notification.permission === 'granted'}
+                    style={{ background: Notification.permission === 'granted' ? '#10b981' : 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', border: 'none' }}
+                  >
+                    <i className="fa-solid fa-bell"></i> {Notification.permission === 'granted' ? 'Yoqilgan' : 'Yoqish'}
+                  </Button>
+                ) : (
+                  <p className="small text-muted mt-2" style={{fontSize: '11px'}}>
+                    iPhone'da bildirishnoma olish uchun saytni "Home Screen"ga qo'shing.
+                  </p>
+                )}
               </div>
 
               <div className="settings-controls glass-card">

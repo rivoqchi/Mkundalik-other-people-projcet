@@ -315,6 +315,7 @@ const SeeSelectedSchedules = () => {
 
   return (
     <div className="calendar-container def-page" onClick={() => setShowTooltip(false)}>
+    
       <div className="calendar-header-wrapper">
         <div
           className="div-container"

@@ -124,7 +124,6 @@ function ScheduleNew() {
   const [startedAt, setStartedAt] = useState("");
   const [madeEasier, setMadeEasier] = useState("");
 
-  const [countdown, setCountdown] = useState(5);
 
   // Modal holatlari
   const [showEdit, setShowEdit] = useState(false);
@@ -132,7 +131,6 @@ function ScheduleNew() {
   const [showCreate, setShowCreate] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
   const [showStart, setShowStart] = useState(false);
-  const [terminate, setTerminate] = useState("");
   const [type, setType] = useState("");
   const [currentTaskIndex, setCurrentTaskIndex] = useState(null); // Edit va Delete uchun
   const [taskData, setTaskData] = useState("");
@@ -253,38 +251,7 @@ function ScheduleNew() {
           setOnWork(true);
           setLoading(false);
 
-          if (startedDate !== today && !fetchedWorkingOn.modified) {
-            if (fetchedWorkingOn.tasks && fetchedWorkingOn.tasks.length > 0) {
-              axios
-                .put(`${API}/schedules/terminate/${fetchedWorkingOn._id}`, {
-                  myId,
-                }, { withCredentials: true })
-
-                .then(
-                  setTerminate("Auto terminated"),
-                  setOnWork(false),
-                  setTasks([])
-                )
-                .catch((error) =>
-                  console.error("Avto yakunlashda xatolik:", error)
-                );
-            } else {
-              axios
-                .delete(
-                  `${API}/schedules/deletethis/${fetchedWorkingOn._id}?myId=${myId}`,
-                  { withCredentials: true }
-                )
-
-                .then(
-                  setTerminate("Auto deleted"),
-                  setOnWork(false),
-                  setTasks([])
-                )
-                .catch((error) => console.error("O‘chirishda xatolik:", error));
-            }
-          } else {
-            console.log("Davom eting...");
-          }
+          console.log("Davom eting...");
 
           setWorkingOn(fetchedWorkingOn);
           setTasks(fetchedWorkingOn.tasks || []);
@@ -437,20 +404,6 @@ function ScheduleNew() {
     }
   };
 
-  useEffect(() => {
-    if (terminate) {
-      const timer = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev === 1) {
-            window.location.reload(); // Sahifani yangilash
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(timer); // Cleanup
-    }
-  }, [terminate]);
   const handleStartWork = (customDate = null) => {
     setLoading(true);
     if (handleShowStart) {
@@ -548,7 +501,7 @@ function ScheduleNew() {
             </div>
 
             {/* Pre-start Layout */}
-            {!onWork && !terminate && (
+            {!onWork && (
               <div className="prestart-glass-panel">
                 <div className="dynamic-status-badge status-boshlanmagan">
                   {t("boshlanmagan")}
@@ -580,23 +533,6 @@ function ScheduleNew() {
                       </svg>
                     </div>
                   </button>
-                </div>
-              </div>
-            )}
-            {terminate && (
-              <div className="terminate-container">
-                <p className="terminate-message">
-                  {terminate === "Auto terminated"
-                    ? t("auto_terminated")
-                    : terminate === "Auto deleted"
-                      ? t("auto_deleted")
-                      : t("session_terminated")}
-                </p>
-                <div className="countdown">
-                  <span className="countdown-number">{countdown}</span>
-                  <p className="countdown-text">
-                    {t("sekunddansongavtomatikyangilanadi")}
-                  </p>
                 </div>
               </div>
             )}
