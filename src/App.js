@@ -85,7 +85,7 @@ axios.interceptors.response.use(
   (response) => response,
   (error) => {
     // Session expired or revoked
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (error.response && (error.response.status === 401)) {
       if (window.location.pathname !== '/login' && window.location.pathname !== '/logina') {
         const currentPath = window.location.pathname + window.location.search + window.location.hash;
         sessionStorage.setItem("redirectAfterLogin", currentPath);
